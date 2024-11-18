@@ -45,6 +45,27 @@ body {
         object-fit: cover;
     }
 
+    .swiper-button-next,
+    .swiper-button-prev {
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 50%;
+        width: 50px !important;
+        height: 50px !important;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .swiper-button-next:active,
+    .swiper-button-prev:active {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+        font-size: 20px !important;
+        font-weight: bold;
+        color: black;
+    }
+
     .card {
         position: relative;
     }
@@ -91,7 +112,7 @@ body {
     .custom-btn {
         background-color: transparent;
         color: black;
-        border: black 2px solid;
+        border: black 1.5px solid;
         margin: 10px;
         border-radius: 50px;
         font-weight: bold;
@@ -103,6 +124,7 @@ body {
 
     /* sale-container */
     .sale-container {
+        position: relative;
         min-height: 150px;
         width: 1200px;
         padding-top: 20px;
@@ -112,3 +134,31 @@ body {
         align-items: center;
         border-radius: 10px;
     }
+
+    .sale-header {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        border-radius: 5px;
+    }
+    
+    .mySwiper2 {
+        margin-top: 90px;
+    }
+
+    /* bar-nav-container */
+    .bar-nav-container {
+        position: relative;
+        min-height: 150px;
+        width: 1200px;
+        padding-top: 20px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+    }
+
+
