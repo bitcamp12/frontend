@@ -32,27 +32,35 @@ const InfiniteScrollContainer = () => {
     }, []);
 
     const loadMoreItems = () => {
-        setItems((prevItems) => [
-            ...prevItems,
-            ...Array.from({ length: 6 }),
-        ]);
+        setItems((prevItems) => {
+            if (prevItems.length >= 30) {
+                return prevItems;
+            }
+            return [
+                ...prevItems,
+                ...Array.from({ length: 6 }),
+            ];
+        });
     };
+
     return (
         <div>
-        <div className="infinite-scroll-container" id="infinite-scroll-container">
-            {items.map((_, index) => (
-                <div className="infinite-scroll-card" key={index}>
-                    <img src="https://ticketimage.interpark.com/Play/image/large/21/21013249_p.gif" />
-                    <div className="infinite-scroll-card-body">
-                        <h3>제목 {index + 1}</h3>
-                        <h6 className="infinite-scroll-card-info">장소</h6>
-                        <h6 className="infinite-scroll-card-info">시간</h6>
+            <div className="infinite-scroll-container" id="infinite-scroll-container">
+                {items.map((_, index) => (
+                    <div className="infinite-scroll-card" key={index}>
+                        <img src="https://ticketimage.interpark.com/Play/image/large/21/21013249_p.gif" />
+                        <div className="infinite-scroll-card-body">
+                            <h3>제목 {index + 1}</h3>
+                            <h6 className="infinite-scroll-card-info">장소</h6>
+                            <h6 className="infinite-scroll-card-info">시간</h6>
+                        </div>
                     </div>
-                </div>
-            ))}
+                ))}
+            </div>
+            {items.length < 100 && (
+                <div ref={target}/>
+            )}
         </div>
-        <div ref={target} style={{ height: "100px", backgroundColor: "red" }}></div>
-    </div>
     );
 };
 
