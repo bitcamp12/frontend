@@ -225,6 +225,8 @@
     padding: 10px;
     text-align: center;
     width: 200px;
+    
+    margin-top: -40px;
 }
 
 #submit-btn {
@@ -269,6 +271,7 @@
     border: 1px solid #ccc;
     margin-bottom: 10px;
     width: 98.5%;
+    
 }
 
 /* 리뷰 제출 버튼 */
@@ -280,6 +283,8 @@
     color: white;
     cursor: pointer;
     border: none;
+    
+        margin-top: -40px;
 }
 .submit-btn:hover {
     background-color: #6a2db4;
@@ -475,7 +480,7 @@
         width: 60%; /* 화면 크기에 맞춰 이미지 열의 너비를 100%로 설정 */
         height: auto; /* 이미지 열의 높이도 자동으로 조정 */
     }
-
+    
     #image-column-image {
         width: 100%; /* 이미지가 부모 요소 너비에 맞춰 크기 조정 */
         height: auto; /* 비율에 맞춰 자동으로 높이 조정 */
@@ -534,7 +539,13 @@
         padding: 10px; /* 여백을 줄임 */
     }
     
-   
-
+    #submit-button, .submit-btn {
+        padding: 0px;
+        text-align: center;
+        width: 100%;
+        margin-top: -40px;
+    }
 }
+
+
 
