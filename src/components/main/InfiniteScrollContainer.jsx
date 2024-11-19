@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "../../assets/css/Main.css";
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -58,8 +59,7 @@ const InfiniteScrollContainer = () => {
             <div className="infinite-scroll-container" id="infinite-scroll-container">
                 {items.map((_, index) => (
                     <div className="infinite-scroll-card" key={index}>
-                        <img src="https://ticketimage.interpark.com/Play/image/large/21/21013249_p.gif" />
-                        <div className="infinite-scroll-card-body">
+                        <Link to="playDetail"><img src="https://ticketimage.interpark.com/Play/image/large/21/21013249_p.gif" /></Link>                        <div className="infinite-scroll-card-body">
                             <h3>제목 {index + 1}</h3>
                             <h6 className="infinite-scroll-card-info">장소</h6>
                             <h6 className="infinite-scroll-card-info">시간</h6>
