@@ -2,6 +2,8 @@ import React from 'react';
 import logo from '../assets/images/임시로고.png';
 import search from '../assets/images/돋보기.png';
 import "../assets/css/MainNa.css";
+import { Link } from 'react-router-dom';
+import Login from './Login';
 
 const MainNa = () => {
     const id = 0;
@@ -32,8 +34,8 @@ const MainNa = () => {
                                 </div>
                             ) : (
                                 <div id="auth-section">
-                                    <p id="login" name="login">로그인</p>
-                                    <p id="register" name="register">회원가입</p>
+                                    <Link to="/login"><p id="login" name="login">로그인</p></Link>
+                                    <Link to="/signUp"><p id="register" name="register">회원가입</p></Link>
                                 </div>
                             )}
                         </td>
