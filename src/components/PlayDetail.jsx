@@ -11,6 +11,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ko } from 'date-fns/locale'; 
 import ReserveBtn from './buttons/ReserveBtn';
 import ScrollToTop from './buttons/ScrollToTop';
+import MainNa from './MainNa';
+import Footer from './Footer';
 const PlayDetail = () => {
   const [visible, setVisible] = useState([true, false, false, false, false]);
   const [mapVisible, setMapVisible] = useState(false); // 모달 표시 상태 관리
@@ -71,7 +73,9 @@ const PlayDetail = () => {
 
    
   return (
+    
     <div id="play-detail-container">
+      {/* <MainNa/> */}
       <div id='plat-info-table'>
       <table id="play-detail-table">
         <tbody>
@@ -399,6 +403,7 @@ const PlayDetail = () => {
           </div>
         </div>
       )}
+      <Footer/>
     </div>
   );
 };
