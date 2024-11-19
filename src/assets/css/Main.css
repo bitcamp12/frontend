@@ -348,3 +348,68 @@ body {
 
 
 /* #endregion */
+
+/* 반응형 */
+/* #region */
+@media (max-width: 768px) {
+    .advertise-container,
+    .sale-container,
+    .bar-nav-container,
+    .button-nav-container,
+    .infinite-scroll-container {
+        max-width: 100%;
+        padding: 0 10px;
+    }
+
+    .mySwiper,
+    .mySwiper2 {
+        height: auto;
+    }
+.mySwiper .swiper-slide,
+.mySwiper2 .swiper-slide {
+    width: 100%;
+    height: auto;
+}
+
+.mySwiper .swiper-slide img,
+.mySwiper2 .swiper-slide img {
+    width: 100%;
+    height: auto;
+}
+
+.card-body {
+    position: static;
+    padding: 10px;
+}
+
+.sale-header h2 {
+    font-size: 18pt;
+}
+
+.sale-content-title {
+    font-size: 12pt !important;
+}
+
+.sale-content h4 {
+    font-size: 16px;
+}
+
+.nav-link {
+    font-size: 10pt;
+    margin: 10px;
+}
+
+.custom-btn {
+    font-size: 12px;
+    padding: 5px 10px;
+}
+
+.infinite-scroll-card {
+    height: auto;
+}
+
+.infinite-scroll-card img {
+    height: auto;
+}
+}
+/* #endregion */
