@@ -50,7 +50,7 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="login-form">
-        <img src={interparkLogo} alt="Interpark Logo" width="200px" className="logo" />
+        <Link to="/"><img src={interparkLogo} alt="Interpark Logo" width="200px" className="logo" /></Link>
 
         <form onSubmit={handleLogin}>
           <h1 className="login-title">로그인</h1>
