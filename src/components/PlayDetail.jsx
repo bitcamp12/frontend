@@ -9,6 +9,8 @@ import "../assets/css/PlayDetail.css";
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from 'date-fns/locale'; 
+import ReserveBtn from './buttons/ReserveBtn';
+import ScrollToTop from './buttons/ScrollToTop';
 const PlayDetail = () => {
   const [visible, setVisible] = useState([true, false, false, false, false]);
   const [mapVisible, setMapVisible] = useState(false); // 모달 표시 상태 관리
@@ -49,6 +51,14 @@ const PlayDetail = () => {
     setMapVisible(true); // 모달 보이기
   };
 
+ 
+
+  // 모달 닫기
+  const closeModal = () => {
+    setMapVisible(false); // 지도 모달 숨기기
+    setReserveVisible(false); // 예매 모달 숨기기
+    setConsultVisible(false); // 상담 모달 숨기기
+  };
   // 예매 클릭 시 예매 모달 띄우기
   const handleReserveClick = () => {
     setReserveVisible(true); // 예매 모달 보이기
@@ -59,13 +69,7 @@ const PlayDetail = () => {
     setConsultVisible(true); // 상담 모달 보이기
   };
 
-  // 모달 닫기
-  const closeModal = () => {
-    setMapVisible(false); // 지도 모달 숨기기
-    setReserveVisible(false); // 예매 모달 숨기기
-    setConsultVisible(false); // 상담 모달 숨기기
-  };
-
+   
   return (
     <div id="play-detail-container">
       <div id='plat-info-table'>
@@ -76,9 +80,13 @@ const PlayDetail = () => {
           </tr>
           <tr>
             <td rowSpan="15" id="image-column">
-              <img src={paly} alt="이미지" />
+              <img src={paly} alt="이미지" id='image-column-image'/>
             </td>
           </tr>
+
+          <tr><td></td></tr>
+          <tr><td></td></tr>
+
           <tr>
             <td id="place-column" >
        
@@ -88,6 +96,7 @@ const PlayDetail = () => {
               
             </td>
           </tr>
+         
           <tr>
             <td id="duration-column">
               <img src={duration} alt="기간" id="duration-image" /> : 기간
@@ -103,8 +112,7 @@ const PlayDetail = () => {
               <img src={star} alt="별점" id="rating-image" /> : 별점
             </td>
           </tr>
-          <tr><td></td></tr>
-          <tr><td></td></tr>
+          
           <tr><td></td></tr>
           <tr><td></td></tr>
           <tr><td></td></tr>
@@ -112,48 +120,32 @@ const PlayDetail = () => {
         </tbody>
       </table>
       </div>
-      <div id="fixed-buttons-container">
-        <div id="reserve-button">
-          <input
-            type="button"
-            value="예매"
-            id="reserve-link"
-            className="button"
-            onClick={handleReserveClick}
-          />
-        </div>
-        <div id="consult-button">
-          <input
-            type="button"
-            value="상담"
-            id="consult-link"
-            className="button"
-            onClick={handleConsultClick}
-          />
-        </div>
-        <div id="comfort-button">
-          <input type="button" value="위로" id="comfort-link" className="button" />
-        </div>
-      </div>
-
+      <div style={{marginBottom:'80px'}}> <ScrollToTop /></div>
+     
+      <ReserveBtn handleReserveClick={handleReserveClick} handleConsultClick={handleConsultClick}/> 
+    
       <div id="additional-info-container">
         <table id="info-table">
           <tbody>
-          <tr>
-              {['공연정보', '판매정보', '캐스팅', '후기/기대평', 'Q&A'].map((label, index) => (
-                <td
-                  key={index}
-                  onClick={() => handleClick(index)}
-                  style={{
-                    backgroundColor: visible[index] ? '#8E43E7' : 'transparent',
-                    color: visible[index] ? 'white' : 'black',
-                    borderBottom: '1px solid #ccc', 
-                  }}
-                >
-                  {label}
-                </td>
-              ))}
-            </tr>
+          <tr style={{ display: 'flex', justifyContent: 'center' }}>
+  {['공연정보', '판매정보', '캐스팅', '후기/기대평', 'Q&A'].map((label, index) => (
+    <td
+      key={index}
+      onClick={() => handleClick(index)}
+      style={{
+        flex: 1, // 동일한 비율로 분배
+        textAlign: 'center', // 텍스트 중앙 정렬
+        backgroundColor: visible[index] ? '#8E43E7' : 'transparent',
+        color: visible[index] ? 'white' : 'black',
+        borderBottom: '1px solid #ccc',
+        padding: '10px 0', // 위아래 여백
+        cursor: 'pointer', // 클릭 가능한 스타일
+      }}
+    >
+      {label}
+    </td>
+  ))}
+</tr>
           
             <tr>
               <td colSpan="5">
@@ -170,7 +162,8 @@ const PlayDetail = () => {
             style={{
               backgroundColor: isReviewVisible ? '#8E43E7' : 'transparent',
               color: isReviewVisible ? 'white' : 'black',
-              width:'50px'
+              width:'60px',
+              fontSize: '10px'
             }}
           >
             후기평
@@ -181,15 +174,16 @@ const PlayDetail = () => {
             style={{
               backgroundColor: isExpectationVisible ? '#8E43E7' : 'transparent',
               color: isExpectationVisible ? 'white' : 'black',
-               width:'50px'
+               width:'60px',
+               fontSize: '10px'
             }}
           >
             기대평
           </td>
           <td ></td>
         
-                        <td id="latest-order" style={{ width:'50px'}}>최신순</td>
-                        <td id="rating-order" style={{ width:'50px'}}>별점순</td>
+                        <td id="latest-order" style={{ width:'60px',fontSize: '10px'}}>최신순</td>
+                        <td id="rating-order" style={{ width:'60px',fontSize: '10px'}}>별점순</td>
                       </tr>
                     </thead>
 
@@ -367,18 +361,27 @@ const PlayDetail = () => {
             <span className="close" onClick={closeModal}>&times;</span>
             {/* 예매 콘텐츠 */}
             <h2>날짜 선택</h2>
+            <div style={{marginTop:'50px'}} id="DatePicker">
             <DatePicker
               selected={selectedDate}
               onChange={date => {setSelectedDate(date);  console.log('선택한 날짜:', date)}}
               inline
               locale={ko}  // 한국어 로케일 적용
             />
-            <h4 style={{textAlign:'left',marginLeft:'30px'}}>남은 좌석 : </h4>
+            </div>
+            <div>
+
+            <h4 style={{textAlign:'left',marginLeft:'20px',fontSize:'14px'}}>남은 좌석 : </h4>
+            </div>
+            
             <div>
               <input type='button'value='시간대' id="reserve-button-time-right"/>
               <input type='button'value='시간대'id="reserve-button-time-left" />
             </div>
-            <input type='button'value='예매하기'id="reserve-button-time" />
+            <div>
+              <input type='button'value='예매하기'id="reserve-button-time" />
+              </div>
+            
           </div>
         </div>
       )}
