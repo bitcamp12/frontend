@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import axios from 'axios'; // Make sure axios is installed in your project
+import { useNavigate } from 'react-router-dom';
 import '../styles/Sign_up_Form.css';
-import interparkLogo from '../assets/images/purpleticket.png'; 
+import interparkLogo from '../assets/images/purpleticket.png';
 
 const Sign_up_Form = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     id: '',
     password: '',
@@ -69,19 +73,23 @@ const Sign_up_Form = () => {
     return formValid;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (validateForm()) {
-      console.log('폼이 제출되었습니다:', formData);
-      setFormData({
-        id: '',
-        password: '',
-        confirmPassword: '',
-        name: '',
-        email: '',
-        phone: '',
-      });
+      try {
+        const result = await axios.post('http://localhost:8080/api/member/signup', formData);
+        alert(result.data);
+        sessionStorage.setItem('token', result.data.token);
+        sessionStorage.setItem('email', result.data.email);
+        sessionStorage.setItem('role', result.data.role);
+        sessionStorage.setItem('storeid', result.data.storeId);
+        console.log('로그인 성공, 이메일 주소:', result.data.email);
+       
+        navigate('/');
+      } catch (error) {
+        console.error('로그인 실패:', error);
+      }
     } else {
       console.log('폼에 오류가 있습니다.');
     }
