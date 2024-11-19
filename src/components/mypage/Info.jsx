@@ -2,36 +2,38 @@ import React, { useState } from "react";
 
 import Icon from "./Icon";
 import styles from "../../assets/css/mypage/Info.module.css";
+import MainNa from "../MainNa";
+import Footer from "../Footer";
 
 const Info = () => {
     const [pwd, setPwd] = useState("");
     const [selectedIcon, setSelectedIcon] = useState("");
 
-    const funcSelectedIonc = (iconName) => {
+    const funcSelectedIcon = (iconName) => {
         setSelectedIcon(iconName);
     };
 
     return (
         <div>
-            <div>header</div>
+            <div><MainNa/></div>
             <section>
                 <nav className={styles.member_info_nav}>
                     <ul>
-                        <li onClick={() => funcSelectedIonc("memberInfo")}>
-                            <Icon name="memberInfo" size={10} color="red" />{" "}
-                            회원정보수정
+                        <li onClick={() => funcSelectedIcon("memberInfo")}>
+                            <Icon name="memberInfo" size={10} color="red" />
+                            <span>회원정보수정</span>
                         </li>
-                        <li onClick={() => funcSelectedIonc("memberPwd")}>
+                        <li onClick={() => funcSelectedIcon("memberPwd")}>
                             <Icon name="memberPwd" size={10} color="red" />
-                            비밀번호변경
+                            <span>비밀번호변경</span>
                         </li>
-                        <li onClick={() => funcSelectedIonc("deliveryAddr")}>
+                        <li onClick={() => funcSelectedIcon("deliveryAddr")}>
                             <Icon name="deliveryAddr" size={10} color="red" />
-                            배송지관리
+                            <span>배송지관리</span>
                         </li>
                         <li
                             onClick={() =>
-                                funcSelectedIonc("reservationDetail")
+                                funcSelectedIcon("reservationDetail")
                             }
                         >
                             <Icon
@@ -39,27 +41,27 @@ const Info = () => {
                                 size={10}
                                 color="red"
                             />
-                            예매내역
+                            <span>예매내역</span>
                         </li>
-                        <li onClick={() => funcSelectedIonc("bookmark")}>
+                        <li onClick={() => funcSelectedIcon("bookmark")}>
                             <Icon name="bookmark" size={10} color="red" />
-                            즐겨찾기
+                            <span>즐겨찾기</span>
                         </li>
-                        <li onClick={() => funcSelectedIonc("")}>
+                        <li onClick={() => funcSelectedIcon("")}>
                             <Icon name="" size={10} color="red" />
-                            계정연결관리
+                            <span>계정관리</span>
                         </li>
-                        <li onClick={() => funcSelectedIonc("withdrawal")}>
+                        <li onClick={() => funcSelectedIcon("withdrawal")}>
                             <Icon name="withdrawal" size={10} color="red" />
-                            회원탈퇴
+                            <span>회원탈퇴</span>
                         </li>
                     </ul>
                 </nav>
 
                 <div className={styles.member_info_modify}>
                     <h3>비밀번호 인증</h3>
-                    <div>
-                        <Icon name="shieldLock" size={20} color="#676764" />
+                    <div className={styles.notice}>
+                        <Icon name="shieldLock" size={50} color="#676764" />
                         <p>
                             정보를 안전하게 보호하기 위해
                             <br />
@@ -99,14 +101,15 @@ const Info = () => {
                                 onChange={(e) => setPwd(e.target.value)}
                             />
                         </div>
-                        <div>
-                            <button className={styles.cancle}>취소</button>
-                            <button className={styles.confirm}>확인</button>
+                        <div className={styles.btnWrap}>
+                            <button className={styles.whiteBtn}>취소</button>
+                            <button className={styles.violetBtn}>확인</button>
                         </div>
+
                     </form>
                 </div>
             </section>
-            <div>footer</div>
+            <div><Footer/></div>
         </div>
     );
 };
