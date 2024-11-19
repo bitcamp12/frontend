@@ -8,7 +8,7 @@ import Sign_up from './components/Sign_up';
 import Sign_up_Form from './components/Sign_up_Form';
 import PlayDetail from './components/PlayDetail';
 import { BrowserRouter as Router, Routes, Route, BrowserRouter  } from 'react-router-dom';
-import PlayDetail from './components/PlayDetail';
+
 
 
 const App = () => {
@@ -20,7 +20,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signUp" element={<Sign_up />} />
         <Route path="/signUpForm" element={<Sign_up_Form />} />
-        <Route path="/playDetail" element={<PlayDetail />} />
+        <Route path="/playDetail" element={<PlayDetail/>} />
       </Routes>
       </BrowserRouter>
 

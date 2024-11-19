@@ -9,6 +9,8 @@ import "../assets/css/PlayDetail.css";
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from 'date-fns/locale'; 
+import ReserveBtn from './buttons/ReserveBtn';
+import ScrollToTop from './buttons/ScrollToTop';
 const PlayDetail = () => {
   const [visible, setVisible] = useState([true, false, false, false, false]);
   const [mapVisible, setMapVisible] = useState(false); // 모달 표시 상태 관리
@@ -49,6 +51,14 @@ const PlayDetail = () => {
     setMapVisible(true); // 모달 보이기
   };
 
+ 
+
+  // 모달 닫기
+  const closeModal = () => {
+    setMapVisible(false); // 지도 모달 숨기기
+    setReserveVisible(false); // 예매 모달 숨기기
+    setConsultVisible(false); // 상담 모달 숨기기
+  };
   // 예매 클릭 시 예매 모달 띄우기
   const handleReserveClick = () => {
     setReserveVisible(true); // 예매 모달 보이기
@@ -59,13 +69,7 @@ const PlayDetail = () => {
     setConsultVisible(true); // 상담 모달 보이기
   };
 
-  // 모달 닫기
-  const closeModal = () => {
-    setMapVisible(false); // 지도 모달 숨기기
-    setReserveVisible(false); // 예매 모달 숨기기
-    setConsultVisible(false); // 상담 모달 숨기기
-  };
-
+   
   return (
     <div id="play-detail-container">
       <div id='plat-info-table'>
@@ -116,30 +120,10 @@ const PlayDetail = () => {
         </tbody>
       </table>
       </div>
-      <div id="fixed-buttons-container">
-        <div id="reserve-button">
-          <input
-            type="button"
-            value="예매"
-            id="reserve-link"
-            className="button"
-            onClick={handleReserveClick}
-          />
-        </div>
-        <div id="consult-button">
-          <input
-            type="button"
-            value="상담"
-            id="consult-link"
-            className="button"
-            onClick={handleConsultClick}
-          />
-        </div>
-        <div id="comfort-button">
-          <input type="button" value="위로" id="comfort-link" className="button" />
-        </div>
-      </div>
-
+      <div style={{marginBottom:'80px'}}> <ScrollToTop /></div>
+     
+      <ReserveBtn handleReserveClick={handleReserveClick} handleConsultClick={handleConsultClick}/> 
+    
       <div id="additional-info-container">
         <table id="info-table">
           <tbody>

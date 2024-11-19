@@ -5,6 +5,8 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const ScrollToTop = () => {
     const [isVisible, setIsVisible] = useState(false);
+  
+    
 
     useEffect(() => {
         const toggleVisibility = () => {
@@ -28,8 +30,12 @@ const ScrollToTop = () => {
 
     return (
         isVisible && (
-            <button class="bi bi-arrow-up-circle-fill ScrollToTopBtn" onClick={scrollToTop} />
+            <button class="bi bi-arrow-up-circle-fill ScrollToTopBtn" onClick={scrollToTop} 
+            />
         )
+        
+            
+        
     );
 };
 
