@@ -120,10 +120,13 @@ const PlayDetail = () => {
         </tbody>
       </table>
       </div>
-      <div style={{marginBottom:'80px'}}> <ScrollToTop /></div>
-     
+
+      <div style={{zIndex:'10000'}}> 
+        <ScrollToTop />
       <ReserveBtn handleReserveClick={handleReserveClick} handleConsultClick={handleConsultClick}/> 
-    
+    </div>
+     
+      
       <div id="additional-info-container">
         <table id="info-table">
           <tbody>

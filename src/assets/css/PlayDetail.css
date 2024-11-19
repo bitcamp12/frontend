@@ -95,14 +95,23 @@
     text-align: center; /* 텍스트 중앙 정렬 */
     cursor: pointer; /* 마우스 커서 포인터로 변경 */
     transition: background-color 0.3s ease; /* 호버 시 배경색 변화 효과 */
-    width: 42px;
-    height: 42px;
+    width: 42px;  /* 버튼 너비 설정 */
+    height: 42px; /* 버튼 높이 설정 */
+    z-index: 1000; /* 버튼이 다른 요소 위에 보이도록 설정 */
+}
+
+.fixed-button {
+    position: fixed; /* 화면에 고정 */
+    bottom: 10px; /* 화면 하단에 위치 */
+    right: 10px; /* 화면 오른쪽에 위치 */
+    z-index: 9999; /* 다른 요소들 위에 표시 */
 }
 
 /* Buttons.css */
 .ScrollToTopBtn {
     position: fixed;
     bottom: 125px;    /* 화면 하단 80px */
+    z-index: 1000;
 }
 
 
