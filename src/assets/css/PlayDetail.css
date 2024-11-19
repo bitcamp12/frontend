@@ -76,7 +76,7 @@
 #fixed-buttons-container {
     position: fixed; /* 버튼을 화면 고정 위치에 배치 */
     bottom: 0px; /* 화면 하단에 배치 */
-    right: 20px; /* 화면 오른쪽에 배치 */
+    right: 15px; /* 화면 오른쪽에 배치 */
 }
 
 #reserve-button, #consult-button, #comfort-button {
@@ -88,14 +88,23 @@
     background-color: #8E43E7; /* 버튼 배경색 */
     color: white; /* 버튼 글자 색상 */
     padding: 15px 15px; /* 버튼 크기 설정 */
-    border-radius: 50px; /* 버튼 둥근 모서리 */
+    border-radius: 100px; /* 버튼 둥근 모서리 */
     border: none; /* 버튼 테두리 제거 */
     font-size: 14px; /* 버튼 글자 크기 설정 */
     font-weight: bold; /* 버튼 글자 두께 설정 */
     text-align: center; /* 텍스트 중앙 정렬 */
     cursor: pointer; /* 마우스 커서 포인터로 변경 */
     transition: background-color 0.3s ease; /* 호버 시 배경색 변화 효과 */
+    width: 42px;
+    height: 42px;
 }
+
+/* Buttons.css */
+.ScrollToTopBtn {
+    position: fixed;
+    bottom: 125px;    /* 화면 하단 80px */
+}
+
 
 .button:hover {
     background-color: #6a2db4; /* 호버 시 버튼 배경색 */
