@@ -13,7 +13,7 @@ import {
     Route,
     BrowserRouter,
 } from "react-router-dom";
-import Info from "./components/mypage/info";
+import Infomation from "./components/mypage/Infomation";
 
 const App = () => {
     return (
@@ -25,7 +25,7 @@ const App = () => {
                     <Route path="/signUp" element={<Sign_up />} />
                     <Route path="/signUpForm" element={<Sign_up_Form />} />
                     <Route path="/playDetail" element={<PlayDetail />} />
-                    <Route path="/member" element={<Info />} />
+                    <Route path="/member" element={<Infomation />} />
                 </Routes>
             </BrowserRouter>
         </>
