@@ -1,48 +1,60 @@
-.signup-container {
+.sign-up-form-wrapper .signup-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-color: #f4f7fa;
+    background-color: #ffffff;
     padding: 20px;
   }
-  
-  h1 {
-    font-size: 36px;
-    color: #333;
-    margin-bottom: 20px;
+
+  .sign-up-form-wrapper label {
+    font-size: 15px;
+    color: black;
+    margin-bottom: 15px;
+    margin-right: 10px;
+    font-weight: bold;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    margin-top: 13px;
   }
   
+  .errorText {
+    color: red;
+    font-size: 14px;
+    white-space: nowrap;
+    margin-bottom: 10px;
+  }
+
   .signup-form {
+    margin-top: 40px;
     width: 100%;
     max-width: 500px;
   }
   
   .form-group {
     display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 5px;
+    height: 50px;
     position: relative;
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
   }
   
-  label {
+  .sign-up-form-wrapper .input-field {
     font-size: 16px;
-    margin-bottom: 8px;
-    color: #333;
-  }
-  
-  .input-field {
-    font-size: 16px;
-    padding: 12px 15px;
+    padding: 8px 0;
     margin: 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: none !important;
+    background-color: transparent;
     width: 100%;
-    background-color: #fff;
     box-sizing: border-box;
     transition: all 0.3s ease;
-  }
+}
   
   .input-field:focus {
     border-color: #4e8cdb;
@@ -64,32 +76,27 @@
     border-bottom: 2px solid #ccc;
   }
   
-  .input-container input:focus {
+  .signup-container .input-container input:focus {
     border-color: #4e8cdb;
   }
   
-  .input-container button {
+  #emailButton, #phoneButton {
     margin-left: 10px;
     padding: 8px 20px;
     background-color: #8E43E7;
+    white-space: nowrap;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px;
   }
   
-  .input-container button:hover {
+  #emailButton:hover, #phoneButton:hover {
     background-color: #6A2DB4;
   }
   
-  .error {
-    color: red;
-    font-size: 14px;
-    margin-top: 5px;
-  }
-  
-  .submit-btn {
+  .sign-up-form-wrapper .submit-btn {
     width: 100%;
     padding: 12px;
     background-color: #8E43E7;
@@ -98,10 +105,13 @@
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
-    margin-top: 20px;
+  }
+
+  .submitButton {
+    margin-top: 30px;
   }
   
-  .submit-btn:hover {
+  .sign-up-form-wrapper .submit-btn:hover {
     background-color: #6A2DB4;
   }
   
