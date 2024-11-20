@@ -146,9 +146,10 @@ const Sign_up_Form = () => {
 
   const sendNumber = async () => {
     try {
+      setCheckNumber('');
       await axios.get(`http://localhost:8080/api/members/sendNumber?email=${formData.email}`);
       alert('이메일 발송에 성공했습니다');
-      setTimer(180); // 3분(180초) 설정
+      setTimer(90); // 3분(180초) 설정
       setIsTimerActive(true);
     } catch (error) {
       console.error('이메일 발송 실패:', error);
@@ -194,6 +195,20 @@ const Sign_up_Form = () => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+
+  const sendPhoneNumber = async () => {
+    try {
+      setCheckNumber('');
+      await axios.post("http://localhost:8080/api/members/sendPhoneNumber",{phoneNum:formData.phone});
+      alert('문자 발송에 성공했습니다');
+      setTimer(90); // 3분(180초) 설정
+      setIsTimerActive(true);
+    } catch (error) {
+      console.error('이메일 발송 실패:', error);
+      alert('이메일 발송 중 오류가 발생했습니다.');
+    }
   };
 
   return (
@@ -290,7 +305,7 @@ const Sign_up_Form = () => {
             type="text"
             value={verificationNumber}
             onChange={handleVerificationChange}
-            placeholder="인증번호를 입력하세요"
+            placeholder="이메일인증번호를 입력하세요"
             className="input-field"
             onBlur={checkVerifyNumber}
           />
@@ -311,7 +326,7 @@ const Sign_up_Form = () => {
             placeholder="예: 010-1234-5678"
             className="input-field"
           />
-          <button type="button" id="phoneButton">인증번호 전송</button>
+          <button type="button" id="phoneButton"onClick={sendPhoneNumber}>인증번호 전송</button>
         </div>
         <div className="errorText">
         {errors.phone && <span className="error">{errors.phone}</span>}
