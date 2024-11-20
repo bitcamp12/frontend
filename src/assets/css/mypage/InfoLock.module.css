@@ -3,7 +3,7 @@ body {
 }
 
 section {
-    background-color: aqua;
+    background-color: white;
     width: 1000px;
     display: flex;
     justify-content: center;
@@ -32,20 +32,20 @@ nav.member_info_nav li span {
 }
 
 /* container */
-div.member_info_modify {
+div.member_info_lock {
     width: 100%;
-    border: 1px solid #ddd;
+    /* border: 1px solid #ddd; */
     padding: 20px;
     border-radius: 8px;
     background-color: #f9f9f9;
 }
-div.member_info_modify h3 {
+div.member_info_lock h3 {
     font-size: 25px;
     padding-bottom: 10px;
     margin-bottom: 20px;
     border-bottom: 3px solid violet;
 }
-div.member_info_modify .notice {
+div.member_info_lock .notice {
     margin: 40px 0px;
     display: flex;
     flex-direction: column;
@@ -68,15 +68,15 @@ div.member_info_modify .notice {
     color: #7c7c7c;
 }
 
-div.member_info_modify label {
+div.member_info_lock label {
     width: 150px;
     padding: 10px;
     margin-bottom: 20px;
     border-radius: 4px;
     font-size: 18px;
 }
-div.member_info_modify input[type="text"],
-div.member_info_modify input[type="password"] {
+div.member_info_lock input[type="text"],
+div.member_info_lock input[type="password"] {
     width: 500px;
     padding: 10px;
     margin-bottom: 20px;

@@ -1,19 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 
-import styles from "../../assets/css/mypage/InfoLock.module.css";
-
-import Icon from "./Icon";
-
-const InfoLock = () => {
-    const [pwd, setPwd] = useState("");
-    const [selectedIcon, setSelectedIcon] = useState("");
-
-    const funcSelectedIcon = (iconName) => {
-        setSelectedIcon(iconName);
-    };
-
+const InfoModify = () => {
     return (
-        <div className={styles.member_info_lock}>
+        <div className={styles.member_info_modify}>
             <h3>비밀번호 인증</h3>
             <div className={styles.notice}>
                 <Icon name="shieldLock" size={50} color="#676764" />
@@ -58,4 +47,4 @@ const InfoLock = () => {
     );
 };
 
-export default InfoLock;
+export default InfoModify;
