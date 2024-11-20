@@ -1,7 +1,7 @@
 body {
     background: #ffffff;
     color: #000;
-    font-family: Arial, sans-serif;
+    font-family: Pretendard,-apple-system,BlinkMacSystemFont,system-ui,Roboto,Helvetica Neue,Segoe UI,Apple SD Gothic Neo,Malgun Gothic,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,sans-serif;
     font-size: 14px;
     margin: 0;
     padding: 0;
@@ -319,7 +319,7 @@ body {
     padding-top: 20px;
     width: 100%;
     max-width: 1280px;
-    margin-bottom: 100px;
+    margin-bottom: 60px;
 }
 
 .infinite-scroll-card {

@@ -96,6 +96,7 @@ const Sign_up_Form = () => {
   };
 
   return (
+    <div className="sign-up-form-wrapper">
     <div className="signup-container">
       <img src={interparkLogo} alt="Interpark Logo" width="200px" className="logo" />
       <h1>회원가입</h1>
@@ -193,6 +194,7 @@ const Sign_up_Form = () => {
 
         <button type="submit" className="submit-btn">회원가입</button>
       </form>
+    </div>
     </div>
   );
 };

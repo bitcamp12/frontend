@@ -1,27 +1,34 @@
-.signup-container {
+.sign-up-wrapper .signup-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-color: #f4f7fa;
+    background-color: #ffffff;
     padding: 20px;
+    height: 500px;
 }
 
-h1 {
+.sign-up-wrapper h1 {
     font-size: 36px;
     color: #333;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
-#signup-button {
+.sign-up-logo {
+    margin-bottom: 100px;
+}
+
+.sign-up-wrapper #signup-button {
     padding: 10px 200px;
     background-color: #8E43E7;
     color: white;
     border: none;
     border-radius: 8px;
-    font-size: 24px;
+    font-size: 20px;
+    font-weight: bold;
     cursor: pointer;
+    margin-top: 20px;
     margin-bottom: 20px;
     transition: background-color 0.3s ease;
     width: 100%;
@@ -33,9 +40,13 @@ h1 {
 }
 
 .social-login img {
-    width: 300px;
+    width: 230px;
     margin: 10px;
     display: inline-block;
+}
+
+.social-login-p {
+    opacity: 50%;
 }
 
 @media (max-width: 768px) {
