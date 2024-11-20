@@ -26,6 +26,12 @@
     gap: 20px;
 }
 
+#left-section h1 {
+    white-space: nowrap;
+    overflow: hidden;
+    margin: 0;
+}
+
 /* Logo image */
 #logo-img {
     width: 80px;
@@ -40,7 +46,7 @@
     gap: 10px;
     width: 500px;
     border: 1px solid #BE97EC;
-    border-radius: 20px;
+    border-radius: 30px;
     overflow: hidden;
     margin-left: 10px;
 }
@@ -48,7 +54,7 @@
 /* Search input */
 #search-input {
     flex: 1;
-    padding: 8px 12px;
+    padding: 8px 20px;
     border: none;
     font-size: 14px;
     outline: none;
