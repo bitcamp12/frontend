@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import paly from '../assets/images/예시포스터.jpg';
 import place from '../assets/images/장소.png';
 import price from '../assets/images/가격.png';
@@ -20,6 +20,7 @@ const PlayDetail = () => {
   const [consultVisible, setConsultVisible] = useState(false); // 상담 모달 표시 상태 관리
   const [isReviewVisible, setIsReviewVisible] = useState(true); // 기본적으로 후기평 폼을 보이게 설정
   const [isExpectationVisible, setIsExpectationVisible] = useState(false); // 기본적으로 기대평 폼은 숨김
+  const {kakao}=window;
  
   const [selectedDate, setSelectedDate] = useState(null);
  
@@ -72,6 +73,54 @@ const PlayDetail = () => {
   };
 
    
+
+  useEffect(() => {
+    if (mapVisible) {
+        // 모달이 열릴 때마다 지도 초기화
+        const mapContainer = document.getElementById("map"); // 지도 표시 영역
+        if (mapContainer) {
+            // 카카오맵 초기화
+            const mapOption = {
+                center: new window.kakao.maps.LatLng(37.5287912, 126.9686735), // 서울의 중심 좌표
+                level: 3, // 확대 레벨
+            };
+            const map = new window.kakao.maps.Map(mapContainer, mapOption); // 지도 생성
+
+            // 마커를 표시할 위치와 title, address 객체
+            const position = {
+                title: '임시제목',
+                latlng: new window.kakao.maps.LatLng(37.5287912, 126.9686735), // 임시 좌표
+                address: '임시 주소',
+            };
+
+            // 마커와 인포윈도우
+            const infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
+            const imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+            const imageSize = new window.kakao.maps.Size(24, 35); 
+            const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize); 
+            const marker = new window.kakao.maps.Marker({
+                map: map,
+                position: position.latlng,
+                title: position.title,
+                image: markerImage,
+            });
+
+            // 마커 클릭 이벤트
+            window.kakao.maps.event.addListener(marker, 'click', function() {
+                const content = `
+                    <div id="info" style="padding:5px;">
+                        <p style="font-size: 15px; font-weight: bold;">${position.title}</p>
+                        주소: ${position.address}<br>
+                    </div>
+                `;
+                infowindow.setContent(content);
+                infowindow.open(map, marker);
+            });
+        }
+    }
+}, [mapVisible]); // mapVisible이 변경될 때마다 실행
+  
+
   return (
     
     <div id="play-detail-container">
@@ -350,16 +399,25 @@ const PlayDetail = () => {
 
       {/* 지도 모달 팝업 */}
       {mapVisible && (
-        <div id="map-modal" className="modal">
-          <div id="map-modal-content" className="modal-content">
-            <span className="close" onClick={closeModal}>&times;</span>
-            {/* 지도 콘텐츠 */}
-            <h2>지도</h2>
-            <h4>주소</h4>
-            <div id='맵'></div>
-          </div>
-        </div>
-      )}
+  <div id="map-modal" className="modal">
+    <div id="map-modal-content" className="modal-content">
+      <span className="close" onClick={closeModal}>&times;</span>
+      {/* 지도 콘텐츠 */}
+      <h2>지도</h2>
+      <h4>주소</h4>
+      <div id='map-div'
+        style={{
+          display: 'flex',
+          justifyContent: 'center', // 가로 중앙 정렬
+          alignItems: 'center', // 세로 중앙 정렬
+          height: '500px', // 부모 div의 높이를 지정
+        }}
+      >
+        <div id="map" style={{ width: '500px', height: '500px' }}></div>
+      </div>
+    </div>
+  </div>
+)}
 
       {/* 예매 모달 팝업 */}
       {reserveVisible && (
