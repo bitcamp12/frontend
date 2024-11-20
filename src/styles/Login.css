@@ -3,7 +3,7 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #f4f7fa;
+    background-color: white;
     padding: 0 15px;
 }
 
@@ -11,7 +11,6 @@
     background-color: white;
     padding: 40px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
     text-align: center;
@@ -24,24 +23,65 @@
 }
 
 .input-container {
+    display: flex;
+    flex-direction: column;
     margin-bottom: 20px;
 }
 
-.login-input {
+.input-wrapper {
+    position: relative;
     width: 100%;
-    padding: 12px;
+}
+
+.input-icon {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #bbb;
+}
+
+.login-input {
+    padding: 12px 12px 12px 40px;
+    width: 100%;
     border: 1px solid #ddd;
     border-radius: 8px;
     font-size: 16px;
-    color: #333;
+    color: #000000;
     box-sizing: border-box;
     outline: none;
 }
 
-.login-input:focus {
-    border-color: #4e8cdb;
-    box-shadow: 0 0 5px rgba(78, 140, 219, 0.5);
+#username {
+    border-bottom: none; /* Remove bottom border from the first input */
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
 }
+
+#password {
+    border-top: none;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.login-input:focus {
+    border-color: black;
+    z-index: 1;
+}
+
+.input-wrapper:focus-within .login-input {
+    border-color: black;
+}
+
+.input-wrapper:focus-within #username {
+    border-bottom: 1px solid black;
+}
+
+.input-wrapper:focus-within #password {
+    border-top: 1px solid black;
+}
+
 
 .login-input::placeholder {
     color: #bbb;
@@ -64,6 +104,8 @@
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-bottom: 20px;
+    font-weight: bold;
 }
 
 .submit-button:hover {
@@ -71,33 +113,42 @@
 }
 
 .keep-login-container {
-    margin-top: 10px;
     display: flex; /* flex로 설정하여 수평 배치 */
     align-items: center; /* 세로 중앙 정렬 */
+    margin-bottom: 10px;
 }
 
-.keep-login-container input {
-    margin-right: 8px; /* 체크박스와 텍스트 간 간격 */
+.keep-login-icon {
+    font-size: 22px;
+    margin-right: 10px;
+    transform: translateY(-3px);
+    color: rgb(199, 199, 199) !important;
 }
 
+.keep-login-icon.active {
+    color: #8E43E7 !important;
+}
 
-
+.keep-login-container label {
+    font-size: 14px;
+}
 
 .signup-link {
-    margin-top: 20px;
+    margin-top: 5px;
     font-size: 14px;
     display: flex;
-    justify-content: space-between;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
 }
 
 .link-item {
-    color: #4e8cdb;
+    color: black;
     text-decoration: none;
-    font-weight: bold;
 }
 
-.link-item:hover {
-    text-decoration: underline;
+.link-item span {
+    color: #8E43E7;
 }
 
 .socialLogin-link {
@@ -108,8 +159,9 @@
 }
 
 .social-logo {
-    width: 50px;
+    width: 48px;
     margin-bottom: 20px;
+    border-radius: 50px;
 }
 
 /* Mobile responsiveness */

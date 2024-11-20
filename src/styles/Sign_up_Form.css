@@ -1,18 +1,20 @@
-.signup-container {
+.sign-up-form-wrapper .signup-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-color: #f4f7fa;
+    background-color: #ffffff;
     padding: 20px;
   }
   
-  h1 {
-    font-size: 36px;
+   h1 {
+    font-size: 34px;
     color: #333;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    font-weight: bold;
   }
+
   
   .signup-form {
     width: 100%;
@@ -64,7 +66,7 @@
     border-bottom: 2px solid #ccc;
   }
   
-  .input-container input:focus {
+  .signup-container .input-container input:focus {
     border-color: #4e8cdb;
   }
   
