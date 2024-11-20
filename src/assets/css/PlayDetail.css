@@ -262,7 +262,7 @@
 }
 
 /* 리뷰 입력 */
-.review-input, .input-field {
+.review-input, #inquiry-field {
     width: 100%;
     height: 150px;
     padding: 10px;
@@ -347,7 +347,7 @@
 .react-datepicker {
     font-size: 20px !important; /* 기본 폰트 크기 */
     width: 350px !important; /* 달력의 전체 너비 */
-    height: 400px !important; /* 달력의 전체 높이 */
+    height: 350px !important; /* 달력의 전체 높이 */
   }
   
   /* 날짜를 감싸는 div의 크기 */
@@ -635,6 +635,109 @@
     height: 60px;
   }
 
+  .react-datepicker {
+    font-size: 20px !important; /* 기본 폰트 크기 */
+    width: 250px !important; /* 달력의 전체 너비 */
+    height: 250px !important; /* 달력의 전체 높이 */
+  }
+
 }
 
 
+@media (max-height: 650px) {
+   /* 날짜 선택기의 전체 크기 */
+.react-datepicker {
+    font-size: 10px !important; /* 기본 폰트 크기 0.5배 축소 */
+    width: 250px !important; /* 달력의 전체 너비 0.5배 축소 */
+    height: 200px !important; /* 달력의 전체 높이 0.5배 축소 */
+}
+
+
+
+/* 달력의 날짜 셀 크기 */
+.react-datepicker__day {
+    width: 30px !important; /* 날짜 셀의 너비 0.5배 축소 */
+    height: 25px !important; /* 날짜 셀의 높이 0.5배 축소 */
+    line-height: 30px !important; /* 날짜 텍스트의 높이 0.5배 축소 */
+}
+
+/* 달력의 날짜 셀 폰트 크기 */
+.react-datepicker__day {
+    font-size: 15px !important; /* 날짜 셀 텍스트 크기 0.5배 축소 */
+}
+
+/* 날짜 선택기 헤더 (월, 연도) 크기 */
+.react-datepicker__header {
+    height: 40px !important; /* 헤더 높이 0.5배 축소 */
+    font-size: 11px !important; /* 헤더 폰트 크기 0.5배 축소 */
+}
+
+/* 이전, 다음 버튼 크기 */
+.react-datepicker__navigation {
+    width: 15px !important; /* 버튼 너비 0.5배 축소 */
+    height: 15px !important; /* 버튼 높이 0.5배 축소 */
+}
+
+/* 달력의 월/연도 셀 크기 */
+.react-datepicker__current-month {
+    font-size: 15px !important; /* 월/연도 글자 크기 0.5배 축소 */
+}
+
+/* 오늘 날짜 버튼 크기 */
+.react-datepicker__today-button {
+    font-size: 12px !important; /* 버튼 폰트 크기 0.5배 축소 */
+}
+
+#reserve-button-time-right{
+    padding: 10px 20px;
+    font-size: 16px;
+    width: 120px;
+    border-radius: 10px 0 0 10px;
+    background-color: #8E43E7;
+    color: white;
+    cursor: pointer;
+    border: none;
+    height: 60px;
+    width: 200px;
+  }
+  #reserve-button-time-left{
+    padding: 10px 20px;
+    font-size: 16px;
+    width: 120px;
+    border-radius: 0 10px 10px 0;
+    background-color: #8E43E7;
+    color: white;
+    cursor: pointer;
+    border: none;
+    height: 60px;
+    width: 200px;
+  }
+  #reserve-button-time{
+    margin-top: 40px;
+    padding: 10px 20px;
+    font-size: 16px;
+    width: 240px;
+    border-radius: 10px;
+    background-color: #8E43E7;
+    color: white;
+    cursor: pointer;
+    border: none;
+    height: 60px;
+    width: 400px;
+  }
+
+  .react-datepicker {
+    font-size: 20px !important; /* 기본 폰트 크기 */
+    width: 250px !important; /* 달력의 전체 너비 */
+    height: 250px !important; /* 달력의 전체 높이 */
+  }
+
+    }
+    
+
+    @media (max-height: 650px) {
+        #map{
+            height: 400px !important;
+        }
+    }
+   
