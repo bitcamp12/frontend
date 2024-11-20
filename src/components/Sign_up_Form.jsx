@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Sign_up_Form.css';
 import interparkLogo from '../assets/images/purpleticket.png';
+import { Link } from 'react-router-dom';
 
 const Sign_up_Form = () => {
   const navigate = useNavigate();
@@ -198,8 +199,7 @@ const Sign_up_Form = () => {
   return (
     <div className="sign-up-form-wrapper">
     <div className="signup-container">
-      <img src={interparkLogo} alt="Interpark Logo" width="200px" className="logo" />
-      <h1>회원가입</h1>
+      <Link to="/"><img src={interparkLogo} alt="Interpark Logo" width="200px" className="logo" /></Link>
       
       <form onSubmit={handleSubmit} className="signup-form">
         <div className="form-group" id="id-group">
@@ -214,7 +214,9 @@ const Sign_up_Form = () => {
             placeholder="아이디를 입력하세요"
             className="input-field"
           />
-          {check.id && <span className="checkId">{check.id}</span>}
+        </div>
+        <div className="errorText">
+          {check.id && <span className="checkId">{check.id} </span>}
           {errors.id && <span className="error">{errors.id}</span>}
         </div>
 
@@ -229,6 +231,8 @@ const Sign_up_Form = () => {
             placeholder="비밀번호를 입력하세요"
             className="input-field"
           />
+        </div>
+        <div className="errorText">
           {errors.password && <span className="error">{errors.password}</span>}
         </div>
 
@@ -243,6 +247,8 @@ const Sign_up_Form = () => {
             placeholder="비밀번호를 확인하세요"
             className="input-field"
           />
+        </div>
+        <div className="errorText">
           {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
         </div>
 
@@ -257,12 +263,13 @@ const Sign_up_Form = () => {
             placeholder="이름을 입력하세요"
             className="input-field"
           />
+        </div>
+        <div className="errorText">
           {errors.name && <span className="error">{errors.name}</span>}
         </div>
 
         <div className="form-group" id="email-group">
           <label htmlFor="email">이메일</label>
-          <div className="input-with-button">
             <input
               type="email"
               id="email"
@@ -272,9 +279,10 @@ const Sign_up_Form = () => {
               placeholder="이메일을 입력하세요"
               className="input-field"
             />
-            <button type="button" onClick={sendNumber}>인증번호 전송</button>
-          </div>
-          {errors.email && <span className="error">{errors.email}</span>}
+            <button type="button" id="emailButton" onClick={sendNumber}>인증번호 전송</button>
+        </div>
+        <div className="errorText">
+        {errors.email && <span className="error">{errors.email}</span>}
         </div>
 
         <div className="form-group" id="verification-group">
@@ -286,12 +294,14 @@ const Sign_up_Form = () => {
             className="input-field"
             onBlur={checkVerifyNumber}
           />
+        </div>
+        <div className="errorText">
           {isTimerActive && <p>남은 시간: {formatTime(timer)}</p>}
           {checkNumber && <span className="checkId">{checkNumber}</span>}
         </div>
 
         <div className="form-group" id="phone-group">
-          <label htmlFor="phone">휴대폰 번호</label>
+          <label htmlFor="phone">휴대폰</label>
           <input
             type="text"
             id="phone"
@@ -301,7 +311,10 @@ const Sign_up_Form = () => {
             placeholder="예: 010-1234-5678"
             className="input-field"
           />
-          {errors.phone && <span className="error">{errors.phone}</span>}
+          <button type="button" id="phoneButton">인증번호 전송</button>
+        </div>
+        <div className="errorText">
+        {errors.phone && <span className="error">{errors.phone}</span>}
         </div>
 
         <div className="form-group" id="verification-group">
@@ -310,10 +323,10 @@ const Sign_up_Form = () => {
             placeholder="휴대폰 인증번호를 입력하세요"
             className="input-field"
           />
-          <button type="button" id="phoneButton">인증번호 전송</button>
         </div>
-
-        <button type="submit" className="submit-button">회원가입</button>
+        <div className="submitButton">
+          <button type="submit" className="submit-button">회원가입</button>
+        </div>
       </form>
     </div>
     </div>

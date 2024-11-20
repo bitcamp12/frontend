@@ -54,13 +54,13 @@
 }
 
 #username {
-    border-bottom: none; /* Remove bottom border from the first input */
+    border-bottom: 1px solid #ddd;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 }
 
 #password {
-    border-top: none;
+    border-top: 1px solid #ddd;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
@@ -129,8 +129,13 @@
     color: #8E43E7 !important;
 }
 
-.keep-login-container label {
+label[for="keep-login"] {
     font-size: 14px;
+    margin-bottom: 15px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
 }
 
 .signup-link {
