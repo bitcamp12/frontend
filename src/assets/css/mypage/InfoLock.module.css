@@ -92,7 +92,7 @@ div.member_info_modify input[type="password"] {
     width: 100%;
     gap: 10px;
 }
-button {
+div.member_info_modify button {
     width: 330px;
     height: 55px;
     font-size: 18px;
