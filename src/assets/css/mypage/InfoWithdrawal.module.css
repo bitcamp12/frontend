@@ -1,0 +1,114 @@
+body {
+    margin: 0;
+}
+
+section {
+    background-color: white;
+    width: 1000px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    padding: 20px;
+    margin: 10px auto;
+}
+hr {
+    border: 1px solid rgba(209, 209, 209, 0.651);
+}
+/* container */
+.infoWithdrawal {
+    margin: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+  }
+.infoWithdrawal h3 {
+    font-size: 25px;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    border-bottom: 3px solid violet;
+}
+.infoWithdrawal h5 {
+    font-size: 20px;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(209, 209, 209, 0.651);
+}
+.infoWithdrawal > div {
+    width: 700px;
+    margin-top: 20px;
+}
+
+/* container  안내글 */
+ul {
+    list-style-type: square; /* 기본 리스트 점 제거 */
+    padding-left: 0; /* 들여쓰기 없애기 */
+    margin: 0; /* 기본 margin 제거 */
+}
+ul li {
+    margin-left: 20px;
+    margin-bottom: 15px; /* 각 항목 간의 간격 */
+    vertical-align: baseline;
+}
+
+ul li p {
+    font-size: 15px;
+    font-weight: bold;
+    color: violet;
+    margin: 0;
+    padding: 0;
+}
+ul li span {
+    font-size: 14px;
+    display: block;
+    margin-top: 5px;
+}
+
+/*  */
+.notice >div{
+    width: 550px;          /* 고정 너비 설정 */
+    margin: 0 auto;        /* 가로 가운데 정렬 */
+   text-align: center;
+   margin-bottom: 5px;
+}
+
+.notice input[type="checkbox"] {
+    font-size: 18px;
+    margin-right: 10px; /* 체크박스와 텍스트 사이의 간격 */
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.notice label {
+    font-size: 16px;
+}
+.notice span {
+    font-size: 16px;
+    color: red;
+}
+
+/* 버튼 */
+.btnWrap {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+}
+button {
+    width: 330px;
+    height: 55px;
+    font-size: 18px;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    margin: 20px 0px;
+}
+.whiteBtn {
+    background-color: white;
+    color: violet;
+    border: 1px solid violet;
+}
+.violetBtn {
+    background-color: violet;
+    color: white;
+}
