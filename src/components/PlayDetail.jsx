@@ -81,16 +81,7 @@ const PlayDetail = () => {
   };
 
 
-  const { playSeq } = useParams(); // URL에서 playId 추출
-  useEffect(()=>{
-    axios.get('http://localhost:8080/api/plays/getPlayOne', {
-      withCredentials: true, // 인증 정보(쿠키 등)를 함께 보내기 위한 옵션
-      params: { playSeq }, // URL 파라미터로 playSeq 전달
-  })
-      .then(res => console.log(res.data))
-      
-
-  },[])
+  
    
 
   useEffect(() => {
