@@ -9,6 +9,10 @@
     border-bottom: 1px solid rgb(0, 0, 0, 0.1) !important;
 }
 
+.logoLink {
+    text-decoration: none;
+}
+
 /* Main navigation content */
 #main-table {
     width: 100%;

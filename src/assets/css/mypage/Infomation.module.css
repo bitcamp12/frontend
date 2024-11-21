@@ -1,8 +1,8 @@
-body {
+.member_info_nav body {
     margin: 0;
 }
 
-section {
+.member_info_nav section {
     background-color: white;
     width: 1000px;
     display: flex;
@@ -92,7 +92,7 @@ div.member_info_modify input[type="password"] {
     width: 100%;
     gap: 10px;
 }
-button {
+.member_info_nav button {
     width: 330px;
     height: 55px;
     font-size: 18px;
