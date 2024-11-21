@@ -122,14 +122,17 @@ const PlayDetail = () => {
   
 
   return (
-    
+    <>
+    <MainNa/>
     <div id="play-detail-container">
-      {/* <MainNa/> */}
       <div id='plat-info-table'>
       <table id="play-detail-table">
         <tbody>
           <tr>
-            <td id="play-subject">제목</td>
+            <td id="play-subject"><h2>제목</h2></td>
+          </tr>
+          <tr>
+            <td><p>연극 주간 50위</p></td>
           </tr>
           <tr>
             <td rowSpan="15" id="image-column">
@@ -461,8 +464,9 @@ const PlayDetail = () => {
           </div>
         </div>
       )}
-      <Footer/>
     </div>
+    <Footer/>
+    </>
   );
 };
 
