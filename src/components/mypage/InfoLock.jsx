@@ -13,7 +13,7 @@ const InfoLock = () => {
     };
 
     return (
-        <div className={styles.member_info_modify}>
+        <div className={styles.member_info_lock}>
             <h3>비밀번호 인증</h3>
             <div className={styles.notice}>
                 <Icon name="shieldLock" size={50} color="#676764" />
