@@ -13,6 +13,14 @@ import ReserveBtn from './buttons/ReserveBtn';
 import ScrollToTop from './buttons/ScrollToTop';
 import MainNa from './MainNa';
 import Footer from './Footer';
+import ReviewBefore from './playDetail/ReviewBefore';
+import ReviewAfter from './playDetail/ReviewAfter';
+import QA from './playDetail/QA';
+import Reserve from './playDetail/Reserve';
+import { useParams } from 'react-router';
+import axios from 'axios';
+
+
 const PlayDetail = () => {
   const [visible, setVisible] = useState([true, false, false, false, false]);
   const [mapVisible, setMapVisible] = useState(false); // 모달 표시 상태 관리
@@ -72,6 +80,8 @@ const PlayDetail = () => {
     setConsultVisible(true); // 상담 모달 보이기
   };
 
+
+  
    
 
   useEffect(() => {
@@ -173,12 +183,12 @@ const PlayDetail = () => {
         </tbody>
       </table>
       </div>
-
+{/* 버튼 스크롤 */}
       <div style={{zIndex:'10000'}}> 
         <ScrollToTop />
       <ReserveBtn handleReserveClick={handleReserveClick} handleConsultClick={handleConsultClick}/> 
     </div>
-     
+     {/* 버튼 스크롤 */}
       
       <div id="additional-info-container">
         <table id="info-table">
@@ -211,32 +221,32 @@ const PlayDetail = () => {
                 {visible[3] && <div>
                   <table id="reviews-table">
                     <thead>
-                    <tr>
-          <td
-            id="review-title"
-            onClick={handleReviewClick}
-            style={{
-              backgroundColor: isReviewVisible ? '#8E43E7' : 'transparent',
-              color: isReviewVisible ? 'white' : 'black',
-              width:'60px',
-              fontSize: '10px'
-            }}
-          >
-            후기평
-          </td>
-          <td
-            id="expectation-title"
-            onClick={handleExpectationClick}
-            style={{
-              backgroundColor: isExpectationVisible ? '#8E43E7' : 'transparent',
-              color: isExpectationVisible ? 'white' : 'black',
-               width:'60px',
-               fontSize: '10px'
-            }}
-          >
-            기대평
-          </td>
-          <td ></td>
+                        <tr>
+              <td
+                id="review-title"
+                onClick={handleReviewClick}
+                style={{
+                  backgroundColor: isReviewVisible ? '#8E43E7' : 'transparent',
+                  color: isReviewVisible ? 'white' : 'black',
+                  width:'60px',
+                  fontSize: '10px'
+                }}
+              >
+                후기평
+              </td>
+              <td
+                id="expectation-title"
+                onClick={handleExpectationClick}
+                style={{
+                  backgroundColor: isExpectationVisible ? '#8E43E7' : 'transparent',
+                  color: isExpectationVisible ? 'white' : 'black',
+                  width:'60px',
+                  fontSize: '10px'
+                }}
+              >
+                기대평
+              </td>
+              <td ></td>
         
                         <td id="latest-order" style={{ width:'60px',fontSize: '10px'}}>최신순</td>
                         <td id="rating-order" style={{ width:'60px',fontSize: '10px'}}>별점순</td>
@@ -249,145 +259,18 @@ const PlayDetail = () => {
                   <div>
 
                       {isReviewVisible && (
-                        <table id="review-form" style={{width:'100%'}}>
-  <tbody>
-    <tr>
-      <div id="review-container">
-
-        <div className="rating-container" style={{ textAlign: 'left', margin:'10px 20px' }}>
-          {[1, 2, 3, 4, 5].map((value) => (
-            <span
-              key={value}
-              className="star"
-              style={{
-                cursor: 'pointer',
-                color: value <= rating ? 'gold' : 'gray', // 선택된 별은 금색, 나머지는 회색
-                fontSize: '40px',
-              }}
-              onClick={() => ratinghandleClick(value)} // 별점 클릭 시 handleClick 호출
-            >
-              ★
-            </span>
-          ))}
-        </div>
-
-        <div className="input-container" style={{ marginBottom: '10px' }}>
-          <input
-            type="text"
-            id="rating-field"
-            name="review-content"
-            placeholder="리뷰를 입력하세요"
-            className="review-input"
-          />
-        </div>
-
-        <div style={{ textAlign: 'right' }}>
-          <input
-            type="button"
-            value="등록하기"
-            id="submit-btn"
-            className="submit-btn"
-          />
-        </div>
-
-      </div>
-    </tr>
-    
-    <tr>
-      <td id="review-details">
-        <div id="review-info">
-          <h1 id="user-info">아이디 | 기간 | 별점</h1>
-          <h2 id="review-content">내용</h2>
-        </div>
-      </td>
-    </tr>
-  </tbody>
-</table>
+                        <ReviewAfter ratinghandleClick={ratinghandleClick} rating={rating}/>
                       )}
 
                       {isExpectationVisible && (
-                        <table id="expectation-form" style={{width:'100%'}}>
-                        <tbody>
-                          <tr>
-                            <td>
-                      
-                              <div className="input-container" style={{ marginBottom: '10px' }}>
-                                <input
-                                  type="text"
-                                  id="expectation-field"
-                                  name="expectation-content"
-                                  placeholder="리뷰를 입력하세요"
-                                  className="review-input"
-                                />
-                              </div>
-                      
-                              <div style={{ textAlign: 'right' }}>
-                                <input
-                                  type="button"
-                                  value="등록하기"
-                                  id="submit-btn"
-                                  className="submit-btn"
-                                />
-                              </div>
-                      
-                            </td>
-                          </tr>
-                      
-                          <tr>
-                            <td id="review-details">
-                              <div id="review-info">
-                                <h1 id="user-info">아이디 | 기간</h1>
-                                <h2 id="expectation-content">내용</h2>
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                        <ReviewBefore/>
                       )}
                       </div>
                 </div>}
 
-                {visible[4] && 
-                <div>
-                <div>
-                  <table style={{ width: '100%' }}>
-                    <tr>
-                      <td colSpan="2">
-                        <div className="form-container">
-                          <div className="input-container" style={{ marginBottom: '10px' }}>
-                            <input
-                              type="text"
-                              id="inquiry-field"
-                              name="inquiry-content"
-                              placeholder="문의 내용을 입력하세요"
-                              className="input-field"
-                            />
-                          </div>
-              
-                          <div style={{ textAlign: 'right' }}>
-                            <input
-                              type="button"
-                              value="문의하기"
-                              id="submit-btn"
-                              className="submit-btn"
-                            />
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-              
-                    <tr>
-                      <td>
-                      <div id="review-info">
-                                <h1 id="user-info">아이디 | 기간</h1>
-                                <h2 id="expectation-content">내용</h2>
-                              </div>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-              </div>
-              
+                {visible[4] && (
+                  <QA/>
+                )
               }
               </td>
             </tr>
@@ -421,34 +304,7 @@ const PlayDetail = () => {
 
       {/* 예매 모달 팝업 */}
       {reserveVisible && (
-        <div id="reserve-modal" className="modal">
-          <div id="reserve-modal-content" className="modal-content">
-            <span className="close" onClick={closeModal}>&times;</span>
-            {/* 예매 콘텐츠 */}
-            <h2>날짜 선택</h2>
-            <div style={{marginTop:'50px'}} id="DatePicker">
-            <DatePicker
-              selected={selectedDate}
-              onChange={date => {setSelectedDate(date);  console.log('선택한 날짜:', date)}}
-              inline
-              locale={ko}  // 한국어 로케일 적용
-            />
-            </div>
-            <div>
-
-            <h4 style={{textAlign:'left',marginLeft:'20px',fontSize:'14px'}}>남은 좌석 : </h4>
-            </div>
-            
-            <div>
-              <input type='button'value='시간대' id="reserve-button-time-right"/>
-              <input type='button'value='시간대'id="reserve-button-time-left" />
-            </div>
-            <div>
-              <input type='button'value='예매하기'id="reserve-button-time" />
-              </div>
-            
-          </div>
-        </div>
+        <Reserve closeModal={closeModal} DatePicker={DatePicker} selectedDate={selectedDate} setSelectedDate={setSelectedDate} ko={ko}/>
       )}
 
       {/* 상담 모달 팝업 */}
