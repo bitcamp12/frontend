@@ -4,9 +4,11 @@
     font-family: Arial, sans-serif; /* 푸터와 동일한 폰트 */
     text-align: center; /* 콘텐츠를 중앙 정렬 */
     box-sizing: border-box; /* 패딩과 테두리를 포함한 크기 계산 */
+    max-width: 1280px; /* Main.css와 동일한 최대 너비 */
+    margin: 0 auto; /* 중앙 정렬을 위해 좌우 여백 자동 */
 }
 #play-subject{
-    font-size: 40px;
+    font-size: 26px;
 }
 /* PlayDetail 테이블 스타일 */
 #play-detail-table, #info-table {
@@ -15,7 +17,7 @@
 }
 
 #play-detail-table td, #info-table td {
-    padding: 12px; /* 셀 내부 여백 */
+    padding: 5px; /* 셀 내부 여백 */
     vertical-align: middle; /* 텍스트 및 이미지 수직 중앙 정렬 */
     text-align: left; /* 텍스트 왼쪽 정렬 */
 }
