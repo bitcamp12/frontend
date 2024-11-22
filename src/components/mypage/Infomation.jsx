@@ -54,7 +54,7 @@ const Infomation = () => {
                             <span>즐겨찾기</span>
                         </li>
                         <li onClick={() => funcSelectedIcon("")}>
-                            <Icon name="" size={10} color="red" />
+                            <Icon name="memberInfo" size={10} color="red" />
                             <span>계정관리</span>
                         </li>
                         <li onClick={() => funcSelectedIcon("withdrawal")}>
@@ -64,7 +64,7 @@ const Infomation = () => {
                     </ul>
                 </nav>
 
-                <div>
+                <div className={styles.member_info_container}>
                     {/* <InfoLock /> */}
                     {/* <InfoModify /> */}
                     {/* <InfoWithdrawal/> */}
