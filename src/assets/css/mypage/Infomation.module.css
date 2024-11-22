@@ -1,9 +1,9 @@
-body {
+.member_info_nav body {
     margin: 0;
 }
 
-section {
-    background-color: aqua;
+.member_info_nav section {
+    background-color: white;
     width: 1000px;
     display: flex;
     justify-content: center;
@@ -57,25 +57,23 @@ div.member_info_modify .notice {
     line-height: 1.7;
     margin: 15px 0;
     text-align: center;
- }
- .notice p:nth-of-type(1) span{
+}
+.notice p:nth-of-type(1) span {
     color: red;
- }
- 
+}
 .notice p:nth-of-type(2) {
     font-size: 16px;
     line-height: 1.5;
     margin-bottom: 10px;
     color: #7c7c7c;
- }
-
+}
 
 div.member_info_modify label {
-     width: 150px;
-     padding: 10px;
-     margin-bottom: 20px;
-     border-radius: 4px;
-     font-size: 18px;
+    width: 150px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    font-size: 18px;
 }
 div.member_info_modify input[type="text"],
 div.member_info_modify input[type="password"] {
@@ -85,4 +83,30 @@ div.member_info_modify input[type="password"] {
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 18px;
+}
+
+/* 버튼 */
+.btnWrap {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+}
+.member_info_nav button {
+    width: 330px;
+    height: 55px;
+    font-size: 18px;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    margin: 20px 0px;
+}
+.whiteBtn {
+    background-color: white;
+    color: violet;
+    border: 1px solid violet;
+}
+.violetBtn {
+    background-color: violet;
+    color: white;
 }

@@ -1,0 +1,204 @@
+.member_info_modify body {
+    margin: 0;
+}
+
+.member_info_modify section {
+    background-color: white;
+    width: 1000px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    padding: 20px;
+    margin: 10px auto;
+}
+.member_info_modify input {
+    border: 1px solid rgba(209, 209, 209, 0.651); /* 원하는 색상으로 변경 */
+}
+
+/* container */
+div.member_info_modify {
+    width: 100%;
+    /* border: 1px solid #ddd; */
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+div.member_info_modify h3 {
+    font-size: 25px;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    border-bottom: 3px solid violet;
+}
+div.member_info_modify h5 {
+    font-size: 22px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(209, 209, 209, 0.651);
+}
+div.member_info_modify .checkPwdForm {
+    font-size: 22px;
+    font-weight: normal;
+}
+
+div.member_info_modify .checkPwdForm dl {
+    display: flex;
+
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 22px;
+
+    line-height: 45px;
+}
+div.member_info_modify .checkPwdForm dt,
+div.member_info_modify .checkPwdForm dd {
+    font-weight: normal;
+}
+div.member_info_modify .checkPwdForm dt {
+    width: 150px;
+    padding: 10px;
+    font-size: 18px;
+
+    display: block;
+}
+div.member_info_modify .checkPwdForm dd {
+    flex-grow: 1;
+
+    padding: 10px;
+    font-size: 18px;
+
+    display: block;
+    margin-bottom: 0;
+}
+
+div.member_info_modify .checkPwdForm dd a {
+    width: 100px;
+
+    display: block;
+    height: 35px;
+    padding: 0 12px;
+    line-height: 32px;
+    border-radius: 3px;
+    box-sizing: border-box;
+    text-decoration: none;
+    text-align: center;
+    font-size: 13px;
+    float: right;
+    margin-top: 4px;
+}
+
+/* click  */
+.modifyEnter {
+    margin-top: 30px;
+    color: gray;
+}
+.modifyEnter p {
+    margin-bottom: 0;
+    padding: 0;
+    font-size: 15px;
+}
+.modifyEnter .checkDiv {
+    margin-bottom: 0;
+    padding: 0;
+    font-size: 15px;
+    color: red;
+}
+.modifyEnter input[type="text"] {
+    width: 100%;
+    padding-right: 100px; /* 오른쪽에 여백을 추가하여 아이콘이 겹치지 않게 설정 */
+}
+.enterBox {
+    position: relative;
+}
+.enterBox input[type="text"] {
+    box-sizing: border-box;
+}
+.enterBox .iconWrap {
+    position: absolute;
+    top: 20%;
+    right: 10px; /* 오른쪽에 위치시키기 */
+    transform: translateY(-50%); /* 수직으로 중앙에 배치 */
+    height: 30px;
+}
+
+/* notice */
+.notice div {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: flex;
+}
+.notice ul {
+    list-style-type: none; /* 기본 리스트 점 제거 */
+    padding-left: 0; /* 들여쓰기 없애기 */
+    margin: 0; /* 기본 margin 제거 */
+}
+.notice li {
+    display: flex;
+    align-items: center; /* 체크박스와 레이블을 세로로 중앙 정렬 */
+    margin-bottom: 15px; /* 각 항목 간의 간격 */
+}
+.notice input[type="checkbox"] {
+    font-size: 18px;
+    margin-right: 10px; /* 체크박스와 텍스트 사이의 간격 */
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.notice label {
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 0;
+}
+.notice p {
+    color: gray;
+    line-height: 1.5;
+    font-size: 15px;
+    margin-top: 20px;
+    margin-bottom: 0;
+    padding: 0;
+}
+.notice ul ul {
+    margin-left: 30px; /* 하위 목록에 들여쓰기 추가 */
+}
+
+/* 하위 목록 항목 스타일 */
+.notice ul ul li {
+    margin-bottom: 10px; /* 하위 항목 간의 간격 */
+}
+
+/*버튼*/
+/* 버튼 */
+.btnWrap {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+}
+.member_info_modify button {
+    width: 330px;
+    height: 55px;
+    font-size: 18px;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    margin: 20px 0px;
+}
+.whiteBtn {
+    background-color: white;
+    color: violet;
+    border: 1px solid violet;
+}
+.violetBtn {
+    background-color: violet;
+    color: white;
+}
+
+/* 넓이 */
+.w100 {
+    width: 100%;
+}
+
+
+

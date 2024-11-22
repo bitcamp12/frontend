@@ -8,22 +8,25 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { HashLink } from 'react-router-hash-link';
 
-const BarNavContainer = () => {
+const BarNavContainer = ({selectedTab, setSelectedTab}) => {
+
+  const navItems = [
+    "연극 전체보기",
+    "선착순 최저가",
+    "요즘 HOT",
+    "리미티드"
+  ];
+
   return (
-    <div class="bar-nav-container" id="bar-nav-container">
-      <ul class="nav nav-underline">
-        <li class="nav-item">
-          <HashLink to="#bar-nav-container" class="nav-link">연극 전체보기</HashLink>
-        </li>
-        <li class="nav-item">
-          <HashLink to="#bar-nav-container" class="nav-link">선착순 최저가</HashLink>
-        </li>
-        <li class="nav-item">
-          <HashLink to="#bar-nav-container" class="nav-link">요즘 HOT</HashLink>
-        </li>
-        <li class="nav-item">
-          <HashLink to="#bar-nav-container" class="nav-link">리미티드</HashLink>
-        </li>
+    <div className="bar-nav-container" id="bar-nav-container">
+      <ul className="nav nav-underline">
+        {navItems.map((item, index) => (
+          <li className="nav-item" key={index}>
+            <HashLink to="#bar-nav-container" className={`nav-link ${selectedTab === index ? 'active' : ''}`} onClick={() => setSelectedTab(index)}>
+              {item}
+            </HashLink>
+          </li>
+        ))}
       </ul>
     </div>
   );

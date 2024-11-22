@@ -1,13 +1,16 @@
 import React, { useState } from "react";
-
-import styles from "../../assets/css/mypage/Info.module.css";
+import styles from "../../assets/css/mypage/Infomation.module.css";
 
 import Icon from "./Icon";
 import MainNa from "../MainNa";
 import Footer from "../Footer";
 import InfoLock from "./InfoLock";
+import InfoModify from "./InfoModify";
+import InfoWithdrawal from "./InfoWithdrawal";
+import InfoReservation from "./InfoReservation";
+import InfoBookmark from "./InfoBookmark";
 
-const Info = () => {
+const Infomation = () => {
     const [selectedIcon, setSelectedIcon] = useState("");
 
     const funcSelectedIcon = (iconName) => {
@@ -62,7 +65,11 @@ const Info = () => {
                 </nav>
 
                 <div>
-                    <InfoLock />
+                    {/* <InfoLock /> */}
+                    {/* <InfoModify /> */}
+                    {/* <InfoWithdrawal/> */}
+                    {/* <InfoReservation/> */}
+                    <InfoBookmark/>
                 </div>
             </section>
             <div>
@@ -72,4 +79,4 @@ const Info = () => {
     );
 };
 
-export default Info;
+export default Infomation;
