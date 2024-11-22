@@ -66,10 +66,10 @@ const Infomation = () => {
 
                 <div>
                     {/* <InfoLock /> */}
-                    {/* <InfoModify /> */}
+                    <InfoModify />
                     {/* <InfoWithdrawal/> */}
                     {/* <InfoReservation/> */}
-                    <InfoBookmark/>
+                    {/* <InfoBookmark/> */}
                 </div>
             </section>
             <div>
