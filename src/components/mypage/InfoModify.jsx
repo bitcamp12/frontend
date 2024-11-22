@@ -64,12 +64,10 @@ const InfoModify = () => {
 
     useEffect(() => {
         // 세션에서 id를 가져옵니다.
-        const userId = "apple"; //sessionStorage.getItem("id");
+        const userId = "15"; //sessionStorage.getItem("id");
 
         axios
-            .get("http://localhost:8080/api/members/getUserInfo", {
-                params: { id: userId },
-            })
+            .get(`http://localhost:8080/api/members/getUserInfo/${userId}`)
             .then((response) => {
                 console.log(response);
                 setDate(response.data);
