@@ -12,7 +12,7 @@ const MainNa = () => {
                 {/* Left section: logo and search */}
                 <div id="left-section">
                     <Link to="/"><img id="logo-img" name="logo" src={logo} alt="Logo" /></Link>
-                    <h1>30 Ticket</h1>
+                    <Link to="/" className="logoLink"><h1>30 Ticket</h1></Link>
                     <div id="search-bar">
                         <input id="search-input" name="search" type="text" placeholder="검색어를 입력하세요" />
                         <div id="search-action">

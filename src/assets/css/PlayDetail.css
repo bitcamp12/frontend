@@ -1,158 +1,354 @@
 /* PlayDetail 컴포넌트 전체 스타일 */
 #play-detail-container {
-    padding: 40px 20px; /* 상하 여백: 40px, 좌우 여백: 20px */
-    font-family: Arial, sans-serif; /* 푸터와 동일한 폰트 */
-    text-align: center; /* 콘텐츠를 중앙 정렬 */
-    box-sizing: border-box; /* 패딩과 테두리를 포함한 크기 계산 */
-}
-#play-subject{
-    font-size: 40px;
-}
-/* PlayDetail 테이블 스타일 */
-#play-detail-table, #info-table {
-    width: 100%; /* 테이블 너비 100% */
-    border-collapse: collapse; /* 셀 간 간격을 제거 */
+    padding: 40px 20px;
+    text-align: center;
+    box-sizing: border-box;
+    max-width: 1280px;
+    margin: 0 auto;
 }
 
-#play-detail-table td, #info-table td {
-    padding: 12px; /* 셀 내부 여백 */
-    vertical-align: middle; /* 텍스트 및 이미지 수직 중앙 정렬 */
-    text-align: left; /* 텍스트 왼쪽 정렬 */
+#play-detail-header {
+    margin-bottom: 20px;
+    text-align: left;
+    padding-left: 20px;
+}
+
+#play-subject {
+    font-size: 26px;
+}
+
+#play-detail-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-top: 20px;
 }
 
 #play-detail-subject {
-    font-size: 40px; /* 테이블 제목 글자 크기 설정 */
+    font-size: 40px;
+    /* 테이블 제목 글자 크기 설정 */
 }
 
-/* 이미지가 들어가는 첫 번째 열 */
 #image-column {
     width: 400px;
     height: 600px;
-    text-align: center; /* 이미지 중앙 정렬 */
-    padding: 10px; /* 이미지 주변 여백 */
+    text-align: center;
+    padding: 10px;
 }
+
 #image-column-image {
-    width: 100%; /* 부모 요소에 맞춰 크기 조정 */
-    height: auto; /* 비율에 맞춰 자동으로 높이 조정 */
+    width: 100%;
+    height: auto;
+}
+
+#play-info {
+    flex: 1;
+}
+
+.play-info-column {
+    display: flex;
+    font-size: 16px;
+    color: #333;
+    text-align: left;
+    margin: 20px 0;
+}
+
+.play-info-column-header {
+    width: 90px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.play-info-column-pricing {
+    display: flex;
+    flex-direction: column;
+}
+
+.play-info-column-pricing-seating {
+    display: flex;
+    justify-content: space-between;
+    width: 120px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.play-info-column-pricing-seating-seat {
+    font-weight: normal !important;
+    opacity: 0.7;
+}
+
+.play-info-img {
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+    margin-right: 40px;
 }
 
 /* 각 항목(장소, 기간, 가격, 별점) 스타일 */
-#place-column, #duration-column, #price-column, #rating-column {
-    font-size: 14px;
+#place-column,
+#duration-column,
+#price-column,
+#rating-column,
+#time-column,
+#age-column {
+    font-size: 16px;
     color: #333;
     text-align: left;
     padding-left: 10px;
     padding-right: 5px;
 }
 
+.play-info-column {
+    margin-left: 30px;
+}
+
 /* 이미지 크기 및 정렬 */
-#place-image, #duration-image, #price-image, #rating-image {
-    width: 30px;
-    height: 30px;
+#place-image,
+#duration-image,
+#price-image,
+#rating-image {
+    width: 25px;
+    height: 25px;
     vertical-align: middle;
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
-/* 추가 정보 테이블 스타일 */
+#place-image {
+    cursor: pointer;
+}
+
+/* Additional Info Container */
 #additional-info-container {
-    margin-top: 40px; /* 추가 정보 위 여백 */
+    margin-top: 40px;
+    max-width: 1280px;
+    margin: 0 auto;
+    /* Additional info top margin */
 }
 
-#info-table td {
-    padding: 15px; /* 셀 내부 여백 */
-    text-align: center; /* 텍스트 중앙 정렬 */
-    font-size: 14px; /* 글자 크기 */
-    color: #333; /* 텍스트 색상 */
-    border-radius: 10px 10px 0 0;
+.info-header {
+    display: flex;
+    justify-content: center;
+    text-align: center;
 }
+
+.info-tab {
+    flex: 1;
+    padding: 10px 0;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
+    color: black;
+}
+
+.info-tab.active {
+    background-color: #8E43E7;
+    color: white;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.info-content {
+    padding: 20px;
+}
+
+.info-section {
+    margin-top: 20px;
+}
+
+.reviews-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.review-tab {
+    padding: 10px;
+    cursor: pointer;
+    margin: 0;
+    display: flex
+}
+
+.review-tab.active {
+    background-color: #8E43E7;
+    color: white;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.review-tab-filler {
+    width: 960px;
+}
+
+.order-by {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.order-by span {
+    cursor: pointer;
+    text-decoration: none;
+    padding: 0 10px;
+  }
+  
+  .order-by .selected {
+    text-decoration: underline;
+    font-weight: bold; 
+  }
+
+#latest-order,
+#rating-order {
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+#latest-order,
+#rating-order {
+    width: 60px;
+}
+
+#latest-order,
+#rating-order {
+    font-size: 14px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.info-section-board-header {
+    display: flex;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.info-section-board-content {
+    display: flex;
+    line-height: 2;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
 
 /* 항목에 대한 스타일 (공연정보, 판매정보, 캐스팅, 후기 등) */
-#performance-info, #sales-info, #casting-info, #reviews-info, #qa-info {
-    font-weight: bold; /* 텍스트 강조 */
-    color: #007bff; /* 링크 색상 */
+#performance-info,
+#sales-info,
+#casting-info,
+#reviews-info,
+#qa-info {
+    font-weight: bold;
+    /* 텍스트 강조 */
+    color: #007bff;
+    /* 링크 색상 */
 }
 
 /* 고정된 버튼 스타일 */
 #fixed-buttons-container {
-    position: fixed; /* 버튼을 화면 고정 위치에 배치 */
-    bottom: 0px; /* 화면 하단에 배치 */
-    right: 15px; /* 화면 오른쪽에 배치 */
+    position: fixed;
+    /* 버튼을 화면 고정 위치에 배치 */
+    bottom: 0px;
+    /* 화면 하단에 배치 */
+    right: 15px;
+    /* 화면 오른쪽에 배치 */
 }
 
-#reserve-button, #consult-button, #comfort-button {
-    margin-bottom: 20px; /* 버튼 간 간격 추가 */
+#reserve-button,
+#consult-button,
+#comfort-button {
+    margin-bottom: 20px;
+    /* 버튼 간 간격 추가 */
 }
 
 .button {
-    display: inline-block; /* 버튼을 인라인 블록으로 설정 */
-    background-color: #8E43E7; /* 버튼 배경색 */
-    color: white; /* 버튼 글자 색상 */
-    padding: 15px 15px; /* 버튼 크기 설정 */
-    border-radius: 100px; /* 버튼 둥근 모서리 */
-    border: none; /* 버튼 테두리 제거 */
-    font-size: 14px; /* 버튼 글자 크기 설정 */
-    font-weight: bold; /* 버튼 글자 두께 설정 */
-    text-align: center; /* 텍스트 중앙 정렬 */
-    cursor: pointer; /* 마우스 커서 포인터로 변경 */
-    transition: background-color 0.3s ease; /* 호버 시 배경색 변화 효과 */
-    width: 42px;  /* 버튼 너비 설정 */
-    height: 42px; /* 버튼 높이 설정 */
-    z-index: 1000; /* 버튼이 다른 요소 위에 보이도록 설정 */
+    display: inline-block;
+    /* 버튼을 인라인 블록으로 설정 */
+    background-color: #8E43E7;
+    /* 버튼 배경색 */
+    color: white;
+    /* 버튼 글자 색상 */
+    padding: 15px 15px;
+    /* 버튼 크기 설정 */
+    border-radius: 100px;
+    /* 버튼 둥근 모서리 */
+    border: none;
+    /* 버튼 테두리 제거 */
+    font-size: 14px;
+    /* 버튼 글자 크기 설정 */
+    font-weight: bold;
+    /* 버튼 글자 두께 설정 */
+    text-align: center;
+    /* 텍스트 중앙 정렬 */
+    cursor: pointer;
+    /* 마우스 커서 포인터로 변경 */
+    transition: background-color 0.3s ease;
+    /* 호버 시 배경색 변화 효과 */
+    width: 42px;
+    /* 버튼 너비 설정 */
+    height: 42px;
+    /* 버튼 높이 설정 */
+    z-index: 1000;
+    /* 버튼이 다른 요소 위에 보이도록 설정 */
 }
 
 .fixed-button {
-    position: fixed; /* 화면에 고정 */
-    bottom: 10px; /* 화면 하단에 위치 */
-    right: 10px; /* 화면 오른쪽에 위치 */
-    z-index: 9999; /* 다른 요소들 위에 표시 */
+    position: fixed;
+    /* 화면에 고정 */
+    bottom: 10px;
+    /* 화면 하단에 위치 */
+    right: 10px;
+    /* 화면 오른쪽에 위치 */
+    z-index: 9999;
+    /* 다른 요소들 위에 표시 */
 }
 
 /* Buttons.css */
 .ScrollToTopBtn {
     position: fixed;
-    bottom: 125px;    /* 화면 하단 80px */
+    bottom: 125px;
+    /* 화면 하단 80px */
     z-index: 1000;
 }
 
-
 .button:hover {
-    background-color: #6a2db4; /* 호버 시 버튼 배경색 */
+    background-color: #6a2db4;
+    /* 호버 시 버튼 배경색 */
 }
 
 /* 버튼 컨테이너 */
-#reserve-button, #consult-button, #comfort-button {
+#reserve-button,
+#consult-button,
+#comfort-button {
     display: flex;
-    justify-content: center; /* 버튼을 중앙 정렬 */
-    align-items: center; /* 버튼을 세로로 정렬 */
-    width: 100%; /* 버튼 가로 폭 100% 설정 */
+    justify-content: center;
+    /* 버튼을 중앙 정렬 */
+    align-items: center;
+    /* 버튼을 세로로 정렬 */
+    width: 100%;
+    /* 버튼 가로 폭 100% 설정 */
 }
 
 /* 모달 스타일 */
 .modal {
-    display: block; /* 모달을 보이도록 설정 */
-    position: fixed; /* 화면에 고정 */
-    top: 0; /* 화면 상단에 위치 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
     left: 0;
-    width: 100%; /* 전체 화면 너비 */
-    height: 120%; /* 전체 화면 높이 */
-    background-color: rgba(0, 0, 0, 0.4); /* 어두운 배경 설정 */
-    z-index: 1; /* 다른 요소 위에 모달을 배치 */
-    padding-top: 20px; /* 상단 여백 */
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
 }
 
 /* 모달 콘텐츠 */
 .modal-content {
-    position: relative;
-    margin: 0 auto;
-    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background-color: white;
-    border: 1px solid #888;
-    width: 80%; /* 모달 너비 설정 */
-    max-width: 600px; /* 최대 너비 설정 */
-    top: 0; /* 화면 위쪽에 위치 */
-    border-radius: 8px; /* 모서리 둥글게 설정 */
-    animation: slideDown 0.5s ease-out; /* 애니메이션 추가 */
-    height: 80%; /* 모달 높이 설정 */
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* 모달 닫기 버튼 */
@@ -160,119 +356,214 @@
     position: absolute;
     top: 10px;
     right: 20px;
-    font-size: 30px; /* 글자 크기 */
+    font-size: 30px;
+    /* 글자 크기 */
     font-weight: bold;
     color: #aaa;
-    cursor: pointer; /* 마우스 커서 포인터로 변경 */
+    cursor: pointer;
+    /* 마우스 커서 포인터로 변경 */
 }
 
 .close:hover,
 .close:focus {
-    color: #000; /* 호버 시 색상 변경 */
-    text-decoration: none; /* 밑줄 제거 */
+    color: #000;
+    /* 호버 시 색상 변경 */
+    text-decoration: none;
+    /* 밑줄 제거 */
     cursor: pointer;
 }
 
 /* 리뷰 스타일 */
-#reviews-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
 
-#review-title, #expectation-title, #latest-order, #rating-order {
+#review-title,
+#expectation-title {
+    width: 60px;
     font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-    padding: 10px;
+    cursor: pointer;
 }
 
-#review-title, #expectation-title {
-    width: 150px; /* 제목 열 너비 설정 */
+#review-title,
+#expectation-title {
+    width: 150px;
+    /* 제목 열 너비 설정 */
 }
 
-#empty-column-1, #empty-column-2 {
-    width: 50px; /* 빈 열 너비 설정 */
-}
-
-#latest-order, #rating-order {
-    width: 120px; /* 순서 열 너비 설정 */
+#empty-column-1,
+#empty-column-2 {
+    width: 50px;
+    /* 빈 열 너비 설정 */
 }
 
 /* 별점 제목 */
 #rating-title {
-    font-size: 18px; /* 별점 제목 글자 크기 */
-    font-weight: bold; /* 별점 제목 굵게 설정 */
+    font-size: 18px;
+    /* 별점 제목 글자 크기 */
+    font-weight: bold;
+    /* 별점 제목 굵게 설정 */
     padding: 10px;
-    text-align: center; /* 중앙 정렬 */
+    text-align: center;
+    /* 중앙 정렬 */
 }
 
 /* 별점 입력 필드 */
 #rating-input {
     padding: 10px;
-    text-align: center; /* 중앙 정렬 */
+    text-align: center;
+    /* 중앙 정렬 */
 }
 
 #rating-field {
-   width: 98.5%;
+    width: 100%;
     padding: 8px;
     font-size: 14px;
-    text-align: center; /* 텍스트 중앙 정렬 */
+    text-align: left;
+    /* 텍스트 중앙 정렬 */
 }
 
 /* 등록하기 버튼 */
-#submit-button, .submit-btn {
+#submit-button,
+.submit-btn {
     padding: 10px;
     text-align: center;
     width: 200px;
-    
+
     margin-top: -40px;
 }
 
 #submit-btn {
     padding: 10px 20px;
-    background-color: #8E43E7; /* 버튼 배경색 */
-    color: white; /* 글자 색상 */
+    background-color: #8E43E7;
+    /* 버튼 배경색 */
+    color: white;
+    /* 글자 색상 */
     border: none;
-    border-radius: 5px; /* 버튼 둥글게 설정 */
-    cursor: pointer; /* 마우스 커서 포인터로 변경 */
+    border-radius: 5px;
+    /* 버튼 둥글게 설정 */
+    cursor: pointer;
+    /* 마우스 커서 포인터로 변경 */
 }
 
 #submit-btn:hover {
-    background-color: #6a2db4; /* 호버 시 버튼 배경색 변경 */
-}
-
-/* 리뷰 세부 사항 */
-#review-details {
-    padding: 20px;
+    background-color: #6a2db4;
+    /* 호버 시 버튼 배경색 변경 */
 }
 
 #review-info {
     padding: 10px;
-    background-color: #ffffff; /* 배경색 설정 */
-    border-radius: 8px; /* 모서리 둥글게 */
+    border-top: 1px solid #ccc;
+    background-color: #ffffff;
+    /* 배경색 설정 */
+    border-radius: 8px;
+    /* 모서리 둥글게 */
     border: 1px solid #ccc;
     text-align: left;
 }
 
 #user-info {
-    font-size: 16px; /* 사용자 정보 글자 크기 */
-    font-weight: bold; /* 굵은 글씨 */
-    color: #333; /* 색상 설정 */
+    font-size: 16px;
+    /* 사용자 정보 글자 크기 */
+    font-weight: bold;
+    /* 굵은 글씨 */
+    color: #333;
+    /* 색상 설정 */
+}
+
+#review-content,
+#expectation-content {
+    font-size: 16px;
 }
 
 /* 리뷰 입력 */
-.review-input, #inquiry-field {
+.review-input,
+#inquiry-field {
     width: 100%;
     height: 150px;
     padding: 10px;
     font-size: 16px;
     border-radius: 5px;
     border: 1px solid #ccc;
-    margin-bottom: 10px;
-    width: 98.5%;
-    
+    margin-bottom: 30px;
+    width: 100;
+
 }
+
+.input-container {
+    width: 100%;
+    margin-top: 30px;
+}
+
+.review-list-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.left-side {
+    float: left;
+    vertical-align: middle;
+}
+
+.num {
+    color: #8E43E7;
+}
+
+
+.right-side {
+    display: flex;
+    align-items: center;
+    /* Center align items vertically */
+}
+
+.review-search {
+    display: flex;
+}
+
+.review-search-form {
+    display: flex;
+}
+
+.review-combo-box {
+    margin-right: 5px;
+}
+
+.review-combo-box {
+    margin-right: 5px;
+}
+
+.review-combo-box-select {
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 33px;
+    width: 80px;
+}
+
+.review-search-input {
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 5px;
+    /* Add space between input and button */
+}
+
+.review-search-btn {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    background-color: #8E43E7;
+    color: white;
+    cursor: pointer;
+    width: 70px;
+}
+
+.review-search-btn:hover {
+    background-color: #6a2db4;
+}
+
 
 /* 리뷰 제출 버튼 */
 .submit-btn {
@@ -283,142 +574,173 @@
     color: white;
     cursor: pointer;
     border: none;
-    
-        margin-top: -40px;
 }
+
 .submit-btn:hover {
     background-color: #6a2db4;
 }
-/* 달력달려겨ㅕ려겨ㅕㄱ */
+
+
+/* #달력 */
+#DatePicker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
 /* 전체 날짜 선택기의 테두리 제거 */
 .react-datepicker {
-    border: none !important;  /* 날짜 선택기의 테두리 제거 */
-  }
-  
-  /* 날짜 선택기 헤더 부분의 테두리 제거 */
-  .react-datepicker__header {
-    border: none !important;  /* 헤더 테두리 제거 */
-  }
-  
-  /* 날짜 선택기의 날짜 영역 테두리 제거 */
-  .react-datepicker__month {
-    border: none !important;  /* 월 영역 테두리 제거 */
-  }
-  
-  .react-datepicker__day {
-    border: none !important;  /* 각 날짜의 테두리 제거 */
-  }
-  
+    border: none !important;
+    justify-content: center;
+    /* 날짜 선택기의 테두리 제거 */
+}
 
+/* 날짜 선택기 헤더 부분의 테두리 제거 */
+.react-datepicker__header {
+    border: none !important;
+    /* 헤더 테두리 제거 */
+}
 
+.react-datepicker__week {
+    margin-left: 9px;
+}
+
+/* 날짜 선택기의 날짜 영역 테두리 제거 */
+.react-datepicker__month {
+    border: none !important;
+    /* 월 영역 테두리 제거 */
+}
+
+.react-datepicker__day {
+    border: none !important;
+    /* 각 날짜의 테두리 제거 */
+}
 
 /* 테두리 제거 */
-
-.react-datepicker__day-name{
-    padding: 0 6px 0 6px !important;
+.react-datepicker__day-name {
+    padding: 0 10px 0 5px !important;
+    margin: 0 8px !important;
 }
+
 .react-datepicker__header {
-    background-color: #ffffff !important; /* 헤더 배경색 */
+    background-color: #ffffff !important;
+    /* 헤더 배경색 */
     color: rgb(0, 0, 0) !important;
 }
-.react-datepicker__day-names{
-    background-color: #ececec !important; 
+
+.react-datepicker__day-names {
+    background-color: #ececec !important;
     border-radius: 10px !important;
-    margin-top: 20px;
-    
-
+    margin-top: 15px;
+    margin-left: 20px;
 }
+
 /* 요일 부분의 배경색 변경 */
-
-
-
 /* 일요일 (aria-label에 'Sunday' 포함된 요소) */
-.react-datepicker__day[aria-label*="Sunday"] {
-    color: red !important; /* 붉은색 */
-  }
-  
-  /* 토요일 (aria-label에 'Saturday' 포함된 요소) */
-  .react-datepicker__day[aria-label*="Saturday"] {
-    color: blue !important; /* 파란색 */
-  }
- 
+.react-datepicker__day[aria-label*="일요일"] {
+    color: red !important;
+    /* 붉은색 */
+}
 
-  /* 날짜 선택기의 전체 크기 */
+/* 토요일 (aria-label에 'Saturday' 포함된 요소) */
+.react-datepicker__day[aria-label*="토요일"] {
+    color: blue !important;
+    /* 파란색 */
+}
+
+/* 날짜 선택기의 전체 크기 */
 .react-datepicker {
-    font-size: 20px !important; /* 기본 폰트 크기 */
-    width: 350px !important; /* 달력의 전체 너비 */
-    height: 350px !important; /* 달력의 전체 높이 */
-  }
-  
-  /* 날짜를 감싸는 div의 크기 */
-  .react-datepicker__month {
-    width: 100% !important; /* 전체 너비 */
-    height: 100% !important; /* 전체 높이 */
-  }
-  
-  /* 달력의 날짜 셀 크기 */
-  .react-datepicker__day {
-    width: 40px !important; /* 날짜 셀의 너비 */
-    height: 40px !important; /* 날짜 셀의 높이 */
-    line-height: 40px !important; /* 날짜 텍스트의 높이 */
-  }
-  
-  /* 달력의 날짜 셀 폰트 크기 */
-  .react-datepicker__day {
-    font-size: 20px !important; /* 날짜 셀 텍스트 크기 */
-  }
-  
-  /* 날짜 선택기 헤더 (월, 연도) 크기 */
-  .react-datepicker__header {
-    height: 50px !important; /* 헤더 높이 */
-    font-size: 22px !important; /* 헤더 폰트 크기 */
-  }
-  
-  /* 이전, 다음 버튼 크기 */
-  .react-datepicker__navigation {
-    width: 30px !important; /* 버튼 너비 */
-    height: 30px !important; /* 버튼 높이 */
-  }
-  
- 
-  
-  /* 달력의 월/연도 셀 크기 */
-  .react-datepicker__current-month {
-    font-size: 24px !important; /* 월/연도 글자 크기 */
-  }
-  
-  /* 오늘 날짜 버튼 크기 */
-  .react-datepicker__today-button {
-    font-size: 18px !important; /* 버튼 폰트 크기 */
-  }
+    font-size: 20px !important;
+    /* 기본 폰트 크기 */
+    width: 350px !important;
+    /* 달력의 전체 너비 */
+    height: 320px !important;
+    /* 달력의 전체 높이 */
+}
 
-  .react-datepicker__month{
+/* 날짜를 감싸는 div의 크기 */
+.react-datepicker__month {
+    width: 100% !important;
+    /* 전체 너비 */
+    height: 100% !important;
+    /* 전체 높이 */
+}
+
+/* 달력의 날짜 셀 크기 */
+.react-datepicker__day {
+    width: 40px !important;
+    /* 날짜 셀의 너비 */
+    height: 40px !important;
+    /* 날짜 셀의 높이 */
+    line-height: 40px !important;
+    /* 날짜 텍스트의 높이 */
+}
+
+/* 달력의 날짜 셀 폰트 크기 */
+.react-datepicker__day {
+    font-size: 20px !important;
+    /* 날짜 셀 텍스트 크기 */
+}
+
+/* 날짜 선택기 헤더 (월, 연도) 크기 */
+.react-datepicker__header {
+    height: 50px !important;
+    /* 헤더 높이 */
+    font-size: 22px !important;
+    /* 헤더 폰트 크기 */
+}
+
+/* 이전, 다음 버튼 크기 */
+.react-datepicker__navigation {
+    width: 30px !important;
+    /* 버튼 너비 */
+    height: 30px !important;
+    /* 버튼 높이 */
+}
+
+/* 달력의 월/연도 셀 크기 */
+.react-datepicker__current-month {
+    font-size: 24px !important;
+}
+
+/* 오늘 날짜 버튼 크기 */
+.react-datepicker__today-button {
+    font-size: 18px !important;
+    /* 버튼 폰트 크기 */
+}
+
+.react-datepicker__month {
     margin-top: 30px !important;
-  }
-  .react-datepicker__current-month{
-    margin-top: -10px!important;
-  }
+}
 
+.react-datepicker__current-month {
+    margin-top: -10px !important;
+    margin-left: 20px !important;
+}
 
-
-
-  /* 선택된 날짜의 배경색과 텍스트 색상 변경 */
+/* 선택된 날짜의 배경색과 텍스트 색상 변경 */
 .react-datepicker__day--selected {
-    background-color: #6a2db4 !important; /* 배경색 */
-    color: white !important; /* 글자 색 */
-    font-weight: bold !important; /* 글씨 두껍게 */
-    
-  }
- 
+    background-color: #6a2db4 !important;
+    /* 배경색 */
+    color: white !important;
+    /* 글자 색 */
+    font-weight: bold !important;
+    /* 글씨 두껍게 */
+}
 
-  /* 날짜에 마우스를 올렸을 때 배경색과 글자 색상 변경 */
+/* 날짜에 마우스를 올렸을 때 배경색과 글자 색상 변경 */
 .react-datepicker__day:hover {
-    background-color: #BE97EC !important; /* 배경색 변경 */
-    color: white !important; /* 글자 색상 변경 */
-    cursor: pointer !important; /* 커서를 포인터로 변경 */
-  }
+    background-color: #BE97EC !important;
+    /* 배경색 변경 */
+    color: white !important;
+    /* 글자 색상 변경 */
+    cursor: pointer !important;
+    /* 커서를 포인터로 변경 */
+}
 
-  #reserve-button-time-right{
+#reserve-button-time-right {
     padding: 10px 20px;
     font-size: 16px;
     width: 200px;
@@ -428,8 +750,9 @@
     cursor: pointer;
     border: none;
     height: 60px;
-  }
-  #reserve-button-time-left{
+}
+
+#reserve-button-time-left {
     padding: 10px 20px;
     font-size: 16px;
     width: 200px;
@@ -439,8 +762,9 @@
     cursor: pointer;
     border: none;
     height: 60px;
-  }
-  #reserve-button-time{
+}
+
+#reserve-button-time {
     margin-top: 40px;
     padding: 10px 20px;
     font-size: 16px;
@@ -451,8 +775,20 @@
     cursor: pointer;
     border: none;
     height: 60px;
-  }
+}
 
+#reserve-button-time-right,
+#reserve-button-time-left,
+#reserve-button-time {
+    margin: 10px auto; /* Center buttons horizontally */
+}
+
+#reserve-button-time-right:hover,
+#reserve-button-time-left:hover,
+#reserve-button-time:hover {
+    background-color: #6a2db4;
+}
+/* #달력 */
 
 
 /* 반응형 디자인 */
@@ -460,38 +796,54 @@
 /* 화면 너비가 768px 이하일 때 (태블릿) */
 @media (max-width: 768px) {
     #image-column {
-        width: 300px; /* 이미지 열의 너비 축소 */
-        height: 450px; /* 이미지 열의 높이 축소 */
+        width: 300px;
+        /* 이미지 열의 너비 축소 */
+        height: 450px;
+        /* 이미지 열의 높이 축소 */
     }
 
     #image-column-image {
-        width: 100%; /* 이미지가 열 너비에 맞게 조정 */
-        height: auto; /* 비율에 맞춰 자동으로 높이 조정 */
+        width: 100%;
+        /* 이미지가 열 너비에 맞게 조정 */
+        height: auto;
+        /* 비율에 맞춰 자동으로 높이 조정 */
     }
 
-    #place-column, #duration-column, #price-column, #rating-column {
-        font-size: 12px; /* 폰트 크기 축소 */
+    #place-column,
+    #duration-column,
+    #price-column,
+    #rating-column {
+        font-size: 12px;
+        /* 폰트 크기 축소 */
     }
 }
 
 /* 화면 너비가 480px 이하일 때 (모바일) */
 @media (max-width: 480px) {
     #image-column {
-        width: 60%; /* 화면 크기에 맞춰 이미지 열의 너비를 100%로 설정 */
-        height: auto; /* 이미지 열의 높이도 자동으로 조정 */
+        width: 60%;
+        /* 화면 크기에 맞춰 이미지 열의 너비를 100%로 설정 */
+        height: auto;
+        /* 이미지 열의 높이도 자동으로 조정 */
     }
-    
+
     #image-column-image {
-        width: 100%; /* 이미지가 부모 요소 너비에 맞춰 크기 조정 */
-        height: auto; /* 비율에 맞춰 자동으로 높이 조정 */
+        width: 100%;
+        /* 이미지가 부모 요소 너비에 맞춰 크기 조정 */
+        height: auto;
+        /* 비율에 맞춰 자동으로 높이 조정 */
     }
 
-    #place-column, #duration-column, #price-column, #rating-column {
-        font-size: 10px; /* 폰트 크기 더 축소 */
+    #place-column,
+    #duration-column,
+    #price-column,
+    #rating-column {
+        font-size: 10px;
+        /* 폰트 크기 더 축소 */
     }
 
 
-    #reserve-button-time-right{
+    #reserve-button-time-right {
         padding: 10px 20px;
         font-size: 16px;
         width: 150px;
@@ -501,8 +853,9 @@
         cursor: pointer;
         border: none;
         height: 60px;
-      }
-      #reserve-button-time-left{
+    }
+
+    #reserve-button-time-left {
         padding: 10px 20px;
         font-size: 16px;
         width: 150px;
@@ -512,8 +865,9 @@
         cursor: pointer;
         border: none;
         height: 60px;
-      }
-      #reserve-button-time{
+    }
+
+    #reserve-button-time {
         margin-top: 40px;
         padding: 10px 20px;
         font-size: 16px;
@@ -524,220 +878,262 @@
         cursor: pointer;
         border: none;
         height: 60px;
-      }
-      #DatePicker {
-       align-items: center;
-      }
+    }
+
+    #DatePicker {
+        align-items: center;
+    }
 }
 
 /* 반응형 스타일 (모바일 화면에 맞춰 모달 크기 조정) */
 @media (max-width: 768px) {
     .modal-content {
-        width: 90%; /* 모바일에서 모달 너비를 더 넓게 */
-        max-width: none; /* 최대 너비 제한 해제 */
-        height: auto; /* 높이 자동 조정 */
-        padding: 10px; /* 여백을 줄임 */
+        width: 90%;
+        max-width: none;
+        height: auto;
+        padding: 10px;
+        /* 여백을 줄임 */
     }
-    
-    #submit-button, .submit-btn {
+
+    #submit-button,
+    .submit-btn {
         padding: 0px;
         text-align: center;
         width: 100%;
         margin-top: -40px;
     }
-   
-       #DatePicker {
+
+    #DatePicker {
         align-items: center;
-       }
+    }
 }
 
 @media (max-width: 400px) {
-/* 날짜 선택기의 전체 크기 */
-.react-datepicker {
-    font-size: 14px !important; /* 기본 폰트 크기 0.7배 축소 */
-    width: 245px !important; /* 달력의 전체 너비 0.7배 축소 */
-    height: 280px !important; /* 달력의 전체 높이 0.7배 축소 */
-}
 
-/* 날짜를 감싸는 div의 크기 */
-.react-datepicker__month {
-    width: 100% !important; /* 전체 너비 */
-    height: 100% !important; /* 전체 높이 */
-}
+    /* 날짜 선택기의 전체 크기 */
+    .react-datepicker {
+        font-size: 14px !important;
+        /* 기본 폰트 크기 0.7배 축소 */
+        width: 245px !important;
+        /* 달력의 전체 너비 0.7배 축소 */
+        height: 280px !important;
+        /* 달력의 전체 높이 0.7배 축소 */
+    }
 
-/* 달력의 날짜 셀 크기 */
-.react-datepicker__day {
-    width: 28px !important; /* 날짜 셀의 너비 0.7배 축소 */
-    height: 28px !important; /* 날짜 셀의 높이 0.7배 축소 */
-    line-height: 28px !important; /* 날짜 텍스트의 높이 0.7배 축소 */
-}
+    /* 날짜를 감싸는 div의 크기 */
+    .react-datepicker__month {
+        width: 100% !important;
+        /* 전체 너비 */
+        height: 100% !important;
+        /* 전체 높이 */
+    }
 
-/* 달력의 날짜 셀 폰트 크기 */
-.react-datepicker__day {
-    font-size: 14px !important; /* 날짜 셀 텍스트 크기 0.7배 축소 */
-}
+    /* 달력의 날짜 셀 크기 */
+    .react-datepicker__day {
+        width: 28px !important;
+        /* 날짜 셀의 너비 0.7배 축소 */
+        height: 28px !important;
+        /* 날짜 셀의 높이 0.7배 축소 */
+        line-height: 28px !important;
+        /* 날짜 텍스트의 높이 0.7배 축소 */
+    }
 
-/* 날짜 선택기 헤더 (월, 연도) 크기 */
-.react-datepicker__header {
-    height: 35px !important; /* 헤더 높이 0.7배 축소 */
-    font-size: 15px !important; /* 헤더 폰트 크기 0.7배 축소 */
-}
+    /* 달력의 날짜 셀 폰트 크기 */
+    .react-datepicker__day {
+        font-size: 14px !important;
+        /* 날짜 셀 텍스트 크기 0.7배 축소 */
+    }
 
-/* 이전, 다음 버튼 크기 */
-.react-datepicker__navigation {
-    width: 21px !important; /* 버튼 너비 0.7배 축소 */
-    height: 21px !important; /* 버튼 높이 0.7배 축소 */
-}
+    /* 날짜 선택기 헤더 (월, 연도) 크기 */
+    .react-datepicker__header {
+        height: 35px !important;
+        /* 헤더 높이 0.7배 축소 */
+        font-size: 15px !important;
+        /* 헤더 폰트 크기 0.7배 축소 */
+    }
 
-/* 달력의 월/연도 셀 크기 */
-.react-datepicker__current-month {
-    font-size: 17px !important; /* 월/연도 글자 크기 0.7배 축소 */
-}
+    /* 이전, 다음 버튼 크기 */
+    .react-datepicker__navigation {
+        width: 21px !important;
+        /* 버튼 너비 0.7배 축소 */
+        height: 21px !important;
+        /* 버튼 높이 0.7배 축소 */
+    }
 
-/* 오늘 날짜 버튼 크기 */
-.react-datepicker__today-button {
-    font-size: 13px !important; /* 버튼 폰트 크기 0.7배 축소 */
-}
+    /* 달력의 월/연도 셀 크기 */
+    .react-datepicker__current-month {
+        font-size: 17px !important;
+        /* 월/연도 글자 크기 0.7배 축소 */
+    }
+
+    /* 오늘 날짜 버튼 크기 */
+    .react-datepicker__today-button {
+        font-size: 13px !important;
+        /* 버튼 폰트 크기 0.7배 축소 */
+    }
 
 
-  #reserve-button-time-right{
-    padding: 10px 20px;
-    font-size: 16px;
-    width: 120px;
-    border-radius: 10px 0 0 10px;
-    background-color: #8E43E7;
-    color: white;
-    cursor: pointer;
-    border: none;
-    height: 60px;
-  }
-  #reserve-button-time-left{
-    padding: 10px 20px;
-    font-size: 16px;
-    width: 120px;
-    border-radius: 0 10px 10px 0;
-    background-color: #8E43E7;
-    color: white;
-    cursor: pointer;
-    border: none;
-    height: 60px;
-  }
-  #reserve-button-time{
-    margin-top: 40px;
-    padding: 10px 20px;
-    font-size: 16px;
-    width: 240px;
-    border-radius: 10px;
-    background-color: #8E43E7;
-    color: white;
-    cursor: pointer;
-    border: none;
-    height: 60px;
-  }
+    #reserve-button-time-right {
+        padding: 10px 20px;
+        font-size: 16px;
+        width: 120px;
+        border-radius: 10px 0 0 10px;
+        background-color: #8E43E7;
+        color: white;
+        cursor: pointer;
+        border: none;
+        height: 60px;
+    }
 
-  .react-datepicker {
-    font-size: 20px !important; /* 기본 폰트 크기 */
-    width: 250px !important; /* 달력의 전체 너비 */
-    height: 250px !important; /* 달력의 전체 높이 */
-  }
+    #reserve-button-time-left {
+        padding: 10px 20px;
+        font-size: 16px;
+        width: 120px;
+        border-radius: 0 10px 10px 0;
+        background-color: #8E43E7;
+        color: white;
+        cursor: pointer;
+        border: none;
+        height: 60px;
+    }
+
+    #reserve-button-time {
+        margin-top: 40px;
+        padding: 10px 20px;
+        font-size: 16px;
+        width: 240px;
+        border-radius: 10px;
+        background-color: #8E43E7;
+        color: white;
+        cursor: pointer;
+        border: none;
+        height: 60px;
+    }
+
+    .react-datepicker {
+        font-size: 20px !important;
+        /* 기본 폰트 크기 */
+        width: 250px !important;
+        /* 달력의 전체 너비 */
+        height: 250px !important;
+        /* 달력의 전체 높이 */
+    }
 
 }
 
 
 @media (max-height: 650px) {
-   /* 날짜 선택기의 전체 크기 */
-.react-datepicker {
-    font-size: 10px !important; /* 기본 폰트 크기 0.5배 축소 */
-    width: 250px !important; /* 달력의 전체 너비 0.5배 축소 */
-    height: 200px !important; /* 달력의 전체 높이 0.5배 축소 */
-}
 
-
-
-/* 달력의 날짜 셀 크기 */
-.react-datepicker__day {
-    width: 30px !important; /* 날짜 셀의 너비 0.5배 축소 */
-    height: 25px !important; /* 날짜 셀의 높이 0.5배 축소 */
-    line-height: 30px !important; /* 날짜 텍스트의 높이 0.5배 축소 */
-}
-
-/* 달력의 날짜 셀 폰트 크기 */
-.react-datepicker__day {
-    font-size: 15px !important; /* 날짜 셀 텍스트 크기 0.5배 축소 */
-}
-
-/* 날짜 선택기 헤더 (월, 연도) 크기 */
-.react-datepicker__header {
-    height: 40px !important; /* 헤더 높이 0.5배 축소 */
-    font-size: 11px !important; /* 헤더 폰트 크기 0.5배 축소 */
-}
-
-/* 이전, 다음 버튼 크기 */
-.react-datepicker__navigation {
-    width: 15px !important; /* 버튼 너비 0.5배 축소 */
-    height: 15px !important; /* 버튼 높이 0.5배 축소 */
-}
-
-/* 달력의 월/연도 셀 크기 */
-.react-datepicker__current-month {
-    font-size: 15px !important; /* 월/연도 글자 크기 0.5배 축소 */
-}
-
-/* 오늘 날짜 버튼 크기 */
-.react-datepicker__today-button {
-    font-size: 12px !important; /* 버튼 폰트 크기 0.5배 축소 */
-}
-
-#reserve-button-time-right{
-    padding: 10px 20px;
-    font-size: 16px;
-    width: 120px;
-    border-radius: 10px 0 0 10px;
-    background-color: #8E43E7;
-    color: white;
-    cursor: pointer;
-    border: none;
-    height: 60px;
-    width: 200px;
-  }
-  #reserve-button-time-left{
-    padding: 10px 20px;
-    font-size: 16px;
-    width: 120px;
-    border-radius: 0 10px 10px 0;
-    background-color: #8E43E7;
-    color: white;
-    cursor: pointer;
-    border: none;
-    height: 60px;
-    width: 200px;
-  }
-  #reserve-button-time{
-    margin-top: 40px;
-    padding: 10px 20px;
-    font-size: 16px;
-    width: 240px;
-    border-radius: 10px;
-    background-color: #8E43E7;
-    color: white;
-    cursor: pointer;
-    border: none;
-    height: 60px;
-    width: 400px;
-  }
-
-  .react-datepicker {
-    font-size: 20px !important; /* 기본 폰트 크기 */
-    width: 250px !important; /* 달력의 전체 너비 */
-    height: 250px !important; /* 달력의 전체 높이 */
-  }
-
+    /* 날짜 선택기의 전체 크기 */
+    .react-datepicker {
+        font-size: 10px !important;
+        /* 기본 폰트 크기 0.5배 축소 */
+        width: 250px !important;
+        /* 달력의 전체 너비 0.5배 축소 */
+        height: 200px !important;
+        /* 달력의 전체 높이 0.5배 축소 */
     }
-    
 
-    @media (max-height: 650px) {
-        #map{
-            height: 400px !important;
-        }
+
+
+    /* 달력의 날짜 셀 크기 */
+    .react-datepicker__day {
+        width: 30px !important;
+        /* 날짜 셀의 너비 0.5배 축소 */
+        height: 25px !important;
+        /* 날짜 셀의 높이 0.5배 축소 */
+        line-height: 30px !important;
+        /* 날짜 텍스트의 높이 0.5배 축소 */
     }
-   
+
+    /* 달력의 날짜 셀 폰트 크기 */
+    .react-datepicker__day {
+        font-size: 15px !important;
+        /* 날짜 셀 텍스트 크기 0.5배 축소 */
+    }
+
+    /* 날짜 선택기 헤더 (월, 연도) 크기 */
+    .react-datepicker__header {
+        height: 40px !important;
+        /* 헤더 높이 0.5배 축소 */
+        font-size: 11px !important;
+        /* 헤더 폰트 크기 0.5배 축소 */
+    }
+
+    /* 이전, 다음 버튼 크기 */
+    .react-datepicker__navigation {
+        width: 15px !important;
+        /* 버튼 너비 0.5배 축소 */
+        height: 15px !important;
+        /* 버튼 높이 0.5배 축소 */
+    }
+
+    /* 달력의 월/연도 셀 크기 */
+    .react-datepicker__current-month {
+        font-size: 15px !important;
+        /* 월/연도 글자 크기 0.5배 축소 */
+    }
+
+    /* 오늘 날짜 버튼 크기 */
+    .react-datepicker__today-button {
+        font-size: 12px !important;
+        /* 버튼 폰트 크기 0.5배 축소 */
+    }
+
+    #reserve-button-time-right {
+        padding: 10px 20px;
+        font-size: 16px;
+        width: 120px;
+        border-radius: 10px 0 0 10px;
+        background-color: #8E43E7;
+        color: white;
+        cursor: pointer;
+        border: none;
+        height: 60px;
+        width: 200px;
+    }
+
+    #reserve-button-time-left {
+        padding: 10px 20px;
+        font-size: 16px;
+        width: 120px;
+        border-radius: 0 10px 10px 0;
+        background-color: #8E43E7;
+        color: white;
+        cursor: pointer;
+        border: none;
+        height: 60px;
+        width: 200px;
+    }
+
+    #reserve-button-time {
+        margin-top: 40px;
+        padding: 10px 20px;
+        font-size: 16px;
+        width: 240px;
+        border-radius: 10px;
+        background-color: #8E43E7;
+        color: white;
+        cursor: pointer;
+        border: none;
+        height: 60px;
+        width: 400px;
+    }
+
+    .react-datepicker {
+        font-size: 20px !important;
+        /* 기본 폰트 크기 */
+        width: 250px !important;
+        /* 달력의 전체 너비 */
+        height: 250px !important;
+        /* 달력의 전체 높이 */
+    }
+
+}
+
+
+@media (max-height: 650px) {
+    #map {
+        height: 400px !important;
+    }
+}

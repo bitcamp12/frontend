@@ -1,8 +1,8 @@
-body {
+.member_info_modify body {
     margin: 0;
 }
 
-section {
+.member_info_modify section {
     background-color: white;
     width: 1000px;
     display: flex;
@@ -11,9 +11,10 @@ section {
     padding: 20px;
     margin: 10px auto;
 }
-input {
+.member_info_modify input {
     border: 1px solid rgba(209, 209, 209, 0.651); /* 원하는 색상으로 변경 */
 }
+
 /* container */
 div.member_info_modify {
     width: 100%;
@@ -175,7 +176,7 @@ div.member_info_modify .checkPwdForm dd a {
     width: 100%;
     gap: 10px;
 }
-button {
+.member_info_modify button {
     width: 330px;
     height: 55px;
     font-size: 18px;
