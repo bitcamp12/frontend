@@ -18,7 +18,8 @@ import ReviewAfter from './playDetail/ReviewAfter';
 import QA from './playDetail/QA';
 import Reserve from './playDetail/Reserve';
 import { useParams } from 'react-router';
-import axios from 'axios';
+import axios, { Axios } from 'axios';
+import { useLocation } from 'react-router';
 
 const PlayDetail = () => {
   const [visible, setVisible] = useState([true, false, false, false, false]);
@@ -27,8 +28,14 @@ const PlayDetail = () => {
   const [consultVisible, setConsultVisible] = useState(false); // 상담 모달 표시 상태 관리
   const [isReviewVisible, setIsReviewVisible] = useState(true); // 기본적으로 후기평 폼을 보이게 설정
   const [isExpectationVisible, setIsExpectationVisible] = useState(false); // 기본적으로 기대평 폼은 숨김
-
+  const [reviewText, setReviewText] = useState(''); // 리뷰 텍스트 상태
   const [selected, setSelected] = useState('latest');
+    const[alertVisible,setAlertVisible]=useState(false);
+    const [isReviewUpdate,setIsReviewUpdate]=useState(false);
+
+    const [modalTitle, setModalTitle] = useState(''); // 모달 제목
+    const [modalMessage, setModalMessage] = useState(''); // 모달 메시지
+
   const handleSelect = (order) => {
     setSelected(order);
   };
@@ -72,6 +79,8 @@ const PlayDetail = () => {
     setMapVisible(false); // 지도 모달 숨기기
     setReserveVisible(false); // 예매 모달 숨기기
     setConsultVisible(false); // 상담 모달 숨기기
+    setAlertVisible(false)//알림 모달 숨기기
+    setIsReviewUpdate(false)//수정 모달 숨기기
   };
   // 예매 클릭 시 예매 모달 띄우기
   const handleReserveClick = () => {
@@ -82,6 +91,197 @@ const PlayDetail = () => {
   const handleConsultClick = () => {
     setConsultVisible(true); // 상담 모달 보이기
   };
+
+
+
+  const location = useLocation();  // 현재 URL 정보 가져오기
+  const queryParams = new URLSearchParams(location.search);  // 쿼리 파라미터 추출
+  const playSeq = queryParams.get('playSeq');  // playSeq 값 추출
+/////////공영정보 불러오기   
+ 
+const [playData, setPlayData] = useState(null); // 초기값을 null로 설정
+const formatDate = dateStr => {
+  // ISO 문자열을 Date 객체로 변환
+  const date = new Date(dateStr);
+  // 연도, 월, 일 추출
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
+  const day = String(date.getDate()).padStart(2, '0'); // 일자를 2자리로 포맷
+
+  return `${year}.${month}.${day}`;
+};
+useEffect(() => {
+  console.log(playSeq);
+
+  axios
+    .get(`http://localhost:8080/api/plays/getPlayOne?playSeq=${playSeq}`, {
+      withCredentials: true,
+    })
+    .then(response => {
+      const { status, data } = response.data; // 구조 분해 할당
+      console.log(response.data);
+
+      if (status === 200) {
+        setPlayData(data); // 상태 업데이트
+      } else if (status === 400) {
+        setModalTitle("없음")
+        setModalMessage("해당 공연 정보는 존재하지않습니다")
+        setAlertVisible(true)
+      }
+    })
+    .catch(error => {
+      console.error('API 요청 중 오류 발생:', error);
+      alert('요청 중 문제가 발생했습니다. 다시 시도해주세요.');
+    });
+}, [playSeq]); // playSeq 변경 시마다 실행
+/////////공영정보 불러오기
+
+
+/////////리뷰 불러오기
+const fetchReviewData = async () => {
+  try {
+    const response = await axios.get(`http://localhost:8080/api/reviewAfters/ReviewAList?playSeq=${playSeq}`);
+    console.log(response.data);
+
+    const { status, data } = response.data; // 구조 분해 할당
+    if (status === 200) {
+      setReviewData(data); // 상태 업데이트
+    } else if (status === 404) {
+      console.log('리뷰 없음');
+    }
+  } catch (error) {
+    console.error('리뷰 데이터를 가져오는 중 오류 발생:', error);
+  }
+};
+
+
+
+const [reviewData, setReviewData] = useState(null); // 초기값을 null로 설정
+useEffect(() => {
+  fetchReviewData(); // 함수 호출
+}, [playSeq]); // playSeq가 변경될 때마다 호출
+
+
+/////////리뷰 불러오기
+
+
+////리뷰 등록
+const handleSubmit = async () => {
+  if (!reviewText.trim()) {
+       setModalTitle("유효성")
+        setModalMessage("리뷰 내용을 입력해주세요.")
+        setAlertVisible(true)
+    return;
+  }
+  if (rating === 0) {
+    setModalTitle("유효성")
+        setModalMessage("별점을 선택해주세요.")
+        setAlertVisible(true)
+    return;
+  }
+
+  // 데이터 객체 생성
+  const reviewData = {
+    content: reviewText,
+    rating: rating,
+  }
+ 
+    // 서버로 데이터 전송
+    axios.post(`http://localhost:8080/api/reviewAfters/ReviewA?playSeq=${playSeq}`, reviewData, {
+      withCredentials: true,
+    }).then(response=>{
+
+      if (response.status === 200) {
+        setAlertVisible(true)
+        setModalTitle("성공") 
+        setModalMessage('리뷰가 등록 되었습니다'); // 입력 필드 초기화
+        setReviewText(''); // 입력 필드 초기화
+        setRating(0); // 별점 초기화
+        fetchReviewData();
+      } else if(response.status === 500){
+        setAlertVisible(true)
+        setModalTitle("실패")
+        setModalMessage('리뷰 등록에 실패했습니다. 다시 시도해주세요.'); // 입력 필드 초기화
+        setRating(0); // 별점 초기화
+      }
+    } 
+  )
+    
+
+}
+
+////리뷰 등록
+/////리뷰 수정 모달 열기
+const [selectedReviewSeq, setSelectedReviewSeq] = useState(null); // 선택된 리뷰 ID
+const handleEditClick = (reviewSeq) => {
+  const selectedReview = reviewData.find((review) => review.reviewAfterSeq === reviewSeq);
+  if (selectedReview) {
+    setSelectedReviewSeq(selectedReview.reviewAfterSeq)
+    setReviewText(selectedReview.content); // 리뷰 내용 설정
+    setRating(selectedReview.rating);     // 별점 설정
+    setIsReviewUpdate(true);              // 수정 모달 열기
+  }
+};
+/////
+
+////수정하기
+
+const handleUpdateClick = (e)=>{
+  const updatedReview = {
+    reviewAfterSeq: e.target.getAttribute('data-review-seq'), // 현재 수정 중인 리뷰의 고유 ID
+    content: reviewText,             // 수정된 리뷰 내용
+    rating: rating                   // 수정된 별점
+  };
+  axios
+  .put("http://localhost:8080/api/reviewAfters/ReviewA", updatedReview)
+  .then((response) => {
+    if (response.status === 200) {
+      setAlertVisible(true)
+      setModalTitle("성공") 
+      setModalMessage('리뷰가 수정 되었습니다'); 
+      setIsReviewUpdate(false); // 모달 닫기
+      fetchReviewData();
+      setReviewText(''); // 입력 필드 초기화
+        setRating(0); // 별점 초기화
+    } else {
+      setAlertVisible(true)
+      setModalTitle("실패") 
+      setModalMessage('리뷰가 수정 실패'); // 입력 필드 초기화
+    }
+  })
+  .catch((error) => {
+    console.error("리뷰 수정 중 에러 발생:", error);
+  });
+}
+
+//////리뷰 삭제
+const handleDeleteClick = (reviewSeq) => {
+  const reviewDTO = {
+    reviewAfterSeq: reviewSeq, // 삭제할 리뷰의 Seq
+  };
+
+  // axios.delete로 데이터 전달 시, config 객체 내에 data를 사용하여 요청 본문을 전달
+  axios
+    .delete("http://localhost:8080/api/reviewAfters/ReviewA", { data: reviewDTO }) // 삭제 요청에 reviewDTO를 body로 전달
+    .then((response) => {
+      if (response.status === 200) {
+        setAlertVisible(true);
+        setModalTitle("성공");
+        setModalMessage("리뷰가 삭제되었습니다.");
+        fetchReviewData();
+      } else {
+        setAlertVisible(true);
+        setModalTitle("실패");
+        setModalMessage("리뷰 삭제 실패");
+      }
+    })
+    .catch((error) => {
+      console.error("리뷰 삭제 중 오류 발생:", error);
+      setAlertVisible(true);
+      setModalTitle("오류");
+      setModalMessage("리뷰 삭제 중 오류가 발생했습니다.");
+    });
+};
 
   useEffect(() => {
     if (mapVisible) {
@@ -130,12 +330,158 @@ const PlayDetail = () => {
   }, [mapVisible]); // mapVisible이 변경될 때마다 실행
 
 
+
+
+
+
+
+  /////리뷰 기대기대기대
+  const [reviewTextB, setReviewTextB] = useState(''); // 리뷰 텍스트 상태
+  const [reviewDataB, setReviewDataB] = useState(null); // 초기값을 null로 설정
+  const [isReviewUpdateB,setIsReviewUpdateB]=useState(false);
+/////////리뷰 불러오기
+const fetchReviewBData = async () => {
+  try {
+    const response = await axios.get(`http://localhost:8080/api/reviewBefores/reviewBList?playSeq=${playSeq}`);
+    console.log(response.data);
+
+    const { status, data } = response.data; // 구조 분해 할당
+    if (status === 200) {
+      setReviewDataB(data); // 상태 업데이트
+    } else if (status === 404) {
+      console.log('리뷰 없음');
+    }
+  } catch (error) {
+    console.error('리뷰 데이터를 가져오는 중 오류 발생:', error);
+  }
+};
+
+
+
+
+useEffect(() => {
+  fetchReviewBData(); // 함수 호출
+}, [playSeq]); // playSeq가 변경될 때마다 호출
+////////리뷰 목록
+
+
+
+
+const handleSubmitB = async () => {
+  if (!reviewTextB.trim()) {
+       setModalTitle("유효성")
+        setModalMessage("리뷰 내용을 입력해주세요.")
+        setAlertVisible(true)
+    return;
+  }
+
+
+  // 데이터 객체 생성
+  const reviewDataB = {
+    content: reviewTextB,
+  }
+ 
+    // 서버로 데이터 전송
+    axios.post(`http://localhost:8080/api/reviewBefores/reviewB?playSeq=${playSeq}`, reviewDataB, {
+      withCredentials: true,
+    }).then(response=>{
+
+      if (response.status === 200) {
+        setAlertVisible(true)
+        setModalTitle("성공") 
+        setModalMessage('리뷰가 등록 되었습니다'); // 입력 필드 초기화
+        setReviewTextB(''); // 입력 필드 초기화
+        fetchReviewBData(); // 함수 호출
+        
+      } else if(response.status === 500){
+        setAlertVisible(true)
+        setModalTitle("실패")
+        setModalMessage('리뷰 등록에 실패했습니다. 다시 시도해주세요.'); // 입력 필드 초기화
+        setRating(0); // 별점 초기화
+      }
+    } 
+  )
+    
+
+}
+////////리뷰 등록
+
+const [selectedReviewSeqB, setSelectedReviewSeqB] = useState(null); // 선택된 리뷰 ID
+const handleEditBClick = (reviewSeq) => {
+  const selectedReviewB = reviewDataB.find((review) => review.reviewBeforeSeq === reviewSeq);
+  if (selectedReviewB) {
+    setSelectedReviewSeqB(selectedReviewB.reviewBeforeSeq)
+    setReviewTextB(selectedReviewB.content); // 리뷰 내용 설정
+    setIsReviewUpdateB(true);              // 수정 모달 열기
+  }
+};
+
+////수정하기
+
+const handleUpdateBClick = (e)=>{
+  const updatedReview = {
+    reviewBeforeSeq: e.target.getAttribute('data-review-seq'), // 현재 수정 중인 리뷰의 고유 ID
+    content: reviewTextB,             // 수정된 리뷰 내용
+  };
+  axios
+  .put("http://localhost:8080/api/reviewBefores/reviewB", updatedReview)
+  .then((response) => {
+    if (response.status === 200) {
+      setAlertVisible(true)
+      setModalTitle("성공") 
+      setModalMessage('리뷰가 수정 되었습니다'); 
+      setIsReviewUpdateB(false); // 모달 닫기
+      setReviewTextB(''); // 입력 필드 초기화
+      fetchReviewBData(); // 함수 호출
+    } else {
+      setAlertVisible(true)
+      setModalTitle("실패") 
+      setModalMessage('리뷰가 수정 실패'); // 입력 필드 초기화
+    }
+  })
+  .catch((error) => {
+    console.error("리뷰 수정 중 에러 발생:", error);
+  });
+}
+
+
+//////리뷰 삭제
+const handleDeleteClickB = (reviewSeq) => {
+  const reviewBDTO = {
+    reviewBeforeSeq: reviewSeq, // 삭제할 리뷰의 Seq
+  };
+
+  // axios.delete로 데이터 전달 시, config 객체 내에 data를 사용하여 요청 본문을 전달
+  axios
+    .delete("http://localhost:8080/api/reviewBefores/reviewB", { data: reviewBDTO }) // 삭제 요청에 reviewDTO를 body로 전달
+    .then((response) => {
+      if (response.status === 200) {
+        setAlertVisible(true);
+        setModalTitle("성공");
+        setModalMessage("리뷰가 삭제되었습니다.");
+        fetchReviewData();
+        fetchReviewBData(); // 함수 호출
+      } else {
+        setAlertVisible(true);
+        setModalTitle("실패");
+        setModalMessage("리뷰 삭제 실패");
+      }
+    })
+    .catch((error) => {
+      console.error("리뷰 삭제 중 오류 발생:", error);
+      setAlertVisible(true);
+      setModalTitle("오류");
+      setModalMessage("리뷰 삭제 중 오류가 발생했습니다.");
+    });
+};
+
   return (
+
     <>
       <MainNa />
       <div id="play-detail-container">
         <div id="play-detail-header">
-          <h2 id="play-subject">임시 제목</h2>
+          <h2 id="play-subject">{playData ? playData.name : '임시 제목'}</h2>
           <p>연극 주간 50위</p>
         </div>
 
@@ -147,12 +493,12 @@ const PlayDetail = () => {
           <div id="play-info">
             <div className="play-info-column" id="place-column">
               <img src={place} className="play-info-img" alt="장소" id="place-image" onClick={handleMapClick} />
-              <label className="play-info-column-header">장소</label><p className="play-info-column-content"><span onClick={handleMapClick}>비트캠프</span></p>
+              <label className="play-info-column-header">장소</label><p className="play-info-column-content"><span onClick={handleMapClick}>{playData ? playData.address : '비트캠프'}</span></p>
             </div>
 
             <div className="play-info-column" id="duration-column">
               <img src={duration} className="play-info-img" alt="기간" id="duration-image" />
-              <label className="play-info-column-header">공연기간</label><p className="play-info-column-content">2024.07.01 ~ 2025.01.06</p>
+              <label className="play-info-column-header">공연기간</label><p className="play-info-column-content"> {playData ? `${formatDate(playData.startTime)} ~ ${formatDate(playData.endTime)}` : '2024.07.01 ~ 2025.01.06'}</p>
             </div>
 
             <div className="play-info-column" id="time-column">
@@ -213,9 +559,9 @@ const PlayDetail = () => {
         </div>
 
         <div className="info-content">
-          {visible[0] && <div className="info-section">공연정보 내용</div>}
+          {visible[0] && <div className="info-section">{playData ? playData.description : '공연정보'}</div>}
           {visible[1] && <div className="info-section">판매정보 내용</div>}
-          {visible[2] && <div className="info-section">캐스팅 내용</div>}
+          {visible[2] && <div className="info-section">캐스팅 배우 : {playData ? playData.totalActor : '캐스팅 정보'}</div>}
           {visible[3] && (
             <div className="info-section">
               <div className="info-section-board">
@@ -263,8 +609,8 @@ const PlayDetail = () => {
               </div>
               <hr style={{ width: '100%', borderTop: '2px solid #ccc', margin: '-3px 0' }} />
               <div>
-                {isReviewVisible && <ReviewAfter ratinghandleClick={ratinghandleClick} rating={rating} />}
-                {isExpectationVisible && <ReviewBefore />}
+                {isReviewVisible && <ReviewAfter  handleDeleteClick={handleDeleteClick}handleUpdateClick={handleUpdateClick}selectedReviewSeq={selectedReviewSeq} handleEditClick={handleEditClick}isReviewUpdate={isReviewUpdate}setIsReviewUpdate={setIsReviewUpdate} formatDate={formatDate} reviewData={reviewData}handleSubmit={handleSubmit}ratinghandleClick={ratinghandleClick}setRating={setRating} rating={rating} setReviewText={setReviewText} reviewText={reviewText} setAlertVisible={setAlertVisible}/>}
+                {isExpectationVisible && <ReviewBefore handleDeleteClickB={handleDeleteClickB} selectedReviewSeqB={selectedReviewSeqB}handleUpdateBClick={handleUpdateBClick} handleEditBClick={handleEditBClick} setIsReviewUpdate={setIsReviewUpdate} isReviewUpdateB={isReviewUpdateB}setIsReviewUpdateB={setIsReviewUpdateB} handleSubmitB={handleSubmitB} reviewDataB={reviewDataB} reviewTextB={reviewTextB} setReviewTextB={setReviewTextB}/>}
               </div>
             </div>
           )}
@@ -272,6 +618,44 @@ const PlayDetail = () => {
           {visible[4] && <div className="info-section"><QA /></div>}
         </div>
       </div>
+      {alertVisible && (
+  <div id="alert-modal" className="modal">
+    <div id="alert-modal-content" className="modal-content">
+      <table id='alert-table' style={{ borderCollapse: 'collapse', width: '100%' }}>
+        <tbody>
+          <tr>
+            <td style={{ border: 'none' }}>
+              <h3>{modalTitle}</h3>
+            </td>
+          </tr>
+          <tr>
+            <td style={{ textAlign: 'center' ,border: 'none'}}>
+              <p>{modalMessage}</p>
+            </td>
+          </tr>
+          <tr>
+            <td style={{ border: 'none' }}>
+              <button
+                style={{
+                  backgroundColor: '#8E43E7',
+                  color: 'white',
+                  border: 'none',
+                  width: '100px',
+                  borderRadius: '5px',
+                  marginLeft: '350px',
+                  height: '50px',
+                }}
+                onClick={closeModal}
+              >
+                확인
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+)}
 
       {/* 지도 모달 팝업 */}
       {mapVisible && (
