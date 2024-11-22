@@ -19,6 +19,7 @@ import QA from './playDetail/QA';
 import Reserve from './playDetail/Reserve';
 import { useParams } from 'react-router';
 import axios from 'axios';
+import { useLocation } from 'react-router';
 
 
 const PlayDetail = () => {
@@ -80,10 +81,38 @@ const PlayDetail = () => {
     setConsultVisible(true); // 상담 모달 보이기
   };
 
+  const location = useLocation();  // 현재 URL 정보 가져오기
+  const queryParams = new URLSearchParams(location.search);  // 쿼리 파라미터 추출
+  const playSeq = queryParams.get('playSeq');  // playSeq 값 추출
+/////////공영정보 불러오기
+  useEffect(()=>{
+    console.log(playSeq);
+    axios.get(`http://localhost:8080/api/plays/getPlayOne?playSeq=${playSeq}`, {
+      withCredentials: true, // 인증 정보(쿠키 등)를 함께 보내기 위한 옵션
+  })
+  .then(response => {
+    
+    const { status, message, data } = response.data;
+    console.log(response.data)
+    if (status === 200) {
+      // 데이터가 정상적으로 있으면 콘솔에 출력
+      console.log(data);
 
-  
+      // const {}
+    } else if (status === 400) {
+      // 정보가 없으면 알림창 표시
+      alert('정보가 없는 공연입니다.');
+    }
+    
+  }
+
+)
+
+  },[])
+  ///////리뷰 불러오기
+   useEffect(()=>{},[])
    
-
+///지도 !!!!!!!
   useEffect(() => {
     if (mapVisible) {
         // 모달이 열릴 때마다 지도 초기화
@@ -139,7 +168,7 @@ const PlayDetail = () => {
       <table id="play-detail-table">
         <tbody>
           <tr>
-            <td id="play-subject">제목</td>
+            <td id="play-subject"></td>
           </tr>
           <tr>
             <td rowSpan="15" id="image-column">
