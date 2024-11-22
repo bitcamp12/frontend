@@ -26,8 +26,9 @@ const InfoLock = () => {
                 <p>비밀번호가 타인에게 노출되지 않도록 항상 주의해주세요</p>
             </div>
             <form id="checkPwdForm">
+            <div className={styles.checkPwdContainer}>
                 <div>
-                    <input type="text" name="IconVal" value={selectedIcon} />
+                    <input type="hidden" name="IconVal" value={selectedIcon} />
                 </div>
                 <div>
                     <label htmlFor="id">아이디</label>
@@ -48,6 +49,7 @@ const InfoLock = () => {
                         value={pwd}
                         onChange={(e) => setPwd(e.target.value)}
                     />
+                </div>
                 </div>
                 <div className={styles.btnWrap}>
                     <button className={styles.whiteBtn}>취소</button>
