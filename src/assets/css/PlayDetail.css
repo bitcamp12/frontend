@@ -164,7 +164,8 @@
     padding: 10px;
     cursor: pointer;
     margin: 0;
-    display: flex
+    display: flex;
+    width: 65px;
 }
 
 .review-tab.active {
