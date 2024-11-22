@@ -3,7 +3,6 @@ import Icon from "./Icon";
 
 import styles from "../../assets/css/mypage/InfoModify.module.css";
 import axios from "axios";
-import { useNavigate } from "react-router";
 
 const InfoModify = () => {
     // --수정 버튼을 누르면 보였다 안보였다--------------
@@ -29,7 +28,7 @@ const InfoModify = () => {
         isEmailAuthToggle(!emailAuthToggle);
         console.log(emailAuthToggle);
 
-        // 
+        //
     };
     // --------------
     const [allCheck, setAllCheck] = useState(false);
