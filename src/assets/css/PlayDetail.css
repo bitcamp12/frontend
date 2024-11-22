@@ -322,6 +322,11 @@
     width: 100%;
     /* 버튼 가로 폭 100% 설정 */
 }
+#alert-modal-content{
+    width: 100%;
+    margin-top: -650px;
+}
+
 
 /* 모달 스타일 */
 .modal {
