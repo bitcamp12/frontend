@@ -6,7 +6,6 @@ const Reserve = ({closeModal,DatePicker,selectedDate,setSelectedDate,ko}) => {
           <div id="reserve-modal-content" className="modal-content">
             <span className="close" onClick={closeModal}>&times;</span>
             {/* 예매 콘텐츠 */}
-            <h2>날짜 선택</h2>
             <div style={{marginTop:'50px'}} id="DatePicker">
             <DatePicker
               selected={selectedDate}
@@ -16,8 +15,13 @@ const Reserve = ({closeModal,DatePicker,selectedDate,setSelectedDate,ko}) => {
             />
             </div>
             <div>
-
-            <h4 style={{textAlign:'left',marginLeft:'20px',fontSize:'14px'}}>남은 좌석 : </h4>
+            <p style={{textAlign:'center', fontSize:'16px'}}>남은 좌석 : <strong>70</strong></p>
+            <p style={{textAlign:'center', fontSize:'15px', marginTop:'-10px'}}>
+              OP석 <strong>5</strong> /
+              R석 <strong>15</strong> /
+              S석 <strong>20</strong> /
+              A석 <strong>30</strong> /
+              </p>
             </div>
             
             <div>

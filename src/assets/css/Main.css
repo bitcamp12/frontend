@@ -298,10 +298,10 @@ body {
     font-size: 12pt;
 }
 
-.nav-link:active {
-    font-weight: bold;
+.nav-link.active {
+    font-weight: bold !important;
     color: #8E43E7 !important;
-}
+  }
 
 .nav-link:hover {
     font-weight: bold;
