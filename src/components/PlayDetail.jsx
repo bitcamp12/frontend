@@ -330,6 +330,151 @@ const handleDeleteClick = (reviewSeq) => {
   }, [mapVisible]); // mapVisible이 변경될 때마다 실행
 
 
+
+
+
+
+
+  /////리뷰 기대기대기대
+  const [reviewTextB, setReviewTextB] = useState(''); // 리뷰 텍스트 상태
+  const [reviewDataB, setReviewDataB] = useState(null); // 초기값을 null로 설정
+  const [isReviewUpdateB,setIsReviewUpdateB]=useState(false);
+/////////리뷰 불러오기
+const fetchReviewBData = async () => {
+  try {
+    const response = await axios.get(`http://localhost:8080/api/reviewBefores/reviewBList?playSeq=${playSeq}`);
+    console.log(response.data);
+
+    const { status, data } = response.data; // 구조 분해 할당
+    if (status === 200) {
+      setReviewDataB(data); // 상태 업데이트
+    } else if (status === 404) {
+      console.log('리뷰 없음');
+    }
+  } catch (error) {
+    console.error('리뷰 데이터를 가져오는 중 오류 발생:', error);
+  }
+};
+
+
+
+
+useEffect(() => {
+  fetchReviewBData(); // 함수 호출
+}, [playSeq]); // playSeq가 변경될 때마다 호출
+////////리뷰 목록
+
+
+
+
+const handleSubmitB = async () => {
+  if (!reviewTextB.trim()) {
+       setModalTitle("유효성")
+        setModalMessage("리뷰 내용을 입력해주세요.")
+        setAlertVisible(true)
+    return;
+  }
+
+
+  // 데이터 객체 생성
+  const reviewDataB = {
+    content: reviewTextB,
+  }
+ 
+    // 서버로 데이터 전송
+    axios.post(`http://localhost:8080/api/reviewBefores/reviewB?playSeq=${playSeq}`, reviewDataB, {
+      withCredentials: true,
+    }).then(response=>{
+
+      if (response.status === 200) {
+        setAlertVisible(true)
+        setModalTitle("성공") 
+        setModalMessage('리뷰가 등록 되었습니다'); // 입력 필드 초기화
+        setReviewTextB(''); // 입력 필드 초기화
+        fetchReviewBData(); // 함수 호출
+        
+      } else if(response.status === 500){
+        setAlertVisible(true)
+        setModalTitle("실패")
+        setModalMessage('리뷰 등록에 실패했습니다. 다시 시도해주세요.'); // 입력 필드 초기화
+        setRating(0); // 별점 초기화
+      }
+    } 
+  )
+    
+
+}
+////////리뷰 등록
+
+const [selectedReviewSeqB, setSelectedReviewSeqB] = useState(null); // 선택된 리뷰 ID
+const handleEditBClick = (reviewSeq) => {
+  const selectedReviewB = reviewDataB.find((review) => review.reviewBeforeSeq === reviewSeq);
+  if (selectedReviewB) {
+    setSelectedReviewSeqB(selectedReviewB.reviewBeforeSeq)
+    setReviewTextB(selectedReviewB.content); // 리뷰 내용 설정
+    setIsReviewUpdateB(true);              // 수정 모달 열기
+  }
+};
+
+////수정하기
+
+const handleUpdateBClick = (e)=>{
+  const updatedReview = {
+    reviewBeforeSeq: e.target.getAttribute('data-review-seq'), // 현재 수정 중인 리뷰의 고유 ID
+    content: reviewTextB,             // 수정된 리뷰 내용
+  };
+  axios
+  .put("http://localhost:8080/api/reviewBefores/reviewB", updatedReview)
+  .then((response) => {
+    if (response.status === 200) {
+      setAlertVisible(true)
+      setModalTitle("성공") 
+      setModalMessage('리뷰가 수정 되었습니다'); 
+      setIsReviewUpdateB(false); // 모달 닫기
+      setReviewTextB(''); // 입력 필드 초기화
+      fetchReviewBData(); // 함수 호출
+    } else {
+      setAlertVisible(true)
+      setModalTitle("실패") 
+      setModalMessage('리뷰가 수정 실패'); // 입력 필드 초기화
+    }
+  })
+  .catch((error) => {
+    console.error("리뷰 수정 중 에러 발생:", error);
+  });
+}
+
+
+//////리뷰 삭제
+const handleDeleteClickB = (reviewSeq) => {
+  const reviewBDTO = {
+    reviewBeforeSeq: reviewSeq, // 삭제할 리뷰의 Seq
+  };
+
+  // axios.delete로 데이터 전달 시, config 객체 내에 data를 사용하여 요청 본문을 전달
+  axios
+    .delete("http://localhost:8080/api/reviewBefores/reviewB", { data: reviewBDTO }) // 삭제 요청에 reviewDTO를 body로 전달
+    .then((response) => {
+      if (response.status === 200) {
+        setAlertVisible(true);
+        setModalTitle("성공");
+        setModalMessage("리뷰가 삭제되었습니다.");
+        fetchReviewData();
+        fetchReviewBData(); // 함수 호출
+      } else {
+        setAlertVisible(true);
+        setModalTitle("실패");
+        setModalMessage("리뷰 삭제 실패");
+      }
+    })
+    .catch((error) => {
+      console.error("리뷰 삭제 중 오류 발생:", error);
+      setAlertVisible(true);
+      setModalTitle("오류");
+      setModalMessage("리뷰 삭제 중 오류가 발생했습니다.");
+    });
+};
+
   return (
 
     <>
@@ -465,7 +610,7 @@ const handleDeleteClick = (reviewSeq) => {
               <hr style={{ width: '100%', borderTop: '2px solid #ccc', margin: '-3px 0' }} />
               <div>
                 {isReviewVisible && <ReviewAfter  handleDeleteClick={handleDeleteClick}handleUpdateClick={handleUpdateClick}selectedReviewSeq={selectedReviewSeq} handleEditClick={handleEditClick}isReviewUpdate={isReviewUpdate}setIsReviewUpdate={setIsReviewUpdate} formatDate={formatDate} reviewData={reviewData}handleSubmit={handleSubmit}ratinghandleClick={ratinghandleClick}setRating={setRating} rating={rating} setReviewText={setReviewText} reviewText={reviewText} setAlertVisible={setAlertVisible}/>}
-                {isExpectationVisible && <ReviewBefore />}
+                {isExpectationVisible && <ReviewBefore handleDeleteClickB={handleDeleteClickB} selectedReviewSeqB={selectedReviewSeqB}handleUpdateBClick={handleUpdateBClick} handleEditBClick={handleEditBClick} setIsReviewUpdate={setIsReviewUpdate} isReviewUpdateB={isReviewUpdateB}setIsReviewUpdateB={setIsReviewUpdateB} handleSubmitB={handleSubmitB} reviewDataB={reviewDataB} reviewTextB={reviewTextB} setReviewTextB={setReviewTextB}/>}
               </div>
             </div>
           )}
