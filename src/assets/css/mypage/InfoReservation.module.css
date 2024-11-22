@@ -1,0 +1,126 @@
+body {
+    margin: 0;
+}
+
+section {
+    background-color: aqua;
+    width: 1000px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    padding: 20px;
+    margin: 10px auto;
+}
+
+.infoReservation {
+    background-color: rgb(241, 222, 222);
+    
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.infoReservation h3 {
+    font-size: 25px;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    border-bottom: 3px solid violet;
+}
+
+.memo {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+.memo span {
+    color: red;
+}
+
+/* a */
+.searchSection {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    
+}
+.searchSection select,
+.searchSection input,
+.searchSection button {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.searchSection  button {
+    background-color: white;
+    color: violet;
+    cursor: pointer;
+
+    width: 50px;
+    height: 10px;
+    font-size: 10px;
+}
+.searchSection button:hover {
+    background-color: violet;
+    color:white
+}
+
+/*  */
+.tableContainer {
+    margin-top: 20px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+/*  */
+.note {
+    margin-top: 15px;
+    font-size: 0.9rem;
+  }
+.note span:nth-of-type(1) {
+    color: red;
+}
+.note span:nth-of-type(2) {
+    font-size: 0.8rem;
+    line-height: 1.5;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+ /* 버튼 */
+.btnWrap {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+}
+button {
+    width: 330px;
+    height: 55px;
+    font-size: 18px;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    margin: 0 auto;
+}
+.whiteBtn {
+    background-color: white;
+    color: violet;
+    border: 1px solid violet;
+}
+.violetBtn {
+    background-color: violet;
+    color: white;
+}

@@ -6,6 +6,9 @@ import MainNa from "../MainNa";
 import Footer from "../Footer";
 import InfoLock from "./InfoLock";
 import InfoModify from "./InfoModify";
+import InfoWithdrawal from "./InfoWithdrawal";
+import InfoReservation from "./InfoReservation";
+import InfoBookmark from "./InfoBookmark";
 
 const Infomation = () => {
     const [selectedIcon, setSelectedIcon] = useState("");
@@ -63,7 +66,10 @@ const Infomation = () => {
 
                 <div>
                     {/* <InfoLock /> */}
-                    <InfoModify />
+                    {/* <InfoModify /> */}
+                    {/* <InfoWithdrawal/> */}
+                    {/* <InfoReservation/> */}
+                    <InfoBookmark/>
                 </div>
             </section>
             <div>
