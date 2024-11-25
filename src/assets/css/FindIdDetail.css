@@ -143,6 +143,14 @@
     gap: 10px;
 }
 
+.btnPwdDetailWrap {
+    display: flex;
+    justify-content: center;
+    width: 400px;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
 .whiteBtn {
     background-color: white;
     color: #8E43E7;
@@ -179,6 +187,35 @@
     background-color: #6e2ec3;
 }
 
+.getNumBtn {
+    background-color: #8E43E7;
+    color: white;
+    padding: 5px 10px;
+    color: white;
+    border: none;
+    border-radius: 0.7rem;
+    font-size: 16px;
+    width: 50%;
+    height: 50px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.resubmitBtn {
+    background-color: white;
+    color: #8E43E7;
+    border: 1px solid #8E43E7;
+    padding: 5px 10px;
+    border-radius: 0.7rem;
+    font-size: 16px;
+    font-weight: bold;
+    width: 50%;
+    height: 50px;
+    margin-left: 30px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
 .searchContentIdContent input[type="radio"] {
     appearance: none;
     width: 20px;
@@ -204,4 +241,13 @@
     background-color: #8E43E7;
     border-radius: 50%;
     transform: translate(-50%, -50%);
+}
+
+.timeLeft {
+    margin-bottom: 20px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 30px;
+    margin-top: 10px;
+    text-align: center;
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../assets/css/FindId.css";
+  import "../assets/css/FindId.css";
 import MainNa from "./MainNa";
 
 const FindPwd = () => {
@@ -11,7 +11,7 @@ const FindPwd = () => {
   const [selectedOption, setSelectedOption] = useState(null);
 
   useEffect(() => {
-    if (location.pathname === "/findId") {
+    if (location.pathname === "/findPwd") {
       setSelectedOption("phone");
     }
   }, [location.pathname]);
