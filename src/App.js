@@ -14,6 +14,8 @@ import {
     BrowserRouter,
 } from "react-router-dom";
 import Infomation from "./components/mypage/Infomation";
+import FindIdDetail from "./components/FindIdDetail";
+
 
 const App = () => {
     return (
@@ -26,6 +28,7 @@ const App = () => {
                     <Route path="/signUpForm" element={<Sign_up_Form />} />
                     <Route path="/findId" element={<FindId />} />
                     <Route path="/findPwd" element={<FindPwd />} />
+                    <Route path="/findIdDetail" element={<FindIdDetail/>}/>
                     <Route path="/playDetail" element={<PlayDetail />} />
                     <Route path="/member" element={<Infomation />} />
                 </Routes>
