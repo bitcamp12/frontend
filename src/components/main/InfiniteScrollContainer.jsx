@@ -28,6 +28,11 @@ const InfiniteScrollContainer = () => {
     };
 
     useEffect(() => {
+        fetchData(page);
+        console.log(items); // Check what data is coming through
+    }, []);
+
+    useEffect(() => {
         //뷰포트를 기준으로 target이 보이면 loadMoreItems 함수를 실행
         const options = {
             root: null,
@@ -75,12 +80,12 @@ const InfiniteScrollContainer = () => {
                 {items.map((item, index) => (
                     <div className="infinite-scroll-card" key={index}>
                         <Link to="playDetail">
-                            <img src={item.image_file_name} alt={`Play ${index + 1}`} />
+                            <img src={`https://kr.object.ncloudstorage.com/bitcamp-9th-bucket-135/storage/${item.imageFileName}`} alt="Play Image" />
                         </Link>                        
                         <div className="infinite-scroll-card-body">
                             <h3>{item.name}</h3>
                             <h6 className="infinite-scroll-card-info">장소 : {item.address}</h6>
-                            <h6 className="infinite-scroll-card-info">시간 : {item.start_time}</h6>
+                            <h6 className="infinite-scroll-card-info">시간 : {item.startTime || "정보 없음"}</h6>
                         </div>
                     </div>
                 ))}
