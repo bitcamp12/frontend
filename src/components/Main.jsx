@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "../assets/css/Main.css";
-import "../assets/css/Buttons.css"
+import "../assets/css/Buttons.css";
 import "../assets/css/MainNa.css";
 import React, { useState } from "react";
 
@@ -19,21 +19,23 @@ import Footer from "./Footer";
 import ScrollToTop from "./buttons/ScrollToTop";
 
 const Main = () => {
+    const [selectedTab, setSelectedTab] = useState(0);
 
-  const [selectedTab, setSelectedTab] = useState(0); 
-
-  return (
-    <>
-      <MainNa />
-      <ScrollToTop />
-      <AdvertiseContainer />
-      <ButtonNavContainer setSelectedTab={setSelectedTab} />
-      <SaleContainer />
-      <BarNavContainer selectedTab={selectedTab} setSelectedTab={setSelectedTab}/>
-      <InfiniteScrollContainer />
-      <Footer />
-    </>
-  );
+    return (
+        <>
+            <MainNa />
+            <ScrollToTop />
+            <AdvertiseContainer />
+            <ButtonNavContainer setSelectedTab={setSelectedTab} />
+            <SaleContainer />
+            <BarNavContainer
+                selectedTab={selectedTab}
+                setSelectedTab={setSelectedTab}
+            />
+            <InfiniteScrollContainer />
+            <Footer />
+        </>
+    );
 };
 
 export default Main;
