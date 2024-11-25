@@ -107,8 +107,13 @@ const FindId = () => {
 
   const checkPhoneNum = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:8080/api/members/checkPhone?name=${formData.name}&phone=${formData.phone}&code=${verificationPhoneNumber}`
+      const response = await axios.post(
+        'http://localhost:8080/api/members/checkPhone',
+        {
+          name: formData.name,
+          phone: formData.phone,
+          code: verificationPhoneNumber,
+        }
       );
       if (response.data.status === 200) {
         getIdByPhone();
@@ -123,7 +128,13 @@ const FindId = () => {
 
   const requestEmailVerificationCode = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/members/sendEmailVerificationCode?name=${formData.name}&email=${formData.email}`);
+      const response = await axios.post(
+        'http://localhost:8080/api/members/sendEmailVerificationCode',
+        {
+          name: formData.name,
+          email: formData.email,
+        }
+      );
       if (response.data.status === 200) {
         alert("인증번호가 이메일로 전송되었습니다.");
         setIsEmailCodeSent(true); 
@@ -163,8 +174,13 @@ const FindId = () => {
 
   const getIdByEmail = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:8080/api/members/verifyCodeId?name=${formData.name}&email=${formData.email}&code=${verificationEmailCode}`
+      const response = await axios.post(
+        'http://localhost:8080/api/members/verifyCodeId',
+        {
+          name: formData.name,
+          email: formData.email,
+          code: verificationEmailCode,
+        }
       );
 
       if (response.data.status === 200) {

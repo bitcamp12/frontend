@@ -15,6 +15,8 @@ import {
 } from "react-router-dom";
 import Infomation from "./components/mypage/Infomation";
 import FindIdDetail from "./components/FindIdDetail";
+import FindPwdDetail from "./components/FindPwdDetail";
+import ResetPwd from "./components/ResetPwd";
 
 
 const App = () => {
@@ -29,6 +31,8 @@ const App = () => {
                     <Route path="/findId" element={<FindId />} />
                     <Route path="/findPwd" element={<FindPwd />} />
                     <Route path="/findIdDetail" element={<FindIdDetail/>}/>
+                    <Route path="/findPwdDetail" element={<FindPwdDetail />} />
+                    <Route path="/resetPwd" element={<ResetPwd />} />
                     <Route path="/playDetail" element={<PlayDetail />} />
                     <Route path="/member" element={<Infomation />} />
                 </Routes>
