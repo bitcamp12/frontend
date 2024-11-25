@@ -283,7 +283,10 @@ const Sign_up_Form = () => {
   
     try {
       setCheckNumber('');
-      await axios.get(`http://localhost:8080/api/members/sendNumber?email=${formData.email}`);
+      await axios.post('http://localhost:8080/api/members/sendNumber',
+        {email:formData.email}
+      );
+
       alert('이메일 발송에 성공했습니다');
       setTimer(90); // 3분(180초) 설정
       setIsTimerActive(true);
@@ -310,14 +313,19 @@ const Sign_up_Form = () => {
     }
 
     try {
-      const response = await axios.get(
-        `http://localhost:8080/api/members/verifyCode?email=${encodeURIComponent(formData.email)}&code=${encodeURIComponent(verificationNumber)}`,
+      const response = await axios.post(
+        'http://localhost:8080/api/members/verifyCode',
+        {
+          email: formData.email,
+          code: verificationNumber,
+        },
         {
           validateStatus: (status) => {
-            return status >= 200 && status < 500; // 400 같은 상태 코드도 처리하도록 설정
+            return status >= 200 && status < 500; 
           },
         }
       );
+      
   
       if (response.status === 200 && response.data.message === 'match') {
         setCheckNumber('인증번호가 일치합니다');
@@ -381,11 +389,15 @@ const Sign_up_Form = () => {
     }
   
     try {
-      const response = await axios.get(
-        `http://localhost:8080/api/members/verifyPhone?phoneNum=${encodeURIComponent(formData.phone)}&code=${encodeURIComponent(verificationPhoneNumber)}`,
+      const response = await axios.post(
+        'http://localhost:8080/api/members/verifyPhone',
+        {
+          phoneNum: formData.phone,
+          code: verificationPhoneNumber,
+        },
         {
           validateStatus: (status) => {
-            return status >= 200 && status < 500;
+            return status >= 200 && status < 500; 
           },
         }
       );
