@@ -32,28 +32,30 @@ const FindIdDetail = () => {
           </div>
           <div className="searchTabIdWrapper">
             <div className="searchTabId">
-            <Link to="/findId">아이디 찾기</Link>
+              <Link to="/findId">아이디 찾기</Link>
             </div>
             <div className="searchTabId">
-            <Link to="/findPwd">비밀번호 찾기</Link>
+              <Link to="/findPwd">비밀번호 찾기</Link>
             </div>
           </div>
           <div className="searchContentIdWrapper">
-          <ul>
-            <div className="searchContentIdHeader">
-              <h3>고객님의</h3>
-              <h3>아이디를 찾았어요</h3>
-            </div>
-            <div className="id">
-              <label>
-                <input type="radio" checked={!!userId} readOnly />
-                {userId ? userId : "아이디 찾기를 해주세요"}
-              </label>
-            </div>
-            <div className="icon">
-              <img src={auth} alt="auth" width="50px" className="logo" />
-            </div>
-          </ul>
+            <ul>
+              <div className="searchContentIdHeader">
+                <h3>고객님의</h3>
+                <h3>아이디를 찾았어요</h3>
+              </div>
+              <div className="searchContentIdLabel">
+                <div className="searchContentIdContent">
+                  <label>
+                    <input type="radio" checked={!!userId} readOnly />
+                    {userId ? userId : "아이디 찾기를 해주세요"}
+                  </label>
+                </div>
+                <div className="searchContentIdIcon">
+                  <img src={auth} alt="auth" width="50px" className="logo" />
+                </div>
+              </div>
+            </ul>
           </div>
 
           <div className="btnWrap">
