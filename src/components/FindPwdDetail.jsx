@@ -47,6 +47,12 @@ const FindPwdDetail = () => {
   };
 
   useEffect(() => {
+    if (location.pathname === "/findPwdDetail") {
+      setSelectedOption("phone");
+    }
+  }, [location.pathname]);
+
+  useEffect(() => {
     let phoneCountdown, emailCountdown;
 
     if (isPhoneCodeSent && !isPhoneExpired) {
@@ -176,10 +182,10 @@ const FindPwdDetail = () => {
               <h2>계정 찾기</h2>
             </div>
             <div className="searchTabIdWrapper">
-              <div className="searchTabId">
+              <div className={`searchTab ${location.pathname === "/findIdDetail" ? "active" : ""}`}>
                 <Link to="/findId">아이디 찾기</Link>
               </div>
-              <div className="searchTabId">
+              <div className={`searchTab ${location.pathname === "/findPwdDetail" ? "active" : ""}`}>
                 <Link to="/findPwd">비밀번호 찾기</Link>
               </div>
             </div>
@@ -189,140 +195,148 @@ const FindPwdDetail = () => {
               <ul>
                 <div className="searchContent">
                   <li>
-                  <div className="searchContentHeader">
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={selectedOption === "phone"}
-                        onChange={() => handleOptionSelect("phone")}
-                      />
-                      휴대폰 번호로 찾기
-                    </label>
+                    <div className="searchContentHeader">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={selectedOption === "phone"}
+                          onChange={() => handleOptionSelect("phone")}
+                        />
+                        휴대폰 번호로 찾기
+                      </label>
                     </div>
                     {selectedOption === "phone" && (
                       <div className="searchContentInner">
-                      <p>입력하신 이름과 휴대폰 번호가 회원 정보와 일치한 경우 인증번호가 발송돼요.</p>
-                      <form
-                        onSubmit={(e) => {
-                          e.preventDefault();
-                          if (isPhoneCodeSent) {
-                            checkPhoneNum();
-                          } else {
-                            requestPhoneVerificationCode();
-                          }
-                        }}
-                      >
-                        <div className="inputStyle">
-                          <label>
-                            <input
-                              type="text"
-                              placeholder="이름"
-                              name="name"
-                              value={formData.name}
-                              onChange={handleInputChange}
-                            />
-                          </label>
-                        </div>
-                        <div className="inputStyle">
-                          <label>
-                            <input
-                              type="text"
-                              placeholder="휴대폰 번호"
-                              name="phone"
-                              value={formData.phone}
-                              onChange={handleInputChange}
-                            />
-                          </label>
-                        </div>
-                        {isPhoneCodeSent && (
+                        <p>입력하신 이름과 휴대폰 번호가 회원 정보와 일치한 경우 인증번호가 발송돼요.</p>
+                        <form
+                          onSubmit={(e) => {
+                            e.preventDefault();
+                            if (isPhoneCodeSent) {
+                              checkPhoneNum();
+                            } else {
+                              requestPhoneVerificationCode();
+                            }
+                          }}
+                        >
                           <div className="inputStyle">
                             <label>
                               <input
                                 type="text"
-                                value={verificationPhoneNumber}
-                                onChange={handlePhoneVerificationChange}
-                                placeholder="인증번호"
+                                placeholder="이름"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleInputChange}
                               />
                             </label>
-                            <div>남은 시간: {isPhoneExpired ? "만료됨" : `${phoneTimer}초`}</div>
                           </div>
-                        )}
-                        <div className="btnWrap">
-                              <button type="button" className="submitBtn" onClick={requestPhoneVerificationCode}>다시 받기</button>
-                            </div>
-                        <div>
-                          <button type="submit">{isPhoneCodeSent ? "인증번호 확인" : "인증번호받기"}</button>
-                        </div>
-                      </form>
+                          <div className="inputStyle">
+                            <label>
+                              <input
+                                type="text"
+                                placeholder="휴대폰 번호"
+                                name="phone"
+                                value={formData.phone}
+                                onChange={handleInputChange}
+                              />
+                            </label>
+                          </div>
+                          {isPhoneCodeSent && (
+                            <>
+                              <div className="inputStyle">
+                                <label>
+                                  <input
+                                    type="text"
+                                    value={verificationPhoneNumber}
+                                    onChange={handlePhoneVerificationChange}
+                                    placeholder="인증번호"
+                                  />
+                                </label>
+                              </div>
+                              <div className="timeLeft">남은 시간: {isPhoneExpired ? "만료됨" : `${phoneTimer}초`}</div>
+                            </>
+                          )}
+                          <div className="btnPwdDetailWrap">
+                            <button type="button" className="resubmitBtn" onClick={requestPhoneVerificationCode}>다시 받기</button>
+                            <button type="submit" className="getNumBtn">{isPhoneCodeSent ? "인증번호 확인" : "인증번호받기"}</button>
+                          </div>
+                          <div>
+                          </div>
+                        </form>
                       </div>
                     )}
                   </li>
 
-                  <li>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={selectedOption === "email"}
-                        onChange={() => handleOptionSelect("email")}
-                      />
-                      이메일로 찾기
-                    </label>
-                    {selectedOption === "email" && (
-                      <form
-                        onSubmit={(e) => {
-                          e.preventDefault();
-                          if (isEmailCodeSent) {
-                            navigate("/resetPwd", { state: { id } });
-                          } else {
-                            requestEmailVerificationCode();
-                          }
-                        }}
-                      >
-                        <div>
-                          <label>
-                            이름:
-                            <input
-                              type="text"
-                              placeholder="이름"
-                              name="name"
-                              value={formData.name}
-                              onChange={handleInputChange}
-                            />
-                          </label>
-                        </div>
-                        <div>
-                          <label>
-                            이메일:
-                            <input
-                              type="text"
-                              placeholder="이메일 주소"
-                              name="email"
-                              value={formData.email}
-                              onChange={handleInputChange}
-                            />
-                          </label>
-                        </div>
-                        {isEmailCodeSent && (
-                          <div>
-                            <label>
-                              인증번호:
-                              <input
-                                type="text"
-                                value={verificationEmailCode}
-                                onChange={handleEmailVerificationChange}
-                                placeholder="인증번호"
-                              />
-                            </label>
-                            <button type="button" onClick={requestEmailVerificationCode}>다시 받기</button>
-                            <div>남은 시간: {isEmailExpired ? "만료됨" : `${emailTimer}초`}</div>
+                  <div className="searchContent">
+                    <li>
+                      <div className="searchContentHeader">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={selectedOption === "email"}
+                            onChange={() => handleOptionSelect("email")}
+                          />
+                          이메일로 찾기
+                        </label>
+                        {selectedOption === "email" && (
+                          <div className="searchContentInner">
+                            <p>입력하신 이름과 이메일 주소가 회원 정보와 일치한 경우 인증번호가 발송돼요.</p>
+                            <form
+                              onSubmit={(e) => {
+                                e.preventDefault();
+                                if (isEmailCodeSent) {
+                                  navigate("/resetPwd", { state: { id } });
+                                } else {
+                                  requestEmailVerificationCode();
+                                }
+                              }}
+                            >
+                              <div className="inputStyle">
+                                <label>
+                                  <input
+                                    type="text"
+                                    placeholder="이름"
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleInputChange}
+                                  />
+                                </label>
+                              </div>
+                              <div className="inputStyle">
+                                <label>
+                                  <input
+                                    type="text"
+                                    placeholder="이메일 주소"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                  />
+                                </label>
+                              </div>
+                              {isEmailCodeSent && (
+                                <>
+                                  <div className="inputStyle">
+                                    <label>
+                                      <input
+                                        type="text"
+                                        value={verificationEmailCode}
+                                        onChange={handleEmailVerificationChange}
+                                        placeholder="인증번호"
+                                      />
+                                    </label>
+                                  </div>
+                                  <div className="timeLeft">남은 시간: {isEmailExpired ? "만료됨" : `${emailTimer}초`}</div>
+                                </>
+                              )}
+                              <div className="btnPwdDetailWrap">
+                                <button type="button" className="resubmitBtn" onClick={requestEmailVerificationCode}>다시 받기</button>
+                                <button type="submit" className="getNumBtn">{isEmailCodeSent ? "인증번호 확인" : "인증번호받기"}</button>
+                              </div>
+                            </form>
                           </div>
                         )}
-                        <div>
-                          <button type="submit">{isEmailCodeSent ? "인증번호 확인" : "인증번호받기"}</button>
-                        </div>
-                      </form>
-                    )}
-                  </li>
+                      </div>
+                    </li>
+                  </div>
                 </div>
               </ul>
             </div>

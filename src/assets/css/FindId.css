@@ -149,7 +149,19 @@
     height: 3.8rem;
 }
 
+.inputResetPwdStyle {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 3.8rem;
+    box-sizing: border-box;
+}
+
 .inputPwdStyle input {
+    width: 100%;
+}
+
+.inputResetPwdStyle input {
     width: 100%;
 }
 
@@ -165,6 +177,20 @@
 }
 
 .searchPwdContent input {
+    display: block;
+    height: 50px;
+    padding: 1.2rem 3rem 1.2rem 1.2rem;
+    border: .1rem solid #ddd;
+    border-radius: 0.7rem;
+    background-color: #fff;
+    font-size: 0.9rem;
+}
+
+.searchResetPwdContent {
+    margin-top: 30px;
+}
+
+.searchResetPwdContent input {
     display: block;
     height: 50px;
     padding: 1.2rem 3rem 1.2rem 1.2rem;
@@ -217,6 +243,22 @@
     cursor: pointer;
     font-weight: bold;
 }
+
+.submitResetPwdBtn {
+    background-color: #8E43E7;
+    color: white;
+    padding: 5px 10px;
+    color: white;
+    border: none;
+    border-radius: 0.7rem;
+    font-size: 16px;
+    width: 100%;
+    height: 50px;
+    margin-top: 30px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
 
 .searchContent input[type="checkbox"] {
     appearance: none;
