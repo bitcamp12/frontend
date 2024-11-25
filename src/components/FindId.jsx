@@ -6,17 +6,23 @@ import MainNa from "./MainNa";
 import "../assets/css/FindId.css";
 
 const FindId = () => {
+  const navigate = useNavigate();
   const location = useLocation();
+
   const [selectedOption, setSelectedOption] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
     email: "",
   });
-  const [verificationPhoneNumber, setVerificationPhoneNumber] = useState("");
-  const [verificationEmailCode, setVerificationEmailCode] = useState("");
-  const [isPhoneCodeSent, setIsPhoneCodeSent] = useState(false);
-  const [isEmailCodeSent, setIsEmailCodeSent] = useState(false);
+  const [verificationPhoneNumber, setVerificationPhoneNumber] = useState(""); 
+  const [verificationEmailCode, setVerificationEmailCode] = useState(""); 
+  const [isPhoneCodeSent, setIsPhoneCodeSent] = useState(false); 
+  const [isEmailCodeSent, setIsEmailCodeSent] = useState(false); 
+  const [phoneTimer, setPhoneTimer] = useState(60);
+  const [emailTimer, setEmailTimer] = useState(60);
+  const [isPhoneExpired, setIsPhoneExpired] = useState(false);
+  const [isEmailExpired, setIsEmailExpired] = useState(false);
 
   useEffect(() => {
     if (location.pathname === "/findId") {
@@ -27,26 +33,71 @@ const FindId = () => {
   const handleOptionSelect = (option) => {
     setSelectedOption(option === selectedOption ? null : option);
   };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
   const handlePhoneVerificationChange = (e) => {
     setVerificationPhoneNumber(e.target.value);
   };
+
   const handleEmailVerificationChange = (e) => {
     setVerificationEmailCode(e.target.value);
   };
+
+  useEffect(() => {
+    let phoneCountdown, emailCountdown;
+
+    if (isPhoneCodeSent && !isPhoneExpired) {
+      phoneCountdown = setInterval(() => {
+        setPhoneTimer((prevTimer) => {
+          if (prevTimer <= 1) {
+            clearInterval(phoneCountdown); 
+            setIsPhoneExpired(true); 
+            return 0;
+          }
+          return prevTimer - 1;
+        });
+      }, 1000);
+    }
+
+    if (isEmailCodeSent && !isEmailExpired) {
+      emailCountdown = setInterval(() => {
+        setEmailTimer((prevTimer) => {
+          if (prevTimer <= 1) {
+            clearInterval(emailCountdown); 
+            setIsEmailExpired(true); 
+            return 0;
+          }
+          return prevTimer - 1;
+        });
+      }, 1000);
+    }
+
+    return () => {
+      clearInterval(phoneCountdown); 
+      clearInterval(emailCountdown); 
+    };
+  }, [isPhoneCodeSent, isEmailCodeSent, isPhoneExpired, isEmailExpired]);
+
   const requestPhoneVerificationCode = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:8080/api/members/sendPhoneVerificationCode?name=${formData.name}&phone=${formData.phone}`
-      );
+      const response = await axios.post(
+        'http://localhost:8080/api/members/sendPhoneVerificationCode',
+        {
+          name: formData.name,
+          phoneNum: formData.phone
+        }
+      )
       if (response.data.status === 200) {
         alert("인증번호가 휴대폰으로 전송되었습니다.");
-        setIsPhoneCodeSent(true);
+        setIsPhoneCodeSent(true); 
+        setPhoneTimer(60); 
+        setIsPhoneExpired(false);
       } else {
-        alert("휴대폰 인증번호 전송 실패.");
+        alert("일치하는 회원정보가 없습니다.");
       }
     } catch (error) {
       console.error("에러", error);
@@ -66,7 +117,7 @@ const FindId = () => {
       }
     } catch (error) {
       console.error("에러", error);
-      alert("서버와의 연결에 문제가 발생했습니다.");
+      alert("인증번호를 다시 받아주세요");
     }
   };
 
@@ -75,12 +126,12 @@ const FindId = () => {
       const response = await axios.get(`http://localhost:8080/api/members/sendEmailVerificationCode?name=${formData.name}&email=${formData.email}`);
       if (response.data.status === 200) {
         alert("인증번호가 이메일로 전송되었습니다.");
-        setIsEmailCodeSent(true);
-      }
-      else if (response.data.status === 400) {
-        alert("일치하는 회원이없습니다");
-      }
-      else {
+        setIsEmailCodeSent(true); 
+        setEmailTimer(60); 
+        setIsEmailExpired(false);
+      } else if (response.data.status === 400) {
+        alert("일치하는 회원이 없습니다.");
+      } else {
         alert("이메일 인증번호 전송 실패.");
       }
     } catch (error) {
@@ -97,7 +148,8 @@ const FindId = () => {
       });
 
       if (response.data.status === 200) {
-        alert(`회원님의 ID는: ${response.data.message}`);
+        sessionStorage.setItem("userId", response.data.message); 
+        navigate("/findIdDetail");
       } else if (response.data.status === 404) {
         alert("회원 정보가 없습니다.");
       } else {
@@ -116,7 +168,8 @@ const FindId = () => {
       );
 
       if (response.data.status === 200) {
-        alert(`회원님의 ID는: ${response.data.message}`);
+        sessionStorage.setItem("userId", response.data.message); 
+        navigate("/findIdDetail");
       } else if (response.data.status === 400) {
         alert("회원 정보가 없습니다.");
       } else {
