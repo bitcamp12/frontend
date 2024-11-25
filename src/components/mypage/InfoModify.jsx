@@ -209,7 +209,6 @@ const InfoModify = () => {
     };
 
     if (!data) {
-        // data(id)가 없다면 메인페이지 또는 회원가입페이지로 이동 시키고 싶은데..
         return <div>No data available</div>;
     }
 
