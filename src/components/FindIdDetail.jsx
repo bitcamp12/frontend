@@ -30,6 +30,7 @@ const FindIdDetail = () => {
           <div className="searchIdHeader">
             <h2>계정 찾기</h2>
           </div>
+
           <div className="searchTabIdWrapper">
             <div className="searchTabId">
               <Link to="/findId">아이디 찾기</Link>
@@ -38,6 +39,7 @@ const FindIdDetail = () => {
               <Link to="/findPwd">비밀번호 찾기</Link>
             </div>
           </div>
+          
           <div className="searchContentIdWrapper">
             <ul>
               <div className="searchContentIdHeader">
