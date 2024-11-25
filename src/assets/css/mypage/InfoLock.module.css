@@ -7,8 +7,9 @@
     border-radius: 8px;
     height: 100%;
 }
+
 .member_info_lock h3 {
-    ffont-size: 25px;
+    font-size: 25px;
     padding-bottom: 20px;
     margin-bottom: 20px;
     border-bottom: 2px solid rgb(119, 119, 119);
@@ -21,6 +22,7 @@
     justify-content: center;
     align-items: center;
 }
+
 .notice p:nth-of-type(1) {
     font-size: 18px;
     line-height: 1.5;
@@ -71,17 +73,6 @@
     width: 100%;
     gap: 10px;
 }
-
-.member_info_modify button {
-    width: 330px;
-    height: 55px;
-    font-size: 18px;
-    text-align: center;
-    cursor: pointer;
-    border: none;
-    margin: 20px 0px;
-}
-
 
 .whiteBtn {
     background-color: white;
