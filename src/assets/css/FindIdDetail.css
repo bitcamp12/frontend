@@ -1,0 +1,253 @@
+.searchIdContainer {
+    background-color: white;
+    color: black;
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    vertical-align: baseline;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.searchIdWrapper {
+    max-width: 40rem;
+    margin: 4rem auto;
+    height: 486px;
+    width: 400px;
+}
+
+.searchIdContainer h2 {
+    font-weight: bold;
+    font-size: 28px;
+    text-align: center;
+}
+
+.searchIdHeader {
+    height: auto;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.searchPwdHeader {
+    margin-top: 40px;
+}
+
+.searchPwdHeader h3 {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.searchTabIdWrapper {
+    margin-top: 20px;
+    box-sizing: border-box;
+    display: flex;
+    height: 35px;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 2px solid #e0e0e0;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.searchTabIdWrapper a {
+    color: #666666;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.searchTabId {
+    width: 50%;
+    height: 100%;
+    display: block;
+    text-align: center;
+    position: relative;
+}
+
+.searchTabId.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: black;
+}
+
+.searchTabId.active a {
+    color: black;
+    font-weight: bold;
+}
+
+.searchContentIdWrapper {
+    margin-top: 20px;
+    box-sizing: border-box;
+    display: flex;
+    height: 300px;
+}
+
+.searchContentIdWrapper ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 15px;
+}
+
+.searchContentIdHeader {
+    margin-top: 25px;
+}
+
+.searchContentIdHeader h3{
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.searchContentIdContent {
+    display: flex;
+    align-items: center;
+}
+
+.searchContentIdLabel {
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+    width: 100%;
+}
+
+.searchContentIdContent label {
+    font-size: 17px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.searchContentIdIcon {
+    margin-left: 10px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.searchContentIdContent input {
+    margin-right: 10px;
+}
+
+.btnWrap {
+    display: flex;
+    justify-content: center;
+    width: 400px;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.btnPwdDetailWrap {
+    display: flex;
+    justify-content: center;
+    width: 400px;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.whiteBtn {
+    background-color: white;
+    color: #8E43E7;
+    border: 1px solid #8E43E7;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    width: 180px;
+    height: 45px;
+    cursor: pointer;
+}
+
+.whiteBtn:hover {
+    background-color: #6e2ec3;
+    color: white;
+}
+
+.violetBtn {
+    background-color: #8E43E7;
+    color: white;
+    padding: 5px 10px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    width: 180px;
+    height: 45px;
+    cursor: pointer;
+}
+
+.violetBtn:hover {
+    background-color: #6e2ec3;
+}
+
+.getNumBtn {
+    background-color: #8E43E7;
+    color: white;
+    padding: 5px 10px;
+    color: white;
+    border: none;
+    border-radius: 0.7rem;
+    font-size: 16px;
+    width: 50%;
+    height: 50px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.resubmitBtn {
+    background-color: white;
+    color: #8E43E7;
+    border: 1px solid #8E43E7;
+    padding: 5px 10px;
+    border-radius: 0.7rem;
+    font-size: 16px;
+    font-weight: bold;
+    width: 50%;
+    height: 50px;
+    margin-left: 30px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.searchContentIdContent input[type="radio"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ddd; 
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.searchContentIdContent input[type="radio"]:checked {
+    background-color: white !important;
+}
+
+.searchContentIdContent input[type="radio"]:checked::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    background-color: #8E43E7;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.timeLeft {
+    margin-bottom: 20px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 30px;
+    margin-top: 10px;
+    text-align: center;
+}
