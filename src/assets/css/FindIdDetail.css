@@ -32,6 +32,15 @@
     margin-bottom: 30px;
 }
 
+.searchPwdHeader {
+    margin-top: 40px;
+}
+
+.searchPwdHeader h3 {
+    font-size: 22px;
+    font-weight: bold;
+}
+
 .searchTabIdWrapper {
     margin-top: 20px;
     box-sizing: border-box;
