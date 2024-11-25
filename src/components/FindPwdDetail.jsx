@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const FindId = () => {
+const FindPwdDetail = () => {
+  const location = useLocation();
+  const { id } = location.state; 
+
+
   const navigate = useNavigate();
 
   const [selectedOption, setSelectedOption] = useState(null);
@@ -97,16 +101,21 @@ const FindId = () => {
 
   const checkPhoneNum = async () => {
     try {
-      const response = await axios.post(
-        'http://localhost:8080/api/members/checkPhone',
-        {
-          name: formData.name,
-          phone: formData.phone,
-          code: verificationPhoneNumber,
-        }
-      );
+        const response = await axios.post(
+            'http://localhost:8080/api/members/checkPhone',
+            {
+              name: formData.name,
+              phoneNum: formData.phone,
+              code: verificationPhoneNumber,
+            },
+            {
+              validateStatus: (status) => {
+                return status >= 200 && status < 500; 
+              },
+            }
+          );
       if (response.data.status === 200) {
-        getIdByPhone();
+        navigate("/resetPwd", { state: { id } });
       } else {
         alert("인증번호가 일치하지 않습니다.");
       }
@@ -118,13 +127,18 @@ const FindId = () => {
 
   const requestEmailVerificationCode = async () => {
     try {
-      const response = await axios.post(
-        'http://localhost:8080/api/members/sendEmailVerificationCode',
-        {
-          name: formData.name,
-          email: formData.email,
-        }
-      );
+        const response = await axios.post(
+            'http://localhost:8080/api/members/sendEmailVerificationCode',
+            {
+              name: formData.name,
+              email: formData.email,
+            },
+            {
+              validateStatus: (status) => {
+                return status >= 200 && status < 500; 
+              },
+            }
+          );
       if (response.data.status === 200) {
         alert("인증번호가 이메일로 전송되었습니다.");
         setIsEmailCodeSent(true); 
@@ -141,51 +155,7 @@ const FindId = () => {
     }
   };
 
-  const getIdByPhone = async () => {
-    try {
-      const response = await axios.post("http://localhost:8080/api/members/getIdByPhone", {
-        phone: formData.phone,
-        name: formData.name,
-      });
-
-      if (response.data.status === 200) {
-        sessionStorage.setItem("userId", response.data.message); 
-        navigate("/findIdDetail");
-      } else if (response.data.status === 404) {
-        alert("회원 정보가 없습니다.");
-      } else {
-        alert("알 수 없는 오류가 발생했습니다.");
-      }
-    } catch (error) {
-      console.error("에러", error);
-      alert("서버와의 연결에 문제가 발생했습니다.");
-    }
-  };
-
-  const getIdByEmail = async () => {
-    try {
-      const response = await axios.post(
-        'http://localhost:8080/api/members/verifyCodeId',
-        {
-          name: formData.name,
-          email: formData.email,
-          code: verificationEmailCode,
-        }
-      );
-
-      if (response.data.status === 200) {
-        sessionStorage.setItem("userId", response.data.message); 
-        navigate("/findIdDetail");
-      } else if (response.data.status === 400) {
-        alert("회원 정보가 없습니다.");
-      } else {
-        alert("알 수 없는 오류가 발생했습니다.");
-      }
-    } catch (error) {
-      console.error("에러", error);
-      alert("이메일인증을 다시 진행해주세요");
-    }
-  };
+  
 
   return (
     <div>
@@ -280,7 +250,7 @@ const FindId = () => {
               onSubmit={(e) => {
                 e.preventDefault();
                 if (isEmailCodeSent) {
-                  getIdByEmail(); 
+                    navigate("/resetPwd", { state: { id } });
                 } else {
                   requestEmailVerificationCode(); 
                 }
@@ -336,4 +306,4 @@ const FindId = () => {
   );
 };
 
-export default FindId;
+export default FindPwdDetail;
