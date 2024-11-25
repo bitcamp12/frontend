@@ -268,9 +268,8 @@ const FindId = () => {
                           </label>
                         </div>
                         {isPhoneCodeSent && (
-                          <div>
+                          <div className="inputStyle">
                             <label>
-                              인증번호:
                               <input
                                 type="text"
                                 value={verificationPhoneNumber}
