@@ -1,0 +1,142 @@
+.searchIdContainer {
+    background-color: white;
+    color: black;
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    vertical-align: baseline;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.searchIdWrapper {
+    max-width: 40rem;
+    margin: 4rem auto;
+    height: 486px;
+    width: 400px;
+}
+
+.searchIdContainer h2 {
+    font-weight: bold;
+    font-size: 28px;
+    text-align: center;
+}
+
+.searchIdHeader {
+    height: auto;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.searchTabIdWrapper {
+    margin-top: 20px;
+    box-sizing: border-box;
+    display: flex;
+    height: 35px;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 2px solid #e0e0e0;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.searchTabIdWrapper a {
+    color: #666666;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.searchTabId {
+    width: 50%;
+    height: 100%;
+    display: block;
+    text-align: center;
+    position: relative;
+}
+
+.searchTabId.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: black;
+}
+
+.searchTabId.active a {
+    color: black;
+    font-weight: bold;
+}
+
+.searchContentIdWrapper {
+    margin-top: 20px;
+    box-sizing: border-box;
+    display: flex;
+    height: 300px;
+}
+
+.searchContentIdWrapper ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 15px;
+}
+
+.searchContentIdHeader {
+    margin-top: 25px;
+}
+
+.searchContentIdHeader h3{
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.btnWrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    width: 400px;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.whiteBtn {
+    background-color: white;
+    color: #8E43E7;
+    border: 1px solid #8E43E7;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    width: 180px;
+    height: 45px;
+    cursor: pointer;
+}
+
+.whiteBtn:hover {
+    background-color: #6e2ec3;
+    color: white;
+}
+
+.violetBtn {
+    background-color: #8E43E7;
+    color: white;
+    padding: 5px 10px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    width: 180px;
+    height: 45px;
+    cursor: pointer;
+}
+
+.violetBtn:hover {
+    background-color: #6e2ec3;
+}
