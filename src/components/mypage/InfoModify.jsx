@@ -217,7 +217,7 @@ const InfoModify = () => {
             <h3>회원정보수정</h3>
 
             <form id="checkPwdForm" className={styles.checkPwdForm}>
-                <div className={"styles.member_info_lock"}>
+                <div className={styles.member_info_modify_form}>
                     <h5>기본정보</h5>
                     <dl>
                         <dt>아이디</dt>
@@ -233,7 +233,7 @@ const InfoModify = () => {
                         </dd>
                     </dl>
                     <dl>
-                        <dt>휴대폰번호</dt>
+                        <dt className="editPhone">휴대폰번호</dt>
                         <dd>
                             <span>{data.phone}</span>
                             <a
