@@ -1,0 +1,133 @@
+.member_info_body {
+    margin: 0;
+    background-color: #f8f8f8;
+}
+
+.member_info_section {
+    background-color: rgb(255, 255, 255);
+    width: 1000px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    padding: 20px 0 20px 0;
+    margin: 50px auto;
+}
+
+/* 네비게이션 */
+nav.member_info_nav {
+    width: 20%;
+    border-right: 1px solid #ddd;
+    padding-right: 20px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    position: relative;
+}
+
+nav.member_info_nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: center;
+}
+
+nav.member_info_nav li {
+    margin-bottom: 10px;
+    font-size: 18px;
+    padding: 5px;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+nav.member_info_nav li span {
+    margin-left: 15px;
+}
+
+.member_info_container {
+    width: 75%;
+    height: 100%;
+}
+
+/* container */
+div.member_info_modify {
+    width: 75%;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+div.member_info_modify h3 {
+    font-size: 25px;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    border-bottom: 3px solid violet;
+}
+div.member_info_modify .notice {
+    margin: 40px 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.notice p:nth-of-type(1) {
+    font-size: 22px;
+    line-height: 1.7;
+    margin: 15px 0;
+    text-align: center;
+}
+.notice p:nth-of-type(1) span {
+    color: red;
+}
+.notice p:nth-of-type(2) {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+    color: #7c7c7c;
+}
+
+div.member_info_modify label {
+    width: 150px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    font-size: 18px;
+}
+div.member_info_modify input[type="text"],
+div.member_info_modify input[type="password"] {
+    width: 500px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 18px;
+}
+
+/* 버튼 */
+.btnWrap {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+}
+.member_info_nav button {
+    width: 330px;
+    height: 55px;
+    font-size: 18px;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    margin: 20px 0px;
+}
+.whiteBtn {
+    background-color: white;
+    color: violet;
+    border: 1px solid violet;
+}
+.violetBtn {
+    background-color: violet;
+    color: white;
+}

@@ -1,0 +1,209 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: white;
+    padding: 0 15px;
+}
+
+.login-form {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.input-icon {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #bbb;
+}
+
+.login-input {
+    padding: 12px 12px 12px 40px;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #000000;
+    box-sizing: border-box;
+    outline: none;
+}
+
+#username {
+    border-bottom: 1px solid #ddd;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+#password {
+    border-top: 1px solid #ddd;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.login-input:focus {
+    border-color: black;
+    z-index: 1;
+}
+
+.input-wrapper:focus-within .login-input {
+    border-color: black;
+}
+
+.input-wrapper:focus-within #username {
+    border-bottom: 1px solid black;
+}
+
+.input-wrapper:focus-within #password {
+    border-top: 1px solid black;
+}
+
+
+.login-input::placeholder {
+    color: #bbb;
+}
+
+.error-message {
+    font-size: 14px;
+    color: red;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.submit-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #8E43E7;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.submit-button:hover {
+    background-color: #6A2DB4;
+}
+
+.keep-login-container {
+    display: flex; /* flex로 설정하여 수평 배치 */
+    align-items: center; /* 세로 중앙 정렬 */
+    margin-bottom: 10px;
+}
+
+.keep-login-icon {
+    font-size: 22px;
+    margin-right: 10px;
+    transform: translateY(-3px);
+    color: rgb(199, 199, 199) !important;
+}
+
+.keep-login-icon.active {
+    color: #8E43E7 !important;
+}
+
+label[for="keep-login"] {
+    font-size: 14px;
+    margin-bottom: 15px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.signup-link {
+    margin-top: 5px;
+    font-size: 14px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+}
+
+.link-item {
+    color: black;
+    text-decoration: none;
+}
+
+.link-item span {
+    color: #8E43E7;
+}
+
+.socialLogin-link {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.social-logo {
+    width: 48px;
+    margin-bottom: 20px;
+    border-radius: 50px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .login-container {
+        padding: 10px;
+    }
+
+    .login-form {
+        padding: 20px;
+        width: 90%;
+    }
+
+    .login-title {
+        font-size: 20px;
+    }
+
+    .login-input {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .submit-button {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .signup-link {
+        font-size: 12px;
+    }
+
+    .socialLogin-link {
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .social-logo {
+        width: 40px;
+    }
+}

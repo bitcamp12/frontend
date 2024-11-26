@@ -1,0 +1,161 @@
+/* container */
+.infoWithdrawal {
+    background-color: rgb(255, 255, 255);
+    margin: 0 5px 10px 20px;
+    padding: 20px;
+    border: none;
+    border-radius: 8px;
+    height: 100%;
+  }
+
+.infoWithdrawal h3 {
+    font-size: 25px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid rgb(119, 119, 119);
+}
+
+.infoWithdrawal h5 {
+    font-size: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(209, 209, 209, 0.651);
+}
+
+.infoWithdrawal hr {
+    opacity: 0.1;
+}
+
+.infoWithdrawal > div {
+    width: 685px;
+    margin-top: 20px;
+}
+
+/* container  안내글 */
+.infoWithdrawalContent {
+    margin-bottom: 30px;
+}
+
+.infoWithdrawalContent ul {
+    list-style-type: square;
+    padding-left: 0;
+    margin: 0;
+}
+
+.infoWithdrawalContent li::marker {
+    color:#6e2ec3;
+}
+
+.infoWithdrawalContent ul li {
+    margin-left: 20px;
+    margin-bottom: 15px; /* 각 항목 간의 간격 */
+    vertical-align: baseline;
+}
+
+.infoWithdrawalContent ul li p {
+    font-size: 14px;
+    color:#8E43E7;
+    margin: 0;
+    padding: 0;
+}
+
+.infoWithdrawalContent ul li span {
+    font-size: 13px;
+    color: #707070;
+    display: block;
+    margin-top: 5px;
+}
+
+.infoWithdrawalContent ul li strong {
+    font-size: 14px;
+}
+
+/*  */
+.notice >div{
+    width: 550px;          /* 고정 너비 설정 */
+    margin: 0 auto;        /* 가로 가운데 정렬 */
+    text-align: center;
+    margin-bottom: 5px;
+    justify-content: center;
+    align-items: center;
+}
+
+.noticeCheckbox {
+    display: flex;
+}
+
+.notice input[type="checkbox"] {
+    font-size: 18px;
+    margin-right: 10px; /* 체크박스와 텍스트 사이의 간격 */
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.noticeContent {
+    font-size: 13px;
+}
+
+.notice label {
+    font-size: 15px;
+}
+
+.notice span {
+    font-size: 14px;
+    color: red;
+}
+
+/* 버튼 */
+.btnWrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    width: 100%;
+    gap: 10px;
+}
+
+.member_info_modify button {
+    width: 330px;
+    height: 55px;
+    font-size: 18px;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    margin: 20px 0px;
+}
+
+
+.whiteBtn {
+    background-color: white;
+    color: #8E43E7;
+    border: 1px solid #8E43E7;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 250px;
+    height: 45px;
+    cursor: pointer;
+}
+
+.whiteBtn:hover {
+    background-color: #6e2ec3;
+    color: white;
+}
+
+.violetBtn {
+    background-color: #8E43E7;
+    color: white;
+    padding: 5px 10px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 250px;
+    height: 45px;
+    cursor: pointer;
+}
+
+.violetBtn:hover {
+    background-color: #6e2ec3;
+}
