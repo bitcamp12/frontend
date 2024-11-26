@@ -36,7 +36,7 @@ const ResetPwd = () => {
     try {
       const response = await axios.post("http://localhost:8080/api/members/updatepassword", {
         id: id,
-        pwd: pwd,
+        password: pwd,
       });
 
       if (response.data.message === "success") {
