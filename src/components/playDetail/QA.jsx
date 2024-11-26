@@ -1,6 +1,8 @@
 import React from 'react';
 
-const QA = () => {
+const QA = ({QACount,handleQAEditClick,QAText,setQAText,handleQASubmit,QAData,formatDate,handleQADeleteClick,handleQAClick,isQAUpdate,setIsQAUpdate,selectQASeq}) => {
+  console.log(selectQASeq)
+  
   return (
     <div className="qa-container" style={{ width: '100%' }}>
       {/* Inquiry Form */}
@@ -30,6 +32,8 @@ const QA = () => {
               border: '1px solid #ccc',
               borderRadius: '5px',
             }}
+            value={QAText}
+            onChange={(e) => setQAText(e.target.value)}
           />
         </div>
         <div style={{ textAlign: 'right' }}>
@@ -46,13 +50,14 @@ const QA = () => {
               borderRadius: '5px',
               cursor: 'pointer',
             }}
+            onClick={()=>{handleQASubmit()}}
           />
         </div>
       </div>
 
       <div className="review-list-head">
           <div className='left-side'>
-            <strong className="review-total">총 <span className='num'>0</span>개의 관람평이 등록되었습니다.</strong>
+            <strong className="review-total">총 <span className='num'>{QACount}</span>개의 관람평이 등록되었습니다.</strong>
           </div>
           <div className='right-side'>
             <div className="review-search">
@@ -62,29 +67,103 @@ const QA = () => {
 
       {/* Review Section */}
       <div className="qa-review" style={{ marginTop: '20px' }}>
-        <div id="review-info" style={{ marginBottom: '10px' }}>
-          <h1
-            id="user-info"
-            style={{
+      {QAData && QAData.length > 0 ? (
+  QAData.map((qa, index) => (
+    <div key={index} className="qa-item" style={{ marginTop: '20px' }}>
+      <div id="review-info" style={{ marginBottom: '10px' }}>
+        <h1 id="user-info" style={{
               fontSize: '16px',
               margin: '0 0 5px',
               color: '#333',
-            }}
-          >
-            아이디 | 기간
-          </h1>
-          <h2
-            id="expectation-content"
-            style={{
-              fontSize: '16px',
-              margin: '0',
-              color: '#555',
-            }}
-          >
-            내용
-          </h2>
+            }}> {qa.memberSeq} | {formatDate(qa.createdDate)} </h1>
+        <h2
+          id="expectation-content"
+          style={{
+            fontSize: '16px',
+            margin: '0',
+            color: '#555',
+          }}
+        >
+          {qa.content}
+        </h2>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <button
+              style={{
+                marginLeft: '10px',
+                width: '100px',
+                height: '30px',
+                backgroundColor: '#8E43E7',
+                borderRadius: '5px',
+                color: 'white',
+              }}
+              data-qa-seq={qa.qnaSeq}
+              onClick={() => handleQAEditClick(qa.qnaSeq)}
+            >
+              수정
+            </button>
+            <button
+              style={{
+                marginLeft: '10px',
+                width: '100px',
+                height: '30px',
+                backgroundColor: '#8E43E7',
+                borderRadius: '5px',
+                color: 'white',
+              }}
+              onClick={() => handleQADeleteClick(qa.qnaSeq)}
+            >
+              삭제
+            </button>
+          </div>
         </div>
       </div>
+    </div>
+  ))
+) : (
+  <p>Q&A가 없습니다.</p>
+)}
+      </div>
+
+
+
+
+
+      {isQAUpdate && (
+  <div id="qa-modal" className="modal">
+    <div id="qa-modal-content" className="modal-content">
+      {/* 모달 닫기 버튼 */}
+      <span className="close" onClick={() => setIsQAUpdate(false)}>
+        &times;
+      </span>
+
+      {/* 입력 필드 */}
+      <div className="input-container" style={{ marginBottom: '10px' }}>
+        <input
+          type="text"
+          id="qa-field"
+          name="qa-content"
+          placeholder="Q&A 내용을 입력하세요"
+          className="review-input"
+          value={QAText}
+          onChange={(e) => setQAText(e.target.value)} // 상태 업데이트
+        />
+      </div>
+
+      {/* 수정 버튼 */}
+      <div style={{ textAlign: 'right' }}>
+        <input
+          type="submit"
+          value="수정하기"
+          id="submit-btn"
+          className="submit-btn"
+          data-qa-seq={selectQASeq || ""}
+          onClick={handleQAClick}
+        />
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 };
