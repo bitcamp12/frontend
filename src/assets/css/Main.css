@@ -1,5 +1,5 @@
 body {
-    background: #ffffff;
+    background: white;
     color: #000;
     font-family: Pretendard,-apple-system,BlinkMacSystemFont,system-ui,Roboto,Helvetica Neue,Segoe UI,Apple SD Gothic Neo,Malgun Gothic,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,sans-serif;
     font-size: 14px;
@@ -344,6 +344,11 @@ body {
     font-weight: bold;
     margin: 5px 0;
     padding: 0;
+    font-size: 18px;
+}
+
+.infinite-scroll-card-body h6 {
+    font-size: 14px;
 }
 
 
