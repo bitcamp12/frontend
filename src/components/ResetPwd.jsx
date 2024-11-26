@@ -3,8 +3,17 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import MainNa from './MainNa';
 import "../assets/css/FindId.css";
+import Modal from './Modal/Modal';
 
 const ResetPwd = () => {
+
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
+  const closeModal = () => {
+      setAlertVisible(false);
+  };
+
   const location = useLocation();
   const navigate = useNavigate();
   const { id } = location.state || {};
@@ -23,7 +32,7 @@ const ResetPwd = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setAlertVisible(true);
 
     setError('');
 
@@ -40,12 +49,16 @@ const ResetPwd = () => {
       });
 
       if (response.data.message === "success") {
-        navigate("/login");
+        setModalMessage("회원정보 수정완료");
+
+        setTimeout(() => {
+          navigate("/login", { state: { id } });
+        }, 2000);  //2초뒤에 이동
       } else {
-        alert("회원 정보수정중 오류발생");
+        setModalMessage("입력한 회원 정보에 오류가 있습니다.");
       }
     } catch (error) {
-      alert("오류발생 다시수정해주세요", error);
+      setModalMessage("회원정보 수정중 오류가 발생했습니다.");
     }
   };
 
@@ -107,6 +120,13 @@ const ResetPwd = () => {
           </div>
         </div>
       </div>
+
+      <Modal 
+                closeModal={closeModal} 
+                modalMessage={modalMessage} 
+                modalTitle={modalTitle} 
+                alertVisible={alertVisible} 
+            />   
     </>
   );
 };

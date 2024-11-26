@@ -6,6 +6,9 @@ import NaverLogo from '../assets/images/Naver.png';
 import KakaoLogo from '../assets/images/Kakao.png';
 import '../styles/Login.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import Modal from "./Modal/Modal";
+import { ArrowReturnLeft } from "react-bootstrap-icons";
+import axios from "axios";
 
 const Login = () => {
   const [id, setId] = useState("");
@@ -13,42 +16,48 @@ const Login = () => {
   const [loginError, setLoginError] = useState("");
   const [keepLogin, setKeepLogin] = useState(false);
 
-
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
+  const closeModal = () => {
+      setAlertVisible(false);
+  };
+  
   const navigate = useNavigate();
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-  
-    // 1초 지연 (서버 응답을 기다리는 것처럼 보이게 함)
-    await new Promise((r) => setTimeout(r, 1000));
-  
+  const handleLogin = async (e) => {
+    e.preventDefault();
     try {
       // 로그인 API 호출
-      const response = await fetch("http://localhost:8080/api/members/login", {
-        method: "POST", // POST 요청을 보냄
-        headers: {
-          "Content-Type": "application/json", // JSON 형식으로 보내기
-        },
-        body: JSON.stringify({
-          id: id,         // 사용자 입력 ID
-          password: password, // 사용자 입력 비밀번호
-        }),
+      setAlertVisible(true);
+      const response = await axios.post("http://localhost:8080/api/members/login", {
+        id: id,         // 사용자 입력 ID
+        password: password, // 사용자 입력 비밀번호
       });
   
       // 응답 상태가 200일 때
-      if (response.status === 200) {
+      if (response.data.status === 200) {
+        const data = response.data; // 응답 본문을 data로 저장
+        setModalMessage("환영합니다" + data.message + "님"); 
         setLoginError(""); // 로그인 에러 초기화
-        const data = await response.json(); // 응답 본문을 JSON으로 변환
         sessionStorage.setItem("id", data.message); // 세션 스토리지에 로그인된 사용자 ID 저장
-        navigate("/"); // 로그인 후 홈 페이지로 이동
-      } else {
-        setLoginError("아이디 혹은 비밀번호가 틀렸습니다."); // 로그인 실패 시 에러 메시지 표시
+  
+        // 1초 뒤에 홈 화면으로 이동
+        setTimeout(() => {
+          navigate("/"); 
+        }, 1000);  // 1초 뒤에 이동
+      } else if (response.data.status === 404) {
+        setModalMessage("아이디 혹은 비밀번호가 틀렸습니다.");
+        setAlertVisible(true); // 모달을 표시하도록 설정
       }
     } catch (error) {
       console.error("로그인 중 에러 발생:", error);
-      setLoginError("서버와의 연결에 문제가 발생했습니다."); // 서버 오류 처리
+      setModalMessage("서버와의 연결에 문제가 발생했습니다.");
+      setAlertVisible(true); // 모달을 표시하도록 설정
     }
   };
+  
+  
   
 
   const toggleKeepLogin = () => {
@@ -112,6 +121,14 @@ const Login = () => {
           </div>
         </form>
       </div>
+
+      <Modal 
+                closeModal={closeModal} 
+                modalMessage={modalMessage} 
+                modalTitle={modalTitle} 
+                alertVisible={alertVisible} 
+            />   
+
     </div>
   );
 };
