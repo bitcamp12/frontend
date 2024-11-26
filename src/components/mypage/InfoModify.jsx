@@ -446,10 +446,10 @@ const InfoModify = () => {
                     <dl>
                         <dt>성별</dt>
                         <dd>
-                            <input type="radio" name="gender" id="man" />
+                            <input type="radio" name="M" id="man" />
                             <label htmlFor="man">남</label>
 
-                            <input type="radio" name="gender" id="woman" />
+                            <input type="radio" name="F" id="woman" />
                             <label htmlFor="woman">여</label>
                         </dd>
                     </dl>
