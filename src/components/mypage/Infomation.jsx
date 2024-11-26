@@ -18,11 +18,11 @@ const Infomation = () => {
     };
 
     return (
-        <div>
+        <div className={styles.member_info_body}>
             <div>
                 <MainNa />
             </div>
-            <section>
+            <section className={styles.member_info_section}>
                 <nav className={styles.member_info_nav}>
                     <ul>
                         <li onClick={() => funcSelectedIcon("memberInfo")}>
@@ -66,7 +66,7 @@ const Infomation = () => {
 
                 <div className={styles.member_info_container}>
                     {/* <InfoLock /> */}
-                    <InfoModify />
+                    {/* <InfoModify /> */}
                     {/* <InfoWithdrawal/> */}
                     {/* <InfoReservation/> */}
                     {/* <InfoBookmark/> */}
