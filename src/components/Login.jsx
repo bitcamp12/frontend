@@ -18,37 +18,38 @@ const Login = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-
+  
+    // 1초 지연 (서버 응답을 기다리는 것처럼 보이게 함)
     await new Promise((r) => setTimeout(r, 1000));
-
-    const response = await fetch(
-      "로그인 서버 주소",
-      {
-        method: "POST",
+  
+    try {
+      // 로그인 API 호출
+      const response = await fetch("http://localhost:8080/api/members/login", {
+        method: "POST", // POST 요청을 보냄
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json", // JSON 형식으로 보내기
         },
-        body: JSON.stringify({ id, password }),
+        body: JSON.stringify({
+          id: id,         // 사용자 입력 ID
+          password: password, // 사용자 입력 비밀번호
+        }),
+      });
+  
+      // 응답 상태가 200일 때
+      if (response.status === 200) {
+        setLoginError(""); // 로그인 에러 초기화
+        const data = await response.json(); // 응답 본문을 JSON으로 변환
+        sessionStorage.setItem("id", data.message); // 세션 스토리지에 로그인된 사용자 ID 저장
+        navigate("/"); // 로그인 후 홈 페이지로 이동
+      } else {
+        setLoginError("아이디 혹은 비밀번호가 틀렸습니다."); // 로그인 실패 시 에러 메시지 표시
       }
-    );
-
-    const result = await response.json();
-
-    if (response.status === 200) {
-      setLoginError("");
-
-      sessionStorage.setItem("token", result.token);
-      sessionStorage.setItem("id", result.id);
-      sessionStorage.setItem("email", result.email);
-      sessionStorage.setItem("name", result.name);
-
-      console.log("로그인성공, 이메일주소:" + result.name);
-
-      navigate("/");
-    } else {
-      setLoginError("이메일 혹은 비밀번호가 틀렸습니다.");
+    } catch (error) {
+      console.error("로그인 중 에러 발생:", error);
+      setLoginError("서버와의 연결에 문제가 발생했습니다."); // 서버 오류 처리
     }
   };
+  
 
   const toggleKeepLogin = () => {
     setKeepLogin(!keepLogin);
