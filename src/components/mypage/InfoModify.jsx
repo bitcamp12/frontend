@@ -251,8 +251,7 @@ const InfoModify = () => {
                                     className={styles.modifyEnter}
                                 >
                                     <p>
-                                        휴대폰번호 변경을 위해 인증이
-                                        필요합니다.
+                                        휴대폰번호 변경을 위해 인증이 필요합니다.
                                     </p>
                                     <div>
                                         <div className={styles.enterBox}>
