@@ -20,6 +20,20 @@ const QA = ({QACount,handleQAEditClick,QAText,setQAText,handleQASubmit,QAData,fo
                 </div>
               </div>
         <div className="input-container" style={{ marginBottom: '10px' }}>
+        <input
+            type="text"
+            id="inquiry-field-title"
+            name="inquiry-title"
+            placeholder="제목을 입력하세요"
+            className="input-field"
+            style={{
+              width: '100%',
+              padding: '10px',
+              border: '1px solid #ccc',
+              borderRadius: '5px',
+            }}
+          />
+
           <input
             type="text"
             id="inquiry-field"
