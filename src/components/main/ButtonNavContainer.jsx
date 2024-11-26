@@ -10,24 +10,24 @@ import { HashLink } from 'react-router-hash-link';
 
 const ButtonNavContainer = ({setSelectedTab}) => {
   return (
-    <div class="button-nav-container">
+    <div className="button-nav-container">
       <HashLink to="#bar-nav-container">
-        <button type="button" class="btn btn-secondary btn-lg custom-btn" onClick={() => setSelectedTab(0)}>
+        <button type="button" className="btn btn-secondary btn-lg custom-btn" onClick={() => setSelectedTab(0)}>
           연극 전체보기
         </button>
       </HashLink>
       <HashLink to="#bar-nav-container">
-        <button type="button" class="btn btn-secondary btn-lg custom-btn" onClick={() => setSelectedTab(1)}>
+        <button type="button" className="btn btn-secondary btn-lg custom-btn" onClick={() => setSelectedTab(1)}>
           📉 선착순 최저가
         </button>
       </HashLink>
       <HashLink to="#bar-nav-container">
-        <button type="button" class="btn btn-secondary btn-lg custom-btn" onClick={() => setSelectedTab(2)}>
+        <button type="button" className="btn btn-secondary btn-lg custom-btn" onClick={() => setSelectedTab(2)}>
           🔥 요즘 HOT
         </button>
       </HashLink>
       <HashLink to="#bar-nav-container">
-        <button type="button" class="btn btn-secondary btn-lg custom-btn" onClick={() => setSelectedTab(3)}>
+        <button type="button" className="btn btn-secondary btn-lg custom-btn" onClick={() => setSelectedTab(3)}>
           ⏰ 리미티드
         </button>
       </HashLink>
