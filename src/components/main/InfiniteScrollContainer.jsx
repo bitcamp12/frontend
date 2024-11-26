@@ -85,8 +85,8 @@ const InfiniteScrollContainer = () => {
                         </Link>                        
                         <div className="infinite-scroll-card-body">
                             <h3>{item.name}</h3>
-                            <h6 className="infinite-scroll-card-info">장소 : {item.address || "정보 없음"}</h6>
-                            <h6 className="infinite-scroll-card-info">시간 : {item.startTime || "정보 없음"}</h6>
+                            <h6 className="infinite-scroll-card-info">{item.address || "정보 없음"}</h6>
+                            <h6 className="infinite-scroll-card-info">{item.startTime} ~ {item.endTime}</h6>
                         </div>
                     </div>
                 ))}

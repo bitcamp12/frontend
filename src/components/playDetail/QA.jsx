@@ -24,7 +24,7 @@ const QA = ({QACount,handleQAEditClick,QAText,setQAText,handleQASubmit,QAData,fo
             type="text"
             id="inquiry-field-title"
             name="inquiry-title"
-            placeholder="문의 제목을 입력하세요"
+            placeholder="제목을 입력하세요"
             className="input-field"
             style={{
               width: '100%',
