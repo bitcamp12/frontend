@@ -5,6 +5,14 @@ import axios from "axios";
 const FindId = () => {
   const navigate = useNavigate();
 
+  const [modalMessage, setModalMessage] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const hideModal = () => {
+    setIsModalVisible(false);
+  };
+
+
   const [selectedOption, setSelectedOption] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
@@ -82,16 +90,16 @@ const FindId = () => {
         }
       )
       if (response.data.status === 200) {
-        alert("인증번호가 휴대폰으로 전송되었습니다.");
+        setModalMessage("인증번호가 휴대폰으로 전송되었습니다.");
         setIsPhoneCodeSent(true); 
         setPhoneTimer(60); 
         setIsPhoneExpired(false);
       } else {
-        alert("일치하는 회원정보가 없습니다.");
+        setModalMessage("일치하는 회원 정보가 없습니다.");
       }
     } catch (error) {
       console.error("에러", error);
-      alert("서버와의 연결에 문제가 발생했습니다.");
+      setModalMessage("서버와의 연결에 문제가 발생했습니다.");
     }
   };
 
@@ -117,6 +125,8 @@ const FindId = () => {
   };
 
   const requestEmailVerificationCode = async () => {
+
+    setIsModalVisible(true);
     try {
       const response = await axios.post(
         'http://localhost:8080/api/members/sendEmailVerificationCode',
@@ -126,18 +136,18 @@ const FindId = () => {
         }
       );
       if (response.data.status === 200) {
-        alert("인증번호가 이메일로 전송되었습니다.");
         setIsEmailCodeSent(true); 
         setEmailTimer(60); 
         setIsEmailExpired(false);
+        setModalMessage("이메일 번호가 전송 되었습니다");
       } else if (response.data.status === 400) {
-        alert("일치하는 회원이 없습니다.");
+        setModalMessage("일치하는 회원이 없습니다.");
       } else {
-        alert("이메일 인증번호 전송 실패.");
+        setModalMessage("이메일 인증번호 전송이 실패하였습니다.");
       }
     } catch (error) {
       console.error("에러", error);
-      alert("서버와의 연결에 문제가 발생했습니다.");
+      setModalMessage("서버에 문제가 있습니다.");
     }
   };
 
@@ -332,8 +342,35 @@ const FindId = () => {
           )}
         </li>
       </ul>
+      
+      {isModalVisible && (
+        <div
+          className="modal fade show"
+          id="Modal"
+          tabIndex="-1"
+          aria-labelledby="deleteSuccessLabel"
+          aria-hidden="true"
+          style={{ display: 'block' }} // Modal이 보여질 때 스타일 설정
+        >
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="deleteSuccessLabel">알림</h5>
+                <button type="button" className="btn-close" aria-label="Close" onClick={hideModal}></button>
+              </div>
+              <div className="modal-body" id="modalMessage">
+                {modalMessage}
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="custom-btn" onClick={hideModal}>확인</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
-};
+}
+
 
 export default FindId;

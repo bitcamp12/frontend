@@ -27,10 +27,11 @@ const ResetPwd = () => {
     try {
       const response = await axios.post("http://localhost:8080/api/members/updatepassword", {
         id: id,
-        pwd: pwd,
+        password: pwd,
       });
 
       if (response.data.message === "success") {
+        alert("회원정보 수정이 완료되었습니다.")
         navigate("/login"); 
       } else {
         alert("회원 정보수정중 오류발생");
