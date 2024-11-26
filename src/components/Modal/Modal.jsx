@@ -1,11 +1,13 @@
 import React from 'react';
 
-const Modal = () => {
+
+
+const Modal = ({closeModal,modalMessage,modalTitle,alertVisible}) => {
     return (
         <div>
              {alertVisible && (
   <div id="alert-modal" className="modal">
-    <div id="alert-modal-content" className="modal-content">
+    <div id="alert-modal-content" className="modal-content" >
       <table id='alert-table' style={{ borderCollapse: 'collapse', width: '100%' }}>
         <tbody>
           <tr>
