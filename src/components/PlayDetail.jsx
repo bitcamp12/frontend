@@ -880,6 +880,7 @@ const handleQADeleteClick = (qnaSeq) => {
                 </div>
               </div>
               <div className="reviews-header">
+                <div class="reviews-tabs-both">
                 <div
                   className={`review-tab ${isReviewVisible ? 'active' : ''}`}
                   onClick={handleReviewClick}
@@ -892,8 +893,11 @@ const handleQADeleteClick = (qnaSeq) => {
                 >
                   기대평
                 </div>
+                </div>
                 <div className="review-tab-filler"></div>
                 <div className="order-by">
+                  {!isExpectationVisible && (
+                    <>
                   <span
                     id="latest-order"
                     className={selected === 'latest' ? 'selected' : ''}
@@ -909,6 +913,8 @@ const handleQADeleteClick = (qnaSeq) => {
                   >
                     별점순
                   </span>
+                  </>
+                  )}
                 </div>
               </div>
               <hr style={{ width: '100%', borderTop: '2px solid #ccc', margin: '-3px 0' }} />

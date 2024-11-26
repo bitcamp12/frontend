@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../../assets/css/mypage/Infomation.module.css";
 
 import Icon from "./Icon";
@@ -9,6 +9,7 @@ import InfoModify from "./InfoModify";
 import InfoWithdrawal from "./InfoWithdrawal";
 import InfoReservation from "./InfoReservation";
 import InfoBookmark from "./InfoBookmark";
+import axios from "axios";
 
 const Infomation = () => {
     const [selectedIcon, setSelectedIcon] = useState("");
@@ -16,6 +17,21 @@ const Infomation = () => {
     const funcSelectedIcon = (iconName) => {
         setSelectedIcon(iconName);
     };
+
+    const [sessionId, setSessionId] = useState("");
+
+    // 로그인한 세션을 가져오기
+    useEffect(() => {
+        axios
+            .get("http://localhost:8080/api/members/getSession", {
+                withCredentials: true, // 세션을 포함한 요청
+            })
+            .then((response) => {
+                console.log(response.data.data);
+                setSessionId(response.data.data);
+            })
+            .catch((error) => console.log(error));
+    }, []);
 
     return (
         <div className={styles.member_info_body}>
@@ -65,9 +81,9 @@ const Infomation = () => {
                 </nav>
 
                 <div className={styles.member_info_container}>
-                    {/* <InfoLock /> */}
+                    {/* {sessionId && <InfoLock id={sessionId} />} */}
                     {/* <InfoModify /> */}
-                    {/* <InfoWithdrawal/> */}
+                    {/* <InfoWithdrawal /> */}
                     {/* <InfoReservation/> */}
                     {/* <InfoBookmark/> */}
                 </div>
