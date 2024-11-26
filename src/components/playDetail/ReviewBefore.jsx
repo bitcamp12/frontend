@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ReviewBefore = ({selectedReviewSeqB,handleDeleteClickB,handleUpdateBClick,handleEditBClick,setIsReviewUpdate,isReviewUpdateB,setIsReviewUpdateB,handleSubmitB,reviewDataB,setReviewTextB,reviewTextB}) => {
+const ReviewBefore = ({reviewBCount,selectedReviewSeqB,handleDeleteClickB,handleUpdateBClick,handleEditBClick,setIsReviewUpdate,isReviewUpdateB,setIsReviewUpdateB,handleSubmitB,reviewDataB,setReviewTextB,reviewTextB}) => {
     return (
         <div id="expectation-form" style={{ width: '100%' }}>
             <div id="expectation-container">
@@ -29,7 +29,7 @@ const ReviewBefore = ({selectedReviewSeqB,handleDeleteClickB,handleUpdateBClick,
 
             <div className="review-list-head">
                 <div className='left-side'>
-                    <strong className="review-total">총 <span className='num'>0</span>개의 관람평이 등록되었습니다.</strong>
+                    <strong className="review-total">총 <span className='num'>{reviewBCount}</span>개의 관람평이 등록되었습니다.</strong>
                 </div>
                 <div className='right-side'>
                     <div className="review-search">

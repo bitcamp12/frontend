@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 
-const ReviewAfter = ({handleDeleteClick,handleUpdateClick,selectedReviewSeq,handleEditClick,isReviewUpdate,setIsReviewUpdate,formatDate, reviewData,ratinghandleClick, rating ,handleSubmit,reviewText,setReviewText,setRating,setAlertVisible}) => {
+const ReviewAfter = ({reviewACount,handleDeleteClick,handleUpdateClick,selectedReviewSeq,handleEditClick,isReviewUpdate,setIsReviewUpdate,formatDate, reviewData,ratinghandleClick, rating ,handleSubmit,reviewText,setReviewText,setRating,setAlertVisible}) => {
 
   
   
@@ -52,7 +52,7 @@ const ReviewAfter = ({handleDeleteClick,handleUpdateClick,selectedReviewSeq,hand
       
       <div className="review-list-head">
           <div className='left-side'>
-            <strong className="review-total">총 <span className='num'>0</span>개의 관람평이 등록되었습니다.</strong>
+            <strong className="review-total">총 <span className='num'>{reviewACount}</span>개의 관람평이 등록되었습니다.</strong>
           </div>
           <div className='right-side'>
             <div className="review-search">
