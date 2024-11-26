@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import MainNa from "./MainNa";
+
+import "../assets/css/FindId.css";
 
 const FindId = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [modalMessage, setModalMessage] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -28,6 +32,12 @@ const FindId = () => {
   const [isPhoneExpired, setIsPhoneExpired] = useState(false);
   const [isEmailExpired, setIsEmailExpired] = useState(false);
 
+  useEffect(() => {
+    if (location.pathname === "/findId") {
+      setSelectedOption("phone");
+    }
+  }, [location.pathname]);
+
   const handleOptionSelect = (option) => {
     setSelectedOption(option === selectedOption ? null : option);
   };
@@ -38,11 +48,11 @@ const FindId = () => {
   };
 
   const handlePhoneVerificationChange = (e) => {
-    setVerificationPhoneNumber(e.target.value); 
+    setVerificationPhoneNumber(e.target.value);
   };
 
   const handleEmailVerificationChange = (e) => {
-    setVerificationEmailCode(e.target.value); 
+    setVerificationEmailCode(e.target.value);
   };
 
   useEffect(() => {
@@ -198,177 +208,168 @@ const FindId = () => {
   };
 
   return (
-    <div>
-      {/* 최상단 뒤로가기 버튼 */}
-      <button onClick={() => navigate("/login")}>←</button>
-
-      {/* 아이디 찾기, 비밀번호 찾기 링크 */}
-      계정 찾기
-      <div>
-        <a href="/findId">아이디 찾기</a> | <a href="/findPwd">비밀번호 찾기</a>
-      </div>
-
-      {/* 옵션 리스트 */}
-      <ul>
-        <li>
-          <label>
-            <input
-              type="checkbox"
-              checked={selectedOption === "phone"}
-              onChange={() => handleOptionSelect("phone")}
-            />
-            휴대폰 번호로 찾기
-          </label>
-          {selectedOption === "phone" && (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (isPhoneCodeSent) {
-                  checkPhoneNum(); 
-                } else {
-                  requestPhoneVerificationCode(); 
-                }
-              }}
-            >
-              <div>
-                <label>
-                  이름:
-                  <input
-                    type="text"
-                    placeholder="이름"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                  />
-                </label>
-              </div>
-              <div>
-                <label>
-                  휴대폰:
-                  <input
-                    type="text"
-                    placeholder="휴대폰 번호"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                  />
-                </label>
-              </div>
-              {isPhoneCodeSent && (
-                <div>
-                  <label>
-                    인증번호:
-                    <input
-                      type="text"
-                      value={verificationPhoneNumber}
-                      onChange={handlePhoneVerificationChange}
-                      placeholder="인증번호"
-                    />
-                  </label>
-                  <div>남은 시간: {isPhoneExpired ? "만료됨" : `${phoneTimer}초`}</div>
-                  <button type="button" onClick={requestPhoneVerificationCode}>다시 받기</button>
-                </div>
-              )}
-              <div>
-                <button type="submit">{isPhoneCodeSent ? "인증번호 확인" : "인증번호받기"}</button>
-              </div>
-            </form>
-          )}
-        </li>
-
-        <li>
-          <label>
-            <input
-              type="checkbox"
-              checked={selectedOption === "email"}
-              onChange={() => handleOptionSelect("email")}
-            />
-            이메일로 찾기
-          </label>
-          {selectedOption === "email" && (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (isEmailCodeSent) {
-                  getIdByEmail(); 
-                } else {
-                  requestEmailVerificationCode(); 
-                }
-              }}
-            >
-              <div>
-                <label>
-                  이름:
-                  <input
-                    type="text"
-                    placeholder="이름"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                  />
-                </label>
-              </div>
-              <div>
-                <label>
-                  이메일:
-                  <input
-                    type="text"
-                    placeholder="이메일 주소"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                  />
-                </label>
-              </div>
-              {isEmailCodeSent && (
-                <div>
-                  <label>
-                    인증번호:
-                    <input
-                      type="text"
-                      value={verificationEmailCode}
-                      onChange={handleEmailVerificationChange}
-                      placeholder="인증번호"
-                    />
-                  </label>
-                  <button type="button" onClick={requestEmailVerificationCode}>다시 받기</button>
-                  <div>남은 시간: {isEmailExpired ? "만료됨" : `${emailTimer}초`}</div>
-                </div>
-              )}
-              <div>
-                <button type="submit">{isEmailCodeSent ? "인증번호 확인" : "인증번호받기"}</button>
-              </div>
-            </form>
-          )}
-        </li>
-      </ul>
-      
-      {isModalVisible && (
-        <div
-          className="modal fade show"
-          id="Modal"
-          tabIndex="-1"
-          aria-labelledby="deleteSuccessLabel"
-          aria-hidden="true"
-          style={{ display: 'block' }} // Modal이 보여질 때 스타일 설정
-        >
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="deleteSuccessLabel">알림</h5>
-                <button type="button" className="btn-close" aria-label="Close" onClick={hideModal}></button>
-              </div>
-              <div className="modal-body" id="modalMessage">
-                {modalMessage}
-              </div>
-              <div className="modal-footer">
-                <button type="button" className="custom-btn" onClick={hideModal}>확인</button>
-              </div>
+    <>
+      <MainNa />
+      <div className="searchContainer">
+        <div className="searchIdWrapper">
+          {/* 최상단 뒤로가기 버튼 */}
+          {/* <button onClick={() => Navigate("/login")}>←</button> */}
+          <div className="searchHeader">
+            <h2>계정 찾기</h2>
+            {/* 아이디 찾기, 비밀번호 찾기 링크 */}
+          </div>
+          <div className="searchTabWrapper">
+            <div className={`searchTab ${location.pathname === "/findId" ? "active" : ""}`}>
+              <a href="/findId">아이디 찾기</a>
+            </div>
+            <div className={`searchTab ${location.pathname === "/findPwd" ? "active" : ""}`}>
+              <a href="/findPwd">비밀번호 찾기</a>
             </div>
           </div>
+
+          {/* 옵션 리스트 */}
+          <div className="searchContentWrapper">
+            <ul>
+              <div className="searchContent">
+                <li>
+                  <div className="searchContentHeader">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={selectedOption === "phone"}
+                        onChange={() => handleOptionSelect("phone")}
+                      />
+                      휴대폰 번호로 찾기
+                    </label>
+                  </div>
+                  {selectedOption === "phone" && (
+                    <div className="searchContentInner">
+                      <p>입력하신 이름과 휴대폰 번호가 회원 정보와 일치한 경우 인증번호가 발송돼요.</p>
+                      <form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          if (isPhoneCodeSent) {
+                            checkPhoneNum();
+                          } else {
+                            requestPhoneVerificationCode();
+                          }
+                        }}
+                      >
+                        <div className="inputStyle">
+                          <label>
+                            <input
+                              type="text"
+                              placeholder="이름"
+                              name="name"
+                              value={formData.name}
+                              onChange={handleInputChange}
+                            />
+                          </label>
+                        </div>
+                        <div className="inputStyle">
+                          <label>
+                            <input
+                              type="text"
+                              placeholder="휴대폰 번호"
+                              name="phone"
+                              value={formData.phone}
+                              onChange={handleInputChange}
+                            />
+                          </label>
+                        </div>
+                        {isPhoneCodeSent && (
+                          <div className="inputStyle">
+                            <label>
+                              <input
+                                type="text"
+                                value={verificationPhoneNumber}
+                                onChange={handlePhoneVerificationChange}
+                                placeholder="인증번호"
+                              />
+                            </label>
+                          </div>
+                        )}
+                        <div className="btnWrap">
+                          <button type="submit" className="submitBtn">{isPhoneCodeSent ? "인증번호 확인" : "인증번호받기"}</button>
+                        </div>
+                      </form>
+                    </div>
+                  )}
+                </li>
+              </div>
+
+              <div className="searchContent">
+                <li>
+                  <div className="searchContentHeader">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={selectedOption === "email"}
+                        onChange={() => handleOptionSelect("email")}
+                      />
+                      이메일로 찾기
+                    </label>
+                  </div>
+                  {selectedOption === "email" && (
+                    <div className="searchContentInner">
+                      <p>입력하신 이름과 이메일 주소가 회원 정보와 일치한 경우 인증번호가 발송돼요.</p>
+                      <form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          if (isEmailCodeSent) {
+                            getIdByEmail();
+                          } else {
+                            requestEmailVerificationCode();
+                          }
+                        }}
+                      >
+                        <div className="inputStyle">
+                          <label>
+                            <input
+                              type="text"
+                              placeholder="이름"
+                              name="name"
+                              value={formData.name}
+                              onChange={handleInputChange}
+                            />
+                          </label>
+                        </div>
+                        <div className="inputStyle">
+                          <label>
+                            <input
+                              type="text"
+                              placeholder="이메일 주소"
+                              name="email"
+                              value={formData.email}
+                              onChange={handleInputChange}
+                            />
+                          </label>
+                        </div>
+                        {isEmailCodeSent && (
+                          <div className="inputStyle">
+                            <label>
+                              <input
+                                type="text"
+                                value={verificationEmailCode}
+                                onChange={handleEmailVerificationChange}
+                                placeholder="인증번호"
+                              />
+                            </label>
+                          </div>
+                        )}
+                        <div className="btnWrap">
+                          <button type="submit" className="submitBtn">{isEmailCodeSent ? "인증번호 확인" : "인증번호받기"}</button>
+                        </div>
+                      </form>
+                    </div>
+                  )}
+                </li>
+              </div>
+            </ul>
+          </div>
         </div>
-      )}
-    </div>
+      </div >
+    </>
   );
 }
 

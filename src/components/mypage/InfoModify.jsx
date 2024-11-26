@@ -3,34 +3,53 @@ import Icon from "./Icon";
 
 import styles from "../../assets/css/mypage/InfoModify.module.css";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 const InfoModify = () => {
-    // --수정 버튼을 누르면 보였다 안보였다--------------
-    // --핸드폰번호수정--
-    const [phoneToggle, isPhoneToggle] = useState(false); // false이면 안보이게 하고 싶어요
-    const editPhoneBtnToggle = () => {
-        isPhoneToggle(!phoneToggle);
-    };
-    const [phoneAuthToggle, isPhoneAuthToggle] = useState(false);
-    const editPhoneAuthBtnToggle = (e) => {
-        e.preventDefault();
-        isPhoneAuthToggle(!phoneAuthToggle);
-        console.log(phoneAuthToggle);
-    };
-    // --이메일 수정--
-    const [emailToggle, isEmailToggle] = useState(false);
-    const editEmailBtnToggle = () => {
-        isEmailToggle(!emailToggle);
-    };
-    const [emailAuthToggle, isEmailAuthToggle] = useState(false);
-    const editEmailAuthBtnToggle = (e) => {
-        e.preventDefault();
-        isEmailAuthToggle(!emailAuthToggle);
-        console.log(emailAuthToggle);
+    const navigate = useNavigate();
 
-        //
+    const [newPhoneNum, setNewPhoneNum] = useState("");
+    const [newEmail, setNewEmail] = useState("");
+
+    const validatePhoneNumber = (value) => {
+        const phoneRegex = /^01[0-9]-\d{3,4}-\d{4}$/; // 정규식 : /로 감싼 문자. 또는 new RegExp("")
+        return phoneRegex.test(value);
     };
-    // --------------
+    const validateEmail = (value) => {
+        const EmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return EmailRegex.test(value);
+    };
+
+    const [phoneDivMessage, setPhoneDivMessage] = useState("");
+    const [emailDivMessage, setEmailDivMessage] = useState("");
+
+    const handleChange = (e) => {
+        const { id, value } = e.target;
+
+        switch (id) {
+            case "newPhone":
+                setNewPhoneNum(value);
+                if (validatePhoneNumber(value)) {
+                    setPhoneDivMessage("성공");
+                } else {
+                    setPhoneDivMessage("입력 형식이 다릅니다.");
+                }
+                break;
+            case "newEmail":
+                setNewEmail(value);
+                if (validateEmail(value)) {
+                    setEmailDivMessage("성공");
+                } else {
+                    setEmailDivMessage("입력형식이 다릅니다.");
+                }
+                console.log(validateEmail(value));
+                break;
+            default:
+                break;
+        }
+    };
+
+    // --체크박스------------
     const [allCheck, setAllCheck] = useState(false);
     const [itemCheck, setCheckItem] = useState({
         smsCheck: false,
@@ -60,23 +79,137 @@ const InfoModify = () => {
     };
 
     // --------------
-    const [data, setDate] = useState(null);
-
+    const [data, setData] = useState(null);
     useEffect(() => {
         // 세션에서 id를 가져옵니다.
-        const userId = "15"; //sessionStorage.getItem("id");
+        const userId = "apple"; //sessionStorage.getItem("id");
 
         axios
             .get(`http://localhost:8080/api/members/getUserInfo/${userId}`)
             .then((response) => {
                 console.log(response);
-                setDate(response.data);
+                setData(response.data);
             })
             .catch((error) => console.error("ERROR(사용자정보수정): ", error));
     }, []);
 
+    // ------------
+    // --수정 버튼을 누르면 보였다 안보였다--------------
+    const [timer, setTimer] = useState(0); // 타이머 초를 0으로 초기화
+    const [isTimerActive, setIsTimerActive] = useState(false); // true이면 타이머 작동
+    useEffect(() => {
+        let interval;
+        if (isTimerActive && timer > 0) {
+            interval = setInterval(() => {
+                setTimer((prevTimer) => prevTimer - 1);
+            }, 1000);
+        } else if (timer === 0) {
+            setIsTimerActive(false); // Stop the timer once it reaches 0
+        }
+        return () => clearInterval(interval); // Cleanup on component unmount or timer stop
+    }, [isTimerActive, timer]);
+    // 시간을 mm:ss 형식으로 변환하는 함수
+    const formatTime = (timeInSeconds) => {
+        const minutes = Math.floor(timeInSeconds / 60);
+        const seconds = timeInSeconds % 60;
+        return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+            2,
+            "0"
+        )}`;
+    };
+    // --핸드폰번호수정--
+    const [phoneToggle, isPhoneToggle] = useState(false); // false이면 안보이게 하고 싶어요
+    const editPhoneBtnToggle = () => {
+        isPhoneToggle(!phoneToggle);
+    };
+    const [phoneAuthToggle, isPhoneAuthToggle] = useState(false);
+    const editPhoneAuthBtnToggle = (e) => {
+        e.preventDefault();
+        isPhoneAuthToggle(!phoneAuthToggle);
+        console.log(phoneAuthToggle);
+    };
+    // --이메일 수정--
+    const [emailToggle, isEmailToggle] = useState(false);
+    const editEmailBtnToggle = () => {
+        isEmailToggle(!emailToggle);
+    };
+    const [emailAuthToggle, isEmailAuthToggle] = useState(false); // 인증번호 전송
+    const editEmailAuthBtnToggle = (e) => {
+        e.preventDefault();
+        isEmailAuthToggle(!emailAuthToggle);
+        console.log(emailAuthToggle);
+    };
+
+    useEffect(() => {
+        axios
+            .get("http://localhost:8080/api/members/sendNumber", {
+                params: { email: newEmail },
+            })
+            .then((response) => {
+                setTimer(3 * 60);
+                setIsTimerActive(true);
+                console.log(response);
+            })
+            .catch();
+    }, [emailAuthToggle]);
+
+    const [emailVerifyCode, setEmailVerifyCode] = useState("");
+    const [emailDivVerifyMessage, setEmailDivVerifyMessage] = useState("");
+    const checkVerifyNumber = () => {
+        axios
+            .get("http://localhost:8080/api/members/verifyCode", {
+                params: {
+                    email: newEmail,
+                    code: emailVerifyCode,
+                },
+            })
+            .then((response) => {
+                console.log(response.data);
+                if (response.data.message === "match") {
+                    setEmailDivVerifyMessage("인증번호 일치");
+                    //타이머중지
+                    setIsTimerActive(false);
+                } else if (response.data.message === "not_match") {
+                    setEmailDivVerifyMessage("인증번호 일치하지 않습니다.");
+                } else {
+                    setEmailDivVerifyMessage("오류발생");
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    const modifyUserInfo = async (data) => {
+        const modifiedData = {
+            memberSeq: data.memberSeq, // 필수 값
+            id: data.id, // 필수 값
+            name: data.name, // 필수 값
+            password: data.password, // 필수 값
+            email: data.email, // 필수 값
+            phone: data.phone, // 필수 값
+        };
+        console.log(modifiedData);
+
+        axios
+            .put(
+                "http://localhost:8080/api/members/modifyUserInfo",
+                modifiedData,
+                {
+                    headers: {
+                        "Content-Type": "application/json", // 요청의 내용이 JSON임을 서버에 알려줍니다.
+                    },
+                }
+            )
+            .then((response) => {
+                console.log(response.data);
+                navigate("/");
+            })
+            .catch();
+    };
+
     if (!data) {
-        // data(id)가 없다면 메인페이지 또는 회원가입페이지로 이동 시키고 싶은데..
+        //
         return <div>No data available</div>;
     }
 
@@ -85,7 +218,7 @@ const InfoModify = () => {
             <h3>회원정보수정</h3>
 
             <form id="checkPwdForm" className={styles.checkPwdForm}>
-                <div className={"styles.member_info_lock"}>
+                <div className={styles.member_info_modify_form}>
                     <h5>기본정보</h5>
                     <dl>
                         <dt>아이디</dt>
@@ -101,7 +234,7 @@ const InfoModify = () => {
                         </dd>
                     </dl>
                     <dl>
-                        <dt>휴대폰번호</dt>
+                        <dt className="editPhone">휴대폰번호</dt>
                         <dd>
                             <span>{data.phone}</span>
                             <a
@@ -125,9 +258,11 @@ const InfoModify = () => {
                                         <div className={styles.enterBox}>
                                             <input
                                                 type="text"
-                                                name=""
-                                                id=""
-                                                placeholder="변경 휴대폰번호입력 (-없이)"
+                                                id="newPhone"
+                                                name="phone"
+                                                value={newPhoneNum}
+                                                placeholder="변경 휴대폰번호입력 (000-0000-0000)"
+                                                onChange={handleChange}
                                             />
                                             <div className={styles.iconWrap}>
                                                 <Icon
@@ -136,13 +271,21 @@ const InfoModify = () => {
                                                     color="gray"
                                                 />
                                             </div>
-                                            <div className={styles.checkDiv}>
-                                                잘못된 휴대폰 형식입니다.
+                                            <div
+                                                id="checkNewPhoneDiv"
+                                                className={styles.checkDiv}
+                                            >
+                                                {phoneDivMessage}
                                             </div>
                                         </div>
                                         <button
                                             className={`${styles.violetBtn} ${styles.w100}`}
                                             onClick={editPhoneAuthBtnToggle}
+                                            style={{
+                                                display: phoneAuthToggle
+                                                    ? "none"
+                                                    : "inline-block",
+                                            }}
                                         >
                                             인증번호요청
                                         </button>
@@ -163,6 +306,17 @@ const InfoModify = () => {
                                                 </div>
                                                 <button
                                                     className={`${styles.violetBtn} ${styles.w100}`}
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        setData({
+                                                            ...data,
+                                                            phone: newPhoneNum,
+                                                        });
+                                                        isPhoneToggle(
+                                                            !phoneToggle
+                                                        );
+                                                        setNewPhoneNum("");
+                                                    }}
                                                 >
                                                     인증
                                                 </button>
@@ -192,9 +346,11 @@ const InfoModify = () => {
                                         <div className={styles.enterBox}>
                                             <input
                                                 type="text"
-                                                name="newEmail"
                                                 id="newEmail"
+                                                name="email"
+                                                value={newEmail}
                                                 placeholder="변경 이메일"
+                                                onChange={handleChange}
                                             />
                                             <div className={styles.iconWrap}>
                                                 <Icon
@@ -214,12 +370,20 @@ const InfoModify = () => {
                                                     gmail.com
                                                 </option>
                                             </select>
-                                            <div className={styles.checkDiv}>
-                                                이메일을 입력해주세요
+                                            <div
+                                                id="checkNewEmailDiv"
+                                                className={styles.checkDiv}
+                                            >
+                                                {emailDivMessage}
                                             </div>
                                             <button
                                                 className={`${styles.violetBtn} ${styles.w100}`}
                                                 onClick={editEmailAuthBtnToggle}
+                                                style={{
+                                                    display: emailAuthToggle
+                                                        ? "none"
+                                                        : "inline-block",
+                                                }}
                                             >
                                                 인증번호요청
                                             </button>
@@ -229,15 +393,39 @@ const InfoModify = () => {
                                                 <input
                                                     type="text"
                                                     name=""
-                                                    id=""
+                                                    id="emailVerifyCode"
+                                                    value={emailVerifyCode}
+                                                    onChange={(e) =>
+                                                        setEmailVerifyCode(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    onBlur={checkVerifyNumber}
                                                 />
                                                 <div
                                                     className={styles.iconWrap}
                                                 >
-                                                    남은시간:3:00
+                                                    {formatTime(timer)}
+                                                </div>
+                                                <div
+                                                    id="checkEmailDivVerify"
+                                                    className={styles.checkDiv}
+                                                >
+                                                    {emailDivVerifyMessage}
                                                 </div>
                                                 <button
                                                     className={`${styles.violetBtn} ${styles.w100}`}
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        setData({
+                                                            ...data,
+                                                            email: newEmail,
+                                                        });
+                                                        isEmailToggle(
+                                                            !emailToggle
+                                                        );
+                                                        setNewEmail("");
+                                                    }}
                                                 >
                                                     인증
                                                 </button>
@@ -312,7 +500,12 @@ const InfoModify = () => {
 
                 <div className={styles.btnWrap}>
                     <button className={styles.whiteBtn}>취소</button>
-                    <button className={styles.violetBtn}>확인</button>
+                    <button
+                        className={styles.violetBtn}
+                        onClick={() => modifyUserInfo(data)}
+                    >
+                        확인
+                    </button>
                 </div>
             </form>
         </div>

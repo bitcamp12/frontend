@@ -1,9 +1,9 @@
-body {
+.member_info_body {
     margin: 0;
     background-color: #f8f8f8;
 }
 
-section {
+.member_info_section {
     background-color: rgb(255, 255, 255);
     width: 1000px;
     display: flex;

@@ -352,7 +352,8 @@
     background-color: white;
     padding: 20px;
     border-radius: 10px;
-    width: 80%;
+    width: 100%;
+    min-height: 670px;
     max-width: 500px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -593,7 +594,6 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin-top: 20px;
 }
 
 /* 전체 날짜 선택기의 테두리 제거 */
@@ -786,7 +786,7 @@
 #reserve-button-time-right,
 #reserve-button-time-left,
 #reserve-button-time {
-    margin: 10px auto; /* Center buttons horizontally */
+    margin: 10px 0 10px 0; /* Center buttons horizontally */
 }
 
 #reserve-button-time-right:hover,
