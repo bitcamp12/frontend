@@ -50,8 +50,8 @@ const AdvertiseContainer = () => {
       >
         {plays.map((item, index) => (
           <SwiperSlide key={index}>
-            <div class="card">
-              <Link to={`/playDetail?=${item.playSeq}`}>
+            <div className="card">
+              <Link to={`/playDetail/${item.playSeq}`}>
               <img
                 src={`https://kr.object.ncloudstorage.com/bitcamp-9th-bucket-135/storage/${item.imageFileName}`}
                 alt={item.name}
