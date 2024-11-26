@@ -83,9 +83,10 @@ const InfoModify = () => {
     useEffect(() => {
         // 세션에서 id를 가져옵니다.
         const userId = "apple"; //sessionStorage.getItem("id");
+        console.log(userId);
 
         axios
-            .get(`http://localhost:8080/api/members/getUserInfo/${userId}`)
+            .get(`http://localhost:8080/api/members/getUserInfo/me/${userId}`)
             .then((response) => {
                 console.log(response);
                 setData(response.data);
@@ -141,16 +142,18 @@ const InfoModify = () => {
     };
 
     useEffect(() => {
-        axios
-            .post("http://localhost:8080/api/members/sendNumber", {
-                params: { email: newEmail },
-            })
-            .then((response) => {
-                setTimer(3 * 60);
-                setIsTimerActive(true);
-                console.log(response);
-            })
-            .catch();
+        if (newEmail === "") return; // 임시
+        else
+            axios
+                .post("http://localhost:8080/api/members/sendNumber", {
+                    params: { email: newEmail },
+                })
+                .then((response) => {
+                    setTimer(3 * 60);
+                    setIsTimerActive(true);
+                    console.log(response);
+                })
+                .catch((error) => console.log(error));
     }, [emailAuthToggle]);
 
     const [emailVerifyCode, setEmailVerifyCode] = useState("");
@@ -251,7 +254,8 @@ const InfoModify = () => {
                                     className={styles.modifyEnter}
                                 >
                                     <p>
-                                        휴대폰번호 변경을 위해 인증이 필요합니다.
+                                        휴대폰번호 변경을 위해 인증이
+                                        필요합니다.
                                     </p>
                                     <div>
                                         <div className={styles.enterBox}>
