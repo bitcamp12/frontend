@@ -4,16 +4,17 @@ import axios from "axios";
 import MainNa from "./MainNa";
 
 import "../assets/css/FindId.css";
+import Modal from "./Modal/Modal";
 
 const FindId = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
   const [modalMessage, setModalMessage] = useState("");
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const hideModal = () => {
-    setIsModalVisible(false);
+  const closeModal = () => {
+      setAlertVisible(false);
   };
 
 
@@ -91,6 +92,7 @@ const FindId = () => {
   }, [isPhoneCodeSent, isEmailCodeSent, isPhoneExpired, isEmailExpired]);
 
   const requestPhoneVerificationCode = async () => {
+    setAlertVisible(true);
     try {
       const response = await axios.post(
         'http://localhost:8080/api/members/sendPhoneVerificationCode',
@@ -100,10 +102,10 @@ const FindId = () => {
         }
       )
       if (response.data.status === 200) {
-        setModalMessage("인증번호가 휴대폰으로 전송되었습니다.");
         setIsPhoneCodeSent(true); 
         setPhoneTimer(60); 
         setIsPhoneExpired(false);
+        setModalMessage("인증번호가 휴대폰으로 전송되었습니다.");
       } else {
         setModalMessage("일치하는 회원 정보가 없습니다.");
       }
@@ -114,29 +116,30 @@ const FindId = () => {
   };
 
   const checkPhoneNum = async () => {
+    setAlertVisible(true);
     try {
       const response = await axios.post(
         'http://localhost:8080/api/members/checkPhone',
         {
           name: formData.name,
-          phone: formData.phone,
+          phoneNum: formData.phone,
           code: verificationPhoneNumber,
         }
       );
       if (response.data.status === 200) {
         getIdByPhone();
       } else {
-        alert("인증번호가 일치하지 않습니다.");
+        setModalMessage("인증번호가 일치하지않습니다");
       }
     } catch (error) {
       console.error("에러", error);
-      alert("인증번호를 다시 받아주세요");
+      setModalMessage("서버 오류");
     }
   };
 
   const requestEmailVerificationCode = async () => {
 
-    setIsModalVisible(true);
+    setAlertVisible(true);
     try {
       const response = await axios.post(
         'http://localhost:8080/api/members/sendEmailVerificationCode',
@@ -162,6 +165,7 @@ const FindId = () => {
   };
 
   const getIdByPhone = async () => {
+    setAlertVisible(true);
     try {
       const response = await axios.post("http://localhost:8080/api/members/getIdByPhone", {
         phone: formData.phone,
@@ -172,17 +176,18 @@ const FindId = () => {
         sessionStorage.setItem("userId", response.data.message); 
         navigate("/findIdDetail");
       } else if (response.data.status === 404) {
-        alert("회원 정보가 없습니다.");
+        setModalMessage("회원정보가 없습니다");
       } else {
-        alert("알 수 없는 오류가 발생했습니다.");
+        setModalMessage("오류 발생");
       }
     } catch (error) {
       console.error("에러", error);
-      alert("서버와의 연결에 문제가 발생했습니다.");
+      setModalMessage("서버에 문제가 있습니다.");
     }
   };
 
   const getIdByEmail = async () => {
+    setAlertVisible(true);
     try {
       const response = await axios.post(
         'http://localhost:8080/api/members/verifyCodeId',
@@ -197,13 +202,13 @@ const FindId = () => {
         sessionStorage.setItem("userId", response.data.message); 
         navigate("/findIdDetail");
       } else if (response.data.status === 400) {
-        alert("회원 정보가 없습니다.");
+        setModalMessage("회원정보가 없습니다");
       } else {
-        alert("알 수 없는 오류가 발생했습니다.");
+        setModalMessage("오류 발생");
       }
     } catch (error) {
       console.error("에러", error);
-      alert("이메일인증을 다시 진행해주세요");
+      setModalMessage("이메일 인증을 다시 해주세요");
     }
   };
 
@@ -290,6 +295,25 @@ const FindId = () => {
                           </div>
                         )}
                         <div className="btnWrap">
+                      
+                      {isPhoneCodeSent ? (
+                        <>
+                          <div className="timeLeft">
+                            남은 시간: {isPhoneExpired ? "만료됨" : `${phoneTimer}초`}
+                          </div>
+                          <button
+                            type="button"
+                            className="resubmitBtn"
+                            onClick={() => {
+                              setIsPhoneCodeSent(false); // 기존 상태 초기화
+                              requestPhoneVerificationCode(); // 인증번호 다시 요청
+                            }}
+                          >
+                            다시받기
+                          </button>
+                        </>
+                      ) : null}
+
                           <button type="submit" className="submitBtn">{isPhoneCodeSent ? "인증번호 확인" : "인증번호받기"}</button>
                         </div>
                       </form>
@@ -358,6 +382,25 @@ const FindId = () => {
                           </div>
                         )}
                         <div className="btnWrap">
+
+                        {isEmailCodeSent ? (
+                        <>
+                          <div className="timeLeft">
+                            남은 시간: {isEmailExpired ? "만료됨" : `${emailTimer}초`}
+                          </div>
+                          <button
+                            type="button"
+                            className="resubmitBtn"
+                            onClick={() => {
+                              setIsPhoneCodeSent(false); // 기존 상태 초기화
+                              requestPhoneVerificationCode(); // 인증번호 다시 요청
+                            }}
+                          >
+                            다시받기
+                          </button>
+                        </>
+                      ) : null}
+
                           <button type="submit" className="submitBtn">{isEmailCodeSent ? "인증번호 확인" : "인증번호받기"}</button>
                         </div>
                       </form>
@@ -367,8 +410,16 @@ const FindId = () => {
               </div>
             </ul>
           </div>
-        </div>
+        </div>          
       </div >
+
+             <Modal 
+                closeModal={closeModal} 
+                modalMessage={modalMessage} 
+                modalTitle={modalTitle} 
+                alertVisible={alertVisible} 
+            />       
+
     </>
   );
 }
