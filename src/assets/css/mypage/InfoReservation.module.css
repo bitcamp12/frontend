@@ -1,112 +1,152 @@
 .infoReservation {
-    background-color: rgb(241, 222, 222);
-    
-    margin: 20px;
+    background-color: rgb(255, 255, 255);
+    margin: 0 5px 10px 20px;
     padding: 20px;
-    border: 1px solid #ddd;
+    border: none;
     border-radius: 8px;
-}
-
-.infoReservation h3 {
+    height: 100%;
+  }
+  
+  .infoReservation h3 {
     font-size: 25px;
-    padding-bottom: 10px;
+    padding-bottom: 20px;
     margin-bottom: 20px;
-    border-bottom: 3px solid violet;
-}
-
-.memo {
-    font-size: 0.9rem;
+    border-bottom: 2px solid rgb(119, 119, 119);
+  }
+  
+  .memo {
+    font-size: 14px;
     margin-bottom: 10px;
-}
-.memo span {
+  }
+  
+  .memo span {
     color: red;
-}
-
-/* a */
-.searchSection {
+  }
+  
+  .searchSection {
     margin-bottom: 20px;
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    
-}
-.searchSection select,
-.searchSection input,
-.searchSection button {
+    align-items: center;
+    gap: 5px;
+  }
+
+  .searchSectionTime {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .searchSectionDate {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-left: 25px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .searchSection select,
+  .searchSection input,
+  .searchSection button {
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 4px;
-}
-.searchSection  button {
-    background-color: white;
-    color: violet;
-    cursor: pointer;
-
-    width: 50px;
-    height: 10px;
-    font-size: 10px;
-}
-.searchSection button:hover {
-    background-color: violet;
-    color:white
-}
-
-/*  */
-.tableContainer {
-    margin-top: 20px;
-}
-.table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.th, .td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ddd;
-}
-
-.th {
-    background-color: #f4f4f4;
-}
-
-/*  */
-.note {
-    margin-top: 15px;
-    font-size: 0.9rem;
+    border-radius: 5px;
+    height: 40px;
   }
-.note span:nth-of-type(1) {
+  
+  .searchSection button {
+    background-color: white;
+    cursor: pointer;
+    width: 70px;
+    font-size: 12px;
+  }
+  
+  .searchSection button:hover {
+    background-color: #6e2ec3;
+    color: white;
+  }
+  
+  .listContainer {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .listHeader {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+  
+  .listItem {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .listItem .fullRow {
+    grid-column: span 6;
+    text-align: center;
+  }
+  
+  .pagination {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 15px;
+  }
+  
+  .note {
+    margin-top: 15px;
+    font-size: 14px
+  }
+  
+  .note span:nth-of-type(1) {
     color: red;
-}
-.note span:nth-of-type(2) {
-    font-size: 0.8rem;
+  }
+  
+  .note span:nth-of-type(2) {
+    font-size: 13px;
     line-height: 1.5;
-    margin-left: 10px;
     margin-bottom: 10px;
-}
-
- /* 버튼 */
+  }
+  
+/* 버튼 */
 .btnWrap {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    margin-top: 30px;
     width: 100%;
     gap: 10px;
 }
-.button {
-    width: 330px;
-    height: 55px;
-    font-size: 18px;
-    text-align: center;
-    cursor: pointer;
-    border: none;
-    margin: 0 auto;
-}
-.whiteBtn {
-    background-color: white;
-    color: violet;
-    border: 1px solid violet;
-}
+  
 .violetBtn {
-    background-color: violet;
+    background-color: #8E43E7;
     color: white;
+    padding: 5px 10px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 250px;
+    height: 45px;
+    cursor: pointer;
 }
+  
+.violetBtn:hover {
+    background-color: #6e2ec3;
+}
+  
