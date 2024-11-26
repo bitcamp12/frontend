@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ReviewBefore = ({reviewBCount,selectedReviewSeqB,handleDeleteClickB,handleUpdateBClick,handleEditBClick,setIsReviewUpdate,isReviewUpdateB,setIsReviewUpdateB,handleSubmitB,reviewDataB,setReviewTextB,reviewTextB}) => {
+const ReviewBefore = ({setShearchKey,shearchBBtn,searchKey,setSearchType,searchType,reviewBCount,selectedReviewSeqB,handleDeleteClickB,handleUpdateBClick,handleEditBClick,setIsReviewUpdate,isReviewUpdateB,setIsReviewUpdateB,handleSubmitB,reviewDataB,setReviewTextB,reviewTextB}) => {
     return (
         <div id="expectation-form" style={{ width: '100%' }}>
             <div id="expectation-container">
@@ -35,14 +35,16 @@ const ReviewBefore = ({reviewBCount,selectedReviewSeqB,handleDeleteClickB,handle
                     <div className="review-search">
                         <form className="review-search-form">
                             <div className="review-combo-box">
-                                <select className="review-combo-box-select">
+                                <select className="review-combo-box-select"
+                                 value={searchType}
+                                 onChange={(e) => setSearchType(e.target.value)}>
                                     <option value="title">글제목</option>
                                     <option value="id">아이디</option>
                                 </select>
                             </div>
                             <div className='review-search-box'>
-                                <input type="text" className="review-search-input" placeholder="검색어를 입력하세요." />
-                                <button className="review-search-btn">검색</button>
+                                <input type="text" className="review-search-input" value={searchKey} onChange={(e)=>setShearchKey(e.target.value)} placeholder="검색어를 입력하세요." />
+                                <button type='button' className="review-search-btn" onClick={shearchBBtn}>검색</button>
                             </div>
                         </form>
                     </div>
