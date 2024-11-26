@@ -861,7 +861,7 @@ const handleQADeleteClick = (qnaSeq) => {
         </div>
       </div>
 
-      <Modal/>
+      <Modal alertVisible={alertVisible} modalTitle={modalTitle} modalMessage={modalMessage} closeModal={closeModal}/>
      
 
       {/* 지도 모달 팝업 */}
