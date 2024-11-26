@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../assets/css/Main.css";
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -12,6 +12,7 @@ const InfiniteScrollContainer = () => {
     const [hasMore, setHasMore] = useState(true);
     //useRef로 target을 만들어서 새로운 item을 로딩할 때 사용
     const target = useRef(null);
+    const navigate = useNavigate();
 
     const fetchData = async (pageNumber) => {
         try {
@@ -79,12 +80,12 @@ const InfiniteScrollContainer = () => {
             <div className="infinite-scroll-container" id="infinite-scroll-container">
                 {items.map((item, index) => (
                     <div className="infinite-scroll-card" key={index}>
-                        <Link to="playDetail">
+                        <Link to={`/playDetail?=${item.playSeq}`}>
                             <img src={`https://kr.object.ncloudstorage.com/bitcamp-9th-bucket-135/storage/${item.imageFileName}`} alt="Play Image" />
                         </Link>                        
                         <div className="infinite-scroll-card-body">
                             <h3>{item.name}</h3>
-                            <h6 className="infinite-scroll-card-info">장소 : {item.address}</h6>
+                            <h6 className="infinite-scroll-card-info">장소 : {item.address || "정보 없음"}</h6>
                             <h6 className="infinite-scroll-card-info">시간 : {item.startTime || "정보 없음"}</h6>
                         </div>
                     </div>
