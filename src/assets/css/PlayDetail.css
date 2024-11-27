@@ -1156,3 +1156,64 @@
         height: 400px !important;
     }
 }
+
+/* 판매 정보 css */
+/* 컨테이너 스타일 */
+#palySaleInfoContainer {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+/* 섹션 제목 스타일 */
+section h2 {
+    font-size: 1.6rem;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* 표 스타일 */
+.infoTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.infoTable th, .infoTable td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+    font-size: 1rem;
+}
+
+.infoTable th {
+    background-color: #f4f4f4;
+    width: 200px;
+}
+
+.infoTable td {
+    background-color: #fff;
+}
+
+/* 유의사항 리스트 스타일 */
+.noticeList {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+.noticeList li {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+/* 스타일링을 위한 추가적인 설정들 */
+section {
+    margin-bottom: 30px;
+}
+
+/* 아이디별로 추가 스타일링 가능 */
+#companyInfo, #productInfo, #sellerInfo, #notice {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+}
