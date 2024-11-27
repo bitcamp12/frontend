@@ -1,6 +1,26 @@
 import React from 'react';
 
-const ReviewBefore = ({setShearchKey,shearchBBtn,searchKey,setSearchType,searchType,reviewBCount,selectedReviewSeqB,handleDeleteClickB,handleUpdateBClick,handleEditBClick,setIsReviewUpdate,isReviewUpdateB,setIsReviewUpdateB,handleSubmitB,reviewDataB,setReviewTextB,reviewTextB}) => {
+const ReviewBefore = ({ 
+  formatDate,
+  setShearchKey,
+  shearchBBtn,
+  searchKey,
+  setSearchType,
+  searchType,
+  reviewBCount,
+  selectedReviewSeqB,
+  handleDeleteClickB,
+  handleUpdateBClick,
+  handleEditBClick,
+  setIsReviewUpdate,
+  isReviewUpdateB,
+  setIsReviewUpdateB,
+  handleSubmitB,
+  reviewDataB,
+  setReviewTextB,
+  reviewTextB,
+  userId // 로그인된 사용자 아이디 추가
+}) => {
     return (
         <div id="expectation-form" style={{ width: '100%' }}>
             <div id="expectation-container">
@@ -53,90 +73,83 @@ const ReviewBefore = ({setShearchKey,shearchBBtn,searchKey,setSearchType,searchT
 
             <div id="review-details" style={{ marginTop: '20px' }}>
                 {reviewDataB && reviewDataB.length > 0 ? (
-                reviewDataB.map((review, index) => (
-                    <div key={index} className="review-item" style={{ marginTop: '20px' }}>
-                    <div id="review-info">
-                        <h1 id="user-info">
-                        
-            </h1>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h2 id="review-content">{review.content}</h2>
+                    reviewDataB.map((review, index) => (
+                        <div key={index} className="review-item" style={{ marginTop: '20px' }}>
+                            <div id="review-info">
+                                <h1 id="user-info"> {review.id} | {formatDate(review.createdDate)}</h1>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <h2 id="review-content">{review.content}</h2>
 
-              {/* 아이디 같으면 보이도록 */}
-              <div>
-                <button
-                  style={{
-                    marginLeft: '10px',
-                    width: '100px',
-                    height: '30px',
-                    backgroundColor: '#8E43E7',
-                    borderRadius: '5px',
-                    color: 'white',
-                  }}
-                  data-review-seq={review.reviewBeforeSeq}
-                 onClick={()=>{handleEditBClick(review.reviewBeforeSeq)}}
-                >
-                  수정
-                </button>
-                <button
-                  style={{
-                    marginLeft: '10px',
-                    width: '100px',
-                    height: '30px',
-                    backgroundColor: '#8E43E7',
-                    borderRadius: '5px',
-                    color: 'white',
-                  }}
-                  onClick={() => handleDeleteClickB(review.reviewBeforeSeq)}
-                >
-                  삭제
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      ))
-    ) : (
-      <p>리뷰가 없습니다.</p>
-    )}
-
-
+                                    {/* 아이디가 같을 때만 버튼 보이기 */}
+                                    {review.id === userId && (
+                                        <div>
+                                            <button
+                                                style={{
+                                                    marginLeft: '10px',
+                                                    width: '100px',
+                                                    height: '30px',
+                                                    backgroundColor: '#8E43E7',
+                                                    borderRadius: '5px',
+                                                    color: 'white',
+                                                }}
+                                                data-review-seq={review.reviewBeforeSeq}
+                                                onClick={()=>{handleEditBClick(review.reviewBeforeSeq)}}
+                                            >
+                                                수정
+                                            </button>
+                                            <button
+                                                style={{
+                                                    marginLeft: '10px',
+                                                    width: '100px',
+                                                    height: '30px',
+                                                    backgroundColor: '#8E43E7',
+                                                    borderRadius: '5px',
+                                                    color: 'white',
+                                                }}
+                                                onClick={() => handleDeleteClickB(review.reviewBeforeSeq)}
+                                            >
+                                                삭제
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <p>리뷰가 없습니다.</p>
+                )}
             </div>
 
+            {isReviewUpdateB && (
+                <div id="review-modal" className="modal">
+                    <div id="review-modal-content" className="modal-content">
+                        <span className="close" onClick={() => setIsReviewUpdateB(false)}>&times;</span>
+                        <div className="input-container" style={{ marginBottom: '10px' }}>
+                            <input
+                                type="text"
+                                id="rating-field"
+                                name="review-content"
+                                placeholder="리뷰를 입력하세요"
+                                className="review-input"
+                                value={reviewTextB}
+                                onChange={(e) => setReviewTextB(e.target.value)}
+                            />
+                        </div>
 
-            {isReviewUpdateB&&(
- <div id="review-modal" className="modal">
- <div id="review-modal-content" className="modal-content">
- <span className="close" onClick={() => setIsReviewUpdateB(false)}>&times;</span>
- 
-
-        <div className="input-container" style={{ marginBottom: '10px' }}>
-          <input
-            type="text"
-            id="rating-field"
-            name="review-content"
-            placeholder="리뷰를 입력하세요"
-            className="review-input"
-            value={reviewTextB}
-            onChange={(e) => setReviewTextB(e.target.value)} // 상태 업데이트
-          />
-        </div>
-
-        <div style={{ textAlign: 'right' }}>
-          <input
-            type="submit"
-            value="수정하기"
-            id="submit-btn"
-            className="submit-btn"
-            data-review-seq={selectedReviewSeqB}
-            onClick={handleUpdateBClick}
-           
-          />
-        </div>
-      </div>
-  
-  </div>
-)}
+                        <div style={{ textAlign: 'right' }}>
+                            <input
+                                type="submit"
+                                value="수정하기"
+                                id="submit-btn"
+                                className="submit-btn"
+                                data-review-seq={selectedReviewSeqB}
+                                onClick={handleUpdateBClick}
+                            />
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
