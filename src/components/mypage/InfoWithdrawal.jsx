@@ -102,8 +102,8 @@ const InfoWithdrawal = () => {
             </div>
 
             <hr />
-            {/* onSubmit={ } */}
-            <form id="InfoWithdrawalForm">
+            
+            <form id="InfoWithdrawalForm" onSubmit={}>
                 <div className={styles.notice}>
                     <div className={styles.noticeCheckbox}>
                         <input type="checkbox" name="" id="checkDrawal" />
