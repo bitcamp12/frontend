@@ -1,14 +1,47 @@
 import React, { useEffect, useState } from "react";
 
 import styles from "../../assets/css/mypage/InfoWithdrawal.module.css";
+import axios from "axios";
+import Modal from "../Modal/Modal";
+import { useNavigate } from "react-router";
 
 const InfoWithdrawal = () => {
-    // 체크박스 선택되었는지 상태저장
-    const [checkDrawal, setCheckDrawal] = useState("");
+    const [id, setid] = useState("apple");
+    const navigator = useNavigate();
 
-    const formSubmit = () => {
-        // 체크박스가 선택되어 있으면 탈퇴가능
-        // 체크박스가 선택되지 않았다면, 탈퇴불가능 (안내창?띄울까?)
+    // 모달
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [modalTitle, setModalTitle] = useState("떠리티켓 회원 탈퇴");
+    const [modalMessage, setModalMessage] = useState("");
+    const closeModal = () => {
+        setAlertVisible(false);
+        navigator("/");
+    };
+
+    // 체크박스 선택되었는지 상태저장
+    const [checkDrawal, setCheckDrawal] = useState(false);
+
+    const formSubmit = (e) => {
+        e.preventDefault();
+        console.log(checkDrawal);
+
+        if (checkDrawal) {
+            // 체크박스가 선택되어 있으면 탈퇴가능
+            alert("탈퇴!!! ");
+            axios
+                .delete(
+                    `http://localhost:8080/api/members/infoWithdrawal/me/${id}`
+                ) // 세션으로 넘어온 id가 될 예정
+                .then((response) => {
+                    console.log(response.data);
+                    setModalMessage(response.data.message);
+                    setAlertVisible(true);
+                })
+                .catch((error) => console.log(error));
+        } else {
+            alert("탈퇴못함 ㅋ ");
+            // 체크박스가 선택되지 않았다면, 탈퇴불가능 (안내창?띄울까?)
+        }
     };
 
     return (
@@ -81,7 +114,6 @@ const InfoWithdrawal = () => {
                     </ul>
                 </div>
             </div>
-
             <div className="">
                 <h5>게시글 주의사항</h5>
                 <div>
@@ -101,7 +133,6 @@ const InfoWithdrawal = () => {
                     </ul>
                 </div>
             </div>
-
             <hr />
             {/*  */}
             <form id="InfoWithdrawalForm" onSubmit={formSubmit}>
@@ -111,8 +142,8 @@ const InfoWithdrawal = () => {
                             type="checkbox"
                             name=""
                             id="checkDrawal"
-                            value={checkDrawal}
-                            onChange={setCheckDrawal(!checkDrawal)}
+                            checked={checkDrawal}
+                            onChange={(e) => setCheckDrawal(e.target.checked)}
                         />
                         <label htmlFor="checkDrawal">
                             상기 사항을 모두 확인하였습니다.
@@ -139,6 +170,13 @@ const InfoWithdrawal = () => {
                     </button>
                 </div>
             </form>
+
+            <Modal
+                closeModal={closeModal}
+                modalMessage={modalMessage}
+                modalTitle={modalTitle}
+                alertVisible={alertVisible}
+            />
         </div>
     );
 };
