@@ -137,4 +137,35 @@
         width: 60px;
         height: 60px;
     }
+
+    #suggestions-dropdown {
+        position: absolute;
+        top: 100%; /* Places the dropdown just below the input */
+        left: 0;
+        width: 100%;
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        border: 1px solid #ddd;
+        border-top: none; /* Optional to make it blend better */
+    }
+    
+    #suggestions-dropdown ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+    
+    #suggestions-dropdown li {
+        padding: 8px;
+        cursor: pointer;
+    }
+    
+    #suggestions-dropdown li:hover {
+        background-color: #f1f1f1;
+    }
+    
+    
 }
