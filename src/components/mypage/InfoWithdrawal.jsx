@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import styles from "../../assets/css/mypage/InfoWithdrawal.module.css";
 
 const InfoWithdrawal = () => {
     // 체크박스 선택되었는지 상태저장
+    const [checkDrawal, setCheckDrawal] = useState("");
 
-    const withdrawalSubmit = () => {
+    const formSubmit = () => {
         // 체크박스가 선택되어 있으면 탈퇴가능
         // 체크박스가 선택되지 않았다면, 탈퇴불가능 (안내창?띄울까?)
     };
@@ -102,11 +103,17 @@ const InfoWithdrawal = () => {
             </div>
 
             <hr />
-            
-            <form id="InfoWithdrawalForm" onSubmit={}>
+
+            <form id="InfoWithdrawalForm" onSubmit={formSubmit}>
                 <div className={styles.notice}>
                     <div className={styles.noticeCheckbox}>
-                        <input type="checkbox" name="" id="checkDrawal" />
+                        <input
+                            type="checkbox"
+                            name=""
+                            id="checkDrawal"
+                            value={checkDrawal}
+                            onChange={setCheckDrawal(!checkDrawal)}
+                        />
                         <label htmlFor="checkDrawal">
                             상기 사항을 모두 확인하였습니다.
                         </label>
