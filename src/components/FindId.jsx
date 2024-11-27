@@ -326,7 +326,7 @@ const FindId = () => {
                             <button
                               type="submit"
                               className="submitBtnFindId"
-                              style={{ display: isPhoneCodeSent ? 'none' : 'block', margin: '10px 0' }}
+                              style={{ display: isPhoneCodeSent ? 'none' : 'block', margin: '10px 0', marginLeft: '20px' }}
                             >
                               {isPhoneCodeSent ? null : "인증번호받기"}
                             </button>
@@ -428,7 +428,7 @@ const FindId = () => {
                             <button
                               type="submit"
                               className="submitBtnFindId"
-                              style={{ display: isEmailCodeSent ? 'none' : 'block', margin: '10px 0' }}
+                              style={{ display: isEmailCodeSent ? 'none' : 'block', margin: '10px 0', marginLeft: '20px' }}
                             >
                               {isEmailCodeSent ? null : "인증번호받기"}
                             </button>
