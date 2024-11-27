@@ -4,23 +4,33 @@ import auth from '../assets/images/authimage.png';
 import MainNa from "./MainNa";
 
 import "../assets/css/FindIdDetail.css";
+import Modal from "./Modal/Modal";
 
 
 const FindIdDetail = () => {
+
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
+  const closeModal = () => {
+      setAlertVisible(false);
+  };
+
   const [userId, setUserId] = useState(null);
 
-  // useEffect(() => {
-  //   const id = sessionStorage.getItem("userId");
-  //   if (id) {
-  //     setUserId(id);
-  //   } else {
-  //     alert("ID 찾기를 진행해주세요.");
-  //   }
+   useEffect(() => {
+     const id = sessionStorage.getItem("userId");
+     if (id) {
+       setUserId(id);
+     } else {
+      setAlertVisible(true);
+      setModalMessage("아이디 찾기를 진행해주세요");
+     }
 
-  //   return () => {
-  //     sessionStorage.removeItem("userId");
-  //   };
-  // }, []);
+     return () => {
+       sessionStorage.removeItem("userId");
+     };
+ }, []);
 
   return (
     <>
@@ -70,6 +80,13 @@ const FindIdDetail = () => {
           </div>
         </div>
       </div>
+
+      <Modal
+                closeModal={closeModal} 
+                modalMessage={modalMessage} 
+                modalTitle={modalTitle} 
+                alertVisible={alertVisible} 
+            />   
     </>
   );
 };
