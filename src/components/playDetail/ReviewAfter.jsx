@@ -81,7 +81,7 @@ const ReviewAfter = ({shearchBtn,searchKey,setShearchKey,searchType,setSearchTyp
         <div key={index} className="review-item" style={{ marginTop: '20px' }}>
           <div id="review-info">
             <h1 id="user-info">
-              {review.memberSeq} | {formatDate(review.createdDate)} | 별점: {review.rating}
+              {review.id} | {formatDate(review.createdDate)} | 별점: {review.rating}
             </h1>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <h2 id="review-content">{review.content}</h2>
