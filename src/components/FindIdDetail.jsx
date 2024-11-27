@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import auth from '../assets/images/authimage.png';
 import MainNa from "./MainNa";
 
@@ -17,6 +17,7 @@ const FindIdDetail = () => {
   };
 
   const [userId, setUserId] = useState(null);
+  const location = useLocation();
 
    useEffect(() => {
      const id = sessionStorage.getItem("userId");
@@ -42,13 +43,13 @@ const FindIdDetail = () => {
           </div>
 
           <div className="searchTabIdWrapper">
-            <div className="searchTabId">
-              <Link to="/findId">아이디 찾기</Link>
+              <div className={`searchTab ${location.pathname === "/findIdDetail" ? "active" : ""}`}>
+                <Link to="/findId">아이디 찾기</Link>
+              </div>
+              <div className={`searchTab ${location.pathname === "/findPwdDetail" ? "active" : ""}`}>
+                <Link to="/findPwd">비밀번호 찾기</Link>
+              </div>
             </div>
-            <div className="searchTabId">
-              <Link to="/findPwd">비밀번호 찾기</Link>
-            </div>
-          </div>
           
           <div className="searchContentIdWrapper">
             <ul>

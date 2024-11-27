@@ -21,6 +21,7 @@ import { useParams } from 'react-router';
 import axios, { Axios } from 'axios';
 import { useLocation } from 'react-router';
 import Modal from './Modal/Modal';
+import PalySaleinfo from './playDetail/PalySaleinfo';
 
 const PlayDetail = () => {
   const [visible, setVisible] = useState([true, false, false, false, false]);
@@ -38,7 +39,7 @@ const PlayDetail = () => {
     const [modalTitle, setModalTitle] = useState(''); // 모달 제목
     const [modalMessage, setModalMessage] = useState(''); // 모달 메시지
 
- 
+    const userId = sessionStorage.getItem("id");
 
   const { kakao } = window;
 
@@ -99,7 +100,7 @@ const PlayDetail = () => {
   };
   const location = useLocation();  // 현재 URL 정보 가져오기
   const queryParams = new URLSearchParams(location.search);  // 쿼리 파라미터 추출
-  const playSeq = queryParams.get('playSeq');  // playSeq 값 추출
+
 /////////공영정보 불러오기   
  
 const [playData, setPlayData] = useState(null); // 초기값을 null로 설정
@@ -113,6 +114,7 @@ const formatDate = dateStr => {
 
   return `${year}.${month}.${day}`;
 };
+const { playSeq } = useParams();
 useEffect(() => {
   console.log(playSeq);
 
@@ -137,6 +139,39 @@ useEffect(() => {
     });
 }, [playSeq]); // playSeq 변경 시마다 실행
 /////////공영정보 불러오기
+///////////리뷰 검색을 해야한다 으악
+const [searchKey,setShearchKey]=useState("");
+const [searchType, setSearchType] = useState("title"); // 검색 타입 (제목 or 아이디)
+
+  //키워드
+//정렬
+//검색조건
+const shearchBtn = async () => {
+  const requestParams = {
+    searchType: searchType === "title" ? "title" : "id",
+    keyword: searchKey,
+    selected: selected,
+  };
+
+  try {
+    const response = await axios.get(`http://localhost:8080/api/reviewAfters/ReviewASearch?playSeq=${playSeq}`, {
+      params: requestParams, // 쿼리 파라미터로 전달
+    });
+    const { status, data } = response.data;
+
+    if (status === 200) {
+      setReviewData(data);
+    } else if (status === 404) {
+      console.log('검색 리뷰 없음');
+    }
+  } catch (error) {
+    console.error('리뷰 데이터를 가져오는 중 오류 발생:', error);
+  }
+};
+
+
+
+
 
 
 /////////리뷰 불러오기
@@ -227,10 +262,10 @@ const handleSubmit = async () => {
     content: reviewText,
     rating: rating,
   }
- 
+  const userId = sessionStorage.getItem("id");
     // 서버로 데이터 전송
-    axios.post(`http://localhost:8080/api/reviewAfters/ReviewA?playSeq=${playSeq}`, reviewData, {
-      withCredentials: true,
+    axios.post(`http://localhost:8080/api/reviewAfters/ReviewA?playSeq=${playSeq}&userId=${userId}`, reviewData, {
+      withCredentials: true
     }).then(response=>{
 
       if (response.status === 200) {
@@ -387,6 +422,34 @@ const handleDeleteClick = (reviewSeq) => {
   const [reviewTextB, setReviewTextB] = useState(''); // 리뷰 텍스트 상태
   const [reviewDataB, setReviewDataB] = useState(null); // 초기값을 null로 설정
   const [isReviewUpdateB,setIsReviewUpdateB]=useState(false);
+
+
+
+
+
+  //////////
+
+  const shearchBBtn = async () => {
+    const requestParams = {
+      searchType: searchType === "title" ? "title" : "id",
+      keyword: searchKey
+    };
+  
+    try {
+      const response = await axios.get(`http://localhost:8080/api/reviewBefores/ReviewBSearch?playSeq=${playSeq}`, {
+        params: requestParams, // 쿼리 파라미터로 전달
+      });
+      const { status, data } = response.data;
+  
+      if (status === 200) {
+        setReviewDataB(data);
+      } else if (status === 404) {
+        console.log('검색 리뷰 없음');
+      }
+    } catch (error) {
+      console.error('리뷰 데이터를 가져오는 중 오류 발생:', error);
+    }
+  };
 /////////리뷰 불러오기
 const fetchReviewBData = async () => {
   try {
@@ -446,9 +509,9 @@ const handleSubmitB = async () => {
   const reviewDataB = {
     content: reviewTextB,
   }
- 
+  const userId = sessionStorage.getItem("id");
     // 서버로 데이터 전송
-    axios.post(`http://localhost:8080/api/reviewBefores/reviewB?playSeq=${playSeq}`, reviewDataB, {
+    axios.post(`http://localhost:8080/api/reviewBefores/reviewB?playSeq=${playSeq}&userId=${userId}`, reviewDataB, {
       withCredentials: true,
     }).then(response=>{
 
@@ -548,7 +611,7 @@ const handleDeleteClickB = (reviewSeq) => {
 ///////QAQAQAQAQA
 
 
-
+const [QATitle, setQATitle] = useState(''); // 리뷰 텍스트 상태
 const [QAText, setQAText] = useState(''); // 리뷰 텍스트 상태
 const [QAData, setQAData] = useState(null); // 초기값을 null로 설정
 const [isQAUpdate,setIsQAUpdate]=useState(false);
@@ -608,15 +671,16 @@ const handleQASubmit = async () => {
         setAlertVisible(true)
     return;
   }
-
+console.log(QATitle,QAText)
 
   // 데이터 객체 생성
   const DataQA = {
+    title:QATitle,
     content: QAText,
   }
- 
+  const userId = sessionStorage.getItem("id");
     // 서버로 데이터 전송
-    axios.post(`http://localhost:8080/api/qnas/qna?playSeq=${playSeq}`, DataQA, {
+    axios.post(`http://localhost:8080/api/qnas/qna?playSeq=${playSeq}&userId=${userId}`, DataQA, {
       withCredentials: true,
     }).then(response=>{
 
@@ -728,7 +792,7 @@ const handleQADeleteClick = (qnaSeq) => {
 
         <div id="play-detail-body">
           <div id="image-column">
-            <img src={paly} alt="이미지" id="image-column-image" />
+          <img src={playData?`https://kr.object.ncloudstorage.com/bitcamp-9th-bucket-135/storage/${playData.imageFileName}`:' '} alt="이미지" id="image-column-image" />
           </div>
 
           <div id="play-info">
@@ -800,8 +864,8 @@ const handleQADeleteClick = (qnaSeq) => {
         </div>
 
         <div className="info-content">
-          {visible[0] && <div className="info-section">{playData ? playData.description : '공연정보'}</div>}
-          {visible[1] && <div className="info-section">판매정보 내용</div>}
+          {visible[0] && <div className="info-section"  dangerouslySetInnerHTML={{ __html: playData ? playData.description : '공연정보' }}></div>}
+          {visible[1] && <div className="info-section"><PalySaleinfo/></div>}
           {visible[2] && <div className="info-section">캐스팅 배우 : {playData ? playData.totalActor : '캐스팅 정보'}</div>}
           {visible[3] && (
             <div className="info-section">
@@ -857,13 +921,13 @@ const handleQADeleteClick = (qnaSeq) => {
               </div>
               <hr style={{ width: '100%', borderTop: '2px solid #ccc', margin: '-3px 0' }} />
               <div>
-                {isReviewVisible && <ReviewAfter  reviewACount={reviewACount}handleDeleteClick={handleDeleteClick}handleUpdateClick={handleUpdateClick}selectedReviewSeq={selectedReviewSeq} handleEditClick={handleEditClick}isReviewUpdate={isReviewUpdate}setIsReviewUpdate={setIsReviewUpdate} formatDate={formatDate} reviewData={reviewData}handleSubmit={handleSubmit}ratinghandleClick={ratinghandleClick}setRating={setRating} rating={rating} setReviewText={setReviewText} reviewText={reviewText} setAlertVisible={setAlertVisible}/>}
-                {isExpectationVisible && <ReviewBefore reviewBCount={reviewBCount}handleDeleteClickB={handleDeleteClickB} selectedReviewSeqB={selectedReviewSeqB}handleUpdateBClick={handleUpdateBClick} handleEditBClick={handleEditBClick} setIsReviewUpdate={setIsReviewUpdate} isReviewUpdateB={isReviewUpdateB}setIsReviewUpdateB={setIsReviewUpdateB} handleSubmitB={handleSubmitB} reviewDataB={reviewDataB} reviewTextB={reviewTextB} setReviewTextB={setReviewTextB}/>}
+                {isReviewVisible && <ReviewAfter userId={userId} shearchBtn={shearchBtn}searchKey={searchKey}setShearchKey={setShearchKey}searchType={searchType}setSearchType={setSearchType} reviewACount={reviewACount}handleDeleteClick={handleDeleteClick}handleUpdateClick={handleUpdateClick}selectedReviewSeq={selectedReviewSeq} handleEditClick={handleEditClick}isReviewUpdate={isReviewUpdate}setIsReviewUpdate={setIsReviewUpdate} formatDate={formatDate} reviewData={reviewData}handleSubmit={handleSubmit}ratinghandleClick={ratinghandleClick}setRating={setRating} rating={rating} setReviewText={setReviewText} reviewText={reviewText} setAlertVisible={setAlertVisible}/>}
+                {isExpectationVisible && <ReviewBefore userId={userId} setShearchKey={setShearchKey}shearchBBtn={shearchBBtn}searchKey={searchKey}setSearchType={setSearchType}searchType={searchType} reviewBCount={reviewBCount}handleDeleteClickB={handleDeleteClickB} selectedReviewSeqB={selectedReviewSeqB}handleUpdateBClick={handleUpdateBClick} handleEditBClick={handleEditBClick} setIsReviewUpdate={setIsReviewUpdate} formatDate={formatDate}isReviewUpdateB={isReviewUpdateB}setIsReviewUpdateB={setIsReviewUpdateB} handleSubmitB={handleSubmitB} reviewDataB={reviewDataB} reviewTextB={reviewTextB} setReviewTextB={setReviewTextB}/>}
               </div>
             </div>
           )}
 
-          {visible[4] && <div className="info-section"><QA QACount={QACount}QAData={QAData} handleQAClick={handleQAClick} selectQASeq={selectQASeq} setIsQAUpdate={setIsQAUpdate} isQAUpdate={isQAUpdate}handleQADeleteClick={handleQADeleteClick} handleQASubmit={handleQASubmit} handleQAEditClick={handleQAEditClick} QAText={QAText} formatDate={formatDate} setQAText={setQAText} /></div>}
+          {visible[4] && <div className="info-section"><QA userId ={userId} setQATitle={setQATitle}QATitle={QATitle} QACount={QACount}QAData={QAData} handleQAClick={handleQAClick} selectQASeq={selectQASeq} setIsQAUpdate={setIsQAUpdate} isQAUpdate={isQAUpdate}handleQADeleteClick={handleQADeleteClick} handleQASubmit={handleQASubmit} handleQAEditClick={handleQAEditClick} QAText={QAText} formatDate={formatDate} setQAText={setQAText} /></div>}
         </div>
       </div>
 

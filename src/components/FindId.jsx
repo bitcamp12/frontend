@@ -14,7 +14,7 @@ const FindId = () => {
   const [modalTitle, setModalTitle] = useState("");
   const [modalMessage, setModalMessage] = useState("");
   const closeModal = () => {
-      setAlertVisible(false);
+    setAlertVisible(false);
   };
 
 
@@ -24,10 +24,10 @@ const FindId = () => {
     phone: "",
     email: "",
   });
-  const [verificationPhoneNumber, setVerificationPhoneNumber] = useState(""); 
-  const [verificationEmailCode, setVerificationEmailCode] = useState(""); 
-  const [isPhoneCodeSent, setIsPhoneCodeSent] = useState(false); 
-  const [isEmailCodeSent, setIsEmailCodeSent] = useState(false); 
+  const [verificationPhoneNumber, setVerificationPhoneNumber] = useState("");
+  const [verificationEmailCode, setVerificationEmailCode] = useState("");
+  const [isPhoneCodeSent, setIsPhoneCodeSent] = useState(false);
+  const [isEmailCodeSent, setIsEmailCodeSent] = useState(false);
   const [phoneTimer, setPhoneTimer] = useState(60);
   const [emailTimer, setEmailTimer] = useState(60);
   const [isPhoneExpired, setIsPhoneExpired] = useState(false);
@@ -63,8 +63,8 @@ const FindId = () => {
       phoneCountdown = setInterval(() => {
         setPhoneTimer((prevTimer) => {
           if (prevTimer <= 1) {
-            clearInterval(phoneCountdown); 
-            setIsPhoneExpired(true); 
+            clearInterval(phoneCountdown);
+            setIsPhoneExpired(true);
             return 0;
           }
           return prevTimer - 1;
@@ -76,8 +76,8 @@ const FindId = () => {
       emailCountdown = setInterval(() => {
         setEmailTimer((prevTimer) => {
           if (prevTimer <= 1) {
-            clearInterval(emailCountdown); 
-            setIsEmailExpired(true); 
+            clearInterval(emailCountdown);
+            setIsEmailExpired(true);
             return 0;
           }
           return prevTimer - 1;
@@ -86,12 +86,13 @@ const FindId = () => {
     }
 
     return () => {
-      clearInterval(phoneCountdown); 
-      clearInterval(emailCountdown); 
+      clearInterval(phoneCountdown);
+      clearInterval(emailCountdown);
     };
   }, [isPhoneCodeSent, isEmailCodeSent, isPhoneExpired, isEmailExpired]);
 
   const requestPhoneVerificationCode = async () => {
+    setModalMessage("인증번호 발송중입니다. 잠시만 기다려주세요");
     setAlertVisible(true);
     try {
       const response = await axios.post(
@@ -102,8 +103,8 @@ const FindId = () => {
         }
       )
       if (response.data.status === 200) {
-        setIsPhoneCodeSent(true); 
-        setPhoneTimer(60); 
+        setIsPhoneCodeSent(true);
+        setPhoneTimer(60);
         setIsPhoneExpired(false);
         setModalMessage("인증번호가 휴대폰으로 전송되었습니다.");
       } else {
@@ -138,7 +139,7 @@ const FindId = () => {
   };
 
   const requestEmailVerificationCode = async () => {
-
+    setModalMessage("인증번호 발송중입니다. 잠시만 기다려주세요");
     setAlertVisible(true);
     try {
       const response = await axios.post(
@@ -149,10 +150,10 @@ const FindId = () => {
         }
       );
       if (response.data.status === 200) {
-        setIsEmailCodeSent(true); 
-        setEmailTimer(60); 
+        setIsEmailCodeSent(true);
+        setEmailTimer(60);
         setIsEmailExpired(false);
-        setModalMessage("이메일 번호가 전송 되었습니다");
+        setModalMessage("이메일로 인증번호가 전송 발송되었습니다. 확인해주세요");
       } else if (response.data.status === 400) {
         setModalMessage("일치하는 회원이 없습니다.");
       } else {
@@ -173,7 +174,7 @@ const FindId = () => {
       });
 
       if (response.data.status === 200) {
-        sessionStorage.setItem("userId", response.data.message); 
+        sessionStorage.setItem("userId", response.data.message);
         navigate("/findIdDetail");
       } else if (response.data.status === 404) {
         setModalMessage("회원정보가 없습니다");
@@ -188,6 +189,7 @@ const FindId = () => {
 
   const getIdByEmail = async () => {
     setAlertVisible(true);
+
     try {
       const response = await axios.post(
         'http://localhost:8080/api/members/verifyCodeId',
@@ -199,7 +201,7 @@ const FindId = () => {
       );
 
       if (response.data.status === 200) {
-        sessionStorage.setItem("userId", response.data.message); 
+        sessionStorage.setItem("userId", response.data.message);
         navigate("/findIdDetail");
       } else if (response.data.status === 400) {
         setModalMessage("회원정보가 없습니다");
@@ -294,27 +296,41 @@ const FindId = () => {
                             </label>
                           </div>
                         )}
-                        <div className="btnWrap">
-                      
-                      {isPhoneCodeSent ? (
-                        <>
-                          <div className="timeLeft">
-                            남은 시간: {isPhoneExpired ? "만료됨" : `${phoneTimer}초`}
+                        <div>
+                          {isPhoneCodeSent ? (
+                            <div className="authentifyWrapper">
+                              <div className="timeLeft">
+                                남은 시간: {isPhoneExpired ? "만료됨" : `${phoneTimer}초`}
+                              </div>
+                              <div className="btnWrapFindId">
+                                <button
+                                  type="button"
+                                  className="resubmitBtn"
+                                  onClick={() => {
+                                    setIsPhoneCodeSent(false); // 기존 상태 초기화
+                                    requestPhoneVerificationCode(); // 인증번호 다시 요청
+                                  }}
+                                >
+                                  다시받기
+                                </button>
+                                <button
+                                  type="submit"
+                                  className={`submitBtnFindId ${isPhoneCodeSent ? 'no-margin' : ''}`}
+                                >
+                                  {isPhoneCodeSent ? "인증번호 확인" : "인증번호받기"}
+                                </button>
+                              </div>
+                            </div>
+                          ) : null}
+                          <div style={{ justifyContent: 'center', display: 'flex' }}>
+                            <button
+                              type="submit"
+                              className="submitBtnFindId"
+                              style={{ display: isPhoneCodeSent ? 'none' : 'block', margin: '10px 0', marginLeft: '20px' }}
+                            >
+                              {isPhoneCodeSent ? null : "인증번호받기"}
+                            </button>
                           </div>
-                          <button
-                            type="button"
-                            className="resubmitBtn"
-                            onClick={() => {
-                              setIsPhoneCodeSent(false); // 기존 상태 초기화
-                              requestPhoneVerificationCode(); // 인증번호 다시 요청
-                            }}
-                          >
-                            다시받기
-                          </button>
-                        </>
-                      ) : null}
-
-                          <button type="submit" className="submitBtn">{isPhoneCodeSent ? "인증번호 확인" : "인증번호받기"}</button>
                         </div>
                       </form>
                     </div>
@@ -381,27 +397,42 @@ const FindId = () => {
                             </label>
                           </div>
                         )}
-                        <div className="btnWrap">
 
-                        {isEmailCodeSent ? (
-                        <>
-                          <div className="timeLeft">
-                            남은 시간: {isEmailExpired ? "만료됨" : `${emailTimer}초`}
+                        <div>
+                          {isEmailCodeSent ? (
+                            <div className="authentifyWrapper">
+                              <div className="timeLeft">
+                                남은 시간: {isEmailExpired ? "만료됨" : `${emailTimer}초`}
+                              </div>
+                              <div className="btnWrapFindId">
+                              <button
+                                type="button"
+                                className="resubmitBtn"
+                                onClick={() => {
+                                  setIsEmailCodeSent(false); // 기존 상태 초기화
+                                  requestEmailVerificationCode(); // 인증번호 다시 요청
+                                }}
+                              >
+                                다시받기
+                                </button>
+                                <button
+                                  type="submit"
+                                  className={`submitBtnFindId ${isEmailCodeSent ? 'no-margin' : ''}`}
+                                >
+                                  {isPhoneCodeSent ? "인증번호 확인" : "인증번호받기"}
+                                </button>
+                              </div>
+                            </div>
+                          ) : null}
+                          <div style={{ justifyContent: 'center', display: 'flex' }}>
+                            <button
+                              type="submit"
+                              className="submitBtnFindId"
+                              style={{ display: isEmailCodeSent ? 'none' : 'block', margin: '10px 0', marginLeft: '20px' }}
+                            >
+                              {isEmailCodeSent ? null : "인증번호받기"}
+                            </button>
                           </div>
-                          <button
-                            type="button"
-                            className="resubmitBtn"
-                            onClick={() => {
-                              setIsPhoneCodeSent(false); // 기존 상태 초기화
-                              requestPhoneVerificationCode(); // 인증번호 다시 요청
-                            }}
-                          >
-                            다시받기
-                          </button>
-                        </>
-                      ) : null}
-
-                          <button type="submit" className="submitBtn">{isEmailCodeSent ? "인증번호 확인" : "인증번호받기"}</button>
                         </div>
                       </form>
                     </div>
@@ -410,15 +441,15 @@ const FindId = () => {
               </div>
             </ul>
           </div>
-        </div>          
+        </div>
       </div >
 
-             <Modal 
-                closeModal={closeModal} 
-                modalMessage={modalMessage} 
-                modalTitle={modalTitle} 
-                alertVisible={alertVisible} 
-            />       
+      <Modal
+        closeModal={closeModal}
+        modalMessage={modalMessage}
+        modalTitle={modalTitle}
+        alertVisible={alertVisible}
+      />
 
     </>
   );
