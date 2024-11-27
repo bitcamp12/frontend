@@ -2,10 +2,27 @@ import React from 'react';
 import logo from '../assets/images/임시로고.png';
 import search from '../assets/images/돋보기.png';
 import "../assets/css/MainNa.css";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const MainNa = () => {
-    const id = 0;
+    const id = sessionStorage.getItem("id");
+    const navigate = useNavigate(); 
+    const logout = async () => {
+        const id = sessionStorage.getItem("id"); 
+        try {
+          const result = await axios.post('http://localhost:8080/api/members/logout', { id });
+          if (result.data.status === 200) {
+            sessionStorage.removeItem("id"); 
+            setTimeout(() => {
+              navigate("/"); 
+            }, 2000);
+          }
+        } catch (error) {
+          console.error("", error);
+        }
+      };
+
     return (
         <div id="main-bar">
             <div id="main-table">
@@ -29,6 +46,7 @@ const MainNa = () => {
                     {id ? (
                         <div id="mypage-section">
                             <p id="mypage" name="mypage">마이페이지</p>
+                            <p onClick={logout} style={{ cursor: 'pointer' }}>로그아웃</p>
                         </div>
                     ) : (
                         <div id="auth-section">
