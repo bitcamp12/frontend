@@ -20,18 +20,18 @@ const Infomation = () => {
 
     const [sessionId, setSessionId] = useState("");
 
-    // 로그인한 세션을 가져오기
-    useEffect(() => {
-        axios
-            .get("http://localhost:8080/api/members/getSession", {
-                withCredentials: true, // 세션을 포함한 요청
-            })
-            .then((response) => {
-                console.log(response.data.data);
-                setSessionId(response.data.data);
-            })
-            .catch((error) => console.log(error));
-    }, []);
+    // // 로그인한 세션을 가져오기
+    // useEffect(() => {
+    //     axios
+    //         .get("http://localhost:8080/api/members/getSession", {
+    //             withCredentials: true, // 세션을 포함한 요청
+    //         })
+    //         .then((response) => {
+    //             console.log("data: " + response.data.data);
+    //             setSessionId(response.data.data);
+    //         })
+    //         .catch((error) => console.log(error));
+    // }, []);
 
     return (
         <div className={styles.member_info_body}>
@@ -83,9 +83,9 @@ const Infomation = () => {
                 <div className={styles.member_info_container}>
                     {/* {sessionId && <InfoLock id={sessionId} />} */}
 
-                    {/* <InfoModify /> */}
-                    {/* <InfoWithdrawal /> */}
-                    <InfoReservation/>
+                    <InfoModify />
+                    {/* <InfoWithdrawal sessionId={sessionId} /> */}
+                    {/* <InfoReservation/> */}
                     {/* <InfoBookmark/> */}
                 </div>
             </section>

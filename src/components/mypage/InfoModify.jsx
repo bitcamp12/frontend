@@ -83,12 +83,14 @@ const InfoModify = () => {
     useEffect(() => {
         // 세션에서 id를 가져옵니다.
         const userId = "apple"; //sessionStorage.getItem("id");
-        console.log(userId);
+        // console.log(userId);
 
         axios
-            .get(`http://localhost:8080/api/members/getUserInfo/me/${userId}`)
+            .get(`http://localhost:8080/api/members/getUserInfo/me`, {
+                withCredentials: true, // 세션 쿠키를 포함
+            })
             .then((response) => {
-                console.log(response);
+                console.log(response.data);
                 setData(response.data);
             })
             .catch((error) => console.error("ERROR(사용자정보수정): ", error));
