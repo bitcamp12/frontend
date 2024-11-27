@@ -3,12 +3,12 @@ import React from "react";
 import styles from "../../assets/css/mypage/InfoWithdrawal.module.css";
 
 const InfoWithdrawal = () => {
-    // 체크박스 선택되었는지 상태저장 
+    // 체크박스 선택되었는지 상태저장
 
     const withdrawalSubmit = () => {
-        // 체크박스가 선택되어 있으면 탈퇴가능 
+        // 체크박스가 선택되어 있으면 탈퇴가능
         // 체크박스가 선택되지 않았다면, 탈퇴불가능 (안내창?띄울까?)
-     }
+    };
 
     return (
         <div className={styles.infoWithdrawal}>
@@ -102,7 +102,8 @@ const InfoWithdrawal = () => {
             </div>
 
             <hr />
-            <form id="InfoWithdrawalForm" onSubmit={}>
+            {/* onSubmit={ } */}
+            <form id="InfoWithdrawalForm">
                 <div className={styles.notice}>
                     <div className={styles.noticeCheckbox}>
                         <input type="checkbox" name="" id="checkDrawal" />
