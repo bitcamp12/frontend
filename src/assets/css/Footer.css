@@ -47,6 +47,12 @@
     color: #333;
 }
 
+.noticeLink {
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+}
+
 .footer-info span {
     font-weight: bold;
     font-size: 14px;

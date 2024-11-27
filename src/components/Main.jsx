@@ -27,7 +27,7 @@ const Main = () => {
             <ScrollToTop />
             <AdvertiseContainer />
             <ButtonNavContainer setSelectedTab={setSelectedTab} />
-            <SaleContainer />
+            <SaleContainer /> 
             <BarNavContainer
                 selectedTab={selectedTab}
                 setSelectedTab={setSelectedTab}
