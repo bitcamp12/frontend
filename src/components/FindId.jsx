@@ -92,6 +92,7 @@ const FindId = () => {
   }, [isPhoneCodeSent, isEmailCodeSent, isPhoneExpired, isEmailExpired]);
 
   const requestPhoneVerificationCode = async () => {
+    setModalMessage("인증번호 발송중입니다. 잠시만 기다려주세요");
     setAlertVisible(true);
     try {
       const response = await axios.post(
@@ -138,7 +139,7 @@ const FindId = () => {
   };
 
   const requestEmailVerificationCode = async () => {
-
+    setModalMessage("인증번호 발송중입니다. 잠시만 기다려주세요");
     setAlertVisible(true);
     try {
       const response = await axios.post(
@@ -152,7 +153,7 @@ const FindId = () => {
         setIsEmailCodeSent(true); 
         setEmailTimer(60); 
         setIsEmailExpired(false);
-        setModalMessage("이메일 번호가 전송 되었습니다");
+        setModalMessage("이메일로 인증번호가 전송 발송되었습니다. 확인해주세요");
       } else if (response.data.status === 400) {
         setModalMessage("일치하는 회원이 없습니다.");
       } else {
@@ -188,6 +189,7 @@ const FindId = () => {
 
   const getIdByEmail = async () => {
     setAlertVisible(true);
+
     try {
       const response = await axios.post(
         'http://localhost:8080/api/members/verifyCodeId',
@@ -392,8 +394,8 @@ const FindId = () => {
                             type="button"
                             className="resubmitBtn"
                             onClick={() => {
-                              setIsPhoneCodeSent(false); // 기존 상태 초기화
-                              requestPhoneVerificationCode(); // 인증번호 다시 요청
+                              setIsEmailCodeSent(false); // 기존 상태 초기화
+                              requestEmailVerificationCode(); // 인증번호 다시 요청
                             }}
                           >
                             다시받기
