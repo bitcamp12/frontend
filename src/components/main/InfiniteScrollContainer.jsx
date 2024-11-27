@@ -75,6 +75,14 @@ const InfiniteScrollContainer = () => {
     //유져가 스크롤을 내리다가 처음에 로딩된 10개의 item을 다 보면 target이 보이게 됨
     //target이 보이면 loadMoreItems 함수를 실행해서 10개의 item을 추가함
 
+    const formatDate = (dateStr) => {
+        const date = new Date(dateStr);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}.${month}.${day}`;
+    };
+
     return (
         <div>
             <div className="infinite-scroll-container" id="infinite-scroll-container">
@@ -86,7 +94,7 @@ const InfiniteScrollContainer = () => {
                         <div className="infinite-scroll-card-body">
                             <h3>{item.name}</h3>
                             <h6 className="infinite-scroll-card-info">{item.address || "정보 없음"}</h6>
-                            <h6 className="infinite-scroll-card-info">{item.startTime} ~ {item.endTime}</h6>
+                            <h6 className="infinite-scroll-card-info">{formatDate(item.startTime)} ~ {formatDate(item.endTime)}</h6>
                         </div>
                     </div>
                 ))}

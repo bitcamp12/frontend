@@ -29,6 +29,14 @@ const SaleContainer = () => {
         fetchRandomPlays();
     }, []);
 
+    const formatDate = (dateStr) => {
+        const date = new Date(dateStr);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}.${month}.${day}`;
+    };
+
     return (
         <div className="sale-container">
             <div className="sale-header">
@@ -56,9 +64,9 @@ const SaleContainer = () => {
                                 />
                             </div>
                             <div className="sale-content">
-                                <p className="sale-content-title">{item.name}</p>
-                                <p>{item.address || "정보 없음"}</p>
-                                <p>{item.startTime} ~ {item.endTime}</p>
+                                <h3 className="sale-content-title">{item.name}</h3>
+                                <p className="sale-content-content">{item.address || "정보 없음"}</p>
+                                <p className="sale-content-content">{formatDate(item.startTime)} ~ {formatDate(item.endTime)}</p>
                                 <h4>
                                     <span>50%</span> 50,000원
                                 </h4>
