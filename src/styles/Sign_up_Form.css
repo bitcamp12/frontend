@@ -15,7 +15,7 @@
     margin-right: 10px;
     font-weight: bold;
     white-space: nowrap;
-    display: flex;
+    display: inline-flex ;
     align-items: center;
     height: 100%;
     margin-top: 13px;
@@ -138,5 +138,7 @@
       font-size: 20px;
       padding: 8px;
     }
+
+
   }
   

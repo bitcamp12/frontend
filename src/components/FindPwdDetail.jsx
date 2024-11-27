@@ -6,8 +6,17 @@ import '../assets/css/FindIdDetail.css';
 import '../assets/css/FindId.css';
 import MainNa from "./MainNa";
 import { Link } from "react-router-dom";
+import Modal from "./Modal/Modal";
 
 const FindPwdDetail = () => {
+
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
+  const closeModal = () => {
+      setAlertVisible(false);
+  };
+
   const location = useLocation();
   const { id } = location.state;
 
@@ -88,6 +97,7 @@ const FindPwdDetail = () => {
   }, [isPhoneCodeSent, isEmailCodeSent, isPhoneExpired, isEmailExpired]);
 
   const requestPhoneVerificationCode = async () => {
+    setAlertVisible(true);
     try {
       const response = await axios.post(
         'http://localhost:8080/api/members/sendPhoneVerificationCode',
@@ -97,20 +107,22 @@ const FindPwdDetail = () => {
         }
       )
       if (response.data.status === 200) {
-        alert("인증번호가 휴대폰으로 전송되었습니다.");
+        setModalMessage("인증번호가 휴대폰으로 전송되었습니다.");
         setIsPhoneCodeSent(true);
         setPhoneTimer(60);
         setIsPhoneExpired(false);
       } else {
-        alert("일치하는 회원정보가 없습니다.");
+        
+        setModalMessage("일치하는 회원정보가 없습니다.");
       }
     } catch (error) {
       console.error("에러", error);
-      alert("서버와의 연결에 문제가 발생했습니다.");
+      setModalMessage("서버와의 연결에 오류가 발생했습니다.");
     }
   };
 
   const checkPhoneNum = async () => {
+    setAlertVisible(true);
     try {
       const response = await axios.post(
         'http://localhost:8080/api/members/checkPhone',
@@ -128,15 +140,16 @@ const FindPwdDetail = () => {
       if (response.data.status === 200) {
         navigate("/resetPwd", { state: { id } });
       } else {
-        alert("인증번호가 일치하지 않습니다.");
+        setModalMessage("인증번호가 일치하지않습니다.");
       }
     } catch (error) {
       console.error("에러", error);
-      alert("인증번호를 다시 받아주세요");
+      setModalMessage("서버오류가 발생하였습니다.");
     }
   };
 
   const requestEmailVerificationCode = async () => {
+    setAlertVisible(true);
     try {
       const response = await axios.post(
         'http://localhost:8080/api/members/sendEmailVerificationCode',
@@ -151,18 +164,18 @@ const FindPwdDetail = () => {
         }
       );
       if (response.data.status === 200) {
-        alert("인증번호가 이메일로 전송되었습니다.");
+        setModalMessage("인증번호가 이메일로 전송되었습니다.");
         setIsEmailCodeSent(true);
         setEmailTimer(60);
         setIsEmailExpired(false);
       } else if (response.data.status === 400) {
-        alert("일치하는 회원이 없습니다.");
+        setModalMessage("일치하는 회원이 없습니다.");
       } else {
-        alert("이메일 인증번호 전송 실패.");
+        setModalMessage("이메일 발송에 실패하였습니다.");
       }
     } catch (error) {
       console.error("에러", error);
-      alert("서버와의 연결에 문제가 발생했습니다.");
+      setModalMessage("서버와의 연결에 문제가 발생하였습니다.");
     }
   };
 
@@ -343,6 +356,14 @@ const FindPwdDetail = () => {
           </div>
         </div>
       </div>
+
+      <Modal 
+                closeModal={closeModal} 
+                modalMessage={modalMessage} 
+                modalTitle={modalTitle} 
+                alertVisible={alertVisible} 
+            />                  
+
     </>
   );
 };
