@@ -21,6 +21,7 @@ import { useParams } from 'react-router';
 import axios, { Axios } from 'axios';
 import { useLocation } from 'react-router';
 import Modal from './Modal/Modal';
+import PalySaleinfo from './playDetail/PalySaleinfo';
 
 const PlayDetail = () => {
   const [visible, setVisible] = useState([true, false, false, false, false]);
@@ -38,7 +39,7 @@ const PlayDetail = () => {
     const [modalTitle, setModalTitle] = useState(''); // 모달 제목
     const [modalMessage, setModalMessage] = useState(''); // 모달 메시지
 
- 
+    const userId = sessionStorage.getItem("id");
 
   const { kakao } = window;
 
@@ -791,7 +792,7 @@ const handleQADeleteClick = (qnaSeq) => {
 
         <div id="play-detail-body">
           <div id="image-column">
-            <img src={paly} alt="이미지" id="image-column-image" />
+          <img src={playData?`https://kr.object.ncloudstorage.com/bitcamp-9th-bucket-135/storage/${playData.imageFileName}`:' '} alt="이미지" id="image-column-image" />
           </div>
 
           <div id="play-info">
@@ -864,7 +865,7 @@ const handleQADeleteClick = (qnaSeq) => {
 
         <div className="info-content">
           {visible[0] && <div className="info-section"  dangerouslySetInnerHTML={{ __html: playData ? playData.description : '공연정보' }}></div>}
-          {visible[1] && <div className="info-section">판매정보 내용</div>}
+          {visible[1] && <div className="info-section"><PalySaleinfo/></div>}
           {visible[2] && <div className="info-section">캐스팅 배우 : {playData ? playData.totalActor : '캐스팅 정보'}</div>}
           {visible[3] && (
             <div className="info-section">
@@ -920,13 +921,13 @@ const handleQADeleteClick = (qnaSeq) => {
               </div>
               <hr style={{ width: '100%', borderTop: '2px solid #ccc', margin: '-3px 0' }} />
               <div>
-                {isReviewVisible && <ReviewAfter shearchBtn={shearchBtn}searchKey={searchKey}setShearchKey={setShearchKey}searchType={searchType}setSearchType={setSearchType} reviewACount={reviewACount}handleDeleteClick={handleDeleteClick}handleUpdateClick={handleUpdateClick}selectedReviewSeq={selectedReviewSeq} handleEditClick={handleEditClick}isReviewUpdate={isReviewUpdate}setIsReviewUpdate={setIsReviewUpdate} formatDate={formatDate} reviewData={reviewData}handleSubmit={handleSubmit}ratinghandleClick={ratinghandleClick}setRating={setRating} rating={rating} setReviewText={setReviewText} reviewText={reviewText} setAlertVisible={setAlertVisible}/>}
-                {isExpectationVisible && <ReviewBefore setShearchKey={setShearchKey}shearchBBtn={shearchBBtn}searchKey={searchKey}setSearchType={setSearchType}searchType={searchType} reviewBCount={reviewBCount}handleDeleteClickB={handleDeleteClickB} selectedReviewSeqB={selectedReviewSeqB}handleUpdateBClick={handleUpdateBClick} handleEditBClick={handleEditBClick} setIsReviewUpdate={setIsReviewUpdate} isReviewUpdateB={isReviewUpdateB}setIsReviewUpdateB={setIsReviewUpdateB} handleSubmitB={handleSubmitB} reviewDataB={reviewDataB} reviewTextB={reviewTextB} setReviewTextB={setReviewTextB}/>}
+                {isReviewVisible && <ReviewAfter userId={userId} shearchBtn={shearchBtn}searchKey={searchKey}setShearchKey={setShearchKey}searchType={searchType}setSearchType={setSearchType} reviewACount={reviewACount}handleDeleteClick={handleDeleteClick}handleUpdateClick={handleUpdateClick}selectedReviewSeq={selectedReviewSeq} handleEditClick={handleEditClick}isReviewUpdate={isReviewUpdate}setIsReviewUpdate={setIsReviewUpdate} formatDate={formatDate} reviewData={reviewData}handleSubmit={handleSubmit}ratinghandleClick={ratinghandleClick}setRating={setRating} rating={rating} setReviewText={setReviewText} reviewText={reviewText} setAlertVisible={setAlertVisible}/>}
+                {isExpectationVisible && <ReviewBefore userId={userId} setShearchKey={setShearchKey}shearchBBtn={shearchBBtn}searchKey={searchKey}setSearchType={setSearchType}searchType={searchType} reviewBCount={reviewBCount}handleDeleteClickB={handleDeleteClickB} selectedReviewSeqB={selectedReviewSeqB}handleUpdateBClick={handleUpdateBClick} handleEditBClick={handleEditBClick} setIsReviewUpdate={setIsReviewUpdate} formatDate={formatDate}isReviewUpdateB={isReviewUpdateB}setIsReviewUpdateB={setIsReviewUpdateB} handleSubmitB={handleSubmitB} reviewDataB={reviewDataB} reviewTextB={reviewTextB} setReviewTextB={setReviewTextB}/>}
               </div>
             </div>
           )}
 
-          {visible[4] && <div className="info-section"><QA setQATitle={setQATitle}QATitle={QATitle} QACount={QACount}QAData={QAData} handleQAClick={handleQAClick} selectQASeq={selectQASeq} setIsQAUpdate={setIsQAUpdate} isQAUpdate={isQAUpdate}handleQADeleteClick={handleQADeleteClick} handleQASubmit={handleQASubmit} handleQAEditClick={handleQAEditClick} QAText={QAText} formatDate={formatDate} setQAText={setQAText} /></div>}
+          {visible[4] && <div className="info-section"><QA userId ={userId} setQATitle={setQATitle}QATitle={QATitle} QACount={QACount}QAData={QAData} handleQAClick={handleQAClick} selectQASeq={selectQASeq} setIsQAUpdate={setIsQAUpdate} isQAUpdate={isQAUpdate}handleQADeleteClick={handleQADeleteClick} handleQASubmit={handleQASubmit} handleQAEditClick={handleQAEditClick} QAText={QAText} formatDate={formatDate} setQAText={setQAText} /></div>}
         </div>
       </div>
 

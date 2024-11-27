@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 
-const ReviewAfter = ({shearchBtn,searchKey,setShearchKey,searchType,setSearchType,reviewACount,handleDeleteClick,handleUpdateClick,selectedReviewSeq,handleEditClick,isReviewUpdate,setIsReviewUpdate,formatDate, reviewData,ratinghandleClick, rating ,handleSubmit,reviewText,setReviewText,setRating,setAlertVisible}) => {
+const ReviewAfter = ({userId,shearchBtn,searchKey,setShearchKey,searchType,setSearchType,reviewACount,handleDeleteClick,handleUpdateClick,selectedReviewSeq,handleEditClick,isReviewUpdate,setIsReviewUpdate,formatDate, reviewData,ratinghandleClick, rating ,handleSubmit,reviewText,setReviewText,setRating,setAlertVisible}) => {
 
   
   
@@ -87,35 +87,37 @@ const ReviewAfter = ({shearchBtn,searchKey,setShearchKey,searchType,setSearchTyp
               <h2 id="review-content">{review.content}</h2>
 
               {/* 아이디 같으면 보이도록 */}
-              <div>
-                <button
-                  style={{
-                    marginLeft: '10px',
-                    width: '100px',
-                    height: '30px',
-                    backgroundColor: '#8E43E7',
-                    borderRadius: '5px',
-                    color: 'white',
-                  }}
-                  data-review-seq={review.reviewAfterSeq}
-                  onClick={() => handleEditClick(review.reviewAfterSeq)}
-                >
-                  수정
-                </button>
-                <button
-                  style={{
-                    marginLeft: '10px',
-                    width: '100px',
-                    height: '30px',
-                    backgroundColor: '#8E43E7',
-                    borderRadius: '5px',
-                    color: 'white',
-                  }}
-                  onClick={() => handleDeleteClick(review.reviewAfterSeq)}
-                >
-                  삭제
-                </button>
-              </div>
+              {review.id === userId && (
+                    <div>
+                      <button
+                        style={{
+                          marginLeft: '10px',
+                          width: '100px',
+                          height: '30px',
+                          backgroundColor: '#8E43E7',
+                          borderRadius: '5px',
+                          color: 'white',
+                        }}
+                        data-review-seq={review.reviewAfterSeq}
+                        onClick={() => handleEditClick(review.reviewAfterSeq)}
+                      >
+                        수정
+                      </button>
+                      <button
+                        style={{
+                          marginLeft: '10px',
+                          width: '100px',
+                          height: '30px',
+                          backgroundColor: '#8E43E7',
+                          borderRadius: '5px',
+                          color: 'white',
+                        }}
+                        onClick={() => handleDeleteClick(review.reviewAfterSeq)}
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  )}
             </div>
           </div>
         </div>
