@@ -263,9 +263,9 @@ const handleSubmit = async () => {
   }
   const userId = sessionStorage.getItem("id");
     // 서버로 데이터 전송
-    axios.post(`http://localhost:8080/api/reviewAfters/ReviewA?playSeq=${playSeq}`, reviewData, {
+    axios.post(`http://localhost:8080/api/reviewAfters/ReviewA?playSeq=${playSeq}&userId=${userId}`, reviewData, {
       withCredentials: true
-    },{params:userId}).then(response=>{
+    }).then(response=>{
 
       if (response.status === 200) {
         setAlertVisible(true)
@@ -510,9 +510,9 @@ const handleSubmitB = async () => {
   }
   const userId = sessionStorage.getItem("id");
     // 서버로 데이터 전송
-    axios.post(`http://localhost:8080/api/reviewBefores/reviewB?playSeq=${playSeq}`, reviewDataB, {
+    axios.post(`http://localhost:8080/api/reviewBefores/reviewB?playSeq=${playSeq}&userId=${userId}`, reviewDataB, {
       withCredentials: true,
-    },{params:userId}).then(response=>{
+    }).then(response=>{
 
       if (response.status === 200) {
         setAlertVisible(true)
@@ -610,7 +610,7 @@ const handleDeleteClickB = (reviewSeq) => {
 ///////QAQAQAQAQA
 
 
-
+const [QATitle, setQATitle] = useState(''); // 리뷰 텍스트 상태
 const [QAText, setQAText] = useState(''); // 리뷰 텍스트 상태
 const [QAData, setQAData] = useState(null); // 초기값을 null로 설정
 const [isQAUpdate,setIsQAUpdate]=useState(false);
@@ -670,17 +670,18 @@ const handleQASubmit = async () => {
         setAlertVisible(true)
     return;
   }
-
+console.log(QATitle,QAText)
 
   // 데이터 객체 생성
   const DataQA = {
+    title:QATitle,
     content: QAText,
   }
   const userId = sessionStorage.getItem("id");
     // 서버로 데이터 전송
-    axios.post(`http://localhost:8080/api/qnas/qna?playSeq=${playSeq}`, DataQA, {
+    axios.post(`http://localhost:8080/api/qnas/qna?playSeq=${playSeq}&userId=${userId}`, DataQA, {
       withCredentials: true,
-    },{params:userId}).then(response=>{
+    }).then(response=>{
 
       if (response.status === 200) {
         setAlertVisible(true)
@@ -925,7 +926,7 @@ const handleQADeleteClick = (qnaSeq) => {
             </div>
           )}
 
-          {visible[4] && <div className="info-section"><QA QACount={QACount}QAData={QAData} handleQAClick={handleQAClick} selectQASeq={selectQASeq} setIsQAUpdate={setIsQAUpdate} isQAUpdate={isQAUpdate}handleQADeleteClick={handleQADeleteClick} handleQASubmit={handleQASubmit} handleQAEditClick={handleQAEditClick} QAText={QAText} formatDate={formatDate} setQAText={setQAText} /></div>}
+          {visible[4] && <div className="info-section"><QA setQATitle={setQATitle}QATitle={QATitle} QACount={QACount}QAData={QAData} handleQAClick={handleQAClick} selectQASeq={selectQASeq} setIsQAUpdate={setIsQAUpdate} isQAUpdate={isQAUpdate}handleQADeleteClick={handleQADeleteClick} handleQASubmit={handleQASubmit} handleQAEditClick={handleQAEditClick} QAText={QAText} formatDate={formatDate} setQAText={setQAText} /></div>}
         </div>
       </div>
 

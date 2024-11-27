@@ -1,6 +1,6 @@
 import React from 'react';
 
-const QA = ({QACount,handleQAEditClick,QAText,setQAText,handleQASubmit,QAData,formatDate,handleQADeleteClick,handleQAClick,isQAUpdate,setIsQAUpdate,selectQASeq}) => {
+const QA = ({setQATitle,QATitle,QACount,handleQAEditClick,QAText,setQAText,handleQASubmit,QAData,formatDate,handleQADeleteClick,handleQAClick,isQAUpdate,setIsQAUpdate,selectQASeq}) => {
   console.log(selectQASeq)
   
   return (
@@ -32,6 +32,8 @@ const QA = ({QACount,handleQAEditClick,QAText,setQAText,handleQASubmit,QAData,fo
               border: '1px solid #ccc',
               borderRadius: '5px',
             }}
+            value={QATitle}
+            onChange={(e)=>setQATitle(e.target.value)}
           />
 
           <input
