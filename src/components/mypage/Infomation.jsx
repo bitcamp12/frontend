@@ -81,13 +81,11 @@ const Infomation = () => {
                 </nav>
 
                 <div className={styles.member_info_container}>
-                    {/* 
-                
-                    {sessionId && <InfoLock id={sessionId} />}
-                     */}
+                    {/* {sessionId && <InfoLock id={sessionId} />} */}
+
                     {/* <InfoModify /> */}
-                    <InfoWithdrawal />
-                    {/* <InfoReservation/> */}
+                    {/* <InfoWithdrawal /> */}
+                    <InfoReservation/>
                     {/* <InfoBookmark/> */}
                 </div>
             </section>
