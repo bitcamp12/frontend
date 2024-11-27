@@ -5,7 +5,7 @@ import axios from "axios";
 import Modal from "../Modal/Modal";
 import { useNavigate } from "react-router";
 
-const InfoWithdrawal = () => {
+const InfoWithdrawal = (props) => {
     const [id, setid] = useState("apple");
     const navigator = useNavigate();
 
@@ -15,7 +15,7 @@ const InfoWithdrawal = () => {
     const [modalMessage, setModalMessage] = useState("");
     const closeModal = () => {
         setAlertVisible(false);
-        navigator("/");
+        // navigator("/");
     };
 
     // 체크박스 선택되었는지 상태저장
@@ -30,7 +30,10 @@ const InfoWithdrawal = () => {
             alert("탈퇴!!! ");
             axios
                 .delete(
-                    `http://localhost:8080/api/members/infoWithdrawal/me/${id}`
+                    `http://localhost:8080/api/members/infoWithdrawal/me/${props.sessionId}`,
+                    {
+                        withCredentials: true, // 세션 쿠키를 포함
+                    }
                 ) // 세션으로 넘어온 id가 될 예정
                 .then((response) => {
                     console.log(response.data);
@@ -41,6 +44,24 @@ const InfoWithdrawal = () => {
         } else {
             alert("탈퇴못함 ㅋ ");
             // 체크박스가 선택되지 않았다면, 탈퇴불가능 (안내창?띄울까?)
+        }
+    };
+
+    const checkSessionStatus = async () => {
+        try {
+            const response = await axios.get(
+                "http://localhost:8080/api/members/session-status",
+                {
+                    withCredentials: true, // 세션 쿠키 포함
+                }
+            );
+            if (response.data.data === "세션 없음") {
+                console.log("세션이 종료되었습니다.");
+            } else {
+                console.log("세션이 유효합니다. 세션 ID:", response.data.data);
+            }
+        } catch (error) {
+            console.log("세션 상태 확인 중 오류 발생:", error);
         }
     };
 
