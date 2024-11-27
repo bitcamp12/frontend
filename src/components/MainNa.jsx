@@ -53,7 +53,7 @@ const MainNa = () => {
 
    
     const handleSuggestionClick = (suggestion) => {
-        navigate(`/playDetail?PlaySeq=${suggestion.playSeq}`);
+        navigate(`/playDetail/${suggestion.playSeq}`);
         setShowSuggestions(false); 
     };
     
