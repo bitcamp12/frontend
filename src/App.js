@@ -33,7 +33,7 @@ const App = () => {
                     <Route path="/findIdDetail" element={<FindIdDetail/>}/>
                     <Route path="/findPwdDetail" element={<FindPwdDetail />} />
                     <Route path="/resetPwd" element={<ResetPwd />} />
-                    <Route path="/playDetail" element={<PlayDetail />} />
+                    <Route path="/playDetail/:playSeq" element={<PlayDetail />} />
                     <Route path="/member" element={<Infomation />} />
                 </Routes>
             </BrowserRouter>
