@@ -134,7 +134,7 @@ const MainNa = () => {
                 <div id="right-section">
                                 { id === true ? (
                     <div id="mypage-section">
-                        <p id="mypage" name="mypage">마이페이지</p>
+                        <Link to="/member"><p id="mypage" name="mypage">마이페이지</p></Link>
                         <p onClick={logout} style={{ cursor: 'pointer' }}>로그아웃</p>
                     </div>
                 ) : (
