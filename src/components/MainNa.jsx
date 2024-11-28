@@ -5,6 +5,7 @@ import "../assets/css/MainNa.css";
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import debounce from 'lodash.debounce'; 
+import useOutsideClick from './useOutsideClick';
 
 const MainNa = () => {
     const id = sessionStorage.getItem("id");
@@ -23,7 +24,7 @@ const MainNa = () => {
                 }, 2000);
             }
         } catch (error) {
-            console.error("Logout failed:", error);
+            console.error("", error);
         }
     };
 
@@ -31,38 +32,49 @@ const MainNa = () => {
         if (query) {
             try {
                 const result = await axios.post('http://localhost:8080/api/plays/searchList', { name: query });
-                if (result.data.status === 200) {
-                    setSuggestions(result.data.data || []);
+                if (result.data.status === 200 && result.data.data.length > 0) {
+                    setSuggestions(result.data.data);
+                    setShowSuggestions(true);
+                } else {
+                    setSuggestions([{ name: "검색 결과가 없습니다" }]);
                     setShowSuggestions(true);
                 }
             } catch (error) {
                 console.error("Error fetching suggestions:", error);
+                setSuggestions([{ name: "오류가 발생했습니다. 다시 시도해주세요." }]);
+                setShowSuggestions(true);
             }
         } else {
-            setSuggestions(["검색결과가없습니다"]);
+            setSuggestions([]);
             setShowSuggestions(false);
         }
-    }, 300); 
+    }, 300);
 
-   
     const handleInputChange = (e) => {
         const value = e.target.value;
         setName(value);
-        fetchSuggestions(value); 
+        fetchSuggestions(value);
     };
 
-   
-    const handleSuggestionClick = (suggestion) => {
-        navigate(`/playDetail/${suggestion.playSeq}`);
-        setShowSuggestions(false); 
-    };
+const handleSuggestionClick = (suggestion) => {
+    console.log("클릭1번"); 
+    if (suggestion.name === "검색 결과가 없습니다") {
+        return;
+    }
+
+    console.log("클릭2번");
+    navigate(`/playDetail/${suggestion.playSeq}`);
+    setShowSuggestions(false);
+};
     
+
+    const closeSuggestions = () => setShowSuggestions(false);
+    const ref = useOutsideClick(closeSuggestions);
 
     return (
         <div id="main-bar">
             <div id="main-table">
-           
-                <div id="left-section">
+                <div id="left-section" ref={ref}>
                     <Link to="/"><img id="logo-img" name="logo" src={logo} alt="Logo" /></Link>
                     <Link to="/" className="logoLink"><h1>30 Ticket</h1></Link>
                     <div id="search-bar">
@@ -70,32 +82,42 @@ const MainNa = () => {
                             id="search-input"
                             value={name}
                             onChange={handleInputChange}
+                            onFocus={() => setShowSuggestions(true)} 
                             name="search"
                             type="text"
                             placeholder="검색어를 입력하세요"
                         />
+                                            {showSuggestions && (
+                            <div id="suggestions-dropdown">
+                                <ul>
+                                    {suggestions.map((suggestion, index) => (
+                                        <li 
+                                            key={index} 
+                                            onClick={() => {
+                                                console.log('클릭됨:', suggestion); 
+                                                handleSuggestionClick(suggestion);
+                                            }}
+                                            style={{ cursor: 'pointer' }}
+                                        >
+                                            {suggestion.name}
+                                        </li>
+
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+
                         <div id="search-action">
                             <input type="button" name="searchBtn" id="searchBtn" hidden />
                             <div id="search-icon-div">
                                 <img id="search-icon" name="search-icon" src={search} alt="검색 아이콘" width={30} height={30} />
                             </div>
                         </div>
-                   
-                        {showSuggestions && suggestions.length > 0 && (
-                            <div id="suggestions-dropdown">
-                                <ul>
-                                    {suggestions.map((suggestion, index) => (
-                                        <li key={index} onClick={() => handleSuggestionClick(suggestion)}>
-                                            {suggestion.name} 
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        )}
+
+
                     </div>
                 </div>
 
-             
                 <div id="right-section">
                     {id ? (
                         <div id="mypage-section">
@@ -115,3 +137,4 @@ const MainNa = () => {
 };
 
 export default MainNa;
+
