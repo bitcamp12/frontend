@@ -3,12 +3,20 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
   import "../assets/css/FindId.css";
 import MainNa from "./MainNa";
+import Modal from "./Modal/Modal";
 
 const FindPwd = () => {
   const [id, setId] = useState(""); 
   const navigate = useNavigate(); 
   const location = useLocation();
   const [selectedOption, setSelectedOption] = useState(null);
+
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
+  const closeModal = () => {
+      setAlertVisible(false);
+  };
 
   useEffect(() => {
     if (location.pathname === "/findPwd") {
@@ -17,15 +25,27 @@ const FindPwd = () => {
   }, [location.pathname]);
 
   const handleSubmit = async (e) => {
+    setAlertVisible(true);
     e.preventDefault(); 
     try {
       const response = await axios.post("http://localhost:8080/api/members/checkId", {
         id: id,
       });
       if (response.data.message === "exist") {
-        navigate("/findPwdDetail", { state: { id } });
+        setModalMessage("아이디가 존재합니다 인증을 진행해주세요.");
+
+        setTimeout(() => {
+          navigate("/findPwdDetail", { state: { id } });
+        }, 1500);  //1.5초뒤에 이동
+
       } else {
-        alert("존재하지않는 아이디입니다");
+        setAlertVisible(true);
+        setModalMessage("존재하지 않는 아이디입니다.");
+
+        setTimeout(() => {
+          setAlertVisible(false);
+        }, 1000);
+
       }
     } catch (error) {
       console.error("", error);
@@ -73,6 +93,14 @@ const FindPwd = () => {
         </div>
       </div>
     </div>
+
+    
+    <Modal
+                closeModal={closeModal} 
+                modalMessage={modalMessage} 
+                modalTitle={modalTitle} 
+                alertVisible={alertVisible} 
+            />   
     </>
   );
 };
