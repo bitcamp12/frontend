@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import logo from '../assets/images/임시로고.png';
 import search from '../assets/images/돋보기.png';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "../assets/css/MainNa.css";
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -77,9 +79,12 @@ const MainNa = () => {
     const handleInputChange = (e) => {
         const value = e.target.value;
         setName(value);
-        fetchSuggestions(value); 
+        if (value.trim() !== "") {
+            fetchSuggestions(value); 
+        } else {
+            setShowSuggestions(false);
+        }
     };
-
     const handleSuggestionClick = (suggestion) => {
         if (suggestion.name === "검색 결과가 없습니다") {
             return;
@@ -91,24 +96,30 @@ const MainNa = () => {
     const closeSuggestions = () => setShowSuggestions(false);
     const ref = useOutsideClick(closeSuggestions); 
 
+    const highlightText = (text, highlight) => {
+        const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
+        return parts.map((part, index) => 
+            part.toLowerCase() === highlight.toLowerCase() ? <span key={index} className="highlight">{part}</span> : part
+        );
+    };
+
     return (
         <div id="main-bar">
             <div id="main-table">
                 <div id="left-section" ref={ref}>
                     <Link to="/"><img id="logo-img" name="logo" src={logo} alt="Logo" /></Link>
                     <Link to="/" className="logoLink"><h1>30 Ticket</h1></Link>
-                    <div id="search-bar">
+                    <div id="search-bar" className={showSuggestions ? 'dropdown-visible' : ''}>
                         <input
                             id="search-input"
                             value={name}
                             onChange={handleInputChange}
-                            onFocus={() => setShowSuggestions(true)} 
                             name="search"
                             type="text"
                             placeholder="검색어를 입력하세요"
                         />
                         {showSuggestions && (
-                            <div id="suggestions-dropdown">
+                            <div id="suggestions-dropdown" style={{ display: showSuggestions ? 'block' : 'none' }}>
                                 <ul>
                                     {suggestions.map((suggestion, index) => (
                                         <li 
@@ -116,7 +127,7 @@ const MainNa = () => {
                                             onClick={() => handleSuggestionClick(suggestion)}
                                             style={{ cursor: 'pointer' }}
                                         >
-                                            {suggestion.name}
+                                            {highlightText(suggestion.name, name)}
                                         </li>
                                     ))}
                                 </ul>
@@ -125,7 +136,7 @@ const MainNa = () => {
                         <div id="search-action">
                             <input type="button" name="searchBtn" id="searchBtn" hidden />
                             <div id="search-icon-div">
-                                <img id="search-icon" name="search-icon" src={search} alt="검색 아이콘" width={30} height={30} />
+                                <i class="bi bi-search" id='search-icon' name="search-icon" src={search} alt="검색 아이콘"></i>
                             </div>
                         </div>
                     </div>
