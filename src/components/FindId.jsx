@@ -107,12 +107,27 @@ const FindId = () => {
         setPhoneTimer(60);
         setIsPhoneExpired(false);
         setModalMessage("인증번호가 휴대폰으로 전송되었습니다.");
+
+        setTimeout(() => {
+          setAlertVisible(false);
+        }, 5000);  // 5초 뒤에 꺼짐
+
       } else {
         setModalMessage("일치하는 회원 정보가 없습니다.");
+
+        setTimeout(() => {
+          setAlertVisible(false);
+        }, 2000);  // 2초 뒤에 꺼짐
+        
       }
     } catch (error) {
       console.error("에러", error);
       setModalMessage("서버와의 연결에 문제가 발생했습니다.");
+
+      setTimeout(() => {
+        setAlertVisible(false);
+      }, 2000);  // 2초 뒤에 꺼짐
+
     }
   };
 
@@ -131,10 +146,16 @@ const FindId = () => {
         getIdByPhone();
       } else {
         setModalMessage("인증번호가 일치하지않습니다");
+        setTimeout(() => {
+          setAlertVisible(false);
+        }, 2000);  // 2초 뒤에 꺼짐
       }
     } catch (error) {
       console.error("에러", error);
       setModalMessage("서버 오류");
+      setTimeout(() => {
+        setAlertVisible(false);
+      }, 2000);  // 2초 뒤에 꺼짐
     }
   };
 
@@ -154,18 +175,31 @@ const FindId = () => {
         setEmailTimer(60);
         setIsEmailExpired(false);
         setModalMessage("이메일로 인증번호가 전송 발송되었습니다. 확인해주세요");
+        setTimeout(() => {
+          setAlertVisible(false);
+        }, 5000);  // 5초 뒤에 꺼짐
       } else if (response.data.status === 400) {
         setModalMessage("일치하는 회원이 없습니다.");
+        setTimeout(() => {
+          setAlertVisible(false);
+        }, 2000);  // 2초 뒤에 꺼짐
       } else {
         setModalMessage("이메일 인증번호 전송이 실패하였습니다.");
+        setTimeout(() => {
+          setAlertVisible(false);
+        }, 2000);  // 2초 뒤에 꺼짐
       }
     } catch (error) {
       console.error("에러", error);
       setModalMessage("서버에 문제가 있습니다.");
+      setTimeout(() => {
+        setAlertVisible(false);
+      }, 2000);  // 2초 뒤에 꺼짐
     }
   };
 
   const getIdByPhone = async () => {
+    setModalMessage("");
     setAlertVisible(true);
     try {
       const response = await axios.post("http://localhost:8080/api/members/getIdByPhone", {
@@ -175,19 +209,36 @@ const FindId = () => {
 
       if (response.data.status === 200) {
         sessionStorage.setItem("userId", response.data.message);
-        navigate("/findIdDetail");
+
+        setModalMessage("인증 성공! 잠시후 이동합니다..");
+
+        setTimeout(() => {
+          navigate("/findIdDetail");
+        }, 2000);  // 2초 뒤에 이동
+      
+
       } else if (response.data.status === 404) {
         setModalMessage("회원정보가 없습니다");
+        setTimeout(() => {
+          setAlertVisible(false);
+        }, 2000);  // 2초 뒤에 꺼짐
       } else {
         setModalMessage("오류 발생");
+        setTimeout(() => {
+          setAlertVisible(false);
+        }, 2000);  // 2초 뒤에 꺼짐
       }
     } catch (error) {
       console.error("에러", error);
       setModalMessage("서버에 문제가 있습니다.");
+      setTimeout(() => {
+        setAlertVisible(false);
+      }, 2000);  // 2초 뒤에 꺼짐
     }
   };
 
   const getIdByEmail = async () => {
+    setModalMessage("");
     setAlertVisible(true);
 
     try {
@@ -202,15 +253,29 @@ const FindId = () => {
 
       if (response.data.status === 200) {
         sessionStorage.setItem("userId", response.data.message);
-        navigate("/findIdDetail");
-      } else if (response.data.status === 400) {
-        setModalMessage("회원정보가 없습니다");
+        setModalMessage("인증 성공! 잠시후 이동합니다.");
+
+                setTimeout(() => {
+          navigate("/findIdDetail");
+        }, 2000);  // 2초 뒤에 이동
+
+      } else if (response.data.status === 204) {
+        setModalMessage("인증번호가 일치하지않습니다");
+        setTimeout(() => {
+          setAlertVisible(false);
+        }, 2000);  // 2초 뒤에 꺼짐
       } else {
         setModalMessage("오류 발생");
+        setTimeout(() => {
+          setAlertVisible(false);
+        }, 2000);  // 2초 뒤에 꺼짐
       }
     } catch (error) {
       console.error("에러", error);
       setModalMessage("이메일 인증을 다시 해주세요");
+      setTimeout(() => {
+        setAlertVisible(false);
+      }, 2000);  // 2초 뒤에 꺼짐
     }
   };
 
