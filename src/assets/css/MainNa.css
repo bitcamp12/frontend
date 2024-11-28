@@ -167,6 +167,15 @@
     text-decoration: none;
 }
 
+
+input:-webkit-autofill {
+  transition: background-color 0s 600000s, color 0s 600000s !important;
+}
+
+
+
+
+
 /* Media Queries for Responsive Design */
 @media (max-width: 768px) {
     #main-table {
