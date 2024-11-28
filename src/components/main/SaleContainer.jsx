@@ -9,6 +9,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const SaleContainer = () => {
 
@@ -58,10 +59,12 @@ const SaleContainer = () => {
                     {plays.map((item, index) => (
                         <SwiperSlide key={index}>
                             <div className="card">
+                                <Link to={`/playDetail/${item.playSeq}`}>
                                 <img
                                     src={`https://kr.object.ncloudstorage.com/bitcamp-9th-bucket-135/storage/${item.imageFileName}`}
                                     alt={item.name}
                                 />
+                                </Link>
                             </div>
                             <div className="sale-content">
                                 <h3 className="sale-content-title">{item.name}</h3>
