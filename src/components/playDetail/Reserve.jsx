@@ -1,6 +1,7 @@
 import React from 'react';
 
-const Reserve = ({ closeModal, DatePicker, selectedDate, setSelectedDate, ko }) => {
+const Reserve = ({DateList, closeModal, DatePicker, selectedDate, setSelectedDate, ko }) => {
+  console.log(DateList[0])
   return (
     <div id="reserve-modal" className="modal">
       <div id="reserve-modal-content" className="modal-content">
@@ -25,8 +26,19 @@ const Reserve = ({ closeModal, DatePicker, selectedDate, setSelectedDate, ko }) 
         </div>
 
         <div>
-          <input type='button' value='시간대' id="reserve-button-time-right" />
-          <input type='button' value='시간대' id="reserve-button-time-left" />
+              {/* 첫 번째 버튼 */}
+      <input 
+        type="button" 
+        value={DateList[0]?.startTime || '없음'} 
+        id="reserve-button-time-right" 
+      />
+
+      {/* 두 번째 버튼 */}
+      <input 
+        type="button" 
+        value={DateList[1]?.startTime || '없음'} 
+        id="reserve-button-time-left" 
+      />
         </div>
         <div>
           <input type='button' value='예매하기' id="reserve-button-time" />

@@ -42,8 +42,58 @@ const PlayDetail = () => {
     const userId = sessionStorage.getItem("id");
 
   const { kakao } = window;
+///////스케줄 예매일
+  const [selectedDate, setSelectedDate] = useState(null);//선택된 날짜
+  const formatDatePickerDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+  
+    // 'YYYY-MM-DD HH:mm:ss' 형태로 포맷
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  };
+  
+  
 
-  const [selectedDate, setSelectedDate] = useState(null);
+
+
+
+  const [DateList,setDateList]=useState([])//날짜 리스트
+ // 데이터 가져오기 함수
+ const fetchTimeSlots = async () => {
+ // selectedDate가 있을 경우, 없으면 현재 시간 사용
+ const selectDate = selectedDate
+ ? formatDatePickerDate(new Date(selectedDate)) // 선택된 날짜
+ : formatDatePickerDate(new Date()); // 기본값은 현재 시간
+console.log(selectDate);
+  try {
+    const response = await axios.get(`http://localhost:8080/api/playTimeTables/playTimeTables?playSeq=${playSeq}&targetDate=${selectDate}`, 
+    );//자바로 데이터 가져오기
+
+    if ( response.status === 200) {
+      console.log(response.data.data)
+      setDateList(response.data.data);  // 서버에서 받은 데이터로 상태 업데이트
+    } else {
+      setDateList([]);  // 데이터가 없으면 빈 배열로 설정
+    }
+  }catch (error) {
+    console.error('리뷰 데이터를 가져오는 중 오류 발생:', error);
+  }
+};
+
+// 컴포넌트가 처음 렌더링될 때 데이터 가져오기
+useEffect(() => {
+  fetchTimeSlots();
+}, [selectedDate]);  // 빈 배열을 전달하여 한 번만 실행
+///////////
+
+
+
+
+
 
   const [rating, setRating] = useState(0); // 선택된 별점 상태
 
@@ -96,7 +146,8 @@ const PlayDetail = () => {
 
   const handleSelect = (order) => {
     setSelected(order);
-    fetchReviewData(); // 함수 호출
+    console.log(order)
+    fetchReviewData(order); // 함수 호출
   };
   const location = useLocation();  // 현재 URL 정보 가져오기
   const queryParams = new URLSearchParams(location.search);  // 쿼리 파라미터 추출
@@ -175,10 +226,10 @@ const shearchBtn = async () => {
 
 
 /////////리뷰 불러오기
-const fetchReviewData = async () => {
-  console.log(selected);
+const fetchReviewData = async (order) => {
+  console.log(order);
   try {
-    const response = await axios.get(`http://localhost:8080/api/reviewAfters/ReviewAList?playSeq=${playSeq}&selected=${selected}`);
+    const response = await axios.get(`http://localhost:8080/api/reviewAfters/ReviewAList?playSeq=${playSeq}&selected=${order}`);
     console.log(response.data);
    
     
@@ -777,8 +828,83 @@ const handleQADeleteClick = (qnaSeq) => {
     });
 };
 
+////////////즐겨찾기
+//하트색깔
+const [hartColor,setHartColor]=useState('black')
+/////즐겨찾기 불러오기(등록되어있음->빨간하트/등록 없음->검은하트)
+  // 즐겨찾기 상태 확인
+  useEffect(() => {
+    if (!userId) return;
 
+    axios
+      .get(`http://localhost:8080/api/favorites/favorites?playSeq=${playSeq}&userId=${userId}`)
+      .then((response) => {
+        console.log(response)
+        if (response.status === 200) {
+          setHartColor("red"); // 데이터 존재 -> 빨간 하트
+        } else {
+          setHartColor("black"); // 데이터 없음 -> 검은 하트
+        }
+      })
+      .catch((error) => {
+        console.error("즐겨찾기 상태 확인 실패:", error);
+      });
+  }, [playSeq, userId]);
+///즐겨찾기 등록 검정하트 빨간하트 만들기
+const handleAddFavorite = () => {
+  console.log(playSeq,userId)
+  axios
+    .post(`http://localhost:8080/api/favorites/favorites?playSeq=${playSeq}&userId=${userId}`)
+    .then((response) => {
+      if (response.status === 200) {
+        setAlertVisible(true);
+        setModalTitle("성공");
+        setModalMessage("즐겨찾기 성공 실패");
+        setHartColor("red"); // 성공 시 빨간 하트
+      } else {
+        setAlertVisible(true);
+        setModalTitle("실패");
+        setModalMessage("즐겨찾기 등록 실패");
+      }
+    })
+    .catch((error) => {
+      setAlertVisible(true);
+      setModalTitle("실패");
+      setModalMessage("즐겨찾기 등록 실패");
+    });
+};
+///즐겨찾기 삭제 빨간하트 검은색하트로 변경
+const handleRemoveFavorite = () => {
+  axios
+    .delete(`http://localhost:8080/api/favorites/favorites?playSeq=${playSeq}&userId=${userId}`
+    )
+    .then((response) => {
+      if (response.status === 200) {
+        setAlertVisible(true);
+      setModalTitle("성공");
+      setModalMessage("즐겨찾기 삭제 성공");
+        setHartColor("black"); // 성공 시 검은 하트
+      } else {
+        setAlertVisible(true);
+        setModalTitle("실패");
+        setModalMessage("즐겨찾기 삭제 실패");
+      }
+    })
+    .catch((error) => {
+      setAlertVisible(true);
+      setModalTitle("실패");
+      setModalMessage("즐겨찾기 삭제 실패");
+    });
+};
 
+  // 하트 버튼 클릭 이벤트
+  const HartClick = () => {
+    if (hartColor === "black") {
+      handleAddFavorite(); // 검은 하트 -> 등록
+    } else {
+      handleRemoveFavorite(); // 빨간 하트 -> 삭제
+    }
+  };
 
   return (
 
@@ -839,6 +965,7 @@ const handleQADeleteClick = (qnaSeq) => {
               <img src={star} className="play-info-img" alt="별점" id="rating-image" />
               <label className="play-info-column-header">별점 </label><p className="play-info-column-content">{reviewAVG?reviewAVG:0.00}</p>
             </div>
+            <div className="play-info-column" style={{paddingLeft: '10px'}}><span onClick={HartClick} style={{fontSize:'25px', color: hartColor}}>♥</span></div>
           </div>
         </div>
 
@@ -958,7 +1085,7 @@ const handleQADeleteClick = (qnaSeq) => {
 
       {/* 예매 모달 팝업 */}
       {reserveVisible && (
-        <Reserve closeModal={closeModal} DatePicker={DatePicker} selectedDate={selectedDate} setSelectedDate={setSelectedDate} ko={ko} />
+        <Reserve DateList={DateList}closeModal={closeModal} DatePicker={DatePicker} selectedDate={selectedDate} setSelectedDate={setSelectedDate} ko={ko} />
       )}
 
       {/* 상담 모달 팝업 */}
