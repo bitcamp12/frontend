@@ -86,6 +86,7 @@ const MainNa = () => {
         }
     };
     const handleSuggestionClick = (suggestion) => {
+        setShowSuggestions(true);
         if (suggestion.name === "검색 결과가 없습니다") {
             return;
         }
@@ -94,7 +95,10 @@ const MainNa = () => {
     };
 
     const closeSuggestions = () => setShowSuggestions(false);
-    const ref = useOutsideClick(closeSuggestions); 
+    
+    const ref = useOutsideClick(() => {
+        closeSuggestions();  // 외부 클릭시 검색 결과 닫기
+    });
 
     const highlightText = (text, highlight) => {
         const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
@@ -113,6 +117,7 @@ const MainNa = () => {
                         <input
                             id="search-input"
                             value={name}
+                            
                             onChange={handleInputChange}
                             name="search"
                             type="text"
