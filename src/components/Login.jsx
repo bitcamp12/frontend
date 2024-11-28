@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import interparkLogo from "../assets/images/purpleticket.png";
 import AppleLogo from "../assets/images/Apple.png";
 import NaverLogo from "../assets/images/Naver.png";
@@ -10,7 +10,11 @@ import Modal from "./Modal/Modal";
 import axios from "axios";
 
 const Login = () => {
-    const [id, setId] = useState("");
+    const location = useLocation();
+    const navigate = useNavigate();
+     const FindId = location.state?.userId || ""; // 아이디찾기를 통해 전달된 id 값
+
+    const [id, setId] = useState(FindId);
     const [password, setPassword] = useState("");
     const [loginError, setLoginError] = useState("");
     const [keepLogin, setKeepLogin] = useState(false);
@@ -18,7 +22,14 @@ const Login = () => {
     const [modalTitle, setModalTitle] = useState("");
     const [modalMessage, setModalMessage] = useState("");
 
-    const navigate = useNavigate();
+    useEffect(() => {
+      if (FindId) {
+          setId(FindId);
+      }
+  }, [FindId]);
+
+
+ 
 
     const closeModal = () => {
         setAlertVisible(false);
@@ -47,7 +58,7 @@ const Login = () => {
                 setModalTitle("로그인 성공");
                 setModalMessage(`환영합니다, ${response.data.message}님`);
                 setLoginError("");
-                sessionStorage.setItem("id", response.data.message);
+               
 
                 setTimeout(() => {
                     navigate("/");
