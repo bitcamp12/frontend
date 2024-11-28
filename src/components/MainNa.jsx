@@ -39,14 +39,12 @@ const MainNa = () => {
     
     const logout = async () => {
         try {
-            const result = await axios.post('http://localhost:8080/api/members/logout', {
+            const result = await axios.post('http://localhost:8080/api/members/logout',{}, {
                 withCredentials: true, 
             });
             if (result.data.status === 200) {
+                alert(result.data.message)
                 setId(false);
-                setTimeout(() => {
-                    navigate("/"); 
-                }, 2000);
             }
         } catch (error) {
             console.error("Logout error:", error);
@@ -136,7 +134,7 @@ const MainNa = () => {
                 <div id="right-section">
                                 { id === true ? (
                     <div id="mypage-section">
-                        <p id="mypage" name="mypage">마이페이지</p>
+                        <Link to="/member"><p id="mypage" name="mypage">마이페이지</p></Link>
                         <p onClick={logout} style={{ cursor: 'pointer' }}>로그아웃</p>
                     </div>
                 ) : (
