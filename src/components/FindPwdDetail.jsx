@@ -102,6 +102,7 @@ const FindPwdDetail = () => {
       const response = await axios.post(
         'http://localhost:8080/api/members/sendPhoneVerificationCode',
         {
+          id:id,
           name: formData.name,
           phoneNum: formData.phone
         }
