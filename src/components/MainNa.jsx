@@ -39,14 +39,12 @@ const MainNa = () => {
     
     const logout = async () => {
         try {
-            const result = await axios.post('http://localhost:8080/api/members/logout', {
+            const result = await axios.post('http://localhost:8080/api/members/logout',{}, {
                 withCredentials: true, 
             });
             if (result.data.status === 200) {
+                alert(result.data.message)
                 setId(false);
-                setTimeout(() => {
-                    navigate("/"); 
-                }, 2000);
             }
         } catch (error) {
             console.error("Logout error:", error);
