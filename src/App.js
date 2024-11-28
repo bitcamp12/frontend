@@ -17,6 +17,7 @@ import Infomation from "./components/mypage/Infomation";
 import FindIdDetail from "./components/FindIdDetail";
 import FindPwdDetail from "./components/FindPwdDetail";
 import ResetPwd from "./components/ResetPwd";
+import Notice from "./components/Notice";
 
 
 const App = () => {
@@ -35,6 +36,7 @@ const App = () => {
                     <Route path="/resetPwd" element={<ResetPwd />} />
                     <Route path="/playDetail/:playSeq" element={<PlayDetail />} />
                     <Route path="/member" element={<Infomation />} />
+                    <Route path="/notice" element={<Notice />} />
                 </Routes>
             </BrowserRouter>
         </>

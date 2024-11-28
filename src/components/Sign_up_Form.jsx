@@ -4,9 +4,17 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/Sign_up_Form.css';
 import interparkLogo from '../assets/images/purpleticket.png';
 import { Link } from 'react-router-dom';
+import Modal from './Modal/Modal';
 
 const Sign_up_Form = () => {
   const navigate = useNavigate();
+  
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
+  const closeModal = () => {
+      setAlertVisible(false);
+  };
 
   const [formData, setFormData] = useState({
     id: '',
@@ -15,6 +23,7 @@ const Sign_up_Form = () => {
     name: '',
     email: '',
     phone: '',
+    gender: '', // 성별추가
   });
 
   const [errors, setErrors] = useState({
@@ -204,60 +213,79 @@ const Sign_up_Form = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // 폼 제출을 막습니다.
-  
+    
+    setAlertVisible(true);
+
     // 아이디 유효성 검사
     if (!formData.id || errors.id || check.id !== '사용 가능한 아이디입니다') {
-      alert('아이디를 확인해주세요');
+      setModalMessage("아이디를 확인해주세요");
       return;
     }
   
     // 비밀번호 유효성 검사
     if (!isPwdValid()) {
-      alert('비밀번호를 확인해주세요');
+      setModalMessage("비밀번호를 확인해주세요");
       return;
     }
   
     // 비밀번호 확인 유효성 검사
     if (!isChkPwdValid()) {
-      alert('비밀번호 확인을 확인해주세요');
+      setModalMessage("비밀번호 재확인을 해주세요");
       return;
     }
   
     // 이름 유효성 검사
     if (!formData.name || errors.name) {
-      alert('이름을 확인해주세요');
+      setModalMessage("이름을 확인해주세요");
       return;
     }
   
     // 이메일 유효성 검사
     if (!formData.email || errors.email) {
-      alert('이메일을 확인해주세요');
+      setModalMessage("이메일을 확인해주세요");
       return;
     }
   
     // 인증번호 유효성 검사 (이메일)
     if (!verificationNumber || checkNumber !== '인증번호가 일치합니다') {
-      alert('이메일 인증번호를 확인해주세요');
+      setModalMessage("이메일 인증번호를 확인해주세요");
       return;
     }
   
     // 휴대폰 번호 유효성 검사
     if (!formData.phone || errors.phone) {
-      alert('휴대폰 번호를 확인해주세요');
+      setModalMessage("휴대폰 번호를 확인해주세요");
       return;
     }
   
     // 인증번호 유효성 검사 (휴대폰)
     if (!verificationPhoneNumber || checkPhoneNumber !== '인증번호가 일치합니다') {
-      alert('휴대폰 인증번호를 확인해주세요');
+      setModalMessage("휴대폰 인증번호를 확인해주세요");
       return;
     }
+
+        // 인증번호 유효성 검사 (성별)
+        if (!formData.gender) {
+          setModalMessage("성별을 선택해주세요");
+          return;
+        }
   
     try {
+      setModalMessage("");
       const result = await axios.post('http://localhost:8080/api/members/signup', formData);
-      navigate('/'); // 회원가입 성공 시 이동
+
+      
+      if (result.data.status === 200) {
+        
+        setModalMessage("회원가입을 축하드립니다.");
+
+      setTimeout(() => {
+        navigate("/"); 
+      }, 2000);  // 1초 뒤에 이동
+    }
+
     } catch (error) {
-      alert('회원가입 중 오류가 발생했습니다');
+      setModalMessage("회원 가입중 오류가 발생했습니다.");
     }
   };
   
@@ -287,12 +315,12 @@ const Sign_up_Form = () => {
         {email:formData.email}
       );
 
-      alert('이메일 발송에 성공했습니다');
+      setModalMessage("이메일을 발송에 성공했습니다.");
       setTimer(90); // 3분(180초) 설정
       setIsTimerActive(true);
     } catch (error) {
       console.error('이메일 발송 실패:', error);
-      alert('이메일 발송 중 오류가 발생했습니다.');
+      setModalMessage("이메일을 발송중 오류가 발생했습니다.");
     }
   };
   
@@ -368,13 +396,12 @@ const Sign_up_Form = () => {
     try {
       setCheckPhoneNumber('');
       await axios.post("http://localhost:8080/api/members/sendPhoneNumber", { phoneNum: formData.phone });
-      alert('문자 발송에 성공했습니다');
+      setModalMessage("문자 발송에 성공했습니다.");
       setErrors(prevErrors => ({ ...prevErrors, phone: '' }));
       setPhoneTimer(90); // 90초 설정
       setIsPhoneTimerActive(true); // 타이머 활성화
     } catch (error) {
-      console.error('문자 발송 실패:', error);
-      alert('문자 발송 중 오류가 발생했습니다.');
+      setModalMessage("문자 발송중 오류가 발생했습니다.");
     }
   };
   
@@ -554,12 +581,49 @@ const Sign_up_Form = () => {
           {isPhoneTimerActive && <p>남은 시간: {formatPhoneTime(phoneTimer)}</p>}
           {checkPhoneNumber && <span className="checkId">{checkPhoneNumber}</span>}
         </div>
+
+        <div className="form-group" id="gender-group">
+  <label>성별</label>
+  <div className="radio-group">
+    <label htmlFor="male">
+      <input
+        type="radio"
+        id="male"
+        name="gender"
+        value="male"
+        checked={formData.gender === 'male'}
+        onChange={handleChange}
+      />
+      남
+    </label>
+    <label htmlFor="female">
+      <input
+        type="radio"
+        id="female"
+        name="gender"
+        value="female"
+        checked={formData.gender === 'female'}
+        onChange={handleChange}
+      />
+      여
+    </label>
+  </div>
+</div>
+
         <div className="submitButton">
         <button type="submit" className="submit-button">회원가입</button>
 
         </div>
       </form>
     </div>
+
+    <Modal 
+                closeModal={closeModal} 
+                modalMessage={modalMessage} 
+                modalTitle={modalTitle} 
+                alertVisible={alertVisible} 
+            />   
+
     </div>
   );
 };

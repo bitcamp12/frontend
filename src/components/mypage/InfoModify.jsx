@@ -83,12 +83,14 @@ const InfoModify = () => {
     useEffect(() => {
         // 세션에서 id를 가져옵니다.
         const userId = "apple"; //sessionStorage.getItem("id");
-        console.log(userId);
+        // console.log(userId);
 
         axios
-            .get(`http://localhost:8080/api/members/getUserInfo/me/${userId}`)
+            .get(`http://localhost:8080/api/members/getUserInfo/me`, {
+                withCredentials: true, // 세션 쿠키를 포함
+            })
             .then((response) => {
-                console.log(response);
+                console.log(response.data);
                 setData(response.data);
             })
             .catch((error) => console.error("ERROR(사용자정보수정): ", error));
@@ -254,8 +256,7 @@ const InfoModify = () => {
                                     className={styles.modifyEnter}
                                 >
                                     <p>
-                                        휴대폰번호 변경을 위해 인증이
-                                        필요합니다.
+                                        휴대폰번호 변경을 위해 인증이 필요합니다.
                                     </p>
                                     <div>
                                         <div className={styles.enterBox}>
@@ -446,10 +447,10 @@ const InfoModify = () => {
                     <dl>
                         <dt>성별</dt>
                         <dd>
-                            <input type="radio" name="gender" id="man" />
+                            <input type="radio" name="M" id="man" />
                             <label htmlFor="man">남</label>
 
-                            <input type="radio" name="gender" id="woman" />
+                            <input type="radio" name="F" id="woman" />
                             <label htmlFor="woman">여</label>
                         </dd>
                     </dl>
