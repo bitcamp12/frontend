@@ -6,6 +6,8 @@ import MainNa from "./MainNa";
 import "../assets/css/FindIdDetail.css";
 import Modal from "./Modal/Modal";
 
+import { useNavigate } from "react-router-dom";
+
 
 const FindIdDetail = () => {
 
@@ -32,6 +34,19 @@ const FindIdDetail = () => {
        sessionStorage.removeItem("userId");
      };
  }, []);
+
+
+ const navigate = useNavigate();
+
+const handleLoginClick = () => {
+  if (userId) {
+    navigate("/login", { state: { userId } });
+  } else {
+    setAlertVisible(true);
+    setModalMessage("아이디 찾기를 먼저 진행해주세요");
+  }
+};
+
 
   return (
     <>
@@ -75,9 +90,7 @@ const FindIdDetail = () => {
             <Link to="/findPwd">
               <button className="whiteBtn">비밀번호 찾기</button>
             </Link>
-            <Link to="/login">
-              <button className="violetBtn">로그인</button>
-            </Link>
+              <button className="violetBtn" onClick={handleLoginClick}>로그인</button>
           </div>
         </div>
       </div>
