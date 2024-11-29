@@ -77,22 +77,117 @@
     background-color: transparent;
     z-index: 10;
 }
-
 #suggestions-dropdown {
-    display: none;
     position: absolute;
     top: 100%;
-    align-items: center;
-    width: 500px;
     left: -1px;
+    width: 500px;
+    background-color: white;
+    border: 1px solid #BE97EC;
+    border-top: none;
+    border-radius: 0 0 24px 24px;
+    overflow-y: auto;
+    z-index: 10;  
+}
+
+#suggestions-dropdown {
+    position: absolute;
+    top: 100%;
+    left: -1px;
+    width: 500px;
     background-color: white;
     border: 1px solid #BE97EC;
     border-top: none;
     border-radius: 0 0 24px 24px;
     overflow-y: auto;
     z-index: 10;
-    
-}
+  }
+  
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    > li {
+      > a {
+        position: relative;
+        display: block;
+        background-color: #2B4570;
+        color: #fff;
+        padding: 16px 16px;
+        text-decoration: none;
+        transition: background-color 200ms ease-out;
+      }
+      > div {
+        position: relative;
+        display: none;
+      }
+      &:nth-child(n+2) {
+        > a {
+          border-left: 1px solid #fff;
+        }
+      }
+      &:hover {
+        > a {
+          background-color: rgba(#2B4570,.75);
+        }
+        > div {
+          display: block;
+          > #suggestions-dropdown { 
+            display: block; 
+            animation-name: dropdown;
+            animation-duration: 500ms;
+            animation-direction: normal;
+            will-change: transform;
+          }
+        }
+      }
+    }
+  }
+  
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    min-width: 150px;
+    background: #EB8258;
+    box-sizing: border-box;
+    border-radius: 2px;
+    box-shadow: 0 2px 10px hsla(0,0%,0%,.25);
+    > li {
+      > a {
+        display: block;
+        padding: 10px 16px;
+        color: #fff;
+        text-decoration: none;
+        font-size: 14px;
+        white-space: nowrap;
+        transition: background-color 200ms ease-out;
+        &:hover {
+          background-color: hsla(0,0%,0%,.1);
+        }
+      }
+      &:nth-child(n+2) {
+        border-top: 1px solid hsla(0,0%,100%,.25);
+      }
+    }
+  }
+  
+  @keyframes dropdown {
+    from {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+    75% {
+      opacity: 1;
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
 
 #suggestions-dropdown ul {
     margin-left: 20px;
