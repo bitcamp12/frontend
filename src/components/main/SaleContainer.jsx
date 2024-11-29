@@ -15,8 +15,10 @@ const SaleContainer = () => {
 
     const [plays, setPlays] = useState([]);
 
+     const targetDate = "2024-11-29"
+
     useEffect(() => {
-        const fetchRandomPlays = async () => {
+        const fetchSalePlays = async () => {
             try {
                 const response = await axios.get("http://localhost:8080/api/plays/getPlaySale", { withCredentials: true });
                 if (response.data && response.data.data) {
@@ -27,7 +29,7 @@ const SaleContainer = () => {
             }
         };
 
-        fetchRandomPlays();
+        fetchSalePlays();
     }, []);
 
     const formatDate = (dateStr) => {
@@ -69,9 +71,9 @@ const SaleContainer = () => {
                             <div className="sale-content">
                                 <h3 className="sale-content-title">{item.name}</h3>
                                 <p className="sale-content-content">{item.address || "정보 없음"}</p>
-                                <p className="sale-content-content">{formatDate(item.startTime)} ~ {formatDate(item.endTime)}</p>
+                                <p className="sale-content-content">{formatDate(item.startDate)} ~ {formatDate(item.endDate)}</p>
                                 <h4>
-                                    <span>{item.minRate || "50"}%</span> {item.price}원
+                                    <span>{item.discountRate || "50"}%</span>원
                                 </h4>
                             </div>
                         </SwiperSlide>
