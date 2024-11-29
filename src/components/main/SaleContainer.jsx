@@ -71,7 +71,7 @@ const SaleContainer = () => {
                                 <p className="sale-content-content">{item.address || "정보 없음"}</p>
                                 <p className="sale-content-content">{formatDate(item.startTime)} ~ {formatDate(item.endTime)}</p>
                                 <h4>
-                                    <span>50%</span> {item.price}원
+                                    <span>{item.minRate || "50"}%</span> {item.price}원
                                 </h4>
                             </div>
                         </SwiperSlide>
