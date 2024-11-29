@@ -83,10 +83,10 @@ const Infomation = () => {
                 <div className={styles.member_info_container}>
                     {/* {sessionId && <InfoLock id={sessionId} />} */}
 
-                    <InfoModify />
+                    {/* <InfoModify /> */}
                     {/* <InfoWithdrawal sessionId={sessionId} /> */}
-                    {/* <InfoReservation/> */}
-                    {/* <InfoBookmark/> */}
+                    <InfoReservation />
+                    {/* <InfoBookmark /> */}
                 </div>
             </section>
             <div>
