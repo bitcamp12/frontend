@@ -107,6 +107,13 @@ const MainNa = () => {
         );
     };
 
+    const handleFocus = () => {
+        if (name !== "" && suggestions.length > 0) {
+            setShowSuggestions(true);
+        }
+    };
+    
+
     return (
         <div id="main-bar">
             <div id="main-table">
@@ -117,7 +124,7 @@ const MainNa = () => {
                         <input
                             id="search-input"
                             value={name}
-                            
+                            onFocus={handleFocus}
                             onChange={handleInputChange}
                             name="search"
                             type="text"
