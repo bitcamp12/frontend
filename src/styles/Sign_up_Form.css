@@ -113,6 +113,10 @@
   .sign-up-form-wrapper .submit-btn:hover {
     background-color: #6A2DB4;
   }
+
+  .radio-group input[type="radio"] {
+    margin-right: 5px;
+  }
   
   @media (max-width: 768px) {
     .signup-container {
