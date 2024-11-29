@@ -13,7 +13,6 @@ const Footer = () => {
                 <div>티켓판매안내</div>
                 <div><Link to="/notice" className='noticeLink'>공지사항</Link></div>
                 <div>고객센터</div>
-                <div>고객센터</div>
             </div>
             <div className="footer-row">
                 <div className="footer-info company-info" style={{ flex: 2 }}>
