@@ -173,11 +173,21 @@
 
 input:-webkit-autofill {
   transition: background-color 0s 600000s, color 0s 600000s !important;
+}   
+
+
+
+
+
+input:-webkit-autofill {
+    appearance: none;
+    background-color: white !important;
+    background-image: none !important;
+    color: black !important;
+    font-family: inherit !important;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 0px 1000px white inset !important;
 }
-
-
-
-
 
 /* Media Queries for Responsive Design */
 @media (max-width: 768px) {
@@ -198,6 +208,7 @@ input:-webkit-autofill {
         height: 60px;
     }
 
+ 
     
     
 }
