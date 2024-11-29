@@ -16,7 +16,7 @@ const InfiniteScrollContainer = () => {
 
     const fetchData = async (pageNumber) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/plays/getPlayAll?page=${pageNumber}&size=50`, {withCredentials: true});
+            const response = await axios.get(`http://localhost:8080/api/plays/getPlayAll?page=${pageNumber}&size=100`, {withCredentials: true});
             const data = response.data;
             if (data && data.data && data.data.length >0) {
                 setItems((prevItems) => [...prevItems, ...data.data]);
@@ -100,7 +100,7 @@ const InfiniteScrollContainer = () => {
                 ))}
             </div>
             {/* {hasMore && <div ref={target}></div>} */}
-            {items.length < 50 && (
+            {items.length < 100 && (
                 <div ref={target}/>
             )}
         </div>
