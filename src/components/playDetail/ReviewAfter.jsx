@@ -1,10 +1,8 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+const ReviewAfter = ({totalPages,userId,shearchBtn,searchKey,setShearchKey,searchType,setSearchType,reviewACount,handleDeleteClick,handleUpdateClick,selectedReviewSeq,handleEditClick,isReviewUpdate,setIsReviewUpdate,formatDate, reviewData,ratinghandleClick, rating ,handleSubmit,reviewText,setReviewText}) => {
+ 
 
-const ReviewAfter = ({userId,shearchBtn,searchKey,setShearchKey,searchType,setSearchType,reviewACount,handleDeleteClick,handleUpdateClick,selectedReviewSeq,handleEditClick,isReviewUpdate,setIsReviewUpdate,formatDate, reviewData,ratinghandleClick, rating ,handleSubmit,reviewText,setReviewText,setRating,setAlertVisible}) => {
-
-  
-  
 
 
   return (
@@ -125,6 +123,9 @@ const ReviewAfter = ({userId,shearchBtn,searchKey,setShearchKey,searchType,setSe
     ) : (
       <p>리뷰가 없습니다.</p>
     )}
+ 
+    
+   
 {isReviewUpdate&&(
  <div id="review-modal" className="modal">
  <div id="review-modal-content" className="modal-content">
@@ -139,12 +140,13 @@ const ReviewAfter = ({userId,shearchBtn,searchKey,setShearchKey,searchType,setSe
                 color: value <= rating ? 'gold' : 'gray', // Selected stars are gold, others are gray
                 fontSize: '40px',
               }}
-              onClick={() => ratinghandleClick(value)} // Call handleClick when a star is clicked
+              onClick={() => (ratinghandleClick(value),console.log(totalPages))} // Call handleClick when a star is clicked
             >
               ★
             </span>
           ))}
         </div>
+
 
         <div className="input-container" style={{ marginBottom: '10px' }}>
           <input
