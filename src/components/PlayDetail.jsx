@@ -953,7 +953,7 @@ const handleQAClick = (e)=>{
   });
 }
 
-//////리뷰 삭제
+//////QA 삭제
 const handleQADeleteClick = (qnaSeq) => {
   const QADTO = {
     qnaSeq: qnaSeq, // 삭제할 리뷰의 Seq
@@ -980,6 +980,28 @@ const handleQADeleteClick = (qnaSeq) => {
       setAlertVisible(true);
       setModalTitle("오류");
       setModalMessage("리뷰 삭제 중 오류가 발생했습니다.");
+    });
+};
+const [replyDTO,setReplysDTO]=useState(null);
+const [isReplyVisible, setIsReplyVisible] = useState(false); // 댓글 토글 상태
+
+ // 댓글 클릭 시 데이터 가져오기
+ const handleReplayClick = (qnaSeq) => {
+  console.log(qnaSeq)
+  axios
+    .get("http://localhost:8080/api/replys/Reply", { params: { qnaSeq: qnaSeq } })
+    .then((response) => {
+      console.log(response.data.data)
+      if (response.data.status === 200) {
+        setReplysDTO(response.data.data); // 댓글 데이터 저장
+        setIsReplyVisible(true); // 댓글 목록 보이기
+      } else {
+        setReplysDTO(null); // 댓글이 없을 경우
+        setIsReplyVisible(false); // 댓글 숨기기
+      }
+    })
+    .catch((error) => {
+      console.error("댓글 가져오기 중 오류 발생:", error);
     });
 };
 
@@ -1337,7 +1359,10 @@ const handleRemoveFavorite = () => {
                handleQASubmit={handleQASubmit}
                 handleQAEditClick={handleQAEditClick}
                  QAText={QAText} formatDate={formatDate}
-                  setQAText={setQAText} />
+                  setQAText={setQAText} 
+                  handleReplayClick={handleReplayClick}
+                  isReplyVisible={isReplyVisible}
+                  replyDTO={replyDTO}/>
                     {/* 페이지네이션 */}
          <div className="pagination">
         {/* 이전 버튼 */}
