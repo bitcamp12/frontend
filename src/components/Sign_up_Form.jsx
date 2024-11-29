@@ -128,6 +128,7 @@ const Sign_up_Form = () => {
   
     // 아이디가 최소 4자 이상인지 확인
     if (value.length < 4) {
+      setCheck({ id: '' });
       formErrors.id = '아이디는 최소 4자 이상이어야 합니다.';
       setErrors(prevErrors => ({
         ...prevErrors,
@@ -308,14 +309,21 @@ const Sign_up_Form = () => {
   
     // 오류 메시지 제거 (재발송 전에 오류 메시지를 비움)
     setErrors({ email: '' });
-  
+    
+    setAlertVisible(true);
+    setModalMessage("인증번호 발송중입니다...");
     try {
       setCheckNumber('');
       await axios.post('http://localhost:8080/api/members/sendNumber',
         {email:formData.email}
       );
 
-      setModalMessage("이메일을 발송에 성공했습니다.");
+      setModalMessage("이메일로 인증번호를 발송하였습니다.");
+
+      setTimeout(() => {
+        setAlertVisible(false);
+      }, 2000);  // 2초 뒤에 꺼짐
+
       setTimer(90); // 3분(180초) 설정
       setIsTimerActive(true);
     } catch (error) {
@@ -385,18 +393,29 @@ const Sign_up_Form = () => {
   const sendPhoneNumber = async () => {
     let formErrors = {};
     // 휴대폰 번호 유효성 검사 정규식 (01012345678 또는 010-1234-5678 형식 허용)
-    const phoneRegex = /^010(\d{4}|\d{3}-\d{4})\d{4}$/;
+    const phoneRegex = /^010-?\d{3,4}-?\d{4}$/
+
   
     if (!phoneRegex.test(formData.phone)) {
       formErrors.phone = '유효한 휴대폰 번호를 입력해주세요. 예: 01012345678 또는 010-1234-5678';
       setErrors(prevErrors => ({ ...prevErrors, ...formErrors })); // 상태 업데이트
       return;
     }
-  
+    
+    setModalMessage("인증번호 발송중입니다.");
+
+    setAlertVisible(true);
+
+
     try {
       setCheckPhoneNumber('');
       await axios.post("http://localhost:8080/api/members/sendPhoneNumber", { phoneNum: formData.phone });
-      setModalMessage("문자 발송에 성공했습니다.");
+      setModalMessage("휴대폰으로 인증번호를 발송하였습니다.");
+
+      setTimeout(() => {
+        setAlertVisible(false);
+      }, 2000);  // 2초 뒤에 꺼짐
+
       setErrors(prevErrors => ({ ...prevErrors, phone: '' }));
       setPhoneTimer(90); // 90초 설정
       setIsPhoneTimerActive(true); // 타이머 활성화
@@ -540,7 +559,7 @@ const Sign_up_Form = () => {
             type="text"
             value={verificationNumber}
             onChange={handleVerificationChange}
-            placeholder="이메일인증번호를 입력하세요"
+            placeholder="이메일 인증번호를 입력하세요"
             className="input-field"
             onBlur={checkVerifyNumber}
           />
@@ -590,8 +609,8 @@ const Sign_up_Form = () => {
         type="radio"
         id="male"
         name="gender"
-        value="male"
-        checked={formData.gender === 'male'}
+        value="M"
+        checked={formData.gender === 'M'}
         onChange={handleChange}
       />
       남
@@ -601,8 +620,8 @@ const Sign_up_Form = () => {
         type="radio"
         id="female"
         name="gender"
-        value="female"
-        checked={formData.gender === 'female'}
+        value="F"
+        checked={formData.gender === 'F'}
         onChange={handleChange}
       />
       여
