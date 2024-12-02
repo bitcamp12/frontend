@@ -16,7 +16,8 @@ const QA = ({
   isQAUpdate,
   setIsQAUpdate,
   selectQASeq,
-  userId // 추가된 부분: 로그인된 사용자의 아이디
+  userId, // 추가된 부분: 로그인된 사용자의 아이디
+  setIsReplyVisible
 }) => {
   console.log(selectQASeq);
   console.log(replyDTO)
@@ -121,7 +122,14 @@ const QA = ({
                 >
                   {qa.content}
                 </h2>
-                <span data-qna-seq={qa.qnaSeq} onClick={() => handleReplayClick(qa.qnaSeq)}>▽</span>
+                <span
+            data-qna-seq={qa.qnaSeq}
+            onClick={() => handleReplayClick(qa.qnaSeq)}
+            style={{ cursor: 'pointer', fontSize: '14px', color: '#8E43E7' }}
+          >
+            {isReplyVisible[qa.qnaSeq] ? '△' : '▽'}
+          </span>
+                
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
@@ -164,13 +172,16 @@ const QA = ({
 
                 </div>
                 {/* 댓글 목록 */}
-                {isReplyVisible && replyDTO ? (
-                  <div>
-                    <p>{replyDTO.content}</p>
-                  </div>
-                ) : (
-                  <p>댓글이 없습니다.</p> // 댓글이 없을 경우 메시지 표시
-                )}
+                {/* 댓글 표시 */}
+        {isReplyVisible[qa.qnaSeq] && (
+          <div style={{ marginTop: '10px', paddingLeft: '20px', borderLeft: '2px solid #ddd' }}>
+            {replyDTO[qa.qnaSeq] ? (
+              <p>{replyDTO[qa.qnaSeq].content}</p>
+            ) : (
+              <p>댓글이 없습니다.</p>
+            )}
+          </div>
+        )}
               </div>
                
             </div>

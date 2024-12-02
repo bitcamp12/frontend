@@ -262,7 +262,7 @@ const [reviewACount,setReviewACount]=useState(0);
 const [reviewData, setReviewData] = useState([]); // 초기값을 null로 설정
 
 
-const pageSize = 2; // 한 페이지에 보여줄 항목 수
+const pageSize = 10; // 한 페이지에 보여줄 항목 수
 const pageBlock = 5; // 한 블록에 보여줄 페이지 수 (5개씩)
 
 const [totalPagesa, setTotalPages] = useState(Math.ceil( 0));//후기전체페이지
@@ -983,26 +983,42 @@ const handleQADeleteClick = (qnaSeq) => {
     });
 };
 const [replyDTO,setReplysDTO]=useState(null);
-const [isReplyVisible, setIsReplyVisible] = useState(false); // 댓글 토글 상태
+const [isReplyVisible, setIsReplyVisible] = useState({}); // 댓글 토글 상태
 
  // 댓글 클릭 시 데이터 가져오기
- const handleReplayClick = (qnaSeq) => {
-  console.log(qnaSeq)
-  axios
-    .get("http://localhost:8080/api/replys/Reply", { params: { qnaSeq: qnaSeq } })
-    .then((response) => {
-      console.log(response.data.data)
-      if (response.data.status === 200) {
-        setReplysDTO(response.data.data); // 댓글 데이터 저장
-        setIsReplyVisible(true); // 댓글 목록 보이기
-      } else {
-        setReplysDTO(null); // 댓글이 없을 경우
-        setIsReplyVisible(false); // 댓글 숨기기
-      }
-    })
-    .catch((error) => {
-      console.error("댓글 가져오기 중 오류 발생:", error);
-    });
+
+const handleReplayClick = (qnaSeq) => {
+  // 토글 상태 업데이트
+  setIsReplyVisible((prevState) => ({
+    ...prevState,
+    [qnaSeq]: !prevState[qnaSeq], // 클릭한 Q&A 항목의 상태만 토글
+  }));
+
+  // 댓글 데이터 가져오기 (axios 요청 예시)
+  if (!isReplyVisible[qnaSeq]) {
+    axios
+      .get("http://localhost:8080/api/replys/Reply", { params: { qnaSeq } })
+      .then((response) => {
+        if (response.data.status === 200) {
+          setReplysDTO((prevReplies) => ({
+            ...prevReplies,
+            [qnaSeq]: response.data.data, // Q&A ID별 댓글 데이터 저장
+          }));
+        } else {
+          setReplysDTO((prevReplies) => ({
+            ...prevReplies,
+            [qnaSeq]: null, // 댓글이 없는 경우 null 처리
+          }));
+        }
+      })
+      .catch((error) => {
+        console.error("댓글 가져오기 중 오류 발생:", error);
+        setReplysDTO((prevReplies) => ({
+          ...prevReplies,
+          [qnaSeq]: null, // 오류 발생 시 null 저장
+        }));
+      });
+  }
 };
 
 ////////////즐겨찾기
@@ -1362,7 +1378,8 @@ const handleRemoveFavorite = () => {
                   setQAText={setQAText} 
                   handleReplayClick={handleReplayClick}
                   isReplyVisible={isReplyVisible}
-                  replyDTO={replyDTO}/>
+                  replyDTO={replyDTO}
+                  setIsReplyVisible={setIsReplyVisible}/>
                     {/* 페이지네이션 */}
          <div className="pagination">
         {/* 이전 버튼 */}
