@@ -25,6 +25,7 @@ const FindPwd = () => {
   }, [location.pathname]);
 
   const handleSubmit = async (e) => {
+    setModalMessage("아이디 검색중입니다. 잠시만 기다려주세요.");
     setAlertVisible(true);
     e.preventDefault(); 
     try {

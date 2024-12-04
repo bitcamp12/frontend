@@ -39,7 +39,7 @@ const PlayDetail = () => {
     const [modalTitle, setModalTitle] = useState(''); // 모달 제목
     const [modalMessage, setModalMessage] = useState(''); // 모달 메시지
 
-    const userId = sessionStorage.getItem("id");
+   
 
   const { kakao } = window;
 ///////스케줄 예매일
@@ -105,12 +105,14 @@ useEffect(() => {
   const handleReviewClick = () => {
     setIsReviewVisible(true);
     setIsExpectationVisible(false);
+    setischerachcheck(false);
   };
 
   // 기대평 클릭 시
   const handleExpectationClick = () => {
     setIsExpectationVisible(true);
     setIsReviewVisible(false);
+    setischerachcheck(false);
   };
 
 
@@ -119,6 +121,7 @@ useEffect(() => {
     const updatedVisibility = [false, false, false, false, false]; // 모든 항목 숨기기
     updatedVisibility[index] = true; // 클릭한 항목만 보이게 설정
     setVisible(updatedVisibility); // 상태 업데이트
+    setischerachcheck(false);
   };
   // 장소 클릭 시 모달 팝업 띄우기
   const handleMapClick = () => {
@@ -145,10 +148,17 @@ useEffect(() => {
 
 
   const handleSelect = (order) => {
-    setSelected(order);
-    console.log(order)
-    fetchReviewData(order); // 함수 호출
+    setSelected(order);  // selected 값 설정
+    console.log(order);
+    fetchReviewData(order);  // fetchReviewData 함수 호출
   };
+
+ 
+
+
+
+
+  ///////페이지네이션
   const location = useLocation();  // 현재 URL 정보 가져오기
   const queryParams = new URLSearchParams(location.search);  // 쿼리 파라미터 추출
 
@@ -191,24 +201,49 @@ useEffect(() => {
 }, [playSeq]); // playSeq 변경 시마다 실행
 /////////공영정보 불러오기
 ///////////리뷰 검색을 해야한다 으악
+
+
+
+
+
+
 const [searchKey,setShearchKey]=useState("");
 const [searchType, setSearchType] = useState("title"); // 검색 타입 (제목 or 아이디)
 
   //키워드
 //정렬
 //검색조건
+const[ischerachcheck,setischerachcheck]=useState(false);
 const shearchBtn = async () => {
+  setischerachcheck(true);
   const requestParams = {
     searchType: searchType === "title" ? "title" : "id",
     keyword: searchKey,
     selected: selected,
+    page:page,
+    size:pageSize
   };
-
   try {
+  const response=await axios.get(`http://localhost:8080/api/reviewAfters/ReviewASearchCount?playSeq=${playSeq}`, {
+    params: requestParams, // 쿼리 파라미터로 전달
+  });
+  const { status, data } = response.data;
+  console.log(data)
+  if (status === 200) {
+    setReviewACount(data);
+  } else if (status === 404) {
+    console.log('검색 리뷰 없음');
+  }
+} catch (error) {
+  console.error('리뷰 데이터를 가져오는 중 오류 발생:', error);
+}
+  try {
+    
     const response = await axios.get(`http://localhost:8080/api/reviewAfters/ReviewASearch?playSeq=${playSeq}`, {
       params: requestParams, // 쿼리 파라미터로 전달
     });
     const { status, data } = response.data;
+    console.log(data)
 
     if (status === 200) {
       setReviewData(data);
@@ -220,19 +255,65 @@ const shearchBtn = async () => {
   }
 };
 
+const [QACount,setQACount]=useState(0);
+const [reviewBCount,setReviewBCount]=useState(0);
+const [page, setPage] = useState(1); // 페이지 값 상태 (기본값을 1로 설정)
+const [reviewACount,setReviewACount]=useState(0);
+const [reviewData, setReviewData] = useState([]); // 초기값을 null로 설정
 
 
+const pageSize = 10; // 한 페이지에 보여줄 항목 수
+const pageBlock = 5; // 한 블록에 보여줄 페이지 수 (5개씩)
+
+const [totalPagesa, setTotalPages] = useState(Math.ceil( 0));//후기전체페이지
+// 총 페이지 수를 계산하여 상태 업데이트
+
+const totalPages = (() => {
+  if (visible[4]) {
+    // Q&A 탭 활성화 시
+    return Math.ceil(QACount / pageSize); // Q&A 페이지 수 계산
+  } else if (isReviewVisible) {
+    // 관람평 탭 활성화 시
+    return Math.ceil(reviewACount / pageSize); // 관람평 페이지 수 계산
+  } else if (isExpectationVisible) {
+    // 기대평 탭 활성화 시
+    return Math.ceil(reviewBCount / pageSize); // 기대평 페이지 수 계산
+  }
+  return 0; // 기본값
+})();
+
+ // `totalPages` 계산 함수
+  const calculateTotalPages = () => {
+    if (visible[4]) {
+      // Q&A 탭 활성화 시
+      return Math.ceil(QACount / pageSize); // Q&A 페이지 수 계산
+    } else if (isReviewVisible) {
+      // 관람평 탭 활성화 시
+      return Math.ceil(reviewACount / pageSize); // 관람평 페이지 수 계산
+    } else if (isExpectationVisible) {
+      // 기대평 탭 활성화 시
+      return Math.ceil(reviewBCount / pageSize); // 기대평 페이지 수 계산
+    }
+    return 0; // 기본값
+  };
 
 
-
-/////////리뷰 불러오기
-const fetchReviewData = async (order) => {
+const fetchReviewData = async (order = 'latest') => {
   console.log(order);
+  console.log(reviewACount)
+  console.log(Math.ceil(reviewACount / 10));
   try {
-    const response = await axios.get(`http://localhost:8080/api/reviewAfters/ReviewAList?playSeq=${playSeq}&selected=${order}`);
+    const response = await axios.get(
+      `http://localhost:8080/api/reviewAfters/ReviewAList?playSeq=${playSeq}&selected=${selected}`,
+      {
+        params: {
+          page: page ,
+          size: pageSize
+        }
+      }
+    );
     console.log(response.data);
-   
-    
+
     const { status, data } = response.data; // 구조 분해 할당
     if (status === 200) {
       setReviewData(data); // 상태 업데이트
@@ -242,11 +323,53 @@ const fetchReviewData = async (order) => {
   } catch (error) {
     console.error('리뷰 데이터를 가져오는 중 오류 발생:', error);
   }
+}; 
+
+// 페이지 변경 핸들러
+// 페이지 버튼 클릭 시 호출되는 함수
+const onPageClick = (pageNum) => {
+  setCurrentPage(pageNum); // 클릭한 페이지로 상태 업데이트
+  setPage(pageNum); // 부모 컴포넌트로 페이지 변경 정보 전달
 };
 
 
+  // 페이지 버튼 클릭 시 호출되는 함수
+  useEffect(() => {
+    console.log(ischerachcheck);
+    if (visible[4]) {
+      // Q&A 탭 활성화 시
+      fetchQAData();
+    } else if (ischerachcheck) {
+      if (isReviewVisible) {
+        shearchBtn(); // 관람평 탭 활성화 시
+      } else if (isExpectationVisible) {
+        shearchBBtn(); // 기대평 탭 활성화 시
+      }
+    } else {
+      if (isReviewVisible) {
+        fetchReviewData(); // 관람평 탭 활성화 시
+        fetchreviewACountData();
+      } else if (isExpectationVisible) {
+        fetchReviewBData(); // 기대평 탭 활성화 시
+        fetchreviewBCountData();
+      } else {
+        fetchReviewData(); // 기본적으로 관람평 데이터를 가져옴
+        fetchQACountData();
+      }
+    }
+  }, [page, visible, isReviewVisible, isExpectationVisible, ischerachcheck]); // 상태 변경에 따른 재렌더링
+  
+
+ // 페이지 블록 계산
+
+
+
+
+ const startPage = Math.floor((page - 1) / pageBlock) * pageBlock + 1;
+ const endPage = Math.min(startPage + pageBlock - 1, totalPages);
+
 const [reviewAVG, setReviewAVG]=useState(0);
-const [reviewData, setReviewData] = useState(null); // 초기값을 null로 설정
+
 const fetchreviewAAvgData = async () => {
   try {
   const response = await axios.get(`http://localhost:8080/api/reviewAfters/ReviewAAvg?playSeq=${playSeq}`)
@@ -263,7 +386,12 @@ const fetchreviewAAvgData = async () => {
 
     
   }
-const [reviewACount,setReviewACount]=useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+
+
+
+
+
 
 const fetchreviewACountData = async () => {
   try {
@@ -313,9 +441,9 @@ const handleSubmit = async () => {
     content: reviewText,
     rating: rating,
   }
-  const userId = sessionStorage.getItem("id");
+  // const userId = sessionStorage.getItem("id");
     // 서버로 데이터 전송
-    axios.post(`http://localhost:8080/api/reviewAfters/ReviewA?playSeq=${playSeq}&userId=${userId}`, reviewData, {
+    axios.post(`http://localhost:8080/api/reviewAfters/ReviewA?playSeq=${playSeq}`, reviewData, {
       withCredentials: true
     }).then(response=>{
 
@@ -481,30 +609,54 @@ const handleDeleteClick = (reviewSeq) => {
   //////////
 
   const shearchBBtn = async () => {
+    setischerachcheck(true); // 검색 시작 상태
+  
     const requestParams = {
-      searchType: searchType === "title" ? "title" : "id",
-      keyword: searchKey
+      searchType: searchType === "title" ? "title" : "id",  // 검색 기준
+      keyword: searchKey,  // 검색 키워드
+      page: page,          // 페이지 번호
+      size: pageSize       // 페이지 크기
     };
   
     try {
-      const response = await axios.get(`http://localhost:8080/api/reviewBefores/ReviewBSearch?playSeq=${playSeq}`, {
-        params: requestParams, // 쿼리 파라미터로 전달
+      // 첫 번째 API 호출: ReviewBSearchCount
+      const countResponse = await axios.get(`http://localhost:8080/api/reviewBefores/ReviewBSearchCount?playSeq=${playSeq}`, {
+        params: requestParams,  // 쿼리 파라미터로 전달
       });
-      const { status, data } = response.data;
   
-      if (status === 200) {
-        setReviewDataB(data);
-      } else if (status === 404) {
+      const { status: countStatus, data: countData } = countResponse.data;
+      
+      if (countStatus === 200) {
+        setReviewBCount(countData);  // 리뷰 개수 설정
+      } else if (countStatus === 404) {
         console.log('검색 리뷰 없음');
       }
+  
+      // 두 번째 API 호출: ReviewBSearch
+      const reviewResponse = await axios.get(`http://localhost:8080/api/reviewBefores/ReviewBSearch?playSeq=${playSeq}`, {
+        params: requestParams,  // 쿼리 파라미터로 전달
+      });
+  
+      const { status: reviewStatus, data: reviewData } = reviewResponse.data;
+  
+      if (reviewStatus === 200) {
+        setReviewDataB(reviewData);  // 리뷰 데이터 설정
+      } else if (reviewStatus === 404) {
+        console.log('검색된 리뷰 없음');
+      }
+  
     } catch (error) {
-      console.error('리뷰 데이터를 가져오는 중 오류 발생:', error);
+      console.error('리뷰 데이터를 가져오는 중 오류 발생:', error);  // 오류 처리
     }
   };
 /////////리뷰 불러오기
 const fetchReviewBData = async () => {
+  console.log(page)
   try {
-    const response = await axios.get(`http://localhost:8080/api/reviewBefores/reviewBList?playSeq=${playSeq}`);
+    const response = await axios.get(`http://localhost:8080/api/reviewBefores/reviewBList?playSeq=${playSeq}`,{params:{
+      page : page,
+      size : pageSize
+    }});
     console.log(response.data);
 
     const { status, data } = response.data; // 구조 분해 할당
@@ -518,7 +670,7 @@ const fetchReviewBData = async () => {
   }
 };
 
-const [reviewBCount,setReviewBCount]=useState(0);
+
 
 const fetchreviewBCountData = async () => {
   try {
@@ -560,9 +712,9 @@ const handleSubmitB = async () => {
   const reviewDataB = {
     content: reviewTextB,
   }
-  const userId = sessionStorage.getItem("id");
+
     // 서버로 데이터 전송
-    axios.post(`http://localhost:8080/api/reviewBefores/reviewB?playSeq=${playSeq}&userId=${userId}`, reviewDataB, {
+    axios.post(`http://localhost:8080/api/reviewBefores/reviewB?playSeq=${playSeq}`, reviewDataB, {
       withCredentials: true,
     }).then(response=>{
 
@@ -670,8 +822,12 @@ const [isQAUpdate,setIsQAUpdate]=useState(false);
 
 
 const fetchQAData = async () => {
+  console.log('fetchQAData')
   try {
-    const response = await axios.get(`http://localhost:8080/api/qnas/qnaList?playSeq=${playSeq}`);
+    const response = await axios.get(`http://localhost:8080/api/qnas/qnaList?playSeq=${playSeq}`,{params:{
+      page :page,
+      size:pageSize
+    }});
     console.log(response.data);
 
     const { status, data } = response.data; // 구조 분해 할당
@@ -686,7 +842,6 @@ const fetchQAData = async () => {
 };
 
 
-const [QACount,setQACount]=useState(0);
 
 const fetchQACountData = async () => {
   try {
@@ -729,9 +884,9 @@ console.log(QATitle,QAText)
     title:QATitle,
     content: QAText,
   }
-  const userId = sessionStorage.getItem("id");
+  
     // 서버로 데이터 전송
-    axios.post(`http://localhost:8080/api/qnas/qna?playSeq=${playSeq}&userId=${userId}`, DataQA, {
+    axios.post(`http://localhost:8080/api/qnas/qna?playSeq=${playSeq}`, DataQA, {
       withCredentials: true,
     }).then(response=>{
 
@@ -798,7 +953,7 @@ const handleQAClick = (e)=>{
   });
 }
 
-//////리뷰 삭제
+//////QA 삭제
 const handleQADeleteClick = (qnaSeq) => {
   const QADTO = {
     qnaSeq: qnaSeq, // 삭제할 리뷰의 Seq
@@ -827,39 +982,92 @@ const handleQADeleteClick = (qnaSeq) => {
       setModalMessage("리뷰 삭제 중 오류가 발생했습니다.");
     });
 };
+const [replyDTO,setReplysDTO]=useState(null);
+const [isReplyVisible, setIsReplyVisible] = useState({}); // 댓글 토글 상태
+
+ // 댓글 클릭 시 데이터 가져오기
+
+const handleReplayClick = (qnaSeq) => {
+  // 토글 상태 업데이트
+  setIsReplyVisible((prevState) => ({
+    ...prevState,
+    [qnaSeq]: !prevState[qnaSeq], // 클릭한 Q&A 항목의 상태만 토글
+  }));
+
+  // 댓글 데이터 가져오기 (axios 요청 예시)
+  if (!isReplyVisible[qnaSeq]) {
+    axios
+      .get("http://localhost:8080/api/replys/Reply", { params: { qnaSeq } })
+      .then((response) => {
+        if (response.data.status === 200) {
+          setReplysDTO((prevReplies) => ({
+            ...prevReplies,
+            [qnaSeq]: response.data.data, // Q&A ID별 댓글 데이터 저장
+          }));
+        } else {
+          setReplysDTO((prevReplies) => ({
+            ...prevReplies,
+            [qnaSeq]: null, // 댓글이 없는 경우 null 처리
+          }));
+        }
+      })
+      .catch((error) => {
+        console.error("댓글 가져오기 중 오류 발생:", error);
+        setReplysDTO((prevReplies) => ({
+          ...prevReplies,
+          [qnaSeq]: null, // 오류 발생 시 null 저장
+        }));
+      });
+  }
+};
 
 ////////////즐겨찾기
 //하트색깔
+const userId = sessionStorage.getItem("id");
 const [hartColor,setHartColor]=useState('black')
 /////즐겨찾기 불러오기(등록되어있음->빨간하트/등록 없음->검은하트)
   // 즐겨찾기 상태 확인
   useEffect(() => {
-    if (!userId) return;
+    
 
     axios
-      .get(`http://localhost:8080/api/favorites/favorites?playSeq=${playSeq}&userId=${userId}`)
+      .get(`http://localhost:8080/api/favorites/favorites?playSeq=${playSeq}`,{
+        withCredentials: true
+      })
       .then((response) => {
         console.log(response)
-        if (response.status === 200) {
+        if(response.data.status === 403){
+          console.log('로그인 안함')
+          setHartColor("black"); // 데이터 없음 -> 검은 하트
+        }
+       else if (response.data.status === 200) {
           setHartColor("red"); // 데이터 존재 -> 빨간 하트
-        } else {
+        } else if (response.data.status === 404){
           setHartColor("black"); // 데이터 없음 -> 검은 하트
         }
       })
       .catch((error) => {
         console.error("즐겨찾기 상태 확인 실패:", error);
       });
-  }, [playSeq, userId]);
+  }, [playSeq]);
 ///즐겨찾기 등록 검정하트 빨간하트 만들기
 const handleAddFavorite = () => {
-  console.log(playSeq,userId)
+  console.log(playSeq)
   axios
-    .post(`http://localhost:8080/api/favorites/favorites?playSeq=${playSeq}&userId=${userId}`)
+    .post(`http://localhost:8080/api/favorites/favorites?playSeq=${playSeq}`,{},{
+      withCredentials: true, // 쿠키 포함
+    })
     .then((response) => {
-      if (response.status === 200) {
+      if(response.data.status === 403){
+        setAlertVisible(true);
+        setModalTitle("로그인");
+        setModalMessage("로그인 해주세요");
+        
+      }
+      else if (response.status === 200) {
         setAlertVisible(true);
         setModalTitle("성공");
-        setModalMessage("즐겨찾기 성공 실패");
+        setModalMessage("즐겨찾기 성공 ");
         setHartColor("red"); // 성공 시 빨간 하트
       } else {
         setAlertVisible(true);
@@ -876,10 +1084,18 @@ const handleAddFavorite = () => {
 ///즐겨찾기 삭제 빨간하트 검은색하트로 변경
 const handleRemoveFavorite = () => {
   axios
-    .delete(`http://localhost:8080/api/favorites/favorites?playSeq=${playSeq}&userId=${userId}`
+    .delete(`http://localhost:8080/api/favorites/favorites?playSeq=${playSeq}`,{
+      withCredentials: true
+    }
     )
     .then((response) => {
-      if (response.status === 200) {
+      if(response.data.status === 403){
+        setAlertVisible(true);
+        setModalTitle("로그인");
+        setModalMessage("로그인 해주세요");
+        
+      }
+      else if (response.status === 200) {
         setAlertVisible(true);
       setModalTitle("성공");
       setModalMessage("즐겨찾기 삭제 성공");
@@ -982,7 +1198,7 @@ const handleRemoveFavorite = () => {
           {['공연정보', '판매정보', '캐스팅', '관람평/기대평', 'Q&A'].map((label, index) => (
             <div
               key={index}
-              onClick={() => handleClick(index)}
+              onClick={() => (handleClick(index),console.log(visible))}
               className={`info-tab ${visible[index] ? 'active' : ''}`}
             >
               {label}
@@ -1048,13 +1264,150 @@ const handleRemoveFavorite = () => {
               </div>
               <hr style={{ width: '100%', borderTop: '2px solid #ccc', margin: '-3px 0' }} />
               <div>
-                {isReviewVisible && <ReviewAfter userId={userId} shearchBtn={shearchBtn}searchKey={searchKey}setShearchKey={setShearchKey}searchType={searchType}setSearchType={setSearchType} reviewACount={reviewACount}handleDeleteClick={handleDeleteClick}handleUpdateClick={handleUpdateClick}selectedReviewSeq={selectedReviewSeq} handleEditClick={handleEditClick}isReviewUpdate={isReviewUpdate}setIsReviewUpdate={setIsReviewUpdate} formatDate={formatDate} reviewData={reviewData}handleSubmit={handleSubmit}ratinghandleClick={ratinghandleClick}setRating={setRating} rating={rating} setReviewText={setReviewText} reviewText={reviewText} setAlertVisible={setAlertVisible}/>}
-                {isExpectationVisible && <ReviewBefore userId={userId} setShearchKey={setShearchKey}shearchBBtn={shearchBBtn}searchKey={searchKey}setSearchType={setSearchType}searchType={searchType} reviewBCount={reviewBCount}handleDeleteClickB={handleDeleteClickB} selectedReviewSeqB={selectedReviewSeqB}handleUpdateBClick={handleUpdateBClick} handleEditBClick={handleEditBClick} setIsReviewUpdate={setIsReviewUpdate} formatDate={formatDate}isReviewUpdateB={isReviewUpdateB}setIsReviewUpdateB={setIsReviewUpdateB} handleSubmitB={handleSubmitB} reviewDataB={reviewDataB} reviewTextB={reviewTextB} setReviewTextB={setReviewTextB}/>}
+              {isReviewVisible && (
+    <>
+      <ReviewAfter 
+        fetchReviewData={fetchReviewData}
+        userId={userId}
+        shearchBtn={shearchBtn}
+        searchKey={searchKey}
+        setShearchKey={setShearchKey}
+        searchType={searchType}
+        setSearchType={setSearchType}
+        reviewACount={reviewACount}
+        handleDeleteClick={handleDeleteClick}
+        handleUpdateClick={handleUpdateClick}
+        selectedReviewSeq={selectedReviewSeq}
+        handleEditClick={handleEditClick}
+        isReviewUpdate={isReviewUpdate}
+        setIsReviewUpdate={setIsReviewUpdate}
+        formatDate={formatDate}
+        reviewData={reviewData}
+        handleSubmit={handleSubmit}
+        ratinghandleClick={ratinghandleClick}
+        setRating={setRating}
+        rating={rating}
+        setReviewText={setReviewText}
+        reviewText={reviewText}
+        setAlertVisible={setAlertVisible}
+        page={page}
+     />
+         {/* 페이지네이션 */}
+         <div className="pagination">
+        {/* 이전 버튼 */}
+        {startPage > 1 && (
+          <span className="paging" onClick={() => onPageClick(startPage - 1)}>이전</span>
+        )}
+
+        {/* 페이지 번호 */}
+        {Array.from({ length: endPage - startPage + 1 }, (_, index) => {
+          const pageNum = startPage + index;
+          return (
+            <span
+              key={pageNum}
+              className={`paging ${page === pageNum ? 'current' : ''}`}
+              onClick={() => onPageClick(pageNum)}
+            >
+              {pageNum}
+            </span>
+          );
+        })}
+
+        {/* 다음 버튼 */}
+        {endPage < totalPages && (
+          <span className="paging" onClick={() => onPageClick(endPage + 1)}>다음</span>
+        )}
+      </div>
+    </>
+  )}
+                {isExpectationVisible && <>
+                <ReviewBefore userId={userId} 
+                setShearchKey={setShearchKey}shearchBBtn={shearchBBtn}
+                searchKey={searchKey}setSearchType={setSearchType}
+                searchType={searchType} reviewBCount={reviewBCount}
+                handleDeleteClickB={handleDeleteClickB} 
+                selectedReviewSeqB={selectedReviewSeqB}
+                handleUpdateBClick={handleUpdateBClick}
+                 handleEditBClick={handleEditBClick} 
+                 setIsReviewUpdate={setIsReviewUpdate}
+                  formatDate={formatDate}isReviewUpdateB={isReviewUpdateB}
+                  setIsReviewUpdateB={setIsReviewUpdateB} 
+                  handleSubmitB={handleSubmitB} reviewDataB={reviewDataB}
+                   reviewTextB={reviewTextB} setReviewTextB={setReviewTextB}/>
+                   
+                    {/* 페이지네이션 */}
+         <div className="pagination">
+         {/* 이전 버튼 */}
+         {startPage > 1 && (
+           <span className="paging" onClick={() => onPageClick(startPage - 1)}>이전</span>
+         )}
+ 
+         {/* 페이지 번호 */}
+         {Array.from({ length: endPage - startPage + 1 }, (_, index) => {
+           const pageNum = startPage + index;
+           return (
+             <span
+               key={pageNum}
+               className={`paging ${page === pageNum ? 'current' : ''}`}
+               onClick={() => onPageClick(pageNum)}
+             >
+               {pageNum}
+             </span>
+           );
+         })}
+ 
+         {/* 다음 버튼 */}
+         {endPage < totalPages && (
+           <span className="paging" onClick={() => onPageClick(endPage + 1)}>다음</span>
+         )}
+       </div>
+       </>}
               </div>
             </div>
           )}
 
-          {visible[4] && <div className="info-section"><QA userId ={userId} setQATitle={setQATitle}QATitle={QATitle} QACount={QACount}QAData={QAData} handleQAClick={handleQAClick} selectQASeq={selectQASeq} setIsQAUpdate={setIsQAUpdate} isQAUpdate={isQAUpdate}handleQADeleteClick={handleQADeleteClick} handleQASubmit={handleQASubmit} handleQAEditClick={handleQAEditClick} QAText={QAText} formatDate={formatDate} setQAText={setQAText} /></div>}
+          {visible[4] && <div className="info-section">
+            <QA userId ={userId} setQATitle={setQATitle}
+            QATitle={QATitle} QACount={QACount}QAData={QAData}
+             handleQAClick={handleQAClick} selectQASeq={selectQASeq}
+              setIsQAUpdate={setIsQAUpdate} isQAUpdate={isQAUpdate}
+              handleQADeleteClick={handleQADeleteClick}
+               handleQASubmit={handleQASubmit}
+                handleQAEditClick={handleQAEditClick}
+                 QAText={QAText} formatDate={formatDate}
+                  setQAText={setQAText} 
+                  handleReplayClick={handleReplayClick}
+                  isReplyVisible={isReplyVisible}
+                  replyDTO={replyDTO}
+                  setIsReplyVisible={setIsReplyVisible}/>
+                    {/* 페이지네이션 */}
+         <div className="pagination">
+        {/* 이전 버튼 */}
+        {startPage > 1 && (
+          <span className="paging" onClick={() => onPageClick(startPage - 1)}>이전</span>
+        )}
+
+        {/* 페이지 번호 */}
+        {Array.from({ length: endPage - startPage + 1 }, (_, index) => {
+          const pageNum = startPage + index;
+          return (
+            <span
+              key={pageNum}
+              className={`paging ${page === pageNum ? 'current' : ''}`}
+              onClick={() => onPageClick(pageNum)}
+            >
+              {pageNum}
+            </span>
+          );
+        })}
+
+        {/* 다음 버튼 */}
+        {endPage < totalPages && (
+          <span className="paging" onClick={() => onPageClick(endPage + 1)}>다음</span>
+        )}
+      </div>
+                  
+                  </div>}
         </div>
       </div>
 
