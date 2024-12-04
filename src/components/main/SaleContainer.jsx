@@ -15,6 +15,10 @@ const SaleContainer = () => {
 
     const [plays, setPlays] = useState([]);
 
+    const formatPrice = (price) => {
+        return price ? new Intl.NumberFormat('en-US').format(price) : '0';
+    };
+
      const targetDate = "2024-11-29"
 
     useEffect(() => {
@@ -73,7 +77,7 @@ const SaleContainer = () => {
                                 <p className="sale-content-content">{item.address || "정보 없음"}</p>
                                 <p className="sale-content-content">{formatDate(item.startDate)} ~ {formatDate(item.endDate)}</p>
                                 <h4>
-                                    <span>{item.discountRate || "50"}%</span>원
+                                    <span>{Math.ceil(item.discountRate)}% </span>{formatPrice(Math.ceil(item.discountedPrice))}원
                                 </h4>
                             </div>
                         </SwiperSlide>
