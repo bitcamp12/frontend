@@ -101,7 +101,7 @@ const InfoReservation = () => {
                             <span>{format(item.targetDate, "yyyy-MM-dd")}</span>
                             <span>{item.payment}</span>
                             <span>
-                                {/* 이거 안되는중 ...  */}
+                                {/* 이거 안되는중 ......  */}
                                 {item.targetDate < formattedDate
                                     ? "취소가능"
                                     : "취소불가능"}
