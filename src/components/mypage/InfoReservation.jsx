@@ -21,6 +21,9 @@ const InfoReservation = () => {
         months.push(index);
     }
 
+    // 월별 검색 기능 -> 검색버튼을 눌렀을 때 작동하도록
+    const searchByMonthly = () => {};
+
     // 예약정보 불러오기
     const [myBooks, setMyBooks] = useState([]);
 
@@ -72,7 +75,7 @@ const InfoReservation = () => {
                             <option>{index}</option>
                         ))}
                     </select>
-                    <button>검색</button>
+                    <button onClick={searchByMonthly}>검색</button>
                 </div>
             </div>
             <div className={styles.listContainer}>
