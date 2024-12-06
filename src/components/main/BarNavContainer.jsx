@@ -12,9 +12,9 @@ const BarNavContainer = ({selectedTab, setSelectedTab}) => {
 
   const navItems = [
     "연극 전체보기",
-    "선착순 최저가",
+    "곧 마감",
     "요즘 HOT",
-    "리미티드"
+    "30티켓 베스트"
   ];
 
   return (
