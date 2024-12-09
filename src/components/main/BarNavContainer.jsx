@@ -13,8 +13,8 @@ const BarNavContainer = ({selectedTab, setSelectedTab}) => {
   const navItems = [
     "연극 전체보기",
     "곧 마감",
-    "요즘 HOT",
-    "30티켓 베스트"
+    "상영예정",
+    "리미티드"
   ];
 
   return (
