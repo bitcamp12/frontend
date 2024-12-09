@@ -29,7 +29,7 @@ const ButtonNavContainer = ({setSelectedTab}) => {
       </HashLink>
       <HashLink to="#bar-nav-container">
         <button type="button" className="btn btn-secondary btn-lg custom-btn" onClick={() => setSelectedTab(3)}>
-          ⭐️ 리미티드
+          ⭐️ 프리미엄
         </button>
       </HashLink>
     </div>

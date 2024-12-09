@@ -16,13 +16,7 @@ const Reserve = ({DateList, closeModal, DatePicker, selectedDate, setSelectedDat
           />
         </div>
         <div>
-          <p style={{ textAlign: 'center', fontSize: '15px', marginTop: '30px' }}>남은 좌석 : <strong>70</strong></p>
-          <p style={{ textAlign: 'center', fontSize: '14px', marginTop: '-10px' }}>
-            OP석 <strong>5</strong> /
-            R석 <strong>15</strong> /
-            S석 <strong>20</strong> /
-            A석 <strong>30</strong> /
-          </p>
+          <p style={{ textAlign: 'center', fontSize: '15px', marginTop: '10px' }}>선택된 날짜 :<strong>{DateList[0]?.startTime || '없음'}</strong></p>
         </div>
 
         <div>

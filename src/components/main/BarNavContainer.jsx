@@ -14,7 +14,7 @@ const BarNavContainer = ({selectedTab, setSelectedTab}) => {
     "연극 전체보기",
     "곧 마감",
     "상영예정",
-    "리미티드"
+    "프리미엄"
   ];
 
   return (
