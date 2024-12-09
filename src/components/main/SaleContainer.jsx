@@ -15,10 +15,16 @@ const SaleContainer = () => {
 
     const [plays, setPlays] = useState([]);
 
+    const formatPrice = (price) => {
+        return price ? new Intl.NumberFormat('en-US').format(price) : '0';
+    };
+
+     const targetDate = "2024-11-29"
+
     useEffect(() => {
-        const fetchRandomPlays = async () => {
+        const fetchSalePlays = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/api/plays/getPlaySale", { withCredentials: true });
+                const response = await axios.get("http://localhost:8080/api/playTimeTables/calculateDiscount", { withCredentials: true });
                 if (response.data && response.data.data) {
                     setPlays(response.data.data);
                 }
@@ -27,7 +33,7 @@ const SaleContainer = () => {
             }
         };
 
-        fetchRandomPlays();
+        fetchSalePlays();
     }, []);
 
     const formatDate = (dateStr) => {
@@ -41,7 +47,7 @@ const SaleContainer = () => {
     return (
         <div className="sale-container">
             <div className="sale-header">
-                <h2>할인 마감 임박!</h2>
+                <h2>오늘의 할인 역극!</h2>
             </div>
             <Swiper
                 slidesPerView={6}
@@ -68,10 +74,10 @@ const SaleContainer = () => {
                             </div>
                             <div className="sale-content">
                                 <h3 className="sale-content-title">{item.name}</h3>
-                                <p className="sale-content-content">{item.address || "정보 없음"}</p>
-                                <p className="sale-content-content">{formatDate(item.startTime)} ~ {formatDate(item.endTime)}</p>
+                                <p className="sale-content-content">{item.ageLimit}이상 관람가능</p>
+                                <p className="sale-content-content">{formatDate(item.startDate)} ~ {formatDate(item.endDate)}</p>
                                 <h4>
-                                    <span>50%</span> {item.price}원
+                                    <span>{Math.ceil(item.discountRate)}% </span>{formatPrice(Math.ceil(item.discountedPrice))}원
                                 </h4>
                             </div>
                         </SwiperSlide>

@@ -18,7 +18,7 @@ const ButtonNavContainer = ({setSelectedTab}) => {
       </HashLink>
       <HashLink to="#bar-nav-container">
         <button type="button" className="btn btn-secondary btn-lg custom-btn" onClick={() => setSelectedTab(1)}>
-          📉 선착순 최저가
+         ⏰ 곧 마감
         </button>
       </HashLink>
       <HashLink to="#bar-nav-container">
@@ -28,7 +28,7 @@ const ButtonNavContainer = ({setSelectedTab}) => {
       </HashLink>
       <HashLink to="#bar-nav-container">
         <button type="button" className="btn btn-secondary btn-lg custom-btn" onClick={() => setSelectedTab(3)}>
-          ⏰ 리미티드
+          ⭐️ 30티켓 베스트
         </button>
       </HashLink>
     </div>
