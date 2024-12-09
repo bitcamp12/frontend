@@ -4,7 +4,7 @@ import "../../assets/css/Main.css";
 import React, { useEffect, useRef, useState } from 'react';
 import axios from "axios";
 
-const InfiniteScrollContainer = () => {
+const InfiniteScrollContainer = ({selectedTab}) => {
 
     //10개의 item을 가진 배열을 만듬
     const [items, setItems] = useState([]);
@@ -12,12 +12,23 @@ const InfiniteScrollContainer = () => {
     const [hasMore, setHasMore] = useState(true);
     //useRef로 target을 만들어서 새로운 item을 로딩할 때 사용
     const target = useRef(null);
-    const navigate = useNavigate();
 
-    const fetchData = async (pageNumber) => {
+    const fetchData = async (pageNumber, tabIndex) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/plays/getPlayAll?page=${pageNumber}&size=100`, {withCredentials: true});
+            const size = 100;
+            let url = `http://localhost:8080/api/plays/getPlayAll?page=${pageNumber}&size=${size}`;
+
+            if (tabIndex === 1) {
+                url = `http://localhost:8080/api/plays/getPlaySale?page=${pageNumber}&size=${size}`;
+            } else if (tabIndex === 2) {
+                url = `http://localhost:8080/api/plays/getPlayRandom?page=${pageNumber}&size=${size}`;
+            } else if (tabIndex === 3) {
+                url = `http://localhost:8080/api/plays/getPlayAll?page=${pageNumber}&size=${size}`;
+            }
+
+            const response = await axios.get(url, { withCredentials: true });
             const data = response.data;
+
             if (data && data.data && data.data.length >0) {
                 setItems((prevItems) => [...prevItems, ...data.data]);
             } else {
@@ -29,9 +40,12 @@ const InfiniteScrollContainer = () => {
     };
 
     useEffect(() => {
-        fetchData(page);
-        console.log(items); // Check what data is coming through
-    }, []);
+        setItems([]);
+        setPage(1);
+        setHasMore(true);
+    
+        fetchData(1, selectedTab);
+      }, [selectedTab]);
 
     useEffect(() => {
         //뷰포트를 기준으로 target이 보이면 loadMoreItems 함수를 실행
@@ -93,7 +107,7 @@ const InfiniteScrollContainer = () => {
                         </Link>                        
                         <div className="infinite-scroll-card-body">
                             <h3>{item.name}</h3>
-                            <h6 className="infinite-scroll-card-info">{item.address || "정보 없음"}</h6>
+                            <h6 className="infinite-scroll-card-info">{item.ageLimit}이상 관람가능</h6>
                             <h6 className="infinite-scroll-card-info">{formatDate(item.startTime)} ~ {formatDate(item.endTime)}</h6>
                         </div>
                     </div>
