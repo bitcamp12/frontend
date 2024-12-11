@@ -32,7 +32,7 @@ const Main = () => {
                 selectedTab={selectedTab}
                 setSelectedTab={setSelectedTab}
             />
-            <InfiniteScrollContainer />
+            <InfiniteScrollContainer selectedTab={selectedTab}/>
             <Footer />
         </>
     );

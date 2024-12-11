@@ -9,6 +9,7 @@ import "swiper/css/navigation";
 import { HashLink } from 'react-router-hash-link';
 
 const ButtonNavContainer = ({setSelectedTab}) => {
+
   return (
     <div className="button-nav-container">
       <HashLink to="#bar-nav-container">
@@ -23,12 +24,12 @@ const ButtonNavContainer = ({setSelectedTab}) => {
       </HashLink>
       <HashLink to="#bar-nav-container">
         <button type="button" className="btn btn-secondary btn-lg custom-btn" onClick={() => setSelectedTab(2)}>
-          🔥 요즘 HOT
+          🗓️ 상영예정
         </button>
       </HashLink>
       <HashLink to="#bar-nav-container">
         <button type="button" className="btn btn-secondary btn-lg custom-btn" onClick={() => setSelectedTab(3)}>
-          ⭐️ 30티켓 베스트
+          ⭐️ 프리미엄
         </button>
       </HashLink>
     </div>
