@@ -17,6 +17,7 @@ import ReviewBefore from './playDetail/ReviewBefore';
 import ReviewAfter from './playDetail/ReviewAfter';
 import QA from './playDetail/QA';
 import Reserve from './playDetail/Reserve';
+import Book from './playDetail/Book';
 import { useParams } from 'react-router';
 import axios, { Axios } from 'axios';
 import { useLocation } from 'react-router';
@@ -27,6 +28,7 @@ const PlayDetail = () => {
   const [visible, setVisible] = useState([true, false, false, false, false]);
   const [mapVisible, setMapVisible] = useState(false); // 모달 표시 상태 관리
   const [reserveVisible, setReserveVisible] = useState(false); // 예매 모달 표시 상태 관리
+  const [bookVisible, setBookVisible] = useState(false);
   const [consultVisible, setConsultVisible] = useState(false); // 상담 모달 표시 상태 관리
   const [isReviewVisible, setIsReviewVisible] = useState(true); // 기본적으로 후기평 폼을 보이게 설정
   const [isExpectationVisible, setIsExpectationVisible] = useState(false); // 기본적으로 기대평 폼은 숨김
@@ -135,10 +137,15 @@ useEffect(() => {
     setConsultVisible(false); // 상담 모달 숨기기
     setAlertVisible(false)//알림 모달 숨기기
     setIsReviewUpdate(false)//수정 모달 숨기기
+    setBookVisible(false);
   };
   // 예매 클릭 시 예매 모달 띄우기
   const handleReserveClick = () => {
     setReserveVisible(true); // 예매 모달 보이기
+  };
+
+  const handleBookClick = () => {
+    setBookVisible(true);
   };
 
   // 상담 클릭 시 상담 모달 띄우기
@@ -1188,7 +1195,7 @@ const handleRemoveFavorite = () => {
         {/* 버튼 스크롤 */}
         <div style={{ zIndex: '10000' }}>
           <ScrollToTop />
-          <ReserveBtn handleReserveClick={handleReserveClick} handleConsultClick={handleConsultClick} />
+          <ReserveBtn handleReserveClick={handleReserveClick} handleConsultClick={handleConsultClick} handleBookClick={handleBookClick}/>   
         </div>
         {/* 버튼 스크롤 */}
       </div>
@@ -1450,6 +1457,11 @@ const handleRemoveFavorite = () => {
             상담 정보
           </div>
         </div>
+      )}
+
+      {/* book 모달 팝업 */}
+      {bookVisible && (
+        <Book closeModal={closeModal} />
       )}
       <Footer />
     </>
