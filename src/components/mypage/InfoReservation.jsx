@@ -4,7 +4,7 @@ import styles from "../../assets/css/mypage/InfoReservation.module.css";
 import axios from "axios";
 import { format } from "date-fns";
 const InfoReservation = () => {
-    //select 날짜 조회
+    //select 날짜
     const date = new Date(); //.getMonth()+1; //getFullYear(); // toLocaleDateString();
     const [year, setYear] = useState(date.getFullYear());
     const [month, setMonth] = useState(date.getMonth + 1);
@@ -22,7 +22,42 @@ const InfoReservation = () => {
     }
 
     // 월별 검색 기능 -> 검색버튼을 눌렀을 때 작동하도록
-    const searchByMonthly = () => {};
+    const [classifyValue, setClassifyValue] = useState("");
+    const [yearValue, setYearValue] = useState("");
+    const [monthValue, setMonthValue] = useState("");
+
+    const searchByMonthly = () => {
+        var classify = document.getElementById("classify");
+        var classifyValue = classify.options[classify.selectedIndex].value;
+
+        var year = document.getElementById("year");
+        var yearValue = year.options[year.selectedIndex].value;
+
+        var month = document.getElementById("month");
+        var monthValue = month.options[month.selectedIndex].value;
+
+        if (classifyValue === "" || yearValue === "" || monthValue === "") {
+            return;
+        }
+
+        axios
+            .get(
+                "http://localhost:8080/api/members/checkMyBook/checkBookingsByDate",
+                {
+                    params: {
+                        classify: classifyValue,
+                        year: yearValue,
+                        month: monthValue,
+                    },
+                    withCredentials: true,
+                }
+            )
+            .then((response) => {
+                console.log("dddd");
+                alert("dddd");
+            })
+            .catch((error) => console.log(error));
+    };
 
     // 예약정보 불러오기
     const [myBooks, setMyBooks] = useState([]);
@@ -59,20 +94,30 @@ const InfoReservation = () => {
               </div>
              */}
                 <div className={styles.searchSectionDate}>
-                    <select>
-                        <option>주문일자별</option>
-                        <option>예매날짜</option>
+                    <select id="classify" className="classify">
+                        <option value="" selected disabled hidden>
+                            구분
+                        </option>
+                        <option value="pay_date">예매날짜</option>
                     </select>
-                    <select>
-                        <option>년</option>
+                    <select id="year" className="year">
+                        <option value="" selected disabled hidden>
+                            년
+                        </option>
                         {years.map((index) => (
-                            <option>{index}</option>
+                            <option key={index} value={index}>
+                                {index}
+                            </option>
                         ))}
                     </select>
-                    <select>
-                        <option>월</option>
+                    <select id="month" className="month">
+                        <option value="" selected disabled hidden>
+                            월
+                        </option>
                         {months.map((index) => (
-                            <option>{index}</option>
+                            <option key={index} value={index}>
+                                {index}
+                            </option>
                         ))}
                     </select>
                     <button onClick={searchByMonthly}>검색</button>
@@ -97,10 +142,10 @@ const InfoReservation = () => {
                 ) : (
                     // {/* // 예약 목록(myBook)이 있다면 */}
                     myBooks.map((item) => (
-                        <div className={styles.listItem}>
+                        <div key={item.bookSeq} className={styles.listItem}>
                             <span>{format(item.payDate, "yyyy-MM-dd")}</span>
                             <span>{item.bookSeq}</span>
-                            <span>{item.name}</span>
+                            <span>{item.playName}</span>
                             <span>{format(item.targetDate, "yyyy-MM-dd")}</span>
                             <span>{item.payment}</span>
                             <span>
