@@ -1,7 +1,8 @@
 import React from 'react';
 import chat from'../../assets/images/매신저.png';
 import day from'../../assets/images/기간.png';
-const ReserveBtn = ({handleReserveClick,handleConsultClick}) => {
+import { daysInWeek } from 'date-fns/constants';
+const ReserveBtn = ({handleReserveClick,handleConsultClick, handleBookClick}) => {
 
    
 
@@ -36,6 +37,21 @@ const ReserveBtn = ({handleReserveClick,handleConsultClick}) => {
                         }}
                     >
                         <img src={chat} style={{width:'50px',filter: 'invert(100%)'}}></img>
+                    </button>
+                </div>
+                <div id="book-button">
+                    <button
+                        id="book-link"
+                        className="button"
+                        onClick={handleBookClick}
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',  // 이미지 수직 중앙 정렬
+                            padding: '8px 16px',   // 여백 설정
+                        }}
+                    >
+                        <img src={daysInWeek} style={{width:'50px',filter: 'invert(100%)'}}></img>
                     </button>
                 </div>
             </div>
