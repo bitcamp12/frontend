@@ -68,7 +68,7 @@
 .play-info-column-pricing-seating {
     display: flex;
     justify-content: space-between;
-    width: 120px;
+    width: 250px;
     margin-bottom: 10px;
     font-weight: bold;
 }
