@@ -197,7 +197,8 @@ useEffect(() => {
     .catch(error => {
       console.error('API 요청 중 오류 발생:', error);
       alert('요청 중 문제가 발생했습니다. 다시 시도해주세요.');
-    });
+    }, 10 * 60 * 1000);
+    
 }, [playSeq]); // playSeq 변경 시마다 실행
 /////////공영정보 불러오기
 ///////////리뷰 검색을 해야한다 으악
@@ -262,7 +263,7 @@ const [reviewACount,setReviewACount]=useState(0);
 const [reviewData, setReviewData] = useState([]); // 초기값을 null로 설정
 
 
-const pageSize = 10; // 한 페이지에 보여줄 항목 수
+const pageSize = 2; // 한 페이지에 보여줄 항목 수
 const pageBlock = 5; // 한 블록에 보여줄 페이지 수 (5개씩)
 
 const [totalPagesa, setTotalPages] = useState(Math.ceil( 0));//후기전체페이지
@@ -982,7 +983,7 @@ const handleQADeleteClick = (qnaSeq) => {
       setModalMessage("리뷰 삭제 중 오류가 발생했습니다.");
     });
 };
-const [replyDTO,setReplysDTO]=useState(null);
+const [replyDTO,setReplysDTO]=useState({});
 const [isReplyVisible, setIsReplyVisible] = useState({}); // 댓글 토글 상태
 
  // 댓글 클릭 시 데이터 가져오기
@@ -1150,12 +1151,12 @@ const handleRemoveFavorite = () => {
 
             <div className="play-info-column" id="time-column">
               <img src={duration} className="play-info-img" alt="기간" id="duration-image" />
-              <label className="play-info-column-header">공연시간</label><p className="play-info-column-content">100분</p>
+              <label className="play-info-column-header">공연시간</label><p className="play-info-column-content">{playData ? playData.runningTime+'분' : '0분'}</p>
             </div>
 
             <div className="play-info-column" id="age-column">
               <img src={duration} className="play-info-img" alt="기간" id="duration-image" />
-              <label className="play-info-column-header">관람연령</label><p className="play-info-column-content">만 12세 이상</p>
+              <label className="play-info-column-header">관람연령</label><p className="play-info-column-content">{playData ? '만'+playData.ageLimit+' 이상' : '만0세 이상'}</p>
             </div>
 
             <div className="play-info-column" id="price-column">
@@ -1163,23 +1164,87 @@ const handleRemoveFavorite = () => {
               <label className="play-info-column-header">가격</label>
               <div className="play-info-column-pricing">
                 <div className="play-info-column-pricing-seating">
-                  <span className='play-info-column-pricing-seating-seat'>OP석</span><span>90,000원</span>
+                  <span className='play-info-column-pricing-seating-seat'>OP석</span>
+                  <span>
+                    {playData 
+                      ? playData.discountedPrice 
+                        ? (
+                            <span> {playData.discountRate}%
+                              <span style={{ textDecoration: 'line-through', color: 'gray' }}>
+                                {playData.price}원
+                              </span>{' '}
+                              
+                                → <span style={{ color: 'red' }}>{ playData.discountedPrice}원
+                              </span>
+                            </span>
+                          )
+                        : `${playData.price}원`
+                      : '0원'}
+                  </span>
                 </div>
                 <div className="play-info-column-pricing-seating">
-                  <span className='play-info-column-pricing-seating-seat'>R석</span><span>90,000원</span>
+                  <span className='play-info-column-pricing-seating-seat'>R석</span>
+                  <span> 
+                  {playData 
+                      ? playData.discountedPrice 
+                        ? (
+                            <span> {playData.discountRate}%
+                              <span style={{ textDecoration: 'line-through', color: 'gray' }}>
+                                {playData.price}원
+                              </span>{' '}
+                              
+                                → <span style={{ color: 'red' }}>{ playData.discountedPrice}원
+                              </span>
+                            </span>
+                          )
+                        : `${playData.price}원`
+                      : '0원'}
+                  </span>
                 </div>
                 <div className="play-info-column-pricing-seating">
-                  <span className='play-info-column-pricing-seating-seat'>S석</span><span>70,000원</span>
+                  <span className='play-info-column-pricing-seating-seat'>S석</span>
+                  <span>
+                  {playData 
+                      ? playData.discountedPrice 
+                        ? (
+                            <span> {playData.discountRate}%
+                              <span style={{ textDecoration: 'line-through', color: 'gray' }}>
+                                {playData.price}원
+                              </span>{' '}
+                              
+                                → <span style={{ color: 'red' }}>{ playData.discountedPrice}원
+                              </span>
+                            </span>
+                          )
+                        : `${playData.price}원`
+                      : '0원'}
+                  </span>
                 </div>
                 <div className="play-info-column-pricing-seating">
-                  <span className='play-info-column-pricing-seating-seat'>A석</span><span>40,000원</span>
+                  <span className='play-info-column-pricing-seating-seat'>A석</span>
+                  <span>
+                  {playData 
+                      ? playData.discountedPrice 
+                        ? (
+                            <span> {playData.discountRate}%
+                              <span style={{ textDecoration: 'line-through', color: 'gray' }}>
+                                {playData.price}원
+                              </span>{' '}
+                              
+                                → <span style={{ color: 'red' }}>{ playData.discountedPrice}원
+                              </span>
+                            </span>
+                          )
+                        : `${playData.price}원`
+                      : '0원'}
+                  </span>
                 </div>
               </div>
             </div>
 
             <div className="play-info-column" id="rating-column">
               <img src={star} className="play-info-img" alt="별점" id="rating-image" />
-              <label className="play-info-column-header">별점 </label><p className="play-info-column-content">{reviewAVG?reviewAVG:0.00}</p>
+              <label className="play-info-column-header">별점 </label><p className="play-info-column-content">{reviewAVG? parseFloat(reviewAVG).toFixed(2):0.00}</p>
             </div>
             <div className="play-info-column" style={{paddingLeft: '10px'}}><span onClick={HartClick} style={{fontSize:'25px', color: hartColor}}>♥</span></div>
           </div>

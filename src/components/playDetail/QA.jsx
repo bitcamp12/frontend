@@ -120,7 +120,7 @@ const QA = ({
                     color: '#555',
                   }}
                 >
-                  {qa.content}
+                  {qa.title}
                 </h2>
                 <span
             data-qna-seq={qa.qnaSeq}
@@ -174,6 +174,7 @@ const QA = ({
                 {/* 댓글 목록 */}
                 {/* 댓글 표시 */}
         {isReplyVisible[qa.qnaSeq] && (
+          
           <div style={{ marginTop: '10px', paddingLeft: '20px', borderLeft: '2px solid #ddd' }}>
             {replyDTO[qa.qnaSeq] ? (
               <p>{replyDTO[qa.qnaSeq].content}</p>
