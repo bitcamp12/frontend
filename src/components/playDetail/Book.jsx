@@ -1,29 +1,49 @@
-import React, { useState } from 'react';
-import "../../assets/css/Book.css";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
-const Book = ({ closeModal }) => {
+const Book = ({ selectedDate, playData , DateList}) => {
     const [selectedSeats, setSelectedSeats] = useState([]);
+    const [seatLayout, setSeatLayout] = useState([]);
 
-    const seatLayout = [
-        [1, 2, 3, 4, 5],
-        [6, 7, 8, 9, 10],
-        [11, 12, 13, 14, 15],
-        [16, 17, 18, 19, 20],
-        [21, 22, 23, 24, 25],
-        [26, 27, 28, 29, 30],
-        [31, 32, 33, 34, 35],
-        [36, 37, 38, 39, 40],
-        [41, 42, 43, 44, 45],
-        [46, 47, 48, 49, 50],
-        [51, 52, 53, 54, 55],
-        [56, 57, 58, 59, 60],
-        [61, 62, 63, 64, 65],
-        [66, 67, 68, 69, 70],
-        [71, 72, 73, 74, 75],
-    ];
+    console.log(playData);
+    console.log(DateList);
 
-    // Toggles the selection state of a seat
-    const toggleSeat = (seatNumber) => {
+     useEffect(() => {
+        const fetchTheaterData = async () => {
+            try {
+                const response = await axios.get("http://localhost:8080/api/theaters/getTheaterInfo", { withCredentials: true });
+                
+                const theaters = response.data.data;
+                const theater = theaters.find(t => t.theaterSeq === DateList[0].theaterSeq);
+
+            if(theater) {
+                const totalSeats = theater.seatX * theater.seatY;
+                generateSeatLayout(totalSeats);
+            } else {
+                console.error("해당 극장 정보를 찾을 수 없습니다");
+            }
+        } catch (error) {
+                console.error("데이터를 불러오는데 실패했습니다", error);
+            }
+        };
+        
+        fetchTheaterData();
+     }, [DateList[0]]);
+
+    const generateSeatLayout = (totalSeats) => {
+        const seatsPerColumn = Math.ceil(totalSeats / 3);
+        const layout = [[], [], []]; // Three columns
+
+        for (let seat = 1; seat <= totalSeats; seat++) {
+            const columnIndex = Math.floor((seat - 1) / seatsPerColumn);
+            layout[columnIndex].push(seat);
+        }
+
+        setSeatLayout(layout);
+    };
+
+     // Toggles the selection state of a seat
+     const toggleSeat = (seatNumber) => {
         setSelectedSeats((prev) =>
             prev.includes(seatNumber)
                 ? prev.filter((seat) => seat !== seatNumber) // Deselect
@@ -34,14 +54,14 @@ const Book = ({ closeModal }) => {
     // Checks if a seat is selected
     const isSelected = (seatNumber) => selectedSeats.includes(seatNumber);
 
-    const renderSeats = (rows) => (
-        rows.map((row, rowIndex) => (
-            <div key={rowIndex} className='book-modal-body-seats-content-row'>
-                {row.map((seat) => (
+    const renderSeats = (layout) => (
+        layout.map((column, columnIndex) => (
+            <div key={columnIndex} className="book-body-seats">
+                {column.map((seat) => (
                     <button
-                        aria-label={`Seat ${seat} ${isSelected(seat) ? "selected" : "available"}`}
                         key={seat}
-                        className={`book-modal-body-seats-content-row-seat ${isSelected(seat) ? "selected" : ""}`}
+                        aria-label={`Seat ${seat} ${isSelected(seat) ? "selected" : "available"}`}
+                        className={`book-body-seats-content-row-seat ${isSelected(seat) ? "selected" : ""}`}
                         onClick={() => toggleSeat(seat)}
                     >
                         {seat}
@@ -52,27 +72,22 @@ const Book = ({ closeModal }) => {
     );
 
     return (
-        <div id='book-modal' className='book-modal'>
-            <div id='book-modal-content' className='book-modal-content'>
-                <span className="book-close" onClick={closeModal}>&times;</span>
-                <div className='book-modal-header'>
-                    <div className='book-modal-header-text'>
-                        <h2>STAGE</h2>
-                        <hr />
-                    </div>
+        <div>
+            <div className='book-header'>
+                <div className='book-header-info'>
+                    <h1>연극명 : {playData.name} </h1>
+                    <h1>상영날짜 : {selectedDate.toLocaleDateString()}</h1>
+                    <h1>상영시간 : {DateList[0].startTime}</h1>
                 </div>
-                <div className='book-modal-body'>
-                    <div className='book-modal-body-seats-section1'>
-                        <div className='book-modal-body-seats'>
-                            {renderSeats(seatLayout.slice(0, 5))} {/* First 5 rows */}
-                        </div>
-                        <div className='book-modal-body-seats'>
-                            {renderSeats(seatLayout.slice(5, 10))} {/* Next 5 rows */}
-                        </div>
-                        <div className='book-modal-body-seats'>
-                            {renderSeats(seatLayout.slice(10, 15))} {/* Remaining rows */}
-                        </div>
-                    </div>
+                <hr className='book-header-hr'/>
+                <div className='book-header-text'>
+                    <h2>STAGE</h2>
+                    <hr/>
+                </div>
+            </div>
+            <div className="book-body">
+                <div className="book-body-section1">
+                    {renderSeats(seatLayout)}
                 </div>
             </div>
         </div>

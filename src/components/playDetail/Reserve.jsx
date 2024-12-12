@@ -1,7 +1,35 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
+import Book from './Book';
 
-const Reserve = ({DateList, closeModal, DatePicker, selectedDate, setSelectedDate, ko }) => {
+const Reserve = ({ DateList, closeModal, DatePicker, selectedDate, setSelectedDate, ko, playData }) => {
+
+  const openBookPopup = () => {
+    const popup = window.open(
+      '/reservation-popup',
+      'Reservation Popup',
+      'width=900,height=700,resizable=false, scrollbars=yes'
+    );
+
+    popup.document.write('<div id="popup-root"></div>');
+
+    const link = popup.document.createElement("link");
+    link.rel = "stylesheet";
+    link.type = "text/css";
+    link.href = `${window.location.origin}/assets/css/Book.css`;
+    popup.document.head.appendChild(link);
+
+
+    ReactDOM.render(
+      <Book closeModal={() => popup.close()} selectedDate={selectedDate} playData={playData} DateList={DateList} />,
+      popup.document.getElementById('popup-root')
+    );
+
+    popup.onbeforeunload = () => ReactDOM.unmountComponentAtNode(popup.document.getElementById('popup-root'));
+  };
+
   console.log(DateList[0])
+
   return (
     <div id="reserve-modal" className="modal">
       <div id="reserve-modal-content" className="modal-content">
@@ -20,22 +48,22 @@ const Reserve = ({DateList, closeModal, DatePicker, selectedDate, setSelectedDat
         </div>
 
         <div>
-              {/* 첫 번째 버튼 */}
-      <input 
-        type="button" 
-        value={DateList[0]?.startTime || '없음'} 
-        id="reserve-button-time-right" 
-      />
+          {/* 첫 번째 버튼 */}
+          <input
+            type="button"
+            value={DateList[0]?.startTime || '없음'}
+            id="reserve-button-time-right"
+          />
 
-      {/* 두 번째 버튼 */}
-      <input 
-        type="button" 
-        value={DateList[1]?.startTime || '없음'} 
-        id="reserve-button-time-left" 
-      />
+          {/* 두 번째 버튼 */}
+          <input
+            type="button"
+            value={DateList[1]?.startTime || '없음'}
+            id="reserve-button-time-left"
+          />
         </div>
         <div>
-          <input type='button' value='예매하기' id="reserve-button-time" />
+          <input type='button' value='예매하기' id="reserve-button-time" onClick={openBookPopup} />
         </div>
 
       </div>
