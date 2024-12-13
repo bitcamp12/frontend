@@ -50,20 +50,23 @@ const Login = () => {
                     password,
                 },
                 {
-                    withCredentials: true, // 세션 쿠키를 포함
+                    withCredentials: true, // 쿠키를 허용
                 }
             );
-
-            if (response.data.status === 200) {
+    
+            if (response.status === 200) {
                 setModalTitle("로그인 성공");
-                setModalMessage(`환영합니다, ${response.data.message}님`);
                 setLoginError("");
-               
+    
+                // 로그인 성공 후 JWT 토큰을 localStorage에 저장
+                const token = response.headers; // "Bearer <token>"에서 토큰 부분만 추출
+                localStorage.setItem("token", token);
 
+    
                 setTimeout(() => {
-                    navigate("/");
+                    navigate("/"); // 로그인 후 홈 페이지로 이동
                 }, 1000);
-            } else if (response.data.status === 404) {
+            } else if (response.status === 404) {
                 setModalTitle("로그인 실패");
                 setModalMessage("아이디 혹은 비밀번호가 틀렸습니다.");
             }
@@ -73,7 +76,7 @@ const Login = () => {
             setModalMessage("서버와의 연결에 문제가 발생했습니다.");
         }
     };
-
+    
     return (
         <div className="login-container">
             <div className="login-form">

@@ -21,23 +21,56 @@ const MainNa = () => {
     useEffect(() => {
         const checkLoginStatus = async () => {
             try {
-                const result = await axios.get('http://localhost:8080/api/members/session-status', {
-                    withCredentials: true, 
+                // 액세스 토큰을 Authorization 헤더에 포함하여 서버로 보냄
+                const accessToken = localStorage.getItem("token"); // 로컬스토리지 또는 쿠키에서 가져오기
+
+                const result = await axios.get('http://localhost:8080/api/members/verify-token', {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                    withCredentials: true,
                 });
-                if (result.data.status === 200) {
-                    console.log("세션있음")
-                    setId(true); 
-                } else if (result.data.status === 404) {
-                    console.log("세션없음")
-                    setId(false); 
+
+                console.log('Authorization header:', `Bearer ${accessToken}`);
+
+
+                if (result.status === 200) {
+                    console.log("토큰 유효");
+                    setId(true); // 로그인 상태
+                } else if (result.status === 401) {
+                    console.log("액세스 토큰 만료");
+
+                    // 액세스 토큰이 만료되었으면, 리프레시 토큰으로 새 액세스 토큰 발급 요청
+                    const refreshToken = getCookie("token"); // 쿠키에서 리프레시 토큰을 가져옴
+                    const refreshResult = await axios.post('http://localhost:8080/api/members/refresh-token', { refreshToken }, {
+                        withCredentials: true,
+                    });
+
+                    if (refreshResult.status === 200 && refreshResult.data.accessToken) {
+                        // 새로운 액세스 토큰 저장
+                        localStorage.setItem("accessToken", refreshResult.data.accessToken);
+                        console.log("새로운 액세스 토큰 발급");
+                        setId(true); // 로그인 상태
+                    } else {
+                        console.log("리프레시 토큰도 만료됨");
+                        setId(false); // 로그인 상태 해제
+                    }
                 }
             } catch (error) {
-                console.error("세션체크 에러", error);
+                console.error("세션 체크 에러", error);
+                setId(false); // 오류 발생 시 로그인 상태 해제
             }
         };
 
-        checkLoginStatus(); 
-    }, []); 
+        checkLoginStatus();
+    }, []); // 컴포넌트가 처음 렌더링될 때 한 번만 실행
+
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
     
     const logout = async () => {
         try {
