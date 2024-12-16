@@ -1,31 +1,54 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import ReactDOM from 'react-dom';
 import Book from './Book';
+import { useNavigate, useParams } from 'react-router';
 
 const Reserve = ({ DateList, closeModal, DatePicker, selectedDate, setSelectedDate, ko, playData }) => {
 
+  const { playSeq } = useParams();
+  const popupRef = useRef(null);
+
   const openBookPopup = () => {
+    // Check if the popup is already open and not closed
+    if (popupRef.current && !popupRef.current.closed) {
+      popupRef.current.focus(); // Focus the existing popup if it's already open
+      return;
+    }
+
+    // Open the popup with dynamic URL and window properties
     const popup = window.open(
-      '/reservation-popup',
-      'Reservation Popup',
-      'width=900,height=700,resizable=false, scrollbars=yes'
+      '', // Empty URL to prevent redirection
+      'bookTicketPopup',
+      'width=1100,height=750,resizable=false, scrollbars=false'
     );
 
-    popup.document.write('<div id="popup-root"></div>');
+    // Store the popup reference
+    popupRef.current = popup;
 
-    const link = popup.document.createElement("link");
-    link.rel = "stylesheet";
-    link.type = "text/css";
-    link.href = `${window.location.origin}/assets/css/Book.css`;
-    popup.document.head.appendChild(link);
+    // Wait for the popup to load and then add content
+    setTimeout(() => {
+      popup.document.write('<div id="popup-root"></div>');
 
 
-    ReactDOM.render(
-      <Book closeModal={() => popup.close()} selectedDate={selectedDate} playData={playData} DateList={DateList} />,
-      popup.document.getElementById('popup-root')
-    );
+      const link = popup.document.createElement("link");
+      link.rel = "stylesheet";
+      link.type = "text/css";
+      link.href = `${window.location.origin}/assets/css/Book.css`;
+      popup.document.head.appendChild(link);
 
-    popup.onbeforeunload = () => ReactDOM.unmountComponentAtNode(popup.document.getElementById('popup-root'));
+      // Use React 18's createRoot instead of ReactDOM.render to mount the Book component
+      const root = ReactDOM.createRoot(popup.document.getElementById('popup-root'));
+      root.render(
+        <Book closeModal={() => popup.close()} selectedDate={selectedDate} playData={playData} DateList={DateList} />
+      );
+    }, 100);
+
+    // Clean up when the popup is closed
+    popup.onbeforeunload = () => {
+      if (popupRef.current) {
+        popupRef.current = null;
+      }
+    };
   };
 
   console.log(DateList[0])
@@ -44,7 +67,7 @@ const Reserve = ({ DateList, closeModal, DatePicker, selectedDate, setSelectedDa
           />
         </div>
         <div>
-          <p style={{ textAlign: 'center', fontSize: '15px', marginTop: '10px' }}>선택된 날짜 :<strong>{DateList[0]?.startTime || '없음'}</strong></p>
+          <p style={{ textAlign: 'center', fontSize: '15px', marginTop: '10px' }}>선택된 날짜 : <strong>{DateList[0]?.startTime || '없음'}</strong></p>
         </div>
 
         <div>
