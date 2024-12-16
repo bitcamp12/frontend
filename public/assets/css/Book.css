@@ -61,6 +61,10 @@ body {
     letter-spacing: 1px;
     font-weight: bold;
     color: black;
+    width: 150px; /* Fixed width */
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflow text */
+    text-overflow: ellipsis; /* Add ellipsis for overflow text */
 }
 
 .book-header h2 {
@@ -149,4 +153,8 @@ body {
 
 .book-body-seats-content-row-seat:disabled {
     background-color: #ccc; /* Also, disable the cursor */
+}
+
+.error-message {
+
 }
