@@ -1,7 +1,5 @@
 import React from 'react';
 
-
-
 const Modal = ({closeModal,modalMessage,modalTitle,alertVisible}) => {
     return (
         <div>

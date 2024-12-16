@@ -1,33 +1,35 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
+
 const Book = ({ selectedDate, playData, DateList }) => {
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [seatLayout, setSeatLayout] = useState([]);
     const [bookedSeats, setBookedSeats] = useState([]);
+    const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
         const fetchBookedSeats = async () => {
             try {
-                const playTimeTableSeq = DateList[0]?.playTimeTableSeq; // Ensure you're getting the correct playTimeTableSeq
-                console.log("Fetching booked seats for playTimeTableSeq:", playTimeTableSeq);
+                const playTimeTableSeq = DateList[0]?.playTimeTableSeq; // 올바른 playTimeTableSeq를 가져오는지 확인
+                console.log("playTimeTableSeq에 대한 예약 좌석 가져오기:", playTimeTableSeq);
 
                 const response = await axios.get("http://localhost:8080/api/books/getBookedSeats", {
                     params: { playTimeTableSeq },
                     withCredentials: true
                 });
 
-                console.log("Response data:", response.data);
+                console.log("응답 데이터:", response.data);
                 const bookedSeats = response.data.data;
-                console.log("Booked seats:", bookedSeats);
+                console.log("예약된 좌석:", bookedSeats);
 
-                setBookedSeats(bookedSeats); // Store booked seats
+                setBookedSeats(bookedSeats); // 예약된 좌석을 저장
             } catch (error) {
-                console.error("Failed to fetch booked seats", error);
+                console.error("예약 좌석을 가져오는 데 실패했습니다", error);
             }
         };
 
-        // Call the function only if playTimeTableSeq is available
+        // playTimeTableSeq가 있을 때만 호출
         if (DateList[0]?.playTimeTableSeq) {
             fetchBookedSeats();
         }
@@ -42,7 +44,7 @@ const Book = ({ selectedDate, playData, DateList }) => {
 
                 if (theater) {
                     const { seatX, seatY } = theater;
-                    generateSeatLayout(seatX, seatY);
+                    generateSeatLayout(seatX, seatY); // 좌석 배치를 생성
                 } else {
                     console.error("해당 극장 정보를 찾을 수 없습니다");
                 }
@@ -56,54 +58,66 @@ const Book = ({ selectedDate, playData, DateList }) => {
 
     const generateSeatLayout = (seatX, seatY) => {
         const totalSeats = seatX * seatY;
-        const seatsPerColumn = totalSeats / 4; // Divide seats into 4 columns
+        const seatsPerColumn = totalSeats / 4; // 좌석을 4개의 열로 나눔
         const layout = [[], [], [], []];
 
         for (let seat = 1; seat <= totalSeats; seat++) {
-            const columnIndex = Math.floor((seat - 1) / seatsPerColumn); // Determine column
+            const columnIndex = Math.floor((seat - 1) / seatsPerColumn); // 열을 계산
             layout[columnIndex].push(seat);
         }
 
-        // Format each column into rows of 5x5
+        // 각 열을 5x5 크기의 행으로 포맷
         const formattedLayout = layout.map(column =>
             column.reduce((rows, seat, index) => {
-                if (index % 5 === 0) rows.push([]); // Start a new row every 5 seats
-                rows[rows.length - 1].push({ seat, isBooked: false }); // Add seat object with isBooked
+                if (index % 5 === 0) rows.push([]); // 5개의 좌석마다 새로운 행 시작
+                rows[rows.length - 1].push({ seat, isBooked: false }); // isBooked가 false인 좌석 객체 추가
                 return rows;
             }, [])
         );
 
         setSeatLayout(formattedLayout);
-        console.log("Generated seat layout:", formattedLayout);
+        console.log("생성된 좌석 배치:", formattedLayout);
     };
 
     const isSeatBooked = (seatX, seatY) => {
         return bookedSeats.some((bookedSeat) => {
-            // Parse the booked_x and booked_y as integers
+            // 예약된 좌석의 좌표를 정수로 변환
             const bookedX = parseInt(bookedSeat.bookedX, 10);
             const bookedY = parseInt(bookedSeat.bookedY, 10);
 
-            // Check if the parsed values are valid numbers
+            // 변환된 값이 유효한 숫자인지 확인
             if (isNaN(bookedX) || isNaN(bookedY)) {
-                console.error(`Invalid booked coordinates: booked_x = ${bookedSeat.booked_x}, booked_y = ${bookedSeat.booked_y}`);
+                console.error(`잘못된 예약 좌석 좌표: booked_x = ${bookedSeat.bookedX}, booked_y = ${bookedSeat.bookedY}`);
                 return false;
             }
-            return bookedX === seatX && bookedY === seatY;
+            return bookedX === seatX && bookedY === seatY; // 좌석이 예약되었는지 확인
         });
     };
 
     const toggleSeat = (seatNumber) => {
-        setSelectedSeats((prev) =>
-            prev.includes(seatNumber)
-                ? prev.filter((seat) => seat !== seatNumber) // Deselect
-                : [...prev, seatNumber] // Select
-        );
+        setSelectedSeats((prev) => {
+            if (prev.length >= 5 && !prev.includes(seatNumber)) {
+                setErrorMessage("최대 5개의 좌석만 선택할 수 있습니다.");
+
+                setTimeout(() => {
+                    setErrorMessage("");
+                }, 3000);
+
+                return prev;
+            } else {
+                setErrorMessage("");
+            }
+
+            return prev.includes(seatNumber)
+                ? prev.filter((seat) => seat !== seatNumber)
+                : [...prev, seatNumber];
+        });
     };
 
-    const isSelected = (seatNumber) => selectedSeats.includes(seatNumber);
+    const isSelected = (seatNumber) => selectedSeats.includes(seatNumber); // 좌석이 선택되었는지 확인
 
     const renderSeats = (layout) => {
-        console.log("Rendering seats...");
+        console.log("좌석 렌더링 중...");
         return (
             <div className="book-body-seats">
                 {layout.map((column, columnIndex) => (
@@ -111,20 +125,20 @@ const Book = ({ selectedDate, playData, DateList }) => {
                         {column.map((row, rowIndex) => (
                             <div key={rowIndex} className="book-body-seats-row">
                                 {row.map(({ seat }) => {
-                                    const seatX = (seat - 1) % 10; // Assuming 10 seats per row
+                                    const seatX = (seat - 1) % 10; // 한 행에 10개의 좌석이 있다고 가정
                                     const seatY = Math.floor((seat - 1) / 10);
 
-                                    console.log(`Seat ${seat} has coordinates: (${seatX}, ${seatY})`);
+                                    console.log(`좌석 ${seat}의 좌표: (${seatX}, ${seatY})`);
 
                                     const isSeatBookedFlag = isSeatBooked(seatX, seatY);
 
                                     return (
                                         <button
                                             key={`seat-${columnIndex}-${rowIndex}-${seat}`}
-                                            aria-label={`Seat ${seat} ${isSeatBookedFlag ? "booked" : "available"}`}
+                                            aria-label={`좌석 ${seat} ${isSeatBookedFlag ? "예약됨" : "이용 가능"}`}
                                             className={`book-body-seats-content-row-seat ${isSelected(seat) ? "selected" : ""} ${isSeatBookedFlag ? "booked" : ""}`}
-                                            onClick={() => !isSeatBookedFlag && toggleSeat(seat)} // Only toggle if not booked
-                                            disabled={isSeatBookedFlag} // Disable if booked
+                                            onClick={() => !isSeatBookedFlag && toggleSeat(seat)} // 예약되지 않은 좌석만 선택 가능
+                                            disabled={isSeatBookedFlag} // 예약된 좌석은 선택 불가
                                         >
                                             {seat}
                                         </button>
@@ -142,9 +156,9 @@ const Book = ({ selectedDate, playData, DateList }) => {
         <div>
             <div className="book-header">
                 <div className="book-header-info">
-                    <h1>연극명: {playData.name}</h1>
-                    <h1>상영날짜: {selectedDate.toLocaleDateString()}</h1>
-                    <h1>상영시간: {DateList[0].startTime}</h1>
+                    <h1>연극명 : {playData.name}</h1>
+                    <h1>상영날짜 : {selectedDate.toLocaleDateString()}</h1>
+                    <h1>상영시간 : {DateList[0].startTime}</h1>
                 </div>
                 <hr className="book-header-hr" />
                 <div className="book-header-text">
@@ -158,9 +172,12 @@ const Book = ({ selectedDate, playData, DateList }) => {
             <hr className='book-body-hr' />
             <div className='book-footer-info'>
                 <h1>선택한 좌석: {selectedSeats.join(", ")}</h1>
-                <h1>총 금액: {selectedSeats.length * playData.price}원</h1>
+                <h1>총 금액: {selectedSeats.length * DateList[0].discountedPrice}원</h1>
                 <button className='book-button'>예매하기</button>
             </div>
+            <div className='error-message'>
+                    {errorMessage && <p style={{ color: 'red', textAlign: 'center' }}>{errorMessage}</p>}
+                </div>
         </div>
     );
 };
