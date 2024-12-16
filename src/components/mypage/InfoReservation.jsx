@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import styles from "../../assets/css/mypage/InfoReservation.module.css";
 import axios from "axios";
 import { format } from "date-fns";
+import ReactPaginate from "react-paginate";
+
 const InfoReservation = () => {
     //select 날짜
     const date = new Date(); //.getMonth()+1; //getFullYear(); // toLocaleDateString();
@@ -70,34 +72,37 @@ const InfoReservation = () => {
             .catch((error) => console.log(error));
     };
 
-    // 예약정보 불러오기
+    // 예약정보 불러오기 - 페이징
     const [myBooks, setMyBooks] = useState([]); // 글 목록을 담을 리스트
 
-    const [page, setPage] = useState(1); // 현재 페이지
-    const [totolPage, setTotalPage] = useState(0); // 전체 페이지
-    const pageSize = 5; // 한 페이지에 보여줄 글의 개수 : 10
+    const [currentPage, setCurrentPage] = useState(0); // 현재 페이지
+    const [totalPage, setTotalPage] = useState(0); // 전페 페이지
 
     useEffect(() => {
-        axios
-            .get(
-                `http://localhost:8080/api/members/checkMyBook/pagination?page=${page}&size=${pageSize}`,
+        const fetchItems = async () => {
+            const res = await axios.get(
+                `http://localhost:8080/api/members/checkMyBook/pagination`,
                 {
-                    withCredentials: true, // 세션 쿠키를 포함
+                    params: {
+                        classify: classifyValue,
+                        year: yearValue,
+                        month: monthValue,
+                        currentPage: currentPage,
+                    },
+                    withCredentials: true,
                 }
-            )
-            .then((response) => {
-                console.log(
-                    "응답 전체:",
-                    JSON.stringify(response.data.data, null, 2)
-                );
-                //setMyBooks(JSON.stringify(response.data.data, null, 2)); //JSON.stringify()를 사용하면, 실제 데이터가 배열이라 하더라도 문자열로 변환
-                setMyBooks(response.data.data);
-            })
-            .catch((error) => console.log(error));
-    }, []);
+            );
+            setMyBooks(res.data.content);
+            setTotalPage(res.data.totalPages);
+        };
+        fetchItems();
+    }, [currentPage, classifyValue, yearValue, monthValue]);
+
+    const handlePageClick = (e) => {
+        setCurrentPage(e.selected);
+    };
 
     /* 처음에 불러오는거 >> 잘되는중 
-
     useEffect(() => {
         axios
             .get("http://localhost:8080/api/members/checkMyBook", {
@@ -133,9 +138,10 @@ const InfoReservation = () => {
                     <select
                         id="classify"
                         className="classify"
+                        value={classifyValue}
                         onChange={classifyValueChange}
                     >
-                        <option value="" selected disabled hidden>
+                        <option value="" disabled hidden>
                             구분
                         </option>
                         <option value="pay_date">예매날짜</option>
@@ -143,9 +149,10 @@ const InfoReservation = () => {
                     <select
                         id="year"
                         className="year"
+                        value={yearValue}
                         onChange={yearValueChange}
                     >
-                        <option value="" selected disabled hidden>
+                        <option value="" disabled hidden>
                             년
                         </option>
                         {years.map((index) => (
@@ -157,9 +164,10 @@ const InfoReservation = () => {
                     <select
                         id="month"
                         className="month"
+                        value={monthValue}
                         onChange={monthValueChange}
                     >
-                        <option value="" selected disabled hidden>
+                        <option value="" disabled hidden>
                             월
                         </option>
                         {months.map((index) => (
@@ -193,12 +201,17 @@ const InfoReservation = () => {
                         <div key={item.bookSeq} className={styles.listItem}>
                             <span>{format(item.payDate, "yyyy-MM-dd")}</span>
                             <span>{item.bookSeq}</span>
-                            <span>{item.playName}</span>
-                            <span>{format(item.targetDate, "yyyy-MM-dd")}</span>
+                            <span>{item.playTimeTable.play.name}</span>
+                            <span>
+                                {format(
+                                    item.playTimeTable.targetDate,
+                                    "yyyy-MM-dd"
+                                )}
+                            </span>
                             <span>{item.payment}</span>
                             <span>
                                 {/* 이거 안되는중 ......  */}
-                                {item.targetDate < formattedDate
+                                {item.playTimeTable.targetDate < formattedDate
                                     ? "취소가능"
                                     : "취소불가능"}
                             </span>
@@ -207,9 +220,20 @@ const InfoReservation = () => {
                 )}
             </div>
             <div className={styles.pagination}>
-                <button>이전</button>
-                <button>1</button>
-                <button>다음</button>
+                <ReactPaginate
+                    previousLabel={"<"}
+                    nextLabel={">"}
+                    pageRangeDisplayed={3}
+                    pageCount={totalPage}
+                    onPageChange={handlePageClick}
+                    previousClassName={styles.pageItem}
+                    nextClassName={styles.pageItem}
+                    breakClassName={styles.break}
+                    containerClassName={styles.pagePagination}
+                    pageClassName={styles.pageItem}
+                    activeClassName={styles.active}
+                    disabledClassName="disabled"
+                ></ReactPaginate>
             </div>
 
             <p className={styles.note}>
