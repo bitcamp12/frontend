@@ -57,10 +57,15 @@ const Login = () => {
             if (response.status === 200) {
                 setModalTitle("로그인 성공");
                 setLoginError("");
-    
+                    
                 // 로그인 성공 후 JWT 토큰을 localStorage에 저장
-                const token = response.headers; // "Bearer <token>"에서 토큰 부분만 추출
-                localStorage.setItem("token", token);
+                const authorizationHeader = response.headers["Authorization"] || response.headers["authorization"]; // 대소문자 구분 없이 Authorization 헤더 확인
+                if (authorizationHeader) {
+                    const token = authorizationHeader.replace("Bearer ", ""); // "Bearer " 부분을 제거하고 순수 토큰만 추출
+                    localStorage.setItem("token", token);
+                } else {
+                    console.error("응답에 Authorization 헤더가 없습니다.");
+                }
 
     
                 setTimeout(() => {
