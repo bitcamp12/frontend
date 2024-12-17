@@ -8,6 +8,8 @@ import "../styles/Login.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Modal from "./Modal/Modal";
 import axios from "axios";
+import NaverLogin from "./OAuth/Naver/LoginNaver";
+import LoginKakao from "./OAuth/kakao/LoginKakao";
 
 const Login = () => {
     const location = useLocation();
@@ -157,12 +159,14 @@ const Login = () => {
                             alt="Naver Logo"
                             className="social-logo"
                         />
+                        <NaverLogin/>
                         <img
                             src={KakaoLogo}
                             alt="Kakao Logo"
                             className="social-logo"
                         />
                     </div>
+                    <LoginKakao/>
                 </form>
             </div>
 
