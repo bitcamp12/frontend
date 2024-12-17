@@ -39,7 +39,7 @@ const Reserve = ({ DateList, closeModal, DatePicker, selectedDate, setSelectedDa
       // Use React 18's createRoot instead of ReactDOM.render to mount the Book component
       const root = ReactDOM.createRoot(popup.document.getElementById('popup-root'));
       root.render(
-        <Book closeModal={() => popup.close()} selectedDate={selectedDate} playData={playData} DateList={DateList} />
+        <Book closeModal={() => popup.close()} selectedDate={selectedDate} playData={playData} DateList={DateList}  popupRef={popupRef} />
       );
     }, 100);
 
