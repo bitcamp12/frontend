@@ -72,7 +72,7 @@ const InfoReservation = () => {
             .catch((error) => console.log(error));
     };
 
-    // 예약정보 불러오기 - 페이징
+    // 예약정보 불러오기 - 페이징징징징
     const [myBooks, setMyBooks] = useState([]); // 글 목록을 담을 리스트
 
     const [currentPage, setCurrentPage] = useState(0); // 현재 페이지
