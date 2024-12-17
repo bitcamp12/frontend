@@ -108,8 +108,71 @@
     margin-top: 20px;
     text-align: center;
     font-size: 15px;
+    justify-content: center;
 }
 
+/*  */
+.pagePagination {
+    display: flex;
+    width: 50px;
+    min-width: 555px;
+    padding: 70px 16px 16px 16px;
+    justify-content: center;
+    align-items: center;
+}
+
+.pageItem {
+    /* 페이지 항목의 스타일 */
+    cursor: pointer;
+    height: 27px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    margin-right: 4px;
+    padding: 0px 8px 0px 8px;
+}
+
+.pageItem:hover {
+    background-color: #e6e3e8;
+}
+
+.active {
+    /* 활성 상태의 스타일 */
+    background-color: #8e43e7;
+    color: white;
+}
+
+.active:hover {
+    background-color: #8e43e7;
+}
+
+.break {
+    /* '...' 이후의 컴포넌트 스타일 */
+    height: 27px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    border-radius: 3px;
+    margin-right: 4px;
+    padding: 0px 8px 0px 8px;
+}
+
+.previous {
+    height: 27px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    border-radius: 3px;
+    margin-right: 4px;
+    padding: 0px 8px 0px 8px;
+}
+
+/*  */
 .note {
     margin-top: 15px;
     font-size: 14px;
