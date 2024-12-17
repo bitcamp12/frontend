@@ -137,9 +137,22 @@ const Sign_up_Form = () => {
       return;
     }
   
+    // JWT 토큰 가져오기 (예: 로컬스토리지에서 가져오기)
+    const token = localStorage.getItem("token");
+
+  
     // 서버로 아이디 중복 체크 요청
     try {
-      const response = await axios.post("http://localhost:8080/api/members/checkId", { id: value });
+      const response = await axios.post(
+        "http://localhost:8080/api/members/checkId",
+        { id: value },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,  // JWT 토큰을 Authorization 헤더에 포함
+          },
+          withCredentials: true,  // 쿠키를 함께 보내도록 설정
+        }
+      );
   
       // 서버 응답 처리
       if (response.data.message === 'exist') {
@@ -160,6 +173,7 @@ const Sign_up_Form = () => {
       ...formErrors,
     }));
   };
+  
 
   const isPwdValid = () => {
     let formErrors = {}; // 오류 메시지를 저장할 객체
