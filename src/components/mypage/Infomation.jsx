@@ -20,7 +20,7 @@ const Infomation = () => {
     };
 
     // const [sessionId, setSessionId] = useState("");
-
+    //
     // // 로그인한 세션을 가져오기 (지워야함. )
     // useEffect(() => {
     //     axios
@@ -88,9 +88,7 @@ const Infomation = () => {
                         <InfoReservation />
                     )}
                     {selectedIcon === "bookmark" && <InfoBookmark />}
-                    {selectedIcon === "withdrawal" && (
-                        <InfoWithdrawal />
-                    )}
+                    {selectedIcon === "withdrawal" && <InfoWithdrawal />}
                 </div>
             </section>
             <div>
