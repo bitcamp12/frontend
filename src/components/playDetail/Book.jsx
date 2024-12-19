@@ -1,8 +1,9 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { CheckoutPage } from '../Toss/Checkout';
+import { useNavigate } from 'react-router';
 
-
-const Book = ({ selectedDate, playData, DateList, popupRef }) => {
+const Book = ({ selectedDate, playData, DateList, popupRef, navigate }) => {
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [seatLayout, setSeatLayout] = useState([]);
     const [bookedSeats, setBookedSeats] = useState([]);
@@ -116,6 +117,7 @@ const Book = ({ selectedDate, playData, DateList, popupRef }) => {
 
     const isSelected = (seatNumber) => selectedSeats.includes(seatNumber); // 좌석이 선택되었는지 확인
 
+
     const purchaseSeats = async () => {
         if (selectedSeats.length === 0) {
             setErrorMessage("최소 1개의 좌석을 선택해야 합니다.");
@@ -147,6 +149,7 @@ const Book = ({ selectedDate, playData, DateList, popupRef }) => {
                     popupRef.current.alert("예매가 완료되었습니다.");
                     popupRef.current.close();
                 }
+                navigate("/payment", "_blank");
             } else {
                 if(popupRef.current) {
                     popupRef.current.alert(`예매에 실패: ${response.data.message}`); // Show alert in the popup window
