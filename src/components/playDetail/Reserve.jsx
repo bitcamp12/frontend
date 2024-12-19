@@ -7,6 +7,7 @@ const Reserve = ({ DateList, closeModal, DatePicker, selectedDate, setSelectedDa
 
   const { playSeq } = useParams();
   const popupRef = useRef(null);
+  const navigate = useNavigate();
 
   const openBookPopup = () => {
     // Check if the popup is already open and not closed
@@ -39,7 +40,7 @@ const Reserve = ({ DateList, closeModal, DatePicker, selectedDate, setSelectedDa
       // Use React 18's createRoot instead of ReactDOM.render to mount the Book component
       const root = ReactDOM.createRoot(popup.document.getElementById('popup-root'));
       root.render(
-        <Book closeModal={() => popup.close()} selectedDate={selectedDate} playData={playData} DateList={DateList}  popupRef={popupRef} />
+        <Book closeModal={() => popup.close()} selectedDate={selectedDate} playData={playData} DateList={DateList}  popupRef={popupRef} navigate={navigate}/>
       );
     }, 100);
 
