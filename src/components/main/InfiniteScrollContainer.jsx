@@ -17,14 +17,14 @@ const InfiniteScrollContainer = ({selectedTab}) => {
     const fetchData = async (pageNumber, tabIndex) => {
         try {
             const size = 100;
-            let url = `http://localhost:8080/api/plays/getPlayAll?page=${pageNumber}&size=${size}`;
+            let url = (`${process.env.REACT_APP_API_URL}/plays/getPlayAll?page=${pageNumber}&size=${size}`);
 
             if (tabIndex === 1) {
-                url = `http://localhost:8080/api/plays/getPlayEndingSoon?page=${pageNumber}&size=${size}`;
+                url = (`${process.env.REACT_APP_API_URL}/plays/getPlayEndingSoon?page=${pageNumber}&size=${size}`);
             } else if (tabIndex === 2) {
-                url = `http://localhost:8080/api/plays/getPlayComingSoon?page=${pageNumber}&size=${size}`;
+                url = (`${process.env.REACT_APP_API_URL}/plays/getPlayComingSoon?page=${pageNumber}&size=${size}`);
             } else if (tabIndex === 3) {
-                url = `http://localhost:8080/api/plays/getPlayLimited?page=${pageNumber}&size=${size}`;
+                url = (`${process.env.REACT_APP_API_URL}/plays/getPlayLimited?page=${pageNumber}&size=${size}`);
             }
 
             const response = await axios.get(url, { withCredentials: true });
