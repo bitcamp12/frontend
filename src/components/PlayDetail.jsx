@@ -38,8 +38,10 @@ const PlayDetail = () => {
     const[alertVisible,setAlertVisible]=useState(false);
     const [modalTitle, setModalTitle] = useState(''); // 모달 제목
     const [modalMessage, setModalMessage] = useState(''); // 모달 메시지
+    const accessToken = localStorage.getItem("token"); // 로컬스토리지 또는 쿠키에서 가져오기
 
-   
+ 
+
 
   const { kakao } = window;
 ///////스케줄 예매일
@@ -57,7 +59,11 @@ const PlayDetail = () => {
   };
   
   
+  const [activeButton, setActiveButton] = useState(null);
 
+  const handleButtonClick = (buttonId) => {
+    setActiveButton(prevButton => prevButton === buttonId ? null : buttonId);
+  };
 
 
 
@@ -263,7 +269,7 @@ const [reviewACount,setReviewACount]=useState(0);
 const [reviewData, setReviewData] = useState([]); // 초기값을 null로 설정
 
 
-const pageSize = 2; // 한 페이지에 보여줄 항목 수
+const pageSize = 10; // 한 페이지에 보여줄 항목 수
 const pageBlock = 5; // 한 블록에 보여줄 페이지 수 (5개씩)
 
 const [totalPagesa, setTotalPages] = useState(Math.ceil( 0));//후기전체페이지
@@ -445,7 +451,10 @@ const handleSubmit = async () => {
   // const userId = sessionStorage.getItem("id");
     // 서버로 데이터 전송
     axios.post(`http://localhost:8080/api/reviewAfters/ReviewA?playSeq=${playSeq}`, reviewData, {
-      withCredentials: true
+      headers: {
+        'Authorization': `Bearer ${accessToken}` // Bearer 토큰
+    },
+    withCredentials: true, // 쿠키 전달 활성화
     }).then(response=>{
 
       if (response.status === 200) {
@@ -492,7 +501,11 @@ const handleUpdateClick = (e)=>{
     rating: rating                   // 수정된 별점
   };
   axios
-  .put("http://localhost:8080/api/reviewAfters/ReviewA", updatedReview)
+  .put("http://localhost:8080/api/reviewAfters/ReviewA", updatedReview,{headers: {
+    'Authorization': `Bearer ${accessToken}` // Bearer 토큰
+},
+withCredentials: true, // 쿠키 전달 활성화
+ })
   .then((response) => {
     if (response.status === 200) {
       setAlertVisible(true)
@@ -523,7 +536,12 @@ const handleDeleteClick = (reviewSeq) => {
 
   // axios.delete로 데이터 전달 시, config 객체 내에 data를 사용하여 요청 본문을 전달
   axios
-    .delete("http://localhost:8080/api/reviewAfters/ReviewA", { data: reviewDTO }) // 삭제 요청에 reviewDTO를 body로 전달
+    .delete("http://localhost:8080/api/reviewAfters/ReviewA", { data: reviewDTO },{
+      headers: {
+        'Authorization': `Bearer ${accessToken}` // Bearer 토큰
+    },
+    withCredentials: true, // 쿠키 전달 활성화
+    }) // 삭제 요청에 reviewDTO를 body로 전달
     .then((response) => {
       if (response.status === 200) {
         setAlertVisible(true);
@@ -716,7 +734,10 @@ const handleSubmitB = async () => {
 
     // 서버로 데이터 전송
     axios.post(`http://localhost:8080/api/reviewBefores/reviewB?playSeq=${playSeq}`, reviewDataB, {
-      withCredentials: true,
+      headers: {
+        'Authorization': `Bearer ${accessToken}` // Bearer 토큰
+    },
+    withCredentials: true, // 쿠키 전달 활성화
     }).then(response=>{
 
       if (response.status === 200) {
@@ -758,7 +779,12 @@ const handleUpdateBClick = (e)=>{
     content: reviewTextB,             // 수정된 리뷰 내용
   };
   axios
-  .put("http://localhost:8080/api/reviewBefores/reviewB", updatedReview)
+  .put("http://localhost:8080/api/reviewBefores/reviewB", updatedReview,{
+    headers: {
+      'Authorization': `Bearer ${accessToken}` // Bearer 토큰
+  },
+  withCredentials: true, // 쿠키 전달 활성화
+  })
   .then((response) => {
     if (response.status === 200) {
       setAlertVisible(true)
@@ -788,7 +814,12 @@ const handleDeleteClickB = (reviewSeq) => {
 
   // axios.delete로 데이터 전달 시, config 객체 내에 data를 사용하여 요청 본문을 전달
   axios
-    .delete("http://localhost:8080/api/reviewBefores/reviewB", { data: reviewBDTO }) // 삭제 요청에 reviewDTO를 body로 전달
+    .delete("http://localhost:8080/api/reviewBefores/reviewB", { data: reviewBDTO },{
+      headers: {
+        'Authorization': `Bearer ${accessToken}` // Bearer 토큰
+    },
+    withCredentials: true, // 쿠키 전달 활성화
+    }) // 삭제 요청에 reviewDTO를 body로 전달
     .then((response) => {
       if (response.status === 200) {
         setAlertVisible(true);
@@ -842,7 +873,33 @@ const fetchQAData = async () => {
   }
 };
 
+const [userId,setUserId] = useState();
+useEffect(() => {
+  const fetchUserId = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/members/id',{
+        headers: {
+          'Authorization': `Bearer ${accessToken}` // Bearer 토큰
+      },
+      withCredentials: true, // 쿠키 전달 활성화
+      });
+      const { status, message, data } = response.data;
+     
+console.log(data)
+      if (status === 200) {
+        console.log('User ID fetched successfully:', data);
+        setUserId(data); // userId 상태 업데이트
+      } else {
+        console.error('Failed to fetch user ID:', message);
+      }
+    } catch (error) {
+      console.error('Error fetching user ID:', error);
+    }
+  };
 
+  fetchUserId();
+  
+}, []);
 
 const fetchQACountData = async () => {
   try {
@@ -888,7 +945,10 @@ console.log(QATitle,QAText)
   
     // 서버로 데이터 전송
     axios.post(`http://localhost:8080/api/qnas/qna?playSeq=${playSeq}`, DataQA, {
-      withCredentials: true,
+      headers: {
+        'Authorization': `Bearer ${accessToken}` // Bearer 토큰
+    },
+    withCredentials: true, // 쿠키 전달 활성화
     }).then(response=>{
 
       if (response.status === 200) {
@@ -932,7 +992,12 @@ const handleQAClick = (e)=>{
     qnaSeq: e.target.getAttribute('data-qa-seq'), // 현재 수정 중인 리뷰의 고유 ID
     content: QAText,             // 수정된 리뷰 내용
   };
-  axios.put("http://localhost:8080/api/qnas/qna", updatedQA)
+  axios.put("http://localhost:8080/api/qnas/qna", updatedQA,{
+    headers: {
+      'Authorization': `Bearer ${accessToken}` // Bearer 토큰
+  },
+  withCredentials: true, // 쿠키 전달 활성화
+  })
   .then((response) => {
     if (response.status === 200) {
       setAlertVisible(true)
@@ -962,7 +1027,12 @@ const handleQADeleteClick = (qnaSeq) => {
 
   // axios.delete로 데이터 전달 시, config 객체 내에 data를 사용하여 요청 본문을 전달
   axios
-    .delete("http://localhost:8080/api/qnas/qna", { data: QADTO }) // 삭제 요청에 reviewDTO를 body로 전달
+    .delete("http://localhost:8080/api/qnas/qna", { data: QADTO },{
+      headers: {
+        'Authorization': `Bearer ${accessToken}` // Bearer 토큰
+    },
+    withCredentials: true, // 쿠키 전달 활성화
+    }) // 삭제 요청에 reviewDTO를 body로 전달
     .then((response) => {
       if (response.status === 200) {
         setAlertVisible(true);
@@ -1024,7 +1094,8 @@ const handleReplayClick = (qnaSeq) => {
 
 ////////////즐겨찾기
 //하트색깔
-const userId = sessionStorage.getItem("id");
+
+
 const [hartColor,setHartColor]=useState('black')
 /////즐겨찾기 불러오기(등록되어있음->빨간하트/등록 없음->검은하트)
   // 즐겨찾기 상태 확인
@@ -1033,7 +1104,10 @@ const [hartColor,setHartColor]=useState('black')
 
     axios
       .get(`http://localhost:8080/api/favorites/favorites?playSeq=${playSeq}`,{
-        withCredentials: true
+        headers: {
+          'Authorization': `Bearer ${accessToken}` // Bearer 토큰
+      },
+      withCredentials: true, // 쿠키 전달 활성화
       })
       .then((response) => {
         console.log(response)
@@ -1056,7 +1130,10 @@ const handleAddFavorite = () => {
   console.log(playSeq)
   axios
     .post(`http://localhost:8080/api/favorites/favorites?playSeq=${playSeq}`,{},{
-      withCredentials: true, // 쿠키 포함
+      headers: {
+        'Authorization': `Bearer ${accessToken}` // Bearer 토큰
+    },
+    withCredentials: true, // 쿠키 전달 활성화
     })
     .then((response) => {
       if(response.data.status === 403){
@@ -1086,7 +1163,10 @@ const handleAddFavorite = () => {
 const handleRemoveFavorite = () => {
   axios
     .delete(`http://localhost:8080/api/favorites/favorites?playSeq=${playSeq}`,{
-      withCredentials: true
+      headers: {
+        'Authorization': `Bearer ${accessToken}` // Bearer 토큰
+    },
+    withCredentials: true, // 쿠키 전달 활성화
     }
     )
     .then((response) => {
@@ -1123,6 +1203,32 @@ const handleRemoveFavorite = () => {
     }
   };
 
+
+  const formatDateTargt = dateStr => {
+    const date = new Date(dateStr);
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
+    const day = String(date.getDate()).padStart(2, '0'); // 일자를 2자리로 포맷
+
+    const hour = date.getHours() % 12 || 12; // 12시간제 (0시는 12로 표시)
+    const minute = date.getMinutes().toString().padStart(2, "0");
+    const ampm = date.getHours() < 12 ? "오전" : "오후";
+  
+    return `${year}년 ${month}월 ${day}일 ${ampm} ${hour}:${minute}시간`;
+  };
+
+  // const formatDate = dateStr => {
+  //   // ISO 문자열을 Date 객체로 변환
+  //   const date = new Date(dateStr);
+  //   // 연도, 월, 일 추출
+  //   const year = date.getFullYear();
+  //   const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
+  //   const day = String(date.getDate()).padStart(2, '0'); // 일자를 2자리로 포맷
+  
+  //   return `${year}.${month}.${day}`;
+  // };
+
   return (
 
     <>
@@ -1130,7 +1236,7 @@ const handleRemoveFavorite = () => {
       <div id="play-detail-container">
         <div id="play-detail-header">
           <h2 id="play-subject">{playData ? playData.name : '임시 제목'}</h2>
-          <p>연극 주간 50위</p>
+          <p>{playData ? `당일 공연일 : `+`${formatDateTargt(playData.targetDate)}` : '2024년 12월 18일 AM 12:00시간'}</p>
         </div>
 
         <div id="play-detail-body">
@@ -1444,7 +1550,10 @@ const handleRemoveFavorite = () => {
                   handleReplayClick={handleReplayClick}
                   isReplyVisible={isReplyVisible}
                   replyDTO={replyDTO}
-                  setIsReplyVisible={setIsReplyVisible}/>
+                  setIsReplyVisible={setIsReplyVisible}
+                
+                  />
+                  
                     {/* 페이지네이션 */}
          <div className="pagination">
         {/* 이전 버튼 */}
@@ -1503,7 +1612,8 @@ const handleRemoveFavorite = () => {
 
       {/* 예매 모달 팝업 */}
       {reserveVisible && (
-        <Reserve DateList={DateList}closeModal={closeModal} DatePicker={DatePicker} selectedDate={selectedDate} setSelectedDate={setSelectedDate} ko={ko} />
+        <Reserve activeButton={activeButton} handleButtonClick={handleButtonClick}
+        DateList={DateList}closeModal={closeModal} DatePicker={DatePicker} selectedDate={selectedDate} setSelectedDate={setSelectedDate} ko={ko} />
       )}
 
       {/* 상담 모달 팝업 */}

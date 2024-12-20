@@ -18,6 +18,7 @@ import FindIdDetail from "./components/FindIdDetail";
 import FindPwdDetail from "./components/FindPwdDetail";
 import ResetPwd from "./components/ResetPwd";
 import Notice from "./components/Notice";
+import CallbackNaver from "./components/OAuth/Naver/CallbackNaver";
 
 
 const App = () => {
@@ -37,6 +38,7 @@ const App = () => {
                     <Route path="/playDetail/:playSeq" element={<PlayDetail />} />
                     <Route path="/member" element={<Infomation />} />
                     <Route path="/notice" element={<Notice />} />
+                    <Route path="/naverloding" element={<CallbackNaver/>}/>
                 </Routes>
             </BrowserRouter>
         </>

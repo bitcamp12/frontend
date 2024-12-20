@@ -1,7 +1,13 @@
 import React from 'react';
+import { useState } from 'react';
 
-const Reserve = ({DateList, closeModal, DatePicker, selectedDate, setSelectedDate, ko }) => {
-  console.log(DateList[0])
+const Reserve = ({activeButton,handleButtonClick,DateList, closeModal, DatePicker, selectedDate, setSelectedDate, ko }) => {
+  
+  const [selectedTime, setSelectedTime] = useState(null);// 선택된 data-time 값 저장
+console.log(selectedTime);
+
+
+
   return (
     <div id="reserve-modal" className="modal">
       <div id="reserve-modal-content" className="modal-content">
@@ -31,6 +37,15 @@ const Reserve = ({DateList, closeModal, DatePicker, selectedDate, setSelectedDat
         type="button" 
         value={DateList[0]?.startTime || '없음'} 
         id="reserve-button-time-right" 
+        className={activeButton === 'reserve-button-time-right' ? 'active' : ''}
+        onClick={(e) =>  {
+
+          handleButtonClick('reserve-button-time-right'); // 버튼 활성화 처리
+          console.log(e.target.getAttribute('data-time'));
+          
+          setSelectedTime(e.target.getAttribute('data-time')); // 선택된 시간 업데이트
+        }}
+        data-time={DateList[0]?.startTime || 0}
       />
 
       {/* 두 번째 버튼 */}
@@ -38,6 +53,15 @@ const Reserve = ({DateList, closeModal, DatePicker, selectedDate, setSelectedDat
         type="button" 
         value={DateList[1]?.startTime || '없음'} 
         id="reserve-button-time-left" 
+        className={activeButton === 'reserve-button-time-left' ? 'active' : ''}
+        onClick={(e) => 
+        {
+          handleButtonClick('reserve-button-time-left');
+          console.log(e.target.getAttribute('data-time'));
+          setSelectedTime(e.target.getAttribute('data-time')); 
+        }
+          }
+         data-time={DateList[1]?.startTime || 0}
       />
         </div>
         <div>

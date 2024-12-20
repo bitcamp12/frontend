@@ -10,6 +10,7 @@ import Modal from "./Modal/Modal";
 import axios from "axios";
 import NaverLogin from "./OAuth/Naver/LoginNaver";
 import LoginKakao from "./OAuth/kakao/LoginKakao";
+import LoginGoogle from "./OAuth/Google/LoginGoogle";
 
 const Login = () => {
     const location = useLocation();
@@ -42,6 +43,7 @@ const Login = () => {
     };
 
     const handleLogin = async (e) => {
+        
         e.preventDefault();
         try {
             setAlertVisible(true);
@@ -162,6 +164,7 @@ const Login = () => {
                             alt="Apple Logo"
                             className="social-logo"
                         />
+                        <LoginGoogle/>
                         <img
                             src={NaverLogo}
                             alt="Naver Logo"
