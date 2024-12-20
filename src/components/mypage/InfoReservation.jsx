@@ -9,10 +9,10 @@ const InfoReservation = () => {
     //select 날짜
     const date = new Date(); //.getMonth()+1; //getFullYear(); // toLocaleDateString();
     const [year, setYear] = useState(date.getFullYear());
-    const [month, setMonth] = useState(date.getMonth + 1);
+    const [month, setMonth] = useState(date.getMonth() + 1);
 
     const formattedDate = format(date, "yyyy-MM-dd");
-    console.log("formattedDate: " + formattedDate);
+    //console.log("formattedDate: " + formattedDate);
 
     const years = [];
     for (let index = year - 5; index < year + 5; index++) {
@@ -70,6 +70,9 @@ const InfoReservation = () => {
                 setMyBooks(response.data.data);
             })
             .catch((error) => console.log(error));
+
+        setCurrentPage(0); // 검색시 첫 페이지
+        fetchItems();
     };
 
     // 예약정보 불러오기 - 페이징징징징
@@ -78,31 +81,37 @@ const InfoReservation = () => {
     const [currentPage, setCurrentPage] = useState(0); // 현재 페이지
     const [totalPage, setTotalPage] = useState(0); // 전페 페이지
 
+    const accessToken = localStorage.getItem("token"); // 로컬스토리지
+    const fetchItems = async () => {
+        const res = await axios.get(
+            `http://localhost:8080/api/members/checkMyBook/pagination`,
+            {
+                params: {
+                    classify: classifyValue,
+                    year: yearValue,
+                    month: monthValue,
+                    currentPage: currentPage,
+                },
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+                withCredentials: true,
+            }
+        );
+        setMyBooks(res.data.content);
+        setTotalPage(res.data.totalPages);
+    };
+
     useEffect(() => {
-        const fetchItems = async () => {
-            const res = await axios.get(
-                `http://localhost:8080/api/members/checkMyBook/pagination`,
-                {
-                    params: {
-                        classify: classifyValue,
-                        year: yearValue,
-                        month: monthValue,
-                        currentPage: currentPage,
-                    },
-                    withCredentials: true,
-                }
-            );
-            setMyBooks(res.data.content);
-            setTotalPage(res.data.totalPages);
-        };
+        // 페이지 로드시
         fetchItems();
     }, [currentPage, classifyValue, yearValue, monthValue]);
 
     const handlePageClick = (e) => {
         setCurrentPage(e.selected);
     };
-
-    /* 처음에 불러오는거 >> 잘되는중 
+    /*
+    //처음에 불러오는거 >> 잘되는중
     useEffect(() => {
         axios
             .get("http://localhost:8080/api/members/checkMyBook", {
@@ -141,9 +150,7 @@ const InfoReservation = () => {
                         value={classifyValue}
                         onChange={classifyValueChange}
                     >
-                        <option value="" disabled hidden>
-                            구분
-                        </option>
+                        <option value="">구분</option>
                         <option value="pay_date">예매날짜</option>
                     </select>
                     <select
@@ -152,9 +159,7 @@ const InfoReservation = () => {
                         value={yearValue}
                         onChange={yearValueChange}
                     >
-                        <option value="" disabled hidden>
-                            년
-                        </option>
+                        <option value="">년</option>
                         {years.map((index) => (
                             <option key={index} value={index}>
                                 {index}
@@ -167,9 +172,7 @@ const InfoReservation = () => {
                         value={monthValue}
                         onChange={monthValueChange}
                     >
-                        <option value="" disabled hidden>
-                            월
-                        </option>
+                        <option value="">월</option>
                         {months.map((index) => (
                             <option key={index} value={index}>
                                 {index}
@@ -189,7 +192,7 @@ const InfoReservation = () => {
                     <span>취소여부</span>
                 </div>
                 {/* // 예약목록(myBooks)이 없다면, */}
-                {myBooks === null ? (
+                {myBooks.length === 0 ? (
                     <div className={styles.listItem}>
                         <span className={styles.fullRow}>
                             설정된 기간에 맞는 예매 내역이 없습니다.
@@ -224,7 +227,7 @@ const InfoReservation = () => {
                     previousLabel={"<"}
                     nextLabel={">"}
                     pageRangeDisplayed={3}
-                    pageCount={totalPage}
+                    pageCount={myBooks.length === 0 ? 1 : totalPage}
                     onPageChange={handlePageClick}
                     previousClassName={styles.pageItem}
                     nextClassName={styles.pageItem}
