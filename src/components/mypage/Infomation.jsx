@@ -10,6 +10,7 @@ import InfoWithdrawal from "./InfoWithdrawal";
 import InfoReservation from "./InfoReservation";
 import InfoBookmark from "./InfoBookmark";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const Infomation = () => {
     const [selectedIcon, setSelectedIcon] = useState("");
@@ -18,9 +19,9 @@ const Infomation = () => {
         setSelectedIcon(iconName);
     };
 
-    const [sessionId, setSessionId] = useState("");
-
-    // // 로그인한 세션을 가져오기
+    // const [sessionId, setSessionId] = useState("");
+    //
+    // // 로그인한 세션을 가져오기 (지워야함. )
     // useEffect(() => {
     //     axios
     //         .get("http://localhost:8080/api/members/getSession", {
@@ -82,11 +83,12 @@ const Infomation = () => {
 
                 <div className={styles.member_info_container}>
                     {/* {sessionId && <InfoLock id={sessionId} />} */}
-
-                     <InfoModify /> 
-                    {/* <InfoWithdrawal sessionId={sessionId} /> */}
-                    {/* <InfoReservation /> */}
-                    {/* <InfoBookmark /> */}
+                    {selectedIcon === "memberInfo" && <InfoModify />}
+                    {selectedIcon === "reservationDetail" && (
+                        <InfoReservation />
+                    )}
+                    {selectedIcon === "bookmark" && <InfoBookmark />}
+                    {selectedIcon === "withdrawal" && <InfoWithdrawal />}
                 </div>
             </section>
             <div>
