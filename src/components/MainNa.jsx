@@ -21,42 +21,53 @@ const MainNa = () => {
     useEffect(() => {
         const checkLoginStatus = async () => {
             try {
+                // 로컬스토리지에서 액세스 토큰을 가져옵니다.
+                const accessToken = localStorage.getItem("token");
+    
+                // 액세스 토큰이 없다면, 바로 로그인 상태를 false로 설정하고 종료
+                if (!accessToken) {
+                    //console.log("토큰이 없습니다. 로그인되지 않은 상태.");
+                    setId(false); // 로그인 상태 해제
+                    return; // API 요청을 보내지 않고 종료
+                }
+    
                 // 액세스 토큰을 Authorization 헤더에 포함하여 서버로 보냄
-                const accessToken = localStorage.getItem("token"); // 로컬스토리지 에서서 가져오기
-
-                const result = await axios.get('http://localhost:8080/api/members/session-status', {
+                const result = await axios.get(`${process.env.REACT_APP_API_URL}/members/session-status`, {
                     headers: {
-                        'Authorization': `Bearer ${accessToken}`
+                        'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
                     },
-                    withCredentials: true, //리프레쉬 토큰은 withCredentials으로 쿠키에서 서버로 보냄
+                    withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
                 });
-
-                console.log('Authorization header:', `Bearer ${accessToken}`)
+    
+                // 응답 상태가 200이면 로그인 상태로 설정
                 if (result.status === 200) {
-                    console.log("토큰 유효");
+                   // console.log("토큰 유효");
                     setId(true); // 로그인 상태
-
-            //  JWT 토큰을 localStorage에 저장
-                const authorizationHeader = result.headers["Authorization"] || result.headers["authorization"]; // 대소문자 구분 없이 Authorization 헤더 확인
-                if (authorizationHeader) {
-                    const token = authorizationHeader.replace("Bearer ", ""); // "Bearer " 부분을 제거하고 순수 토큰만 추출
-                    localStorage.setItem("token", token);
-                } else {
-                    console.error("응답에 Authorization 헤더가 없습니다.");
-                }
-
+    
+                    // 응답에서 새로운 토큰이 있으면 로컬스토리지에 저장
+                    const authorizationHeader = result.headers["Authorization"] || result.headers["authorization"];
+                    if (authorizationHeader) {
+                        const newToken = authorizationHeader.replace("Bearer ", ""); // "Bearer " 제거
+                        localStorage.setItem("token", newToken); // 새로운 토큰 저장
+                    } else {
+                        //console.error("응답에 Authorization 헤더가 없습니다.");
+                    }
                 } else if (result.status === 401) {
-                    console.log("액세스 토큰 만료");
-                    setId(false); // 로그인 상태
+                    // 401 상태는 인증 실패를 의미하므로 로그인 상태를 해제
+                    setId(false);
+                    console.log("401: 인증 실패");
                 }
+    
             } catch (error) {
-                console.error("세션 체크 에러", error);
+                // 요청 중 오류가 발생한 경우
+                console.error("세션 체크 중 오류 발생", error);
                 setId(false); // 오류 발생 시 로그인 상태 해제
             }
         };
-
-        checkLoginStatus();
-    }, []); // 컴포넌트가 처음 렌더링될 때 한 번만 실행
+    
+        checkLoginStatus(); // 컴포넌트가 처음 렌더링될 때 한 번만 실행
+    }, []);
+    
 
     function getCookie(name) {
         const value = `; ${document.cookie}`;
@@ -69,7 +80,7 @@ const MainNa = () => {
             try {
                 const accessToken = localStorage.getItem("token");
                 const result = await axios.post(
-                    'http://localhost:8080/api/members/logout', 
+                    `${process.env.REACT_APP_API_URL}/members/logout`, 
                     {}, // 요청 body가 비어 있으면 빈 객체를 전달
                     {
                         headers: {
@@ -102,7 +113,8 @@ const MainNa = () => {
     const fetchSuggestions = debounce(async (query) => {
         if (query) {
             try {
-                const result = await axios.post('http://localhost:8080/api/plays/searchList', { name: query });
+                const result = await axios.post(`${process.env.REACT_APP_API_URL}/plays/searchList`, { name: query });
+
                 
                 if (result.data.status === 200 && result.data.data.length > 0) {
                     setSuggestions(result.data.data);

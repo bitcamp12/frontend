@@ -96,7 +96,7 @@ const FindId = () => {
     setAlertVisible(true);
     try {
       const response = await axios.post(
-        'http://localhost:8080/api/members/sendPhoneVerificationCode',
+        `${process.env.REACT_APP_API_URL}/members/sendPhoneVerificationCode`,
         {
           name: formData.name,
           phoneNum: formData.phone
@@ -135,7 +135,7 @@ const FindId = () => {
     setAlertVisible(true);
     try {
       const response = await axios.post(
-        'http://localhost:8080/api/members/checkPhone',
+        `${process.env.REACT_APP_API_URL}/members/checkPhone`,
         {
           name: formData.name,
           phoneNum: formData.phone,
@@ -164,7 +164,7 @@ const FindId = () => {
     setAlertVisible(true);
     try {
       const response = await axios.post(
-        'http://localhost:8080/api/members/sendEmailVerificationCode',
+        `${process.env.REACT_APP_API_URL}/sendEmailVerificationCode`,
         {
           name: formData.name,
           email: formData.email,
@@ -202,7 +202,7 @@ const FindId = () => {
     setModalMessage("");
     setAlertVisible(true);
     try {
-      const response = await axios.post("http://localhost:8080/api/members/getIdByPhone", {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/members/getIdByPhone`, {
         phone: formData.phone,
         name: formData.name,
       });
@@ -243,7 +243,7 @@ const FindId = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:8080/api/members/verifyCodeId',
+        `${process.env.REACT_APP_API_URL}/members/verifyCodeId`,
         {
           name: formData.name,
           email: formData.email,

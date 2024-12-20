@@ -144,7 +144,7 @@ const Sign_up_Form = () => {
     // 서버로 아이디 중복 체크 요청
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/members/checkId",
+        `${process.env.REACT_APP_API_URL}/members/checkId`,
         { id: value },
         {
           withCredentials: true,  // 쿠키를 함께 보내도록 설정
