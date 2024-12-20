@@ -45,15 +45,12 @@ const App = () => {
                     <Route path="/playDetail/:playSeq" element={<PlayDetail />} />
                     <Route path="/member" element={<Infomation />} />
                     <Route path="/notice" element={<Notice />} />
-<<<<<<< HEAD
                     <Route path="/naverloding" element={<CallbackNaver/>}/>
                     <Route path="/googleloding" element={<CallbackGoogle/>}/>
-=======
                     <Route path="/bookTicket/:playSeq" element={<Book />} />
                     <Route path="/payment" element={<CheckoutPage />} />
                     <Route path="/success" element={<SuccessPage />} />
                     <Route path="fail" element={<FailPage />} />
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
                 </Routes>
             </BrowserRouter>
         </>
