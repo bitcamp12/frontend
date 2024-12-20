@@ -42,7 +42,9 @@ const Login = () => {
         e.preventDefault();
         try {
             setModalTitle("");
+            setModalMessage("");
             setAlertVisible(true);
+    
             const response = await axios.post(
                 `${process.env.REACT_APP_API_URL}/members/login`,
                 {
@@ -56,31 +58,42 @@ const Login = () => {
     
             if (response.status === 200) {
                 setModalTitle("로그인 성공");
+                setModalMessage("환영합니다.");
                 setLoginError("");
-                    
-                //  JWT 토큰을 localStorage에 저장
+    
+                // JWT 토큰을 localStorage에 저장
                 const authorizationHeader = response.headers["Authorization"] || response.headers["authorization"]; // 대소문자 구분 없이 Authorization 헤더 확인
                 if (authorizationHeader) {
                     const token = authorizationHeader.replace("Bearer ", ""); // "Bearer " 부분을 제거하고 순수 토큰만 추출
                     localStorage.setItem("token", token);
                 } else {
-                    console.error("응답에 Authorization 헤더가 없습니다.");
+                   // console.error("응답에 Authorization 헤더가 없습니다.");
                 }
-
     
                 setTimeout(() => {
                     navigate("/"); // 로그인 후 홈 페이지로 이동
                 }, 1000);
-            } else if (response.status === 404) {
-                setModalTitle("로그인 실패");
-                setModalMessage("아이디 혹은 비밀번호가 틀렸습니다.");
             }
         } catch (error) {
-            console.error("로그인 중 에러 발생:", error);
-            setModalTitle("서버 오류");
-            setModalMessage("서버와의 연결에 문제가 발생했습니다.");
+            // 에러 응답 처리
+            if (error.response) {
+                // 서버에서 응답이 왔지만 오류 상태 코드일 경우
+                if (error.response.status === 401) {
+                    setModalTitle("로그인 실패");
+                    setModalMessage("아이디 혹은 비밀번호가 틀렸습니다.");
+                } else {
+                    setModalTitle("서버 오류");
+                    setModalMessage("서버와의 연결에 문제가 발생했습니다.");
+                }
+            } else {
+                // 서버와의 연결 자체가 실패한 경우
+               // console.error("로그인 중 네트워크 에러 발생:", error);
+                setModalTitle("네트워크 오류");
+                setModalMessage("서버와의 연결에 문제가 발생했습니다.");
+            }
         }
     };
+    
     
     return (
         <div className="login-container">
