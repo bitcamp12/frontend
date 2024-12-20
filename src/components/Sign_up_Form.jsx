@@ -147,9 +147,6 @@ const Sign_up_Form = () => {
         "http://localhost:8080/api/members/checkId",
         { id: value },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,  // JWT 토큰을 Authorization 헤더에 포함
-          },
           withCredentials: true,  // 쿠키를 함께 보내도록 설정
         }
       );

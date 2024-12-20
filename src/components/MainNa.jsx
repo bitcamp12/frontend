@@ -34,10 +34,21 @@ const MainNa = () => {
                     },
                     withCredentials: true, //리프레쉬 토큰은 withCredentials으로 쿠키에서 서버로 보냄
                 });
+
                 console.log('Authorization header:', `Bearer ${accessToken}`)
                 if (result.status === 200) {
                     console.log("토큰 유효");
                     setId(true); // 로그인 상태
+
+            //  JWT 토큰을 localStorage에 저장
+                const authorizationHeader = result.headers["Authorization"] || result.headers["authorization"]; // 대소문자 구분 없이 Authorization 헤더 확인
+                if (authorizationHeader) {
+                    const token = authorizationHeader.replace("Bearer ", ""); // "Bearer " 부분을 제거하고 순수 토큰만 추출
+                    localStorage.setItem("token", token);
+                } else {
+                    console.error("응답에 Authorization 헤더가 없습니다.");
+                }
+
                 } else if (result.status === 401) {
                     console.log("액세스 토큰 만료");
                     setId(false); // 로그인 상태            
@@ -59,20 +70,36 @@ const MainNa = () => {
     }
     
     const logout = async () => {
-        try {
-            const result = await axios.post('http://localhost:8080/api/members/logout',{}, {
-                withCredentials: true, 
-            });
-            if (result.data.status === 200) {
+
+            try {
+                const accessToken = localStorage.getItem("token");
+                const result = await axios.post(
+                    'http://localhost:8080/api/members/logout', 
+                    {}, // 요청 body가 비어 있으면 빈 객체를 전달
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}` // Access Token을 헤더에 추가
+                        },
+                        withCredentials: true // 리프레시 토큰을 쿠키를 통해 서버로 전달
+                    }
+                );
+             
+
+
+            if (result.data.status === 200 || result.status === 200) {
                 setId(false);
                 setModalMessage("로그아웃 되었습니다.");
                 setAlertVisible(true);
                 setTimeout(() => {
                     setAlertVisible(false);
                   }, 2000);  // 2초 뒤에 꺼짐
+                  localStorage.removeItem("token");   
                 
             }
         } catch (error) {
+            setId(false);
+            setModalMessage("서버 오류로 강제 로그아웃 되었습니다.");
+            setAlertVisible(true);
             console.error("Logout error:", error);
         }
     };
@@ -82,6 +109,7 @@ const MainNa = () => {
         if (query) {
             try {
                 const result = await axios.post('http://localhost:8080/api/plays/searchList', { name: query });
+                
                 if (result.data.status === 200 && result.data.data.length > 0) {
                     setSuggestions(result.data.data);
                     setShowSuggestions(true);
