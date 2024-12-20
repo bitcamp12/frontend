@@ -21,27 +21,21 @@ const MainNa = () => {
     useEffect(() => {
         const checkLoginStatus = async () => {
             try {
-                // 로컬스토리지에서 액세스 토큰을 가져옵니다.
                 const accessToken = localStorage.getItem("token");
-    
-                // 액세스 토큰이 없다면, 바로 로그인 상태를 false로 설정하고 종료
                 if (!accessToken) {
                     //console.log("토큰이 없습니다. 로그인되지 않은 상태.");
                     setId(false); // 로그인 상태 해제
                     return; // API 요청을 보내지 않고 종료
                 }
     
-                // 액세스 토큰을 Authorization 헤더에 포함하여 서버로 보냄
+
                 const result = await axios.get(`${process.env.REACT_APP_API_URL}/members/session-status`, {
                     headers: {
                         'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
                     },
                     withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
                 });
-    
-                // 응답 상태가 200이면 로그인 상태로 설정
                 if (result.status === 200) {
-                   // console.log("토큰 유효");
                     setId(true); // 로그인 상태
     
                     // 응답에서 새로운 토큰이 있으면 로컬스토리지에 저장
