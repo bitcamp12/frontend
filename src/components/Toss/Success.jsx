@@ -17,7 +17,7 @@ export function SuccessPage() {
 
       try {
         const response = await axios.post(
-          "http://localhost:8080/api/payment/confirm", 
+          "http://localhost:8080/api/payment/confirm",
           requestData, // Do not stringify here, axios will automatically stringify
           {
             headers: {
@@ -26,14 +26,32 @@ export function SuccessPage() {
             withCredentials: true
           }
         );
-  
+
         setResponseData(response.data);
+
+        const transformSeats = JSON.parse(decodeURIComponent(searchParams.get("transformSeats")));
+        console.log("Payload:", transformSeats);
+
+        const bookResponse = await axios.post("http://localhost:8080/api/books/purchaseSeats",
+          transformSeats,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true
+          }
+        );
+        console.log("bookResponse : ", bookResponse);
+
+        if (bookResponse.data.message !== "성공") {
+          alert(`좌석 예약 실패: ${bookResponse.data.message}`);
+        }
       } catch (error) {
         console.error("Error during payment confirmation:", error);
         navigate(`/fail?code=${error.code || ''}&message=${error.message}`);
       }
     }
-  
+
     confirm();
   }, [searchParams]);
 

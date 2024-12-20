@@ -1,6 +1,7 @@
 import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
 import { useEffect, useState } from "react";
 import '../../assets/css/Toss.css';
+import { useLocation } from "react-router";
 
 // TODO: clientKey는 개발자센터의 결제위젯 연동 키 > 클라이언트 키로 바꾸세요.
 // TODO: 구매자의 고유 아이디를 불러와서 customerKey로 설정하세요. 이메일・전화번호와 같이 유추가 가능한 값은 안전하지 않습니다.
@@ -15,6 +16,36 @@ export function CheckoutPage() {
     });
     const [ready, setReady] = useState(false);
     const [widgets, setWidgets] = useState(null);
+    const location = useLocation();
+    const [transformSeats, setTransformSeats] = useState(null);
+    const [orderName, setOrderName] = useState("Default Order Name");
+
+    useEffect(() => {
+        const queryParams = new URLSearchParams(window.location.search);
+        const transformSeats = queryParams.get("transformSeats");
+        const DateList = queryParams.get("DateList");
+        console.log("DateList : ", DateList);
+        const playData = queryParams.get("playData");
+        console.log("playData : ", playData);
+
+        if (playData) {
+            const parsedPlayData = JSON.parse(decodeURIComponent(playData));
+            if (parsedPlayData && parsedPlayData.name) {
+                setOrderName(parsedPlayData.name);
+            }
+        }
+
+        if(transformSeats) {
+            const parsedSeats = (JSON.parse(decodeURIComponent(transformSeats)));
+            setTransformSeats(parsedSeats);
+
+            if (parsedSeats && parsedSeats.length > 0) {
+                const totalPrice = parsedSeats.reduce((sum, seat) => sum + seat.totalPrice, 0);
+                setAmount({ currency: "KRW", value: totalPrice });
+            }
+        }
+        console.log("transformSeats : ", transformSeats);
+    }, [location]);
 
     useEffect(() => {
         async function fetchPaymentWidgets() {
@@ -126,12 +157,13 @@ export function CheckoutPage() {
                     // @docs https://docs.tosspayments.com/sdk/v2/js#widgetsrequestpayment
                     onClick={async () => {
                         try {
+                            const transformSeatsEncoded = encodeURIComponent(JSON.stringify(transformSeats));
                             // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
                             // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
                             await widgets.requestPayment({
                                 orderId: generateRandomString(),
-                                orderName: "토스 티셔츠 외 2건",
-                                successUrl: window.location.origin + "/success",
+                                orderName: orderName,
+                                successUrl: `${window.location.origin}/success?transformSeats=${transformSeatsEncoded}`,
                                 failUrl: window.location.origin + "/fail",
                                 customerEmail: "customer123@gmail.com",
                                 customerName: "김토스",
