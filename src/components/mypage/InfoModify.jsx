@@ -83,11 +83,11 @@ const InfoModify = () => {
     const accessToken = localStorage.getItem("token"); // 로컬스토리지===> 전역으로 관리해주고 싶다...   2024.12.18
     useEffect(() => {
         // 세션에서 id를 가져옵니다.
-        const userId = "apple"; //sessionStorage.getItem("id");
+        const userId = sessionStorage.getItem("id");
         // console.log(userId);
 
         axios
-            .get(`http://localhost:8080/api/members/getUserInfo/me`, {
+            .get(`${process.env.REACT_APP_API_URL}/members/getUserInfo/me`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 },
@@ -95,7 +95,7 @@ const InfoModify = () => {
             })
             .then((response) => {
                 console.log(response.data);
-                setData(response.data);
+                setData(response.data.data);
             })
             .catch((error) => console.error("ERROR(사용자정보수정): ", error));
     }, []);
@@ -151,7 +151,7 @@ const InfoModify = () => {
         if (newEmail === "") return; // 임시
         else
             axios
-                .post("http://localhost:8080/api/members/sendNumber", {
+                .post(`${process.env.REACT_APP_API_URL}/members/sendNumber`, {
                     params: { email: newEmail },
                 })
                 .then((response) => {
@@ -166,7 +166,7 @@ const InfoModify = () => {
     const [emailDivVerifyMessage, setEmailDivVerifyMessage] = useState("");
     const checkVerifyNumber = () => {
         axios
-            .get("http://localhost:8080/api/members/verifyCode", {
+            .get(`${process.env.REACT_APP_API_URL}/members/verifyCode`, {
                 params: {
                     email: newEmail,
                     code: emailVerifyCode,
@@ -202,7 +202,7 @@ const InfoModify = () => {
 
         axios
             .put(
-                "http://localhost:8080/api/members/modifyUserInfo",
+                `${process.env.REACT_APP_API_URL}/members/modifyUserInfo`,
                 modifiedData,
                 {
                     headers: {
@@ -452,10 +452,22 @@ const InfoModify = () => {
                     <dl>
                         <dt>성별</dt>
                         <dd>
-                            <input type="radio" name="M" id="man" />
+                            <input
+                                type="radio"
+                                name="M"
+                                id="man"
+                                checked={data.gender === "M"}
+                                disabled
+                            />
                             <label htmlFor="man">남</label>
 
-                            <input type="radio" name="F" id="woman" />
+                            <input
+                                type="radio"
+                                name="F"
+                                id="woman"
+                                checked={data.gender === "F"}
+                                disabled
+                            />
                             <label htmlFor="woman">여</label>
                         </dd>
                     </dl>
