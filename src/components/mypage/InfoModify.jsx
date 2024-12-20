@@ -80,6 +80,7 @@ const InfoModify = () => {
 
     // --------------
     const [data, setData] = useState(null);
+    const accessToken = localStorage.getItem("token"); // 로컬스토리지===> 전역으로 관리해주고 싶다...   2024.12.18
     useEffect(() => {
         // 세션에서 id를 가져옵니다.
         const userId = "apple"; //sessionStorage.getItem("id");
@@ -87,6 +88,9 @@ const InfoModify = () => {
 
         axios
             .get(`http://localhost:8080/api/members/getUserInfo/me`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
                 withCredentials: true, // 세션 쿠키를 포함
             })
             .then((response) => {
@@ -256,7 +260,8 @@ const InfoModify = () => {
                                     className={styles.modifyEnter}
                                 >
                                     <p>
-                                        휴대폰번호 변경을 위해 인증이 필요합니다.
+                                        휴대폰번호 변경을 위해 인증이
+                                        필요합니다.
                                     </p>
                                     <div>
                                         <div className={styles.enterBox}>

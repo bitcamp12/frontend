@@ -58,7 +58,7 @@ const ResetPwd = () => {
     setAlertVisible(true);
 
     try {
-      const response = await axios.post("http://localhost:8080/api/members/updatepassword", {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/members/updatepassword`, {
         id: id,
         password: pwd,
       });

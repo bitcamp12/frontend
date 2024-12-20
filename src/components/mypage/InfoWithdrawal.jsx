@@ -20,7 +20,7 @@ const InfoWithdrawal = (props) => {
 
     // 체크박스 선택되었는지 상태저장
     const [checkDrawal, setCheckDrawal] = useState(false);
-
+    const accessToken = localStorage.getItem("token"); // 로컬스토리지
     const formSubmit = (e) => {
         e.preventDefault();
         console.log(checkDrawal);
@@ -30,8 +30,11 @@ const InfoWithdrawal = (props) => {
             alert("탈퇴!!! ");
             axios
                 .delete(
-                    `http://localhost:8080/api/members/infoWithdrawal/me/${props.sessionId}`,
+                    `http://localhost:8080/api/members/infoWithdrawal/me/`,
                     {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                        },
                         withCredentials: true, // 세션 쿠키를 포함
                     }
                 ) // 세션으로 넘어온 id가 될 예정
