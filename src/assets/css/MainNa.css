@@ -96,7 +96,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
+  
 }
 
 #suggestions-dropdown ul > li > a {
@@ -185,6 +185,8 @@
     padding: 0;
     list-style: none;
     
+
+    
 }
 
 #suggestions-dropdown li {
@@ -192,6 +194,7 @@
     width: 400px;
     cursor: pointer;
     transition: background-color 0.2s;
+    
     
 }
 
@@ -274,7 +277,7 @@ input:-webkit-autofill {
     box-shadow: 0 0 0px 1000px white inset !important;
 }
 
-/* Media Queries for Responsive Design */
+/* 미디어쿼리 모바일일 */
 @media (max-width: 768px) {
     #main-table {
         padding: 10px;

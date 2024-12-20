@@ -24,7 +24,7 @@ const SaleContainer = () => {
     useEffect(() => {
         const fetchSalePlays = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/api/playTimeTables/calculateDiscount", { withCredentials: true });
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/playTimeTables/calculateDiscount`, { withCredentials: true });
                 if (response.data && response.data.data) {
                     setPlays(response.data.data);
                 }

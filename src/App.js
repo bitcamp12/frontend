@@ -18,6 +18,14 @@ import FindIdDetail from "./components/FindIdDetail";
 import FindPwdDetail from "./components/FindPwdDetail";
 import ResetPwd from "./components/ResetPwd";
 import Notice from "./components/Notice";
+import CallbackNaver from "./components/OAuth/Naver/CallbackNaver";
+import CallbackGoogle from "./components/OAuth/Google/CallbackGoogle";
+
+import Book from "./components/playDetail/Book";
+import { CheckoutPage } from "./components/Toss/Checkout";
+import { SuccessPage } from "./components/Toss/Success";
+import { FailPage } from "./components/Toss/Fail";
+
 
 
 const App = () => {
@@ -37,6 +45,12 @@ const App = () => {
                     <Route path="/playDetail/:playSeq" element={<PlayDetail />} />
                     <Route path="/member" element={<Infomation />} />
                     <Route path="/notice" element={<Notice />} />
+                    <Route path="/naverloding" element={<CallbackNaver/>}/>
+                    <Route path="/googleloding" element={<CallbackGoogle/>}/>
+                    <Route path="/bookTicket/:playSeq" element={<Book />} />
+                    <Route path="/payment" element={<CheckoutPage />} />
+                    <Route path="/success" element={<SuccessPage />} />
+                    <Route path="fail" element={<FailPage />} />
                 </Routes>
             </BrowserRouter>
         </>
