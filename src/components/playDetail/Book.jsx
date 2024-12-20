@@ -118,108 +118,93 @@ const Book = ({ selectedDate, playData, DateList, popupRef, navigate }) => {
     const isSelected = (seatNumber) => selectedSeats.includes(seatNumber); // 좌석이 선택되었는지 확인
 
 
-    const purchaseSeats = async () => {
+    const proceedToPayment = async () => {
         if (selectedSeats.length === 0) {
             setErrorMessage("최소 1개의 좌석을 선택해야 합니다.");
             setTimeout(() => setErrorMessage(""), 3000);
             return;
         }
 
-        try {
+        const transformSeats = selectedSeats.map((seat) => {
+            const bookedX = (seat - 1) % 10;
+            const bookedY = Math.floor((seat - 1) / 10);
+            const playTimeTableSeq = DateList[0]?.playTimeTableSeq;
+            const discountedPrice = DateList[0]?.discountedPrice;
+            const totalPrice = selectedSeats.length * discountedPrice;
 
-            const transformSeats = selectedSeats.map((seat) => {
-                const bookedX = (seat - 1) % 10;
-                const bookedY = Math.floor((seat - 1) / 10);
-                const playTimeTableSeq = DateList[0]?.playTimeTableSeq;
-                const discountedPrice = DateList[0]?.discountedPrice;
-                const totalPrice = selectedSeats.length * discountedPrice;
-                return { playTimeTableSeq, bookedX, bookedY, memberSeq:1, totalPrice };
-            });
+            return { playTimeTableSeq, bookedX, bookedY, memberSeq: 1, totalPrice };
+        });
 
-            const response = await axios.post("http://localhost:8080/api/books/purchaseSeats",
-                transformSeats,
-                { withCredentials: true }
-            );
+        const queryParams = new URLSearchParams({
+            transformSeats: JSON.stringify(transformSeats),
+            playData: JSON.stringify(playData),
+            DateList: JSON.stringify(DateList[0]),
+        }).toString();
 
-            console.log("Backend Response:", response.data);
-
-            if (response.data.message === "성공") {
-                setSelectedSeats([]);
-                if(popupRef.current) {
-                }
-                window.open("/payment", "_blank");
-            } else {
-                if(popupRef.current) {
-                    popupRef.current.alert(`예매에 실패: ${response.data.message}`); // Show alert in the popup window
-                }
-            }
-        } catch (error) {
-            console.error("예매 중 오류가 발생했습니다", error);
-            alert("예매에 실패했습니다, 다시 시도해주세요.");
-        }
+        window.open(`/payment?${queryParams}`, "_blank");
     };
 
-        const renderSeats = (layout) => {
-            return (
-                <div className="book-body-seats">
-                    {layout.map((column, columnIndex) => (
-                        <div key={columnIndex} className="book-body-seats-column">
-                            {column.map((row, rowIndex) => (
-                                <div key={rowIndex} className="book-body-seats-row">
-                                    {row.map(({ seat }) => {
-                                        const seatX = (seat - 1) % 10; // 한 행에 10개의 좌석이 있다고 가정
-                                        const seatY = Math.floor((seat - 1) / 10);
-
-                                        const isSeatBookedFlag = isSeatBooked(seatX, seatY);
-
-                                        return (
-                                            <button
-                                                key={`seat-${columnIndex}-${rowIndex}-${seat}`}
-                                                aria-label={`좌석 ${seat} ${isSeatBookedFlag ? "예약됨" : "이용 가능"}`}
-                                                className={`book-body-seats-content-row-seat ${isSelected(seat) ? "selected" : ""} ${isSeatBookedFlag ? "booked" : ""}`}
-                                                onClick={() => !isSeatBookedFlag && toggleSeat(seat)} // 예약되지 않은 좌석만 선택 가능
-                                                disabled={isSeatBookedFlag} // 예약된 좌석은 선택 불가
-                                            >
-                                                {seat}
-                                            </button>
-                                        );
-                                    })}
-                                </div>
-                            ))}
-                        </div>
-                    ))}
-                </div>
-            );
-        };
-
+    const renderSeats = (layout) => {
         return (
-            <div>
-                <div className="book-header">
-                    <div className="book-header-info">
-                        <h1>연극명 : {playData.name}</h1>
-                        <h1>상영날짜 : {selectedDate.toLocaleDateString()}</h1>
-                        <h1>상영시간 : {DateList[0].startTime}</h1>
+            <div className="book-body-seats">
+                {layout.map((column, columnIndex) => (
+                    <div key={columnIndex} className="book-body-seats-column">
+                        {column.map((row, rowIndex) => (
+                            <div key={rowIndex} className="book-body-seats-row">
+                                {row.map(({ seat }) => {
+                                    const seatX = (seat - 1) % 10; // 한 행에 10개의 좌석이 있다고 가정
+                                    const seatY = Math.floor((seat - 1) / 10);
+
+                                    const isSeatBookedFlag = isSeatBooked(seatX, seatY);
+
+                                    return (
+                                        <button
+                                            key={`seat-${columnIndex}-${rowIndex}-${seat}`}
+                                            aria-label={`좌석 ${seat} ${isSeatBookedFlag ? "예약됨" : "이용 가능"}`}
+                                            className={`book-body-seats-content-row-seat ${isSelected(seat) ? "selected" : ""} ${isSeatBookedFlag ? "booked" : ""}`}
+                                            onClick={() => !isSeatBookedFlag && toggleSeat(seat)} // 예약되지 않은 좌석만 선택 가능
+                                            disabled={isSeatBookedFlag} // 예약된 좌석은 선택 불가
+                                        >
+                                            {seat}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        ))}
                     </div>
-                    <hr className="book-header-hr" />
-                    <div className="book-header-text">
-                        <h2>STAGE</h2>
-                        <hr />
-                    </div>
-                </div>
-                <div className="book-body">
-                    <div className="book-body-section1">{renderSeats(seatLayout)}</div>
-                </div>
-                <hr className='book-body-hr' />
-                <div className='book-footer-info'>
-                    <h1>선택한 좌석: {selectedSeats.join(", ")}</h1>
-                    <h1>총 금액: {selectedSeats.length * DateList[0].discountedPrice}원</h1>
-                    <button className='book-button' onClick={purchaseSeats}>예매하기</button>
-                </div>
-                <div className='error-message'>
-                    {errorMessage && <p style={{ color: 'red', textAlign: 'center' }}>{errorMessage}</p>}
-                </div>
+                ))}
             </div>
         );
     };
 
-    export default Book;
+    return (
+        <div>
+            <div className="book-header">
+                <div className="book-header-info">
+                    <h1>연극명 : {playData.name}</h1>
+                    <h1>상영날짜 : {selectedDate.toLocaleDateString()}</h1>
+                    <h1>상영시간 : {DateList[0].startTime}</h1>
+                </div>
+                <hr className="book-header-hr" />
+                <div className="book-header-text">
+                    <h2>STAGE</h2>
+                    <hr />
+                </div>
+            </div>
+            <div className="book-body">
+                <div className="book-body-section1">{renderSeats(seatLayout)}</div>
+            </div>
+            <hr className='book-body-hr' />
+            <div className='book-footer-info'>
+                <h1>선택한 좌석: {selectedSeats.join(", ")}</h1>
+                <h1>총 금액: {selectedSeats.length * DateList[0].discountedPrice}원</h1>
+                <button className='book-button' onClick={proceedToPayment}>예매하기</button>
+            </div>
+            <div className='error-message'>
+                {errorMessage && <p style={{ color: 'red', textAlign: 'center' }}>{errorMessage}</p>}
+            </div>
+        </div>
+    );
+};
+
+export default Book;
