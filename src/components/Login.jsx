@@ -29,7 +29,6 @@ const Login = () => {
   }, [FindId]);
 
 
- 
 
     const closeModal = () => {
         setAlertVisible(false);
@@ -42,9 +41,10 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
+            setModalTitle("");
             setAlertVisible(true);
             const response = await axios.post(
-                "http://localhost:8080/api/members/login",
+                `${process.env.REACT_APP_API_URL}/members/login`,
                 {
                     id,
                     password,
@@ -58,7 +58,7 @@ const Login = () => {
                 setModalTitle("로그인 성공");
                 setLoginError("");
                     
-                // 로그인 성공 후 JWT 토큰을 localStorage에 저장
+                //  JWT 토큰을 localStorage에 저장
                 const authorizationHeader = response.headers["Authorization"] || response.headers["authorization"]; // 대소문자 구분 없이 Authorization 헤더 확인
                 if (authorizationHeader) {
                     const token = authorizationHeader.replace("Bearer ", ""); // "Bearer " 부분을 제거하고 순수 토큰만 추출
@@ -173,6 +173,8 @@ const Login = () => {
                     </div>
                 </form>
             </div>
+
+            
 
             <Modal
                 closeModal={closeModal}
