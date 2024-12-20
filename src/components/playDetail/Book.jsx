@@ -54,7 +54,7 @@ const Book = ({ selectedDate, playData, DateList, popupRef, navigate }) => {
                 const accessToken = localStorage.getItem("token");
                 const response = await axios.get(`${process.env.REACT_APP_API_URL}/theaters/getTheaterInfo`, { 
                     headers: {
-                        'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+                          'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
                     },
                     withCredentials: true 
                 });
@@ -169,14 +169,11 @@ const Book = ({ selectedDate, playData, DateList, popupRef, navigate }) => {
             DateList: JSON.stringify(DateList[0]),
             popupRef: popupRef.current.name 
         }).toString();
-
-        window.open(`/payment?${queryParams}`, "_blank");
-    };
-
-    const closePopup = () => {
+        
         if(popupRef.current) {
-            popupRef.current.close();
+        popupRef.current.close();
         }
+        window.open(`/payment?${queryParams}`, "_blank");
     };
 
     const renderSeats = (layout) => {
