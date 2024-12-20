@@ -14,11 +14,23 @@ const Book = ({ selectedDate, playData, DateList, popupRef, navigate }) => {
             try {
                 const playTimeTableSeq = DateList[0]?.playTimeTableSeq; // 올바른 playTimeTableSeq를 가져오는지 확인
                 console.log("playTimeTableSeq에 대한 예약 좌석 가져오기:", playTimeTableSeq);
-
-                const response = await axios.get("http://localhost:8080/api/books/getBookedSeats", {
+                const accessToken = localStorage.getItem("token");
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/books/getBookedSeats`, {
                     params: { playTimeTableSeq },
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+                    },
                     withCredentials: true
                 });
+
+                if (response.status === 200) {
+                    // 응답에서 새로운 토큰이 있으면 로컬스토리지에 저장
+                    const authorizationHeader = response.headers["Authorization"] || response.headers["authorization"];
+                    if (authorizationHeader) {
+                        const newToken = authorizationHeader.replace("Bearer ", ""); // "Bearer " 제거
+                        localStorage.setItem("token", newToken); // 새로운 토큰 저장
+                    }
+                }
 
                 console.log("응답 데이터:", response.data);
                 const bookedSeats = response.data.data;
@@ -39,7 +51,23 @@ const Book = ({ selectedDate, playData, DateList, popupRef, navigate }) => {
     useEffect(() => {
         const fetchTheaterData = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/api/theaters/getTheaterInfo", { withCredentials: true });
+                const accessToken = localStorage.getItem("token");
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/theaters/getTheaterInfo`, { 
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+                    },
+                    withCredentials: true 
+                });
+
+                if (response.status === 200) {
+                    // 응답에서 새로운 토큰이 있으면 로컬스토리지에 저장
+                    const authorizationHeader = response.headers["Authorization"] || response.headers["authorization"];
+                    if (authorizationHeader) {
+                        const newToken = authorizationHeader.replace("Bearer ", ""); // "Bearer " 제거
+                        localStorage.setItem("token", newToken); // 새로운 토큰 저장
+                    }
+                }
+
                 const theaters = response.data.data;
                 const theater = theaters.find(t => t.theaterSeq === DateList[0].theaterSeq);
 
@@ -139,9 +167,16 @@ const Book = ({ selectedDate, playData, DateList, popupRef, navigate }) => {
             transformSeats: JSON.stringify(transformSeats),
             playData: JSON.stringify(playData),
             DateList: JSON.stringify(DateList[0]),
+            popupRef: popupRef.current.name 
         }).toString();
 
         window.open(`/payment?${queryParams}`, "_blank");
+    };
+
+    const closePopup = () => {
+        if(popupRef.current) {
+            popupRef.current.close();
+        }
     };
 
     const renderSeats = (layout) => {
