@@ -34,6 +34,7 @@ const PlayDetail = () => {
   const [selected, setSelected] = useState('latest');
 
   const [isReviewUpdate, setIsReviewUpdate] = useState(false);
+  const accessToken = localStorage.getItem("token");
 
   const [alertVisible, setAlertVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState(''); // 모달 제목
@@ -68,7 +69,13 @@ const PlayDetail = () => {
       : formatDatePickerDate(new Date()); // 기본값은 현재 시간
     console.log(selectDate);
     try {
-      const response = await axios.get(`http://localhost:8080/api/playTimeTables/playTimeTables?playSeq=${playSeq}&targetDate=${selectDate}`,
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/playTimeTables/playTimeTables?playSeq=${playSeq}&targetDate=${selectDate}`,{
+        headers: {
+          'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+      },
+      withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
+      }
       );//자바로 데이터 가져오기
 
       if (response.status === 200) {
@@ -175,7 +182,7 @@ const PlayDetail = () => {
     console.log(playSeq);
 
     axios
-      .get(`http://localhost:8080/api/plays/getPlayOne?playSeq=${playSeq}`, {
+      .get(`${process.env.REACT_APP_API_URL}/plays/getPlayOne?playSeq=${playSeq}`, {
       })
       .then(response => {
         const { status, data } = response.data; // 구조 분해 할당
@@ -220,7 +227,7 @@ const PlayDetail = () => {
       size: pageSize
     };
     try {
-      const response = await axios.get(`http://localhost:8080/api/reviewAfters/ReviewASearchCount?playSeq=${playSeq}`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewASearchCount?playSeq=${playSeq}`, {
         params: requestParams, // 쿼리 파라미터로 전달
       });
       const { status, data } = response.data;
@@ -235,7 +242,7 @@ const PlayDetail = () => {
     }
     try {
 
-      const response = await axios.get(`http://localhost:8080/api/reviewAfters/ReviewASearch?playSeq=${playSeq}`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewASearch?playSeq=${playSeq}`, {
         params: requestParams, // 쿼리 파라미터로 전달
       });
       const { status, data } = response.data;
@@ -258,7 +265,7 @@ const PlayDetail = () => {
   const [reviewData, setReviewData] = useState([]); // 초기값을 null로 설정
 
 
-  const pageSize = 2; // 한 페이지에 보여줄 항목 수
+  const pageSize = 10; // 한 페이지에 보여줄 항목 수
   const pageBlock = 5; // 한 블록에 보여줄 페이지 수 (5개씩)
 
   const [totalPagesa, setTotalPages] = useState(Math.ceil(0));//후기전체페이지
@@ -300,7 +307,7 @@ const PlayDetail = () => {
     console.log(Math.ceil(reviewACount / 10));
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/reviewAfters/ReviewAList?playSeq=${playSeq}&selected=${selected}`,
+        `${process.env.REACT_APP_API_URL}/reviewAfters/ReviewAList?playSeq=${playSeq}&selected=${selected}`,
         {
           params: {
             page: page,
@@ -368,7 +375,7 @@ const PlayDetail = () => {
 
   const fetchreviewAAvgData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/reviewAfters/ReviewAAvg?playSeq=${playSeq}`)
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewAAvg?playSeq=${playSeq}`)
       console.log(response.data);
       const { status, data } = response.data;
       if (status === 200) {
@@ -391,7 +398,7 @@ const PlayDetail = () => {
 
   const fetchreviewACountData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/reviewAfters/ReviewAcount?playSeq=${playSeq}`)
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewAcount?playSeq=${playSeq}`)
       console.log(response.data);
       const { status, data } = response.data;
       if (status === 200) {
@@ -439,9 +446,14 @@ const PlayDetail = () => {
     }
     // const userId = sessionStorage.getItem("id");
     // 서버로 데이터 전송
-    axios.post(`http://localhost:8080/api/reviewAfters/ReviewA?playSeq=${playSeq}`, reviewData, {
-      withCredentials: true
-    }).then(response => {
+    axios.post(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewA?playSeq=${playSeq}`,{
+      reviewData:reviewData, // reviewData를 객체 형태로 설정
+      headers: {
+          'Authorization': `Bearer ${accessToken}` // Bearer 토큰 포함
+      },
+      withCredentials: true // 쿠키 전달 활성화
+  })
+  .then(response => {
 
       if (response.status === 200) {
         setAlertVisible(true)
@@ -487,7 +499,13 @@ const PlayDetail = () => {
       rating: rating                   // 수정된 별점
     };
     axios
-      .put("http://localhost:8080/api/reviewAfters/ReviewA", updatedReview)
+      .put(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewA`, updatedReview,{
+        headers: {
+          'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+      },
+      withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
+      })
       .then((response) => {
         if (response.status === 200) {
           setAlertVisible(true)
@@ -518,7 +536,13 @@ const PlayDetail = () => {
 
     // axios.delete로 데이터 전달 시, config 객체 내에 data를 사용하여 요청 본문을 전달
     axios
-      .delete("http://localhost:8080/api/reviewAfters/ReviewA", { data: reviewDTO }) // 삭제 요청에 reviewDTO를 body로 전달
+      .delete(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewA`, { data: reviewDTO ,
+        headers: {
+          'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+      },
+      withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
+      }) // 삭제 요청에 reviewDTO를 body로 전달
       .then((response) => {
         if (response.status === 200) {
           setAlertVisible(true);
@@ -616,7 +640,7 @@ const PlayDetail = () => {
 
     try {
       // 첫 번째 API 호출: ReviewBSearchCount
-      const countResponse = await axios.get(`http://localhost:8080/api/reviewBefores/ReviewBSearchCount?playSeq=${playSeq}`, {
+      const countResponse = await axios.get(`${process.env.REACT_APP_API_URL}/reviewBefores/ReviewBSearchCount?playSeq=${playSeq}`, {
         params: requestParams,  // 쿼리 파라미터로 전달
       });
 
@@ -629,7 +653,7 @@ const PlayDetail = () => {
       }
 
       // 두 번째 API 호출: ReviewBSearch
-      const reviewResponse = await axios.get(`http://localhost:8080/api/reviewBefores/ReviewBSearch?playSeq=${playSeq}`, {
+      const reviewResponse = await axios.get(`${process.env.REACT_APP_API_URL}/reviewBefores/ReviewBSearch?playSeq=${playSeq}`, {
         params: requestParams,  // 쿼리 파라미터로 전달
       });
 
@@ -649,7 +673,7 @@ const PlayDetail = () => {
   const fetchReviewBData = async () => {
     console.log(page)
     try {
-      const response = await axios.get(`http://localhost:8080/api/reviewBefores/reviewBList?playSeq=${playSeq}`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviewBefores/reviewBList?playSeq=${playSeq}`, {
         params: {
           page: page,
           size: pageSize
@@ -672,7 +696,7 @@ const PlayDetail = () => {
 
   const fetchreviewBCountData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/reviewBefores/ReviewBcount?playSeq=${playSeq}`)
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviewBefores/ReviewBcount?playSeq=${playSeq}`)
       console.log(response.data);
       const { status, data } = response.data;
       if (status === 200) {
@@ -712,8 +736,12 @@ const PlayDetail = () => {
     }
 
     // 서버로 데이터 전송
-    axios.post(`http://localhost:8080/api/reviewBefores/reviewB?playSeq=${playSeq}`, reviewDataB, {
-      withCredentials: true,
+    axios.post(`${process.env.REACT_APP_API_URL}/reviewBefores/reviewB?playSeq=${playSeq}`, reviewDataB, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+    },
+    withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
     }).then(response => {
 
       if (response.status === 200) {
@@ -755,7 +783,13 @@ const PlayDetail = () => {
       content: reviewTextB,             // 수정된 리뷰 내용
     };
     axios
-      .put("http://localhost:8080/api/reviewBefores/reviewB", updatedReview)
+      .put(`${process.env.REACT_APP_API_URL}/reviewBefores/reviewB`, updatedReview,{
+        headers: {
+          'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+      },
+      withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
+      })
       .then((response) => {
         if (response.status === 200) {
           setAlertVisible(true)
@@ -785,7 +819,13 @@ const PlayDetail = () => {
 
     // axios.delete로 데이터 전달 시, config 객체 내에 data를 사용하여 요청 본문을 전달
     axios
-      .delete("http://localhost:8080/api/reviewBefores/reviewB", { data: reviewBDTO }) // 삭제 요청에 reviewDTO를 body로 전달
+      .delete(`${process.env.REACT_APP_API_URL}/reviewBefores/reviewB`, { data: reviewBDTO,
+        headers: {
+          'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+      },
+      withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
+       }) // 삭제 요청에 reviewDTO를 body로 전달
       .then((response) => {
         if (response.status === 200) {
           setAlertVisible(true);
@@ -822,7 +862,7 @@ const PlayDetail = () => {
   const fetchQAData = async () => {
     console.log('fetchQAData')
     try {
-      const response = await axios.get(`http://localhost:8080/api/qnas/qnaList?playSeq=${playSeq}`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/qnas/qnaList?playSeq=${playSeq}`, {
         params: {
           page: page,
           size: pageSize
@@ -845,7 +885,7 @@ const PlayDetail = () => {
 
   const fetchQACountData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/qnas/qnaCount?playSeq=${playSeq}`)
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/qnas/qnaCount?playSeq=${playSeq}`)
       console.log(response.data);
       const { status, data } = response.data;
       if (status === 200) {
@@ -886,8 +926,12 @@ const PlayDetail = () => {
     }
 
     // 서버로 데이터 전송
-    axios.post(`http://localhost:8080/api/qnas/qna?playSeq=${playSeq}`, DataQA, {
-      withCredentials: true,
+    axios.post(`${process.env.REACT_APP_API_URL}/qnas/qna?playSeq=${playSeq}`, DataQA, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+    },
+    withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
     }).then(response => {
 
       if (response.status === 200) {
@@ -931,7 +975,13 @@ const PlayDetail = () => {
       qnaSeq: e.target.getAttribute('data-qa-seq'), // 현재 수정 중인 리뷰의 고유 ID
       content: QAText,             // 수정된 리뷰 내용
     };
-    axios.put("http://localhost:8080/api/qnas/qna", updatedQA)
+    axios.put(`${process.env.REACT_APP_API_URL}/qnas/qna`, updatedQA,{
+      headers: {
+        'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+    },
+    withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
+    })
       .then((response) => {
         if (response.status === 200) {
           setAlertVisible(true)
@@ -961,7 +1011,13 @@ const PlayDetail = () => {
 
     // axios.delete로 데이터 전달 시, config 객체 내에 data를 사용하여 요청 본문을 전달
     axios
-      .delete("http://localhost:8080/api/qnas/qna", { data: QADTO }) // 삭제 요청에 reviewDTO를 body로 전달
+      .delete(`${process.env.REACT_APP_API_URL}/qnas/qna`, { data: QADTO ,
+        headers: {
+          'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+      },
+      withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
+      }) // 삭제 요청에 reviewDTO를 body로 전달
       .then((response) => {
         if (response.status === 200) {
           setAlertVisible(true);
@@ -997,7 +1053,7 @@ const PlayDetail = () => {
     // 댓글 데이터 가져오기 (axios 요청 예시)
     if (!isReplyVisible[qnaSeq]) {
       axios
-        .get("http://localhost:8080/api/replys/Reply", { params: { qnaSeq } })
+        .get(`${process.env.REACT_APP_API_URL}/replys/Reply`, { params: { qnaSeq } })
         .then((response) => {
           if (response.data.status === 200) {
             setReplysDTO((prevReplies) => ({
@@ -1023,7 +1079,25 @@ const PlayDetail = () => {
 
   ////////////즐겨찾기
   //하트색깔
-  const userId = sessionStorage.getItem("id");
+  const [userId,setuserId] = useState(null);
+
+useEffect(()=>{
+  axios
+  .get(`${process.env.REACT_APP_API_URL}/members/id`, {
+    headers: {
+      'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+  },
+  withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
+  })
+  .then((response) => {
+    console.log(response)
+    setuserId(response.data.data);
+  })
+
+},[])
+
+
   const [hartColor, setHartColor] = useState('black')
   /////즐겨찾기 불러오기(등록되어있음->빨간하트/등록 없음->검은하트)
   // 즐겨찾기 상태 확인
@@ -1031,8 +1105,12 @@ const PlayDetail = () => {
 
 
     axios
-      .get(`http://localhost:8080/api/favorites/favorites?playSeq=${playSeq}`, {
-        withCredentials: true
+      .get(`${process.env.REACT_APP_API_URL}/favorites/favorites?playSeq=${playSeq}`, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+      },
+      withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
       })
       .then((response) => {
         console.log(response)
@@ -1054,8 +1132,12 @@ const PlayDetail = () => {
   const handleAddFavorite = () => {
     console.log(playSeq)
     axios
-      .post(`http://localhost:8080/api/favorites/favorites?playSeq=${playSeq}`, {}, {
-        withCredentials: true, // 쿠키 포함
+      .post(`${process.env.REACT_APP_API_URL}/favorites/favorites?playSeq=${playSeq}`, {}, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+      },
+      withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
       })
       .then((response) => {
         if (response.data.status === 403) {
@@ -1084,8 +1166,12 @@ const PlayDetail = () => {
   ///즐겨찾기 삭제 빨간하트 검은색하트로 변경
   const handleRemoveFavorite = () => {
     axios
-      .delete(`http://localhost:8080/api/favorites/favorites?playSeq=${playSeq}`, {
-        withCredentials: true
+      .delete(`${process.env.REACT_APP_API_URL}/favorites/favorites?playSeq=${playSeq}`, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+      },
+      withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
       }
       )
       .then((response) => {
@@ -1120,6 +1206,12 @@ const PlayDetail = () => {
     } else {
       handleRemoveFavorite(); // 빨간 하트 -> 삭제
     }
+  };
+
+  const [activeButton, setActiveButton] = useState(null);
+
+  const handleButtonClick = (buttonId) => {
+    setActiveButton(prevButton => prevButton === buttonId ? null : buttonId);
   };
 
   return (
@@ -1502,7 +1594,8 @@ const PlayDetail = () => {
 
       {/* 예매 모달 팝업 */}
       {reserveVisible && (
-        <Reserve DateList={DateList} closeModal={closeModal} DatePicker={DatePicker} selectedDate={selectedDate} setSelectedDate={setSelectedDate} ko={ko} playData={playData} />
+        <Reserve handleButtonClick={handleButtonClick} activeButton={activeButton}
+        DateList={DateList} closeModal={closeModal} DatePicker={DatePicker} selectedDate={selectedDate} setSelectedDate={setSelectedDate} ko={ko} playData={playData} />
       )}
 
       {/* 상담 모달 팝업 */}

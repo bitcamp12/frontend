@@ -37,7 +37,7 @@ const MainNa = () => {
                 });
                 if (result.status === 200) {
                     setId(true); // 로그인 상태
-    
+                    
                     // 응답에서 새로운 토큰이 있으면 로컬스토리지에 저장
                     const authorizationHeader = result.headers["Authorization"] || result.headers["authorization"];
                     if (authorizationHeader) {
@@ -101,6 +101,7 @@ const MainNa = () => {
             setModalMessage("서버 오류로 강제 로그아웃 되었습니다.");
             setAlertVisible(true);
             console.error("Logout error:", error);
+            localStorage.removeItem("token");   
         }
     };
 
