@@ -12,38 +12,49 @@ const InfiniteScrollContainer = ({selectedTab}) => {
     const [hasMore, setHasMore] = useState(true);
     //useRef로 target을 만들어서 새로운 item을 로딩할 때 사용
     const target = useRef(null);
+    const loadedItems = useRef(new Set());
 
     const fetchData = async (pageNumber, tabIndex) => {
         try {
             const size = 100;
-            let url = `http://localhost:8080/api/plays/getPlayAll?page=${pageNumber}&size=${size}`;
+            let url = (`${process.env.REACT_APP_API_URL}/plays/getPlayAll?page=${pageNumber}&size=${size}`);
 
             if (tabIndex === 1) {
-                url = `http://localhost:8080/api/plays/getPlaySale?page=${pageNumber}&size=${size}`;
+                url = (`${process.env.REACT_APP_API_URL}/plays/getPlayEndingSoon?page=${pageNumber}&size=${size}`);
             } else if (tabIndex === 2) {
-                url = `http://localhost:8080/api/plays/getPlayRandom?page=${pageNumber}&size=${size}`;
+                url = (`${process.env.REACT_APP_API_URL}/plays/getPlayComingSoon?page=${pageNumber}&size=${size}`);
             } else if (tabIndex === 3) {
-                url = `http://localhost:8080/api/plays/getPlayAll?page=${pageNumber}&size=${size}`;
+                url = (`${process.env.REACT_APP_API_URL}/plays/getPlayLimited?page=${pageNumber}&size=${size}`);
             }
 
             const response = await axios.get(url, { withCredentials: true });
             const data = response.data;
 
-            if (data && data.data && data.data.length >0) {
-                setItems((prevItems) => [...prevItems, ...data.data]);
+            if (data && data.data && data.data.length > 0) {
+                const newItems = data.data.filter(item => !loadedItems.current.has(item.playSeq));
+
+                if (newItems.length > 0) {
+                    setItems((prevItems) => [...prevItems, ...newItems]);
+                    newItems.forEach(item => loadedItems.current.add(item.playSeq));
+                }
+
+                if (newItems.length < size) {
+                    setHasMore(false);
+                }
             } else {
                 setHasMore(false);
-            };
+            }
         } catch (error) {
             console.error("Error fetching data: ", error);
         }
     };
 
     useEffect(() => {
+        console.log("Selected tab:", selectedTab);
         setItems([]);
         setPage(1);
         setHasMore(true);
-    
+        loadedItems.current.clear();
         fetchData(1, selectedTab);
       }, [selectedTab]);
 
@@ -78,13 +89,11 @@ const InfiniteScrollContainer = ({selectedTab}) => {
 
     //10개의 item을 추가하는 함수 -> 전체가 50개가 넘어가면 더 이상 로딩하지 않음
     const loadMoreItems = () => {
-        fetchData(page);
-        setPage((prevPage) => prevPage + 1);
+        if(hasMore) {
+            fetchData(page, selectedTab);
+            setPage((prevPage) => prevPage + 1);
+        }
     };
-
-    useEffect(() => {
-        fetchData(page);
-    }, []);
 
     //유져가 스크롤을 내리다가 처음에 로딩된 10개의 item을 다 보면 target이 보이게 됨
     //target이 보이면 loadMoreItems 함수를 실행해서 10개의 item을 추가함
