@@ -1,7 +1,8 @@
 import React from 'react';
 import chat from'../../assets/images/매신저.png';
 import day from'../../assets/images/기간.png';
-const ReserveBtn = ({handleReserveClick,handleConsultClick}) => {
+import { daysInWeek } from 'date-fns/constants';
+const ReserveBtn = ({handleReserveClick,handleConsultClick, handleBookClick}) => {
 
    
 
