@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 const LoginGoogle = () => {
     const restApikey = "332810267931-3v4gikheu6j8j2l1egm5to3o3opa57lf.apps.googleusercontent.com";
-    const redirectUrl = "http://localhost:3000";
+    const redirectUrl = "http://localhost:3000/googleloding";
 
     const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${restApikey}&scope=openid%20profile%20email&redirect_uri=${redirectUrl}`;
 const loginHandler = () => {

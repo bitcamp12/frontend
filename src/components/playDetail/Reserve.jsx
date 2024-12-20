@@ -65,7 +65,7 @@ console.log(selectedTime);
       />
         </div>
         <div>
-          <input type='button' value='예매하기' id="reserve-button-time" />
+          <input type='button' value='예매하기' id="reserve-button-time"  />
         </div>
 
       </div>
