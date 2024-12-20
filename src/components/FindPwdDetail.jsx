@@ -100,7 +100,7 @@ const FindPwdDetail = () => {
     setAlertVisible(true);
     try {
       const response = await axios.post(
-        'http://localhost:8080/api/members/sendPhoneVerificationCode',
+        `${process.env.REACT_APP_API_URL}/members/sendPhoneVerificationCode`,
         {
           id:id,
           name: formData.name,
@@ -138,7 +138,7 @@ const FindPwdDetail = () => {
     setAlertVisible(true);
     try {
       const response = await axios.post(
-        'http://localhost:8080/api/members/checkPhone',
+        `${process.env.REACT_APP_API_URL}/members/checkPhone`,
         {
           name: formData.name,
           phoneNum: formData.phone,
@@ -185,7 +185,7 @@ const FindPwdDetail = () => {
     setModalMessage("인증번호 발송중입니다. 잠시만 기다려주세요");
     try {
       const response = await axios.post(
-        'http://localhost:8080/api/members/sendEmailVerificationCode',
+        `${process.env.REACT_APP_API_URL}/sendEmailVerificationCode`,
         {
           name: formData.name,
           email: formData.email,
@@ -233,7 +233,7 @@ const FindPwdDetail = () => {
     setAlertVisible(true);
     try {
       const response = await axios.post(
-        'http://localhost:8080/api/members/verifyCodeId',
+        `${process.env.REACT_APP_API_URL}/members/verifyCodeId`,
 
         {
           name: formData.name,

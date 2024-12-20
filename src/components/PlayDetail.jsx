@@ -536,7 +536,7 @@ const handleDeleteClick = (reviewSeq) => {
 
   // axios.delete로 데이터 전달 시, config 객체 내에 data를 사용하여 요청 본문을 전달
   axios
-    .delete(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewA`, { data: reviewDTO },{
+    .delete(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewA`, { data: reviewDTO ,
       headers: {
         'Authorization': `Bearer ${accessToken}` // Bearer 토큰
     },
@@ -1027,7 +1027,7 @@ const handleQADeleteClick = (qnaSeq) => {
 
   // axios.delete로 데이터 전달 시, config 객체 내에 data를 사용하여 요청 본문을 전달
   axios
-    .delete(`${process.env.REACT_APP_API_URL}/qnas/qna`, { data: QADTO },{
+    .delete(`${process.env.REACT_APP_API_URL}/qnas/qna`, { data: QADTO ,
       headers: {
         'Authorization': `Bearer ${accessToken}` // Bearer 토큰
     },
