@@ -146,10 +146,8 @@ const Book = ({ selectedDate, playData, DateList, popupRef, navigate }) => {
             if (response.data.message === "성공") {
                 setSelectedSeats([]);
                 if(popupRef.current) {
-                    popupRef.current.alert("예매가 완료되었습니다.");
-                    popupRef.current.close();
                 }
-                navigate("/payment", "_blank");
+                window.open("/payment", "_blank");
             } else {
                 if(popupRef.current) {
                     popupRef.current.alert(`예매에 실패: ${response.data.message}`); // Show alert in the popup window
