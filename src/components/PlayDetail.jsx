@@ -33,21 +33,12 @@ const PlayDetail = () => {
   const [reviewText, setReviewText] = useState(''); // 리뷰 텍스트 상태
   const [selected, setSelected] = useState('latest');
 
-<<<<<<< HEAD
-    const[alertVisible,setAlertVisible]=useState(false);
-    const [modalTitle, setModalTitle] = useState(''); // 모달 제목
-    const [modalMessage, setModalMessage] = useState(''); // 모달 메시지
-    const accessToken = localStorage.getItem("token"); // 로컬스토리지 또는 쿠키에서 가져오기
-
- 
-
-=======
   const [isReviewUpdate, setIsReviewUpdate] = useState(false);
+  const accessToken = localStorage.getItem("token");
 
   const [alertVisible, setAlertVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState(''); // 모달 제목
   const [modalMessage, setModalMessage] = useState(''); // 모달 메시지
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
 
   const { kakao } = window;
   ///////스케줄 예매일
@@ -63,33 +54,10 @@ const PlayDetail = () => {
     // 'YYYY-MM-DD HH:mm:ss' 형태로 포맷
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   };
-<<<<<<< HEAD
-  
-  
-  const [activeButton, setActiveButton] = useState(null);
-=======
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
-
-  const handleButtonClick = (buttonId) => {
-    setActiveButton(prevButton => prevButton === buttonId ? null : buttonId);
-  };
 
 
 
-<<<<<<< HEAD
-  const [DateList,setDateList]=useState([])//날짜 리스트
- // 데이터 가져오기 함수
- const fetchTimeSlots = async () => {
- // selectedDate가 있을 경우, 없으면 현재 시간 사용
- const selectDate = selectedDate
- ? formatDatePickerDate(new Date(selectedDate)) // 선택된 날짜
- : formatDatePickerDate(new Date()); // 기본값은 현재 시간
-console.log(selectDate);
-  try {
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/playTimeTables/playTimeTables?playSeq=${playSeq}&targetDate=${selectDate}`, 
-    );//자바로 데이터 가져오기
-=======
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
+
 
 
   const [DateList, setDateList] = useState([])//날짜 리스트
@@ -101,7 +69,13 @@ console.log(selectDate);
       : formatDatePickerDate(new Date()); // 기본값은 현재 시간
     console.log(selectDate);
     try {
-      const response = await axios.get(`http://localhost:8080/api/playTimeTables/playTimeTables?playSeq=${playSeq}&targetDate=${selectDate}`,
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/playTimeTables/playTimeTables?playSeq=${playSeq}&targetDate=${selectDate}`,{
+        headers: {
+          'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+      },
+      withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
+      }
       );//자바로 데이터 가져오기
 
       if (response.status === 200) {
@@ -199,17 +173,8 @@ console.log(selectDate);
     const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
     const day = String(date.getDate()).padStart(2, '0'); // 일자를 2자리로 포맷
 
-<<<<<<< HEAD
-  axios
-    .get(`${process.env.REACT_APP_API_URL}/plays/getPlayOne?playSeq=${playSeq}`, 
-      { withCredentials: true })
-    .then(response => {
-      const { status, data } = response.data; // 구조 분해 할당
-      console.log(response.data);
-=======
     return `${year}.${month}.${day}`;
   };
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
 
   const { playSeq } = useParams();
 
@@ -217,7 +182,7 @@ console.log(selectDate);
     console.log(playSeq);
 
     axios
-      .get(`http://localhost:8080/api/plays/getPlayOne?playSeq=${playSeq}`, {
+      .get(`${process.env.REACT_APP_API_URL}/plays/getPlayOne?playSeq=${playSeq}`, {
       })
       .then(response => {
         const { status, data } = response.data; // 구조 분해 할당
@@ -249,46 +214,6 @@ console.log(selectDate);
   const [searchType, setSearchType] = useState("title"); // 검색 타입 (제목 or 아이디)
 
   //키워드
-<<<<<<< HEAD
-//정렬
-//검색조건
-const[ischerachcheck,setischerachcheck]=useState(false);
-const shearchBtn = async () => {
-  setischerachcheck(true);
-  const requestParams = {
-    searchType: searchType === "title" ? "title" : "id",
-    keyword: searchKey,
-    selected: selected,
-    page:page,
-    size:pageSize
-  };
-  try {
-  const response=await axios.get(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewASearchCount?playSeq=${playSeq}`, {
-    params: requestParams, // 쿼리 파라미터로 전달
-  });
-  const { status, data } = response.data;
-  console.log(data)
-  if (status === 200) {
-    setReviewACount(data);
-  } else if (status === 404) {
-    console.log('검색 리뷰 없음');
-  }
-} catch (error) {
-  console.error('리뷰 데이터를 가져오는 중 오류 발생:', error);
-}
-  try {
-    
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewASearch?playSeq=${playSeq}`, {
-      params: requestParams, // 쿼리 파라미터로 전달
-    });
-    const { status, data } = response.data;
-    console.log(data)
-
-    if (status === 200) {
-      setReviewData(data);
-    } else if (status === 404) {
-      console.log('검색 리뷰 없음');
-=======
   //정렬
   //검색조건
   const [ischerachcheck, setischerachcheck] = useState(false);
@@ -302,7 +227,7 @@ const shearchBtn = async () => {
       size: pageSize
     };
     try {
-      const response = await axios.get(`http://localhost:8080/api/reviewAfters/ReviewASearchCount?playSeq=${playSeq}`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewASearchCount?playSeq=${playSeq}`, {
         params: requestParams, // 쿼리 파라미터로 전달
       });
       const { status, data } = response.data;
@@ -314,11 +239,10 @@ const shearchBtn = async () => {
       }
     } catch (error) {
       console.error('리뷰 데이터를 가져오는 중 오류 발생:', error);
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
     }
     try {
 
-      const response = await axios.get(`http://localhost:8080/api/reviewAfters/ReviewASearch?playSeq=${playSeq}`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewASearch?playSeq=${playSeq}`, {
         params: requestParams, // 쿼리 파라미터로 전달
       });
       const { status, data } = response.data;
@@ -341,13 +265,8 @@ const shearchBtn = async () => {
   const [reviewData, setReviewData] = useState([]); // 초기값을 null로 설정
 
 
-<<<<<<< HEAD
-const pageSize = 10; // 한 페이지에 보여줄 항목 수
-const pageBlock = 5; // 한 블록에 보여줄 페이지 수 (5개씩)
-=======
-  const pageSize = 2; // 한 페이지에 보여줄 항목 수
+  const pageSize = 10; // 한 페이지에 보여줄 항목 수
   const pageBlock = 5; // 한 블록에 보여줄 페이지 수 (5개씩)
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
 
   const [totalPagesa, setTotalPages] = useState(Math.ceil(0));//후기전체페이지
   // 총 페이지 수를 계산하여 상태 업데이트
@@ -382,32 +301,18 @@ const pageBlock = 5; // 한 블록에 보여줄 페이지 수 (5개씩)
   };
 
 
-<<<<<<< HEAD
-const fetchReviewData = async (order = 'latest') => {
-  console.log(order);
-  console.log(reviewACount)
-  console.log(Math.ceil(reviewACount / 10));
-  try {
-    const response = await axios.get(
-      `${process.env.REACT_APP_API_URL}/reviewAfters/ReviewAList?playSeq=${playSeq}&selected=${selected}`,
-      {
-        params: {
-          page: page ,
-          size: pageSize
-=======
   const fetchReviewData = async (order = 'latest') => {
     console.log(order);
     console.log(reviewACount)
     console.log(Math.ceil(reviewACount / 10));
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/reviewAfters/ReviewAList?playSeq=${playSeq}&selected=${selected}`,
+        `${process.env.REACT_APP_API_URL}/reviewAfters/ReviewAList?playSeq=${playSeq}&selected=${selected}`,
         {
           params: {
             page: page,
             size: pageSize
           }
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
         }
       );
       console.log(response.data);
@@ -468,20 +373,9 @@ const fetchReviewData = async (order = 'latest') => {
 
   const [reviewAVG, setReviewAVG] = useState(0);
 
-<<<<<<< HEAD
-const fetchreviewAAvgData = async () => {
-  try {
-  const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewAAvg?playSeq=${playSeq}`)
-  console.log(response.data);
-    const { status, data } = response.data;
-    if (status === 200) {
-      setReviewAVG(data); // 상태 업데이트
-    } else if (status === 404) {
-      console.log(' 별점 오류');
-=======
   const fetchreviewAAvgData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/reviewAfters/ReviewAAvg?playSeq=${playSeq}`)
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewAAvg?playSeq=${playSeq}`)
       console.log(response.data);
       const { status, data } = response.data;
       if (status === 200) {
@@ -491,7 +385,6 @@ const fetchreviewAAvgData = async () => {
       }
     } catch (error) {
       console.error('별점평균 데이터를 가져오는 중 오류 발생:', error);
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
     }
 
 
@@ -503,20 +396,9 @@ const fetchreviewAAvgData = async () => {
 
 
 
-<<<<<<< HEAD
-const fetchreviewACountData = async () => {
-  try {
-  const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewAcount?playSeq=${playSeq}`)
-  console.log(response.data);
-    const { status, data } = response.data;
-    if (status === 200) {
-      setReviewACount(data); // 상태 업데이트
-    } else if (status === 404) {
-      console.log('카운트 오류');
-=======
   const fetchreviewACountData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/reviewAfters/ReviewAcount?playSeq=${playSeq}`)
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewAcount?playSeq=${playSeq}`)
       console.log(response.data);
       const { status, data } = response.data;
       if (status === 200) {
@@ -526,7 +408,6 @@ const fetchreviewACountData = async () => {
       }
     } catch (error) {
       console.error('카운트 데이터를 가져오는 중 오류 발생:', error);
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
     }
 
 
@@ -565,18 +446,14 @@ const fetchreviewACountData = async () => {
     }
     // const userId = sessionStorage.getItem("id");
     // 서버로 데이터 전송
-<<<<<<< HEAD
-    axios.post(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewA?playSeq=${playSeq}`, reviewData, {
+    axios.post(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewA?playSeq=${playSeq}`,{
+      reviewData:reviewData, // reviewData를 객체 형태로 설정
       headers: {
-        'Authorization': `Bearer ${accessToken}` // Bearer 토큰
-    },
-    withCredentials: true, // 쿠키 전달 활성화
-    }).then(response=>{
-=======
-    axios.post(`http://localhost:8080/api/reviewAfters/ReviewA?playSeq=${playSeq}`, reviewData, {
-      withCredentials: true
-    }).then(response => {
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
+          'Authorization': `Bearer ${accessToken}` // Bearer 토큰 포함
+      },
+      withCredentials: true // 쿠키 전달 활성화
+  })
+  .then(response => {
 
       if (response.status === 200) {
         setAlertVisible(true)
@@ -593,58 +470,6 @@ const fetchreviewACountData = async () => {
         setModalMessage('리뷰 등록에 실패했습니다. 다시 시도해주세요.'); // 입력 필드 초기화
         setRating(0); // 별점 초기화
       }
-<<<<<<< HEAD
-    } 
-  )
-    
-
-}
-
-////리뷰 등록
-/////리뷰 수정 모달 열기
-const [selectedReviewSeq, setSelectedReviewSeq] = useState(null); // 선택된 리뷰 ID
-const handleEditClick = (reviewSeq) => {
-  const selectedReview = reviewData.find((review) => review.reviewAfterSeq === reviewSeq);
-  if (selectedReview) {
-    setSelectedReviewSeq(selectedReview.reviewAfterSeq)
-    setReviewText(selectedReview.content); // 리뷰 내용 설정
-    setRating(selectedReview.rating);     // 별점 설정
-    setIsReviewUpdate(true);              // 수정 모달 열기
-  }
-};
-/////
-
-////수정하기
-
-const handleUpdateClick = (e)=>{
-  const updatedReview = {
-    reviewAfterSeq: e.target.getAttribute('data-review-seq'), // 현재 수정 중인 리뷰의 고유 ID
-    content: reviewText,             // 수정된 리뷰 내용
-    rating: rating                   // 수정된 별점
-  };
-  axios
-  .put(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewA`, updatedReview,{headers: {
-    'Authorization': `Bearer ${accessToken}` // Bearer 토큰
-},
-withCredentials: true, // 쿠키 전달 활성화
- })
-  .then((response) => {
-    if (response.status === 200) {
-      setAlertVisible(true)
-      setModalTitle("성공") 
-      setModalMessage('리뷰가 수정 되었습니다'); 
-      setIsReviewUpdate(false); // 모달 닫기
-      fetchReviewData();
-      fetchreviewAAvgData();
-  fetchreviewACountData();
-      setReviewText(''); // 입력 필드 초기화
-        setRating(0); // 별점 초기화
-    } else {
-      setAlertVisible(true)
-      setModalTitle("실패") 
-      setModalMessage('리뷰가 수정 실패'); // 입력 필드 초기화
-=======
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
     }
     )
 
@@ -665,18 +490,6 @@ withCredentials: true, // 쿠키 전달 활성화
   };
   /////
 
-<<<<<<< HEAD
-  // axios.delete로 데이터 전달 시, config 객체 내에 data를 사용하여 요청 본문을 전달
-  axios
-    .delete(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewA`, { data: reviewDTO ,
-      headers: {
-        'Authorization': `Bearer ${accessToken}` // Bearer 토큰
-    },
-    withCredentials: true, // 쿠키 전달 활성화
-    }) // 삭제 요청에 reviewDTO를 body로 전달
-    .then((response) => {
-      if (response.status === 200) {
-=======
   ////수정하기
 
   const handleUpdateClick = (e) => {
@@ -686,7 +499,13 @@ withCredentials: true, // 쿠키 전달 활성화
       rating: rating                   // 수정된 별점
     };
     axios
-      .put("http://localhost:8080/api/reviewAfters/ReviewA", updatedReview)
+      .put(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewA`, updatedReview,{
+        headers: {
+          'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+      },
+      withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
+      })
       .then((response) => {
         if (response.status === 200) {
           setAlertVisible(true)
@@ -717,7 +536,13 @@ withCredentials: true, // 쿠키 전달 활성화
 
     // axios.delete로 데이터 전달 시, config 객체 내에 data를 사용하여 요청 본문을 전달
     axios
-      .delete("http://localhost:8080/api/reviewAfters/ReviewA", { data: reviewDTO }) // 삭제 요청에 reviewDTO를 body로 전달
+      .delete(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewA`, { data: reviewDTO ,
+        headers: {
+          'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+      },
+      withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
+      }) // 삭제 요청에 reviewDTO를 body로 전달
       .then((response) => {
         if (response.status === 200) {
           setAlertVisible(true);
@@ -734,7 +559,6 @@ withCredentials: true, // 쿠키 전달 활성화
       })
       .catch((error) => {
         console.error("리뷰 삭제 중 오류 발생:", error);
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
         setAlertVisible(true);
         setModalTitle("오류");
         setModalMessage("리뷰 삭제 중 오류가 발생했습니다.");
@@ -845,29 +669,17 @@ withCredentials: true, // 쿠키 전달 활성화
       console.error('리뷰 데이터를 가져오는 중 오류 발생:', error);  // 오류 처리
     }
   };
-<<<<<<< HEAD
-/////////리뷰 불러오기
-const fetchReviewBData = async () => {
-  console.log(page)
-  try {
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviewBefores/reviewBList?playSeq=${playSeq}`,{params:{
-      page : page,
-      size : pageSize
-    }});
-    console.log(response.data);
-=======
   /////////리뷰 불러오기
   const fetchReviewBData = async () => {
     console.log(page)
     try {
-      const response = await axios.get(`http://localhost:8080/api/reviewBefores/reviewBList?playSeq=${playSeq}`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviewBefores/reviewBList?playSeq=${playSeq}`, {
         params: {
           page: page,
           size: pageSize
         }
       });
       console.log(response.data);
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
 
       const { status, data } = response.data; // 구조 분해 할당
       if (status === 200) {
@@ -882,20 +694,9 @@ const fetchReviewBData = async () => {
 
 
 
-<<<<<<< HEAD
-const fetchreviewBCountData = async () => {
-  try {
-  const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviewBefores/ReviewBcount?playSeq=${playSeq}`)
-  console.log(response.data);
-    const { status, data } = response.data;
-    if (status === 200) {
-      setReviewBCount(data); // 상태 업데이트
-    } else if (status === 404) {
-      console.log('카운트 오류');
-=======
   const fetchreviewBCountData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/reviewBefores/ReviewBcount?playSeq=${playSeq}`)
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviewBefores/ReviewBcount?playSeq=${playSeq}`)
       console.log(response.data);
       const { status, data } = response.data;
       if (status === 200) {
@@ -905,7 +706,6 @@ const fetchreviewBCountData = async () => {
       }
     } catch (error) {
       console.error('카운트 데이터를 가져오는 중 오류 발생:', error);
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
     }
 
 
@@ -936,18 +736,13 @@ const fetchreviewBCountData = async () => {
     }
 
     // 서버로 데이터 전송
-<<<<<<< HEAD
     axios.post(`${process.env.REACT_APP_API_URL}/reviewBefores/reviewB?playSeq=${playSeq}`, reviewDataB, {
       headers: {
-        'Authorization': `Bearer ${accessToken}` // Bearer 토큰
+        'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
     },
-    withCredentials: true, // 쿠키 전달 활성화
-    }).then(response=>{
-=======
-    axios.post(`http://localhost:8080/api/reviewBefores/reviewB?playSeq=${playSeq}`, reviewDataB, {
-      withCredentials: true,
+    withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
     }).then(response => {
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
 
       if (response.status === 200) {
         setAlertVisible(true)
@@ -963,53 +758,6 @@ const fetchreviewBCountData = async () => {
         setModalMessage('리뷰 등록에 실패했습니다. 다시 시도해주세요.'); // 입력 필드 초기화
         setRating(0); // 별점 초기화
       }
-<<<<<<< HEAD
-    } 
-  )
-    
-
-}
-////////리뷰 등록
-
-const [selectedReviewSeqB, setSelectedReviewSeqB] = useState(null); // 선택된 리뷰 ID
-const handleEditBClick = (reviewSeq) => {
-  const selectedReviewB = reviewDataB.find((review) => review.reviewBeforeSeq === reviewSeq);
-  if (selectedReviewB) {
-    setSelectedReviewSeqB(selectedReviewB.reviewBeforeSeq)
-    setReviewTextB(selectedReviewB.content); // 리뷰 내용 설정
-    setIsReviewUpdateB(true);              // 수정 모달 열기
-  }
-};
-
-////수정하기
-
-const handleUpdateBClick = (e)=>{
-  const updatedReview = {
-    reviewBeforeSeq: e.target.getAttribute('data-review-seq'), // 현재 수정 중인 리뷰의 고유 ID
-    content: reviewTextB,             // 수정된 리뷰 내용
-  };
-  axios
-  .put(`${process.env.REACT_APP_API_URL}/reviewBefores/reviewB`, updatedReview,{
-    headers: {
-      'Authorization': `Bearer ${accessToken}` // Bearer 토큰
-  },
-  withCredentials: true, // 쿠키 전달 활성화
-  })
-  .then((response) => {
-    if (response.status === 200) {
-      setAlertVisible(true)
-      setModalTitle("성공") 
-      setModalMessage('리뷰가 수정 되었습니다'); 
-      setIsReviewUpdateB(false); // 모달 닫기
-      setReviewTextB(''); // 입력 필드 초기화
-      fetchReviewBData(); // 함수 호출
-      fetchreviewBCountData();
-    } else {
-      setAlertVisible(true)
-      setModalTitle("실패") 
-      setModalMessage('리뷰가 수정 실패'); // 입력 필드 초기화
-=======
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
     }
     )
 
@@ -1027,18 +775,6 @@ const handleUpdateBClick = (e)=>{
     }
   };
 
-<<<<<<< HEAD
-  // axios.delete로 데이터 전달 시, config 객체 내에 data를 사용하여 요청 본문을 전달
-  axios
-    .delete(`${process.env.REACT_APP_API_URL}/reviewBefores/reviewB`, { data: reviewBDTO },{
-      headers: {
-        'Authorization': `Bearer ${accessToken}` // Bearer 토큰
-    },
-    withCredentials: true, // 쿠키 전달 활성화
-    }) // 삭제 요청에 reviewDTO를 body로 전달
-    .then((response) => {
-      if (response.status === 200) {
-=======
   ////수정하기
 
   const handleUpdateBClick = (e) => {
@@ -1047,7 +783,13 @@ const handleUpdateBClick = (e)=>{
       content: reviewTextB,             // 수정된 리뷰 내용
     };
     axios
-      .put("http://localhost:8080/api/reviewBefores/reviewB", updatedReview)
+      .put(`${process.env.REACT_APP_API_URL}/reviewBefores/reviewB`, updatedReview,{
+        headers: {
+          'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+      },
+      withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
+      })
       .then((response) => {
         if (response.status === 200) {
           setAlertVisible(true)
@@ -1077,7 +819,13 @@ const handleUpdateBClick = (e)=>{
 
     // axios.delete로 데이터 전달 시, config 객체 내에 data를 사용하여 요청 본문을 전달
     axios
-      .delete("http://localhost:8080/api/reviewBefores/reviewB", { data: reviewBDTO }) // 삭제 요청에 reviewDTO를 body로 전달
+      .delete(`${process.env.REACT_APP_API_URL}/reviewBefores/reviewB`, { data: reviewBDTO,
+        headers: {
+          'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+      },
+      withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
+       }) // 삭제 요청에 reviewDTO를 body로 전달
       .then((response) => {
         if (response.status === 200) {
           setAlertVisible(true);
@@ -1093,7 +841,6 @@ const handleUpdateBClick = (e)=>{
       })
       .catch((error) => {
         console.error("리뷰 삭제 중 오류 발생:", error);
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
         setAlertVisible(true);
         setModalTitle("오류");
         setModalMessage("리뷰 삭제 중 오류가 발생했습니다.");
@@ -1115,7 +862,7 @@ const handleUpdateBClick = (e)=>{
   const fetchQAData = async () => {
     console.log('fetchQAData')
     try {
-      const response = await axios.get(`http://localhost:8080/api/qnas/qnaList?playSeq=${playSeq}`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/qnas/qnaList?playSeq=${playSeq}`, {
         params: {
           page: page,
           size: pageSize
@@ -1129,91 +876,16 @@ const handleUpdateBClick = (e)=>{
       } else if (status === 404) {
         console.log('QA 없음');
       }
-<<<<<<< HEAD
-    })
-    .catch((error) => {
-      console.error("리뷰 삭제 중 오류 발생:", error);
-      setAlertVisible(true);
-      setModalTitle("오류");
-      setModalMessage("리뷰 삭제 중 오류가 발생했습니다.");
-    });
-};
-
-
-
-///////QAQAQAQAQA
-
-
-const [QATitle, setQATitle] = useState(''); // 리뷰 텍스트 상태
-const [QAText, setQAText] = useState(''); // 리뷰 텍스트 상태
-const [QAData, setQAData] = useState(null); // 초기값을 null로 설정
-const [isQAUpdate,setIsQAUpdate]=useState(false);
-
-
-
-const fetchQAData = async () => {
-  console.log('fetchQAData')
-  try {
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/qnas/qnaList?playSeq=${playSeq}`,{params:{
-      page :page,
-      size:pageSize
-    }});
-    console.log(response.data);
-
-    const { status, data } = response.data; // 구조 분해 할당
-    if (status === 200) {
-      setQAData(data); // 상태 업데이트
-    } else if (status === 404) {
-      console.log('QA 없음');
-=======
     } catch (error) {
       console.error('리뷰 데이터를 가져오는 중 오류 발생:', error);
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
     }
   };
 
-const [userId,setUserId] = useState();
-useEffect(() => {
-  const fetchUserId = async () => {
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/members/id`,{
-        headers: {
-          'Authorization': `Bearer ${accessToken}` // Bearer 토큰
-      },
-      withCredentials: true, // 쿠키 전달 활성화
-      });
-      const { status, message, data } = response.data;
-     
-console.log(data)
-      if (status === 200) {
-        console.log('User ID fetched successfully:', data);
-        setUserId(data); // userId 상태 업데이트
-      } else {
-        console.error('Failed to fetch user ID:', message);
-      }
-    } catch (error) {
-      console.error('Error fetching user ID:', error);
-    }
-  };
 
-  fetchUserId();
-  
-}, []);
 
-<<<<<<< HEAD
-const fetchQACountData = async () => {
-  try {
-  const response = await axios.get(`${process.env.REACT_APP_API_URL}/qnas/qnaCount?playSeq=${playSeq}`)
-  console.log(response.data);
-    const { status, data } = response.data;
-    if (status === 200) {
-      setQACount(data); // 상태 업데이트
-    } else if (status === 404) {
-      console.log('카운트 오류');
-=======
   const fetchQACountData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/qnas/qnaCount?playSeq=${playSeq}`)
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/qnas/qnaCount?playSeq=${playSeq}`)
       console.log(response.data);
       const { status, data } = response.data;
       if (status === 200) {
@@ -1223,7 +895,6 @@ const fetchQACountData = async () => {
       }
     } catch (error) {
       console.error('카운트 데이터를 가져오는 중 오류 발생:', error);
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
     }
 
 
@@ -1255,18 +926,13 @@ const fetchQACountData = async () => {
     }
 
     // 서버로 데이터 전송
-<<<<<<< HEAD
     axios.post(`${process.env.REACT_APP_API_URL}/qnas/qna?playSeq=${playSeq}`, DataQA, {
       headers: {
-        'Authorization': `Bearer ${accessToken}` // Bearer 토큰
+        'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
     },
-    withCredentials: true, // 쿠키 전달 활성화
-    }).then(response=>{
-=======
-    axios.post(`http://localhost:8080/api/qnas/qna?playSeq=${playSeq}`, DataQA, {
-      withCredentials: true,
+    withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
     }).then(response => {
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
 
       if (response.status === 200) {
         setAlertVisible(true)
@@ -1283,55 +949,6 @@ const fetchQACountData = async () => {
         setModalMessage('QA 등록에 실패했습니다. 다시 시도해주세요.'); // 입력 필드 초기화
         setRating(0); // 별점 초기화
       }
-<<<<<<< HEAD
-    } 
-  )
-    
-
-}
-
-////////리뷰 등록
-
-const [selectQASeq, setSelectedQASeq] = useState(null); // 선택된 리뷰 ID
-const handleQAEditClick = (qnaSeq) => {
-  const selectQA = QAData.find((qa) => qa.qnaSeq === qnaSeq);
-  if (selectQA) {
-    setSelectedQASeq(selectQA.qnaSeq)
-    setQAText(selectQA.content); // 리뷰 내용 설정
-    setIsQAUpdate(true);              // 수정 모달 열기
-  }
-  console.log(selectQASeq)
-};
-
-////수정하기
-
-const handleQAClick = (e)=>{
-  const updatedQA = {
-    qnaSeq: e.target.getAttribute('data-qa-seq'), // 현재 수정 중인 리뷰의 고유 ID
-    content: QAText,             // 수정된 리뷰 내용
-  };
-  axios.put(`${process.env.REACT_APP_API_URL}/qnas/qna`, updatedQA,{
-    headers: {
-      'Authorization': `Bearer ${accessToken}` // Bearer 토큰
-  },
-  withCredentials: true, // 쿠키 전달 활성화
-  })
-  .then((response) => {
-    if (response.status === 200) {
-      setAlertVisible(true)
-      setModalTitle("성공") 
-      setModalMessage('리뷰가 수정 되었습니다'); 
-      setIsQAUpdate(false); // 모달 닫기
-      setQAText(''); // 입력 필드 초기화
-      fetchQAData(); // 함수 호출
-      
-  fetchQACountData();
-    } else {
-      setAlertVisible(true)
-      setModalTitle("실패") 
-      setModalMessage('리뷰가 수정 실패'); // 입력 필드 초기화
-=======
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
     }
     )
 
@@ -1351,52 +968,6 @@ const handleQAClick = (e)=>{
     console.log(selectQASeq)
   };
 
-<<<<<<< HEAD
-  // axios.delete로 데이터 전달 시, config 객체 내에 data를 사용하여 요청 본문을 전달
-  axios
-    .delete(`${process.env.REACT_APP_API_URL}/qnas/qna`, { data: QADTO ,
-      headers: {
-        'Authorization': `Bearer ${accessToken}` // Bearer 토큰
-    },
-    withCredentials: true, // 쿠키 전달 활성화
-    }) // 삭제 요청에 reviewDTO를 body로 전달
-    .then((response) => {
-      if (response.status === 200) {
-        setAlertVisible(true);
-        setModalTitle("성공");
-        setModalMessage("QA가 삭제되었습니다.");
-        fetchQAData(); // 함수 호출
-        fetchQACountData();
-      } else {
-        setAlertVisible(true);
-        setModalTitle("실패");
-        setModalMessage("QA 삭제 실패");
-      }
-    })
-    .catch((error) => {
-      console.error("리뷰 삭제 중 오류 발생:", error);
-      setAlertVisible(true);
-      setModalTitle("오류");
-      setModalMessage("리뷰 삭제 중 오류가 발생했습니다.");
-    });
-};
-const [replyDTO,setReplysDTO]=useState({});
-const [isReplyVisible, setIsReplyVisible] = useState({}); // 댓글 토글 상태
-
- // 댓글 클릭 시 데이터 가져오기
-
-const handleReplayClick = (qnaSeq) => {
-  // 토글 상태 업데이트
-  setIsReplyVisible((prevState) => ({
-    ...prevState,
-    [qnaSeq]: !prevState[qnaSeq], // 클릭한 Q&A 항목의 상태만 토글
-  }));
-
-  // 댓글 데이터 가져오기 (axios 요청 예시)
-  if (!isReplyVisible[qnaSeq]) {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/replys/Reply`, { params: { qnaSeq } })
-=======
   ////수정하기
 
   const handleQAClick = (e) => {
@@ -1404,8 +975,13 @@ const handleReplayClick = (qnaSeq) => {
       qnaSeq: e.target.getAttribute('data-qa-seq'), // 현재 수정 중인 리뷰의 고유 ID
       content: QAText,             // 수정된 리뷰 내용
     };
-    axios.put("http://localhost:8080/api/qnas/qna", updatedQA)
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
+    axios.put(`${process.env.REACT_APP_API_URL}/qnas/qna`, updatedQA,{
+      headers: {
+        'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+    },
+    withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
+    })
       .then((response) => {
         if (response.status === 200) {
           setAlertVisible(true)
@@ -1427,14 +1003,6 @@ const handleReplayClick = (qnaSeq) => {
       });
   }
 
-<<<<<<< HEAD
-////////////즐겨찾기
-//하트색깔
-
-
-const [hartColor,setHartColor]=useState('black')
-/////즐겨찾기 불러오기(등록되어있음->빨간하트/등록 없음->검은하트)
-=======
   //////QA 삭제
   const handleQADeleteClick = (qnaSeq) => {
     const QADTO = {
@@ -1443,7 +1011,13 @@ const [hartColor,setHartColor]=useState('black')
 
     // axios.delete로 데이터 전달 시, config 객체 내에 data를 사용하여 요청 본문을 전달
     axios
-      .delete("http://localhost:8080/api/qnas/qna", { data: QADTO }) // 삭제 요청에 reviewDTO를 body로 전달
+      .delete(`${process.env.REACT_APP_API_URL}/qnas/qna`, { data: QADTO ,
+        headers: {
+          'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+      },
+      withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
+      }) // 삭제 요청에 reviewDTO를 body로 전달
       .then((response) => {
         if (response.status === 200) {
           setAlertVisible(true);
@@ -1479,7 +1053,7 @@ const [hartColor,setHartColor]=useState('black')
     // 댓글 데이터 가져오기 (axios 요청 예시)
     if (!isReplyVisible[qnaSeq]) {
       axios
-        .get("http://localhost:8080/api/replys/Reply", { params: { qnaSeq } })
+        .get(`${process.env.REACT_APP_API_URL}/replys/Reply`, { params: { qnaSeq } })
         .then((response) => {
           if (response.data.status === 200) {
             setReplysDTO((prevReplies) => ({
@@ -1505,25 +1079,38 @@ const [hartColor,setHartColor]=useState('black')
 
   ////////////즐겨찾기
   //하트색깔
-  const userId = sessionStorage.getItem("id");
+  const [userId,setuserId] = useState(null);
+
+useEffect(()=>{
+  axios
+  .get(`${process.env.REACT_APP_API_URL}/members/id`, {
+    headers: {
+      'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+  },
+  withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
+  })
+  .then((response) => {
+    console.log(response)
+    setuserId(response.data.data);
+  })
+
+},[])
+
+
   const [hartColor, setHartColor] = useState('black')
   /////즐겨찾기 불러오기(등록되어있음->빨간하트/등록 없음->검은하트)
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
   // 즐겨찾기 상태 확인
   useEffect(() => {
 
 
     axios
-<<<<<<< HEAD
-      .get(`${process.env.REACT_APP_API_URL}/favorites/favorites?playSeq=${playSeq}`,{
+      .get(`${process.env.REACT_APP_API_URL}/favorites/favorites?playSeq=${playSeq}`, {
         headers: {
-          'Authorization': `Bearer ${accessToken}` // Bearer 토큰
+          'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
       },
-      withCredentials: true, // 쿠키 전달 활성화
-=======
-      .get(`http://localhost:8080/api/favorites/favorites?playSeq=${playSeq}`, {
-        withCredentials: true
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
+      withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
       })
       .then((response) => {
         console.log(response)
@@ -1541,37 +1128,16 @@ const [hartColor,setHartColor]=useState('black')
         console.error("즐겨찾기 상태 확인 실패:", error);
       });
   }, [playSeq]);
-<<<<<<< HEAD
-///즐겨찾기 등록 검정하트 빨간하트 만들기
-const handleAddFavorite = () => {
-  console.log(playSeq)
-  axios
-    .post(`${process.env.REACT_APP_API_URL}/favorites/favorites?playSeq=${playSeq}`,{},{
-      headers: {
-        'Authorization': `Bearer ${accessToken}` // Bearer 토큰
-    },
-    withCredentials: true, // 쿠키 전달 활성화
-    })
-    .then((response) => {
-      if(response.data.status === 403){
-        setAlertVisible(true);
-        setModalTitle("로그인");
-        setModalMessage("로그인 해주세요");
-        
-      }
-      else if (response.status === 200) {
-        setAlertVisible(true);
-        setModalTitle("성공");
-        setModalMessage("즐겨찾기 성공 ");
-        setHartColor("red"); // 성공 시 빨간 하트
-      } else {
-=======
   ///즐겨찾기 등록 검정하트 빨간하트 만들기
   const handleAddFavorite = () => {
     console.log(playSeq)
     axios
-      .post(`http://localhost:8080/api/favorites/favorites?playSeq=${playSeq}`, {}, {
-        withCredentials: true, // 쿠키 포함
+      .post(`${process.env.REACT_APP_API_URL}/favorites/favorites?playSeq=${playSeq}`, {}, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+      },
+      withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
       })
       .then((response) => {
         if (response.data.status === 403) {
@@ -1592,7 +1158,6 @@ const handleAddFavorite = () => {
         }
       })
       .catch((error) => {
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
         setAlertVisible(true);
         setModalTitle("실패");
         setModalMessage("즐겨찾기 등록 실패");
@@ -1601,41 +1166,13 @@ const handleAddFavorite = () => {
   ///즐겨찾기 삭제 빨간하트 검은색하트로 변경
   const handleRemoveFavorite = () => {
     axios
-      .delete(`http://localhost:8080/api/favorites/favorites?playSeq=${playSeq}`, {
-        withCredentials: true
+      .delete(`${process.env.REACT_APP_API_URL}/favorites/favorites?playSeq=${playSeq}`, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+      },
+      withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
       }
-<<<<<<< HEAD
-    })
-    .catch((error) => {
-      setAlertVisible(true);
-      setModalTitle("실패");
-      setModalMessage("즐겨찾기 등록 실패");
-    });
-};
-///즐겨찾기 삭제 빨간하트 검은색하트로 변경
-const handleRemoveFavorite = () => {
-  axios
-    .delete(`${process.env.REACT_APP_API_URL}/favorites/favorites?playSeq=${playSeq}`,{
-      headers: {
-        'Authorization': `Bearer ${accessToken}` // Bearer 토큰
-    },
-    withCredentials: true, // 쿠키 전달 활성화
-    }
-    )
-    .then((response) => {
-      if(response.data.status === 403){
-        setAlertVisible(true);
-        setModalTitle("로그인");
-        setModalMessage("로그인 해주세요");
-        
-      }
-      else if (response.status === 200) {
-        setAlertVisible(true);
-      setModalTitle("성공");
-      setModalMessage("즐겨찾기 삭제 성공");
-        setHartColor("black"); // 성공 시 검은 하트
-      } else {
-=======
       )
       .then((response) => {
         if (response.data.status === 403) {
@@ -1656,7 +1193,6 @@ const handleRemoveFavorite = () => {
         }
       })
       .catch((error) => {
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
         setAlertVisible(true);
         setModalTitle("실패");
         setModalMessage("즐겨찾기 삭제 실패");
@@ -1672,31 +1208,11 @@ const handleRemoveFavorite = () => {
     }
   };
 
+  const [activeButton, setActiveButton] = useState(null);
 
-  const formatDateTargt = dateStr => {
-    const date = new Date(dateStr);
-
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
-    const day = String(date.getDate()).padStart(2, '0'); // 일자를 2자리로 포맷
-
-    const hour = date.getHours() % 12 || 12; // 12시간제 (0시는 12로 표시)
-    const minute = date.getMinutes().toString().padStart(2, "0");
-    const ampm = date.getHours() < 12 ? "오전" : "오후";
-  
-    return `${year}년 ${month}월 ${day}일 ${ampm} ${hour}:${minute}시간`;
+  const handleButtonClick = (buttonId) => {
+    setActiveButton(prevButton => prevButton === buttonId ? null : buttonId);
   };
-
-  // const formatDate = dateStr => {
-  //   // ISO 문자열을 Date 객체로 변환
-  //   const date = new Date(dateStr);
-  //   // 연도, 월, 일 추출
-  //   const year = date.getFullYear();
-  //   const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
-  //   const day = String(date.getDate()).padStart(2, '0'); // 일자를 2자리로 포맷
-  
-  //   return `${year}.${month}.${day}`;
-  // };
 
   return (
 
@@ -1705,7 +1221,7 @@ const handleRemoveFavorite = () => {
       <div id="play-detail-container">
         <div id="play-detail-header">
           <h2 id="play-subject">{playData ? playData.name : '임시 제목'}</h2>
-          <p>{playData ? `당일 공연일 : `+`${formatDateTargt(playData.targetDate)}` : '2024년 12월 18일 AM 12:00시간'}</p>
+          <p>연극 주간 50위</p>
         </div>
 
         <div id="play-detail-body">
@@ -2012,25 +1528,6 @@ const handleRemoveFavorite = () => {
               handleQAClick={handleQAClick} selectQASeq={selectQASeq}
               setIsQAUpdate={setIsQAUpdate} isQAUpdate={isQAUpdate}
               handleQADeleteClick={handleQADeleteClick}
-<<<<<<< HEAD
-               handleQASubmit={handleQASubmit}
-                handleQAEditClick={handleQAEditClick}
-                 QAText={QAText} formatDate={formatDate}
-                  setQAText={setQAText} 
-                  handleReplayClick={handleReplayClick}
-                  isReplyVisible={isReplyVisible}
-                  replyDTO={replyDTO}
-                  setIsReplyVisible={setIsReplyVisible}
-                
-                  />
-                  
-                    {/* 페이지네이션 */}
-         <div className="pagination">
-        {/* 이전 버튼 */}
-        {startPage > 1 && (
-          <span className="paging" onClick={() => onPageClick(startPage - 1)}>이전</span>
-        )}
-=======
               handleQASubmit={handleQASubmit}
               handleQAEditClick={handleQAEditClick}
               QAText={QAText} formatDate={formatDate}
@@ -2045,7 +1542,6 @@ const handleRemoveFavorite = () => {
               {startPage > 1 && (
                 <span className="paging" onClick={() => onPageClick(startPage - 1)}>이전</span>
               )}
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
 
               {/* 페이지 번호 */}
               {Array.from({ length: endPage - startPage + 1 }, (_, index) => {
@@ -2098,12 +1594,8 @@ const handleRemoveFavorite = () => {
 
       {/* 예매 모달 팝업 */}
       {reserveVisible && (
-<<<<<<< HEAD
-        <Reserve activeButton={activeButton} handleButtonClick={handleButtonClick}
-        DateList={DateList}closeModal={closeModal} DatePicker={DatePicker} selectedDate={selectedDate} setSelectedDate={setSelectedDate} ko={ko} />
-=======
-        <Reserve DateList={DateList} closeModal={closeModal} DatePicker={DatePicker} selectedDate={selectedDate} setSelectedDate={setSelectedDate} ko={ko} playData={playData} />
->>>>>>> 12995f26240463b137a36d1f2491f2fee578eab8
+        <Reserve handleButtonClick={handleButtonClick} activeButton={activeButton}
+        DateList={DateList} closeModal={closeModal} DatePicker={DatePicker} selectedDate={selectedDate} setSelectedDate={setSelectedDate} ko={ko} playData={playData} />
       )}
 
       {/* 상담 모달 팝업 */}

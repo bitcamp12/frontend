@@ -1,11 +1,13 @@
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import Book from './Book';
 import { useNavigate, useParams } from 'react-router';
 
-const Reserve = ({ DateList, closeModal, DatePicker, selectedDate, setSelectedDate, ko, playData }) => {
+const Reserve = ({ handleButtonClick,activeButton,DateList, closeModal, DatePicker, selectedDate, setSelectedDate, ko, playData }) => {
+
   const [selectedTime, setSelectedTime] = useState(null);// 선택된 data-time 값 저장
+
   const { playSeq } = useParams();
   const popupRef = useRef(null);
   const navigate = useNavigate();
