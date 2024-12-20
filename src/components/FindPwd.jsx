@@ -29,7 +29,7 @@ const FindPwd = () => {
     setAlertVisible(true);
     e.preventDefault(); 
     try {
-      const response = await axios.post("http://localhost:8080/api/members/checkId", {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/members/checkId`, {
         id: id,
       });
       if (response.data.message === "exist") {
