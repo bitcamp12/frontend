@@ -3,14 +3,16 @@ import React, { useEffect, useState } from "react";
 import styles from "../../assets/css/mypage/InfoReservation.module.css";
 import axios from "axios";
 import { format } from "date-fns";
+import ReactPaginate from "react-paginate";
+
 const InfoReservation = () => {
-    //select 날짜 조회
+    //select 날짜
     const date = new Date(); //.getMonth()+1; //getFullYear(); // toLocaleDateString();
     const [year, setYear] = useState(date.getFullYear());
-    const [month, setMonth] = useState(date.getMonth + 1);
+    const [month, setMonth] = useState(date.getMonth() + 1);
 
     const formattedDate = format(date, "yyyy-MM-dd");
-    console.log("formattedDate: " + formattedDate);
+    //console.log("formattedDate: " + formattedDate);
 
     const years = [];
     for (let index = year - 5; index < year + 5; index++) {
@@ -21,9 +23,95 @@ const InfoReservation = () => {
         months.push(index);
     }
 
-    // 예약정보 불러오기
-    const [myBooks, setMyBooks] = useState([]);
+    // 월별 검색 기능 -> 검색버튼을 눌렀을 때 작동하도록
+    const [classifyValue, setClassifyValue] = useState("");
+    const [yearValue, setYearValue] = useState("");
+    const [monthValue, setMonthValue] = useState("");
 
+    const classifyValueChange = (e) => {
+        setClassifyValue(e.target.value);
+    };
+    const yearValueChange = (e) => {
+        setYearValue(e.target.value);
+    };
+    const monthValueChange = (e) => {
+        setMonthValue(e.target.value);
+    };
+
+    const searchByMonthly = () => {
+        // DOM을 직접 움직이면 안됨
+        // var classify = document.getElementById("classify");
+        // var classifyValue = classify.options[classify.selectedIndex].value;
+
+        // var year = document.getElementById("year");
+        // var yearValue = year.options[year.selectedIndex].value;
+
+        // var month = document.getElementById("month");
+        // var monthValue = month.options[month.selectedIndex].value;
+
+        if (classifyValue === "" || yearValue === "" || monthValue === "") {
+            return;
+        }
+
+        axios
+            .get(
+                "http://localhost:8080/api/members/checkMyBook/checkBookingsByDate",
+                {
+                    params: {
+                        classify: classifyValue,
+                        year: yearValue,
+                        month: monthValue,
+                    },
+                    withCredentials: true,
+                }
+            )
+            .then((response) => {
+                console.log(response.data.data);
+                setMyBooks(response.data.data);
+            })
+            .catch((error) => console.log(error));
+
+        setCurrentPage(0); // 검색시 첫 페이지
+        fetchItems();
+    };
+
+    // 예약정보 불러오기 - 페이징징징징
+    const [myBooks, setMyBooks] = useState([]); // 글 목록을 담을 리스트
+
+    const [currentPage, setCurrentPage] = useState(0); // 현재 페이지
+    const [totalPage, setTotalPage] = useState(0); // 전페 페이지
+
+    const accessToken = localStorage.getItem("token"); // 로컬스토리지
+    const fetchItems = async () => {
+        const res = await axios.get(
+            `http://localhost:8080/api/members/checkMyBook/pagination`,
+            {
+                params: {
+                    classify: classifyValue,
+                    year: yearValue,
+                    month: monthValue,
+                    currentPage: currentPage,
+                },
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+                withCredentials: true,
+            }
+        );
+        setMyBooks(res.data.content);
+        setTotalPage(res.data.totalPages);
+    };
+
+    useEffect(() => {
+        // 페이지 로드시
+        fetchItems();
+    }, [currentPage, classifyValue, yearValue, monthValue]);
+
+    const handlePageClick = (e) => {
+        setCurrentPage(e.selected);
+    };
+    /*
+    //처음에 불러오는거 >> 잘되는중
     useEffect(() => {
         axios
             .get("http://localhost:8080/api/members/checkMyBook", {
@@ -39,7 +127,7 @@ const InfoReservation = () => {
             })
             .catch((error) => console.log(error));
     }, []);
-
+*/
     return (
         <div className={styles.infoReservation}>
             <h3>예매내역 확인 · 취소</h3>
@@ -56,23 +144,42 @@ const InfoReservation = () => {
               </div>
              */}
                 <div className={styles.searchSectionDate}>
-                    <select>
-                        <option>주문일자별</option>
-                        <option>예매날짜</option>
+                    <select
+                        id="classify"
+                        className="classify"
+                        value={classifyValue}
+                        onChange={classifyValueChange}
+                    >
+                        <option value="">구분</option>
+                        <option value="pay_date">예매날짜</option>
                     </select>
-                    <select>
-                        <option>년</option>
+                    <select
+                        id="year"
+                        className="year"
+                        value={yearValue}
+                        onChange={yearValueChange}
+                    >
+                        <option value="">년</option>
                         {years.map((index) => (
-                            <option>{index}</option>
+                            <option key={index} value={index}>
+                                {index}
+                            </option>
                         ))}
                     </select>
-                    <select>
-                        <option>월</option>
+                    <select
+                        id="month"
+                        className="month"
+                        value={monthValue}
+                        onChange={monthValueChange}
+                    >
+                        <option value="">월</option>
                         {months.map((index) => (
-                            <option>{index}</option>
+                            <option key={index} value={index}>
+                                {index}
+                            </option>
                         ))}
                     </select>
-                    <button>검색</button>
+                    <button onClick={searchByMonthly}>검색</button>
                 </div>
             </div>
             <div className={styles.listContainer}>
@@ -85,7 +192,7 @@ const InfoReservation = () => {
                     <span>취소여부</span>
                 </div>
                 {/* // 예약목록(myBooks)이 없다면, */}
-                {myBooks === null ? (
+                {myBooks.length === 0 ? (
                     <div className={styles.listItem}>
                         <span className={styles.fullRow}>
                             설정된 기간에 맞는 예매 내역이 없습니다.
@@ -94,15 +201,20 @@ const InfoReservation = () => {
                 ) : (
                     // {/* // 예약 목록(myBook)이 있다면 */}
                     myBooks.map((item) => (
-                        <div className={styles.listItem}>
+                        <div key={item.bookSeq} className={styles.listItem}>
                             <span>{format(item.payDate, "yyyy-MM-dd")}</span>
                             <span>{item.bookSeq}</span>
-                            <span>{item.name}</span>
-                            <span>{format(item.targetDate, "yyyy-MM-dd")}</span>
+                            <span>{item.playTimeTable.play.name}</span>
+                            <span>
+                                {format(
+                                    item.playTimeTable.targetDate,
+                                    "yyyy-MM-dd"
+                                )}
+                            </span>
                             <span>{item.payment}</span>
                             <span>
-                                {/* 이거 안되는중 ...  */}
-                                {item.targetDate < formattedDate
+                                {/* 이거 안되는중 ......  */}
+                                {item.playTimeTable.targetDate < formattedDate
                                     ? "취소가능"
                                     : "취소불가능"}
                             </span>
@@ -110,7 +222,23 @@ const InfoReservation = () => {
                     ))
                 )}
             </div>
-            <div className={styles.pagination}>페이징</div>
+            <div className={styles.pagination}>
+                <ReactPaginate
+                    previousLabel={"<"}
+                    nextLabel={">"}
+                    pageRangeDisplayed={3}
+                    pageCount={myBooks.length === 0 ? 1 : totalPage}
+                    onPageChange={handlePageClick}
+                    previousClassName={styles.pageItem}
+                    nextClassName={styles.pageItem}
+                    breakClassName={styles.break}
+                    containerClassName={styles.pagePagination}
+                    pageClassName={styles.pageItem}
+                    activeClassName={styles.active}
+                    disabledClassName="disabled"
+                ></ReactPaginate>
+            </div>
+
             <p className={styles.note}>
                 <span>
                     ※ [상세보기]에서 예매 상세내역 확인 및 예매 취소를 하실 수
