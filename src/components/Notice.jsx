@@ -59,7 +59,9 @@ const Notice = () => {
                                     </h2>
                                     <div id={`panelsStayOpen-collapse${index}`} class="accordion-collapse collapse">
                                         <div class="accordion-body">
-                                            <img src={`https://kr.object.ncloudstorage.com/bitcamp-9th-bucket-135/storage/${item.imageFileName}`} alt={item.imageOriginalFileName} />
+                                            {item.imageFileName &&
+                                                 <img src={`https://kr.object.ncloudstorage.com/bitcamp-9th-bucket-135/storage/${item.imageFileName}`} alt={item.imageOriginalFileName} />
+                                            }
                                             <p className='noticeContent'>{item.content}</p>
                                         </div>
                                     </div>
