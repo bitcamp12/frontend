@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import AppleLogo from "../../../assets/images/Google.png";
 const LoginGoogle = () => {
     const restApikey = "332810267931-3v4gikheu6j8j2l1egm5to3o3opa57lf.apps.googleusercontent.com";
     const redirectUrl = "http://localhost:3000/googleloding";
@@ -38,7 +38,11 @@ const loginHandler = () => {
 
     return (
         <div onClick={loginHandler}>
-            구글 로그인
+            <img
+                            src={AppleLogo}
+                            alt="Apple Logo"
+                            className="social-logo"
+                        />
         </div>
     );
 };
