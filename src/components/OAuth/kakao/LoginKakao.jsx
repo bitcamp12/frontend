@@ -1,5 +1,5 @@
 import React from 'react';
-
+import KakaoLogo from "../../../assets/images/Kakao.png";
 const LoginKakao = () => {
     const restApikey = "e838336ee6195b503a57e0fd87698d96";
 const redirectUrl = "http://localhost:8080/api/login/kakao";
@@ -10,7 +10,11 @@ const loginHandler = () => {
     };
     return (
         <div onClick={loginHandler}>
-            카카오톡 로그인
+             <img
+                                        src={KakaoLogo}
+                                        alt="Kakao Logo"
+                                        className="social-logo"
+                                    />
         </div>
     );
 };

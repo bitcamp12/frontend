@@ -10,7 +10,7 @@ const CallbackNaver = () => {
     useEffect(() => {
         const fetchNaverLogin = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/login/naver?code=${code}&state=${state}`);
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/login/naver?code=${code}&state=${state}`);
                 
                 if (response.status === 200) {
                     console.log("로그인 성공:", response.data);

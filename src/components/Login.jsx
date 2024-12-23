@@ -172,25 +172,14 @@ const Login = () => {
                     </div>
 
                     <div className="socialLogin-link">
-                        <img
-                            src={AppleLogo}
-                            alt="Apple Logo"
-                            className="social-logo"
-                        />
+                       
                         <LoginGoogle/>
-                        <img
-                            src={NaverLogo}
-                            alt="Naver Logo"
-                            className="social-logo"
-                        />
+                       
                         <NaverLogin/>
-                        <img
-                            src={KakaoLogo}
-                            alt="Kakao Logo"
-                            className="social-logo"
-                        />
+                           
+                        <LoginKakao/>
                     </div>
-                    <LoginKakao/>
+                    
                 </form>
             </div>
 

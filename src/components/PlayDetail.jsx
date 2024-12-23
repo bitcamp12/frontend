@@ -183,6 +183,7 @@ const PlayDetail = () => {
 
     axios
       .get(`${process.env.REACT_APP_API_URL}/plays/getPlayOne?playSeq=${playSeq}`, {
+      
       })
       .then(response => {
         const { status, data } = response.data; // 구조 분해 할당
