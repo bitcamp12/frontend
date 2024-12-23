@@ -92,5 +92,15 @@
 .accordion-body {
     border: none !important;
     padding: 10px 16px 20px 16px;
+    align-items: center;
+    justify-content: center;
     font-size: 14px;
+    display: flex;
+    flex-direction: column;
+}
+
+.accordion-body img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
 }
