@@ -92,7 +92,7 @@ const QA = ({
 
       <div className="review-list-head">
         <div className="left-side">
-          <strong className="review-total">총 <span className="num">{QACount}</span>개의 관람평이 등록되었습니다.</strong>
+          <strong className="review-total">총 <span className="num">{QACount}</span>개의 QA가 등록되었습니다.</strong>
         </div>
         <div className="right-side">
           <div className="review-search">
@@ -110,7 +110,7 @@ const QA = ({
                   fontSize: '16px',
                   margin: '0 0 5px',
                   color: '#333',
-                }}> {qa.id} | {formatDate(qa.createdDate)}  </h1>
+                }}> {qa.name} | {formatDate(qa.createdDate)}  </h1>
                  <span >{qa.title}</span>
                 <div style={{display: 'flex', justifyContent: 'space-between'}}>
                 <h2
@@ -215,6 +215,22 @@ const QA = ({
 
             {/* 입력 필드 */}
             <div className="input-container" style={{ marginBottom: '10px' }}>
+            <input
+            type="text"
+            id="inquiry-field-title"
+            name="inquiry-title"
+            placeholder="제목을 입력하세요"
+            className="input-field"
+            style={{
+              width: '100%',
+              padding: '10px',
+              border: '1px solid #ccc',
+              borderRadius: '5px',
+            }}
+            value={QATitle}
+            onChange={(e) => setQATitle(e.target.value)}
+          />
+              
               <input
                 type="text"
                 id="qa-field"

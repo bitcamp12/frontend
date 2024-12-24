@@ -58,8 +58,8 @@ const ReviewBefore = ({
                                 <select className="review-combo-box-select"
                                  value={searchType}
                                  onChange={(e) => setSearchType(e.target.value)}>
-                                    <option value="title">글제목</option>
-                                    <option value="id">아이디</option>
+                                    <option value="title">내용</option>
+                                    <option value="id">이름</option>
                                 </select>
                             </div>
                             <div className='review-search-box'>
@@ -76,7 +76,7 @@ const ReviewBefore = ({
                     reviewDataB.map((review, index) => (
                         <div key={index} className="review-item" style={{ marginTop: '20px' }}>
                             <div id="review-info">
-                                <h1 id="user-info"> {review.id} | {formatDate(review.createdDate)}</h1>
+                                <h1 id="user-info"> {review.name} | {formatDate(review.createdDate)}</h1>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <h2 id="review-content">{review.content}</h2>
 

@@ -219,6 +219,7 @@ const PlayDetail = () => {
   //검색조건
   const [ischerachcheck, setischerachcheck] = useState(false);
   const shearchBtn = async () => {
+
     setischerachcheck(true);
     const requestParams = {
       searchType: searchType === "title" ? "title" : "id",
@@ -236,6 +237,7 @@ const PlayDetail = () => {
       if (status === 200) {
         setReviewACount(data);
       } else if (status === 404) {
+        setReviewACount(0);
         console.log('검색 리뷰 없음');
       }
     } catch (error) {
@@ -252,6 +254,7 @@ const PlayDetail = () => {
       if (status === 200) {
         setReviewData(data);
       } else if (status === 404) {
+        setReviewData([]);
         console.log('검색 리뷰 없음');
       }
     } catch (error) {
@@ -322,6 +325,7 @@ const PlayDetail = () => {
       if (status === 200) {
         setReviewData(data); // 상태 업데이트
       } else if (status === 404) {
+        setReviewData([]);
         console.log('리뷰 없음');
       }
     } catch (error) {
@@ -341,6 +345,7 @@ const PlayDetail = () => {
   useEffect(() => {
     console.log(ischerachcheck);
     if (visible[4]) {
+      
       // Q&A 탭 활성화 시
       fetchQAData();
     } else if (ischerachcheck) {
@@ -361,7 +366,7 @@ const PlayDetail = () => {
         fetchQACountData();
       }
     }
-  }, [page, visible, isReviewVisible, isExpectationVisible, ischerachcheck]); // 상태 변경에 따른 재렌더링
+  }, [page, visible, isReviewVisible, isExpectationVisible, ischerachcheck,selected]); // 상태 변경에 따른 재렌더링
 
 
   // 페이지 블록 계산
@@ -405,6 +410,7 @@ const PlayDetail = () => {
       if (status === 200) {
         setReviewACount(data); // 상태 업데이트
       } else if (status === 404) {
+        setReviewACount(0);
         console.log('카운트 오류');
       }
     } catch (error) {
@@ -441,14 +447,14 @@ const PlayDetail = () => {
     }
 
     // 데이터 객체 생성
-    const reviewData = {
+    const reviewDTO = {
       content: reviewText,
       rating: rating,
     }
     // const userId = sessionStorage.getItem("id");
     // 서버로 데이터 전송
-    axios.post(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewA?playSeq=${playSeq}`,{
-      reviewData:reviewData, // reviewData를 객체 형태로 설정
+    axios.post(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewA?playSeq=${playSeq}`,
+      reviewDTO,{//reviewData를 객체 형태로 설정
       headers: {
           'Authorization': `Bearer ${accessToken}` // Bearer 토큰 포함
       },
@@ -650,6 +656,7 @@ const PlayDetail = () => {
       if (countStatus === 200) {
         setReviewBCount(countData);  // 리뷰 개수 설정
       } else if (countStatus === 404) {
+        setReviewBCount(0); 
         console.log('검색 리뷰 없음');
       }
 
@@ -663,6 +670,7 @@ const PlayDetail = () => {
       if (reviewStatus === 200) {
         setReviewDataB(reviewData);  // 리뷰 데이터 설정
       } else if (reviewStatus === 404) {
+        setReviewDataB([]); 
         console.log('검색된 리뷰 없음');
       }
 
@@ -686,6 +694,7 @@ const PlayDetail = () => {
       if (status === 200) {
         setReviewDataB(data); // 상태 업데이트
       } else if (status === 404) {
+        setReviewDataB([]);
         console.log('리뷰 없음');
       }
     } catch (error) {
@@ -703,6 +712,7 @@ const PlayDetail = () => {
       if (status === 200) {
         setReviewBCount(data); // 상태 업데이트
       } else if (status === 404) {
+        setReviewBCount(0); // 상태 업데이트
         console.log('카운트 오류');
       }
     } catch (error) {
@@ -730,7 +740,7 @@ const PlayDetail = () => {
       return;
     }
 
-
+//리뷰 등록 B
     // 데이터 객체 생성
     const reviewDataB = {
       content: reviewTextB,
@@ -875,6 +885,7 @@ const PlayDetail = () => {
       if (status === 200) {
         setQAData(data); // 상태 업데이트
       } else if (status === 404) {
+        setQAData([]); // 상태 업데이트
         console.log('QA 없음');
       }
     } catch (error) {
@@ -892,6 +903,7 @@ const PlayDetail = () => {
       if (status === 200) {
         setQACount(data); // 상태 업데이트
       } else if (status === 404) {
+        setQACount(0); 
         console.log('카운트 오류');
       }
     } catch (error) {
@@ -963,6 +975,7 @@ const PlayDetail = () => {
     const selectQA = QAData.find((qa) => qa.qnaSeq === qnaSeq);
     if (selectQA) {
       setSelectedQASeq(selectQA.qnaSeq)
+      setQATitle(selectQA.title)
       setQAText(selectQA.content); // 리뷰 내용 설정
       setIsQAUpdate(true);              // 수정 모달 열기
     }
@@ -974,6 +987,7 @@ const PlayDetail = () => {
   const handleQAClick = (e) => {
     const updatedQA = {
       qnaSeq: e.target.getAttribute('data-qa-seq'), // 현재 수정 중인 리뷰의 고유 ID
+      title:QATitle,
       content: QAText,             // 수정된 리뷰 내용
     };
     axios.put(`${process.env.REACT_APP_API_URL}/qnas/qna`, updatedQA,{
@@ -1092,8 +1106,8 @@ useEffect(()=>{
 
   })
   .then((response) => {
-    console.log(response)
-    setuserId(response.data.data);
+    console.log(response);
+    setuserId(response.data.data.id);
   })
 
 },[])
@@ -1338,7 +1352,7 @@ useEffect(()=>{
               <img src={star} className="play-info-img" alt="별점" id="rating-image" />
               <label className="play-info-column-header">별점 </label><p className="play-info-column-content">{reviewAVG ? parseFloat(reviewAVG).toFixed(2) : 0.00}</p>
             </div>
-            <div className="play-info-column" style={{ paddingLeft: '10px' }}><span onClick={HartClick} style={{ fontSize: '25px', color: hartColor }}>♥</span></div>
+            <div className="play-info-column" style={{ paddingLeft: '10px' }}><span onClick={HartClick} style={{ fontSize: '25px', color: hartColor,cursor: 'pointer' }}>♥</span></div>
           </div>
         </div>
 
