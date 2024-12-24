@@ -1097,6 +1097,7 @@ const PlayDetail = () => {
   const [userId,setuserId] = useState(null);
 
 useEffect(()=>{
+  
   axios
   .get(`${process.env.REACT_APP_API_URL}/members/id`, {
     headers: {
@@ -1109,6 +1110,10 @@ useEffect(()=>{
     console.log(response);
     setuserId(response.data.data.id);
   })
+  .then(() => {
+    console.log();
+    setuserId(null);
+  })
 
 },[])
 
@@ -1118,9 +1123,10 @@ useEffect(()=>{
   // 즐겨찾기 상태 확인
   useEffect(() => {
 
+   
 
     axios
-      .get(`${process.env.REACT_APP_API_URL}/favorites/favorites?playSeq=${playSeq}`, {
+      .get(`${process.env.REACT_APP_API_URL}/favorites/favorites?playSeq=${playSeq}&userId=${userId}`, {
         headers: {
           'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
       },
