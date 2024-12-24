@@ -36,7 +36,7 @@ const InfoLock = (props) => {
                             value={selectedIcon}
                         />
                     </div>
-                    <div>
+                    {/* <div>
                         <label htmlFor="id">아이디</label>
                         <input
                             type="text"
@@ -45,7 +45,7 @@ const InfoLock = (props) => {
                             value={props.id}
                             readOnly
                         />
-                    </div>
+                    </div> */}
                     <div>
                         <label htmlFor="pwd">비밀번호</label>
                         <input

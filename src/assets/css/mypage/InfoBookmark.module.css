@@ -23,6 +23,32 @@
     gap: 15px;
 }
 
+.listHeader {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.listItem {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.listItem .fullRow {
+    grid-column: span 6;
+    text-align: center;
+}
+
 .noItems {
     font-size: 1.2em;
     color: #555;
@@ -60,7 +86,7 @@
 
 .actionButton {
     padding: 5px 10px;
-    background-color: #8E43E7;
+    background-color: #8e43e7;
     color: white;
     border: none;
     border-radius: 4px;
@@ -76,3 +102,103 @@
     margin-top: 20px;
 }
 
+/*  */
+
+/* pagePagination: 페이지네이션 컨테이너 스타일 */
+.pagePagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+/* pageItem: 각 페이지 항목 (페이지 번호, 이전/다음 버튼 등) 스타일 */
+.pageItem {
+    display: inline-block;
+    margin: 0 5px;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* 활성화된 페이지 항목 스타일 */
+.active {
+    background-color: #8e43e7;
+    color: white;
+    border-color: #8e43e7;
+}
+
+/* 비활성화된 상태 (이전/다음 버튼) */
+.disabled {
+    cursor: not-allowed;
+    color: #ccc;
+    border-color: #ccc;
+}
+
+/* "..." 구분 기호 스타일 */
+.break {
+    display: inline-block;
+    padding: 8px 12px;
+    cursor: default;
+    color: #888;
+}
+
+/* 페이지 항목에 마우스를 올렸을 때 효과 */
+.pageItem:hover:not(.active):not(.disabled) {
+    background-color: #f0f0f0;
+    border-color: #ccc;
+}
+
+/* 이전 및 다음 버튼에 마우스를 올렸을 때 스타일 */
+.pageItem:hover.previous,
+.pageItem:hover.next {
+    background-color: #f7f7f7;
+    border-color: #ddd;
+}
+
+/* 이전 및 다음 화살표 스타일 */
+.previous::before {
+    content: "<";
+    font-size: 18px;
+    color: #333;
+}
+
+.next::after {
+    content: ">";
+    font-size: 18px;
+    color: #333;
+}
+
+/* 화면이 작을 때 페이지 항목 크기 조정 */
+@media screen and (max-width: 600px) {
+    .pageItem {
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+}
+/* 이전 버튼 */
+.previous {
+    font-size: 18px;
+    color: #333;
+}
+
+/* 다음 버튼 */
+.next {
+    font-size: 18px;
+    color: #333;
+}
+
+/* 페이지 항목 스타일 */
+.pageItem {
+    display: inline-block;
+    margin: 0 5px;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
