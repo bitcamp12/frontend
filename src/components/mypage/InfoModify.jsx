@@ -237,11 +237,12 @@ const InfoModify = () => {
                         <dt>이름</dt>
                         <dd>
                             <span>{data.name}</span>
-                            <a href="" className={styles.whiteBtn}>
+                            {/* <a href="" className={styles.whiteBtn}>
                                 수정
-                            </a>
+                            </a> */}
                         </dd>
                     </dl>
+                    비밀번호 변경
                     <dl>
                         <dt className="editPhone">휴대폰번호</dt>
                         <dd>

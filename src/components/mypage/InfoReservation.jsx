@@ -146,7 +146,7 @@ const InfoReservation = () => {
                     <span>취소여부</span>
                 </div>
                 {/* // 예약목록(myBooks)이 없다면, */}
-                {myBooks.length === 0 ? (
+                {!myBooks && myBooks.length <= 0 ? (
                     <div className={styles.listItem}>
                         <span className={styles.fullRow}>
                             설정된 기간에 맞는 예매 내역이 없습니다.
