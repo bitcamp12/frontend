@@ -164,7 +164,7 @@ const FindId = () => {
     setAlertVisible(true);
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/sendEmailVerificationCode`,
+        `${process.env.REACT_APP_API_URL}/members/sendEmailVerificationCode`,
         {
           name: formData.name,
           email: formData.email,
