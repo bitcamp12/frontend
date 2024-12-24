@@ -81,7 +81,7 @@ const ReviewBefore = ({
                                     <h2 id="review-content">{review.content}</h2>
 
                                     {/* 아이디가 같을 때만 버튼 보이기 */}
-                                    {review.name === userId && (
+                                    {review.id === userId && (
                                         <div>
                                             <button
                                                 style={{

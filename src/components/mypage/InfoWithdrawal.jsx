@@ -54,6 +54,10 @@ const InfoWithdrawal = (props) => {
                             localStorage.setItem("token", newToken); // 새로운 토큰 저장
                         }
                     }
+                    localStorage.removeItem("token");
+                    sessionStorage.removeItem("token");
+
+                    window.location.href = "/";
                 })
                 .catch((error) => console.log(error));
         } else {
