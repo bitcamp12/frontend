@@ -53,7 +53,7 @@ const Infomation = () => {
                             <Icon name="memberInfo" size={10} color="red" />
                             <span>회원정보수정</span>
                         </li>
-                        <li
+                        {/* <li
                             onClick={() => funcSelectedIcon("memberPwd")}
                             className={
                                 selectedIcon === "memberPwd"
@@ -63,8 +63,8 @@ const Infomation = () => {
                         >
                             <Icon name="memberPwd" size={10} color="red" />
                             <span>비밀번호변경</span>
-                        </li>
-                        <li
+                        </li> */}
+                        {/* <li
                             onClick={() => funcSelectedIcon("deliveryAddr")}
                             className={
                                 selectedIcon === "deliveryAddr"
@@ -74,7 +74,7 @@ const Infomation = () => {
                         >
                             <Icon name="deliveryAddr" size={10} color="red" />
                             <span>배송지관리</span>
-                        </li>
+                        </li> */}
                         <li
                             onClick={() =>
                                 funcSelectedIcon("reservationDetail")
@@ -103,7 +103,7 @@ const Infomation = () => {
                             <Icon name="bookmark" size={10} color="red" />
                             <span>즐겨찾기</span>
                         </li>
-                        <li
+                        {/* <li
                             onClick={() => funcSelectedIcon("")}
                             className={
                                 selectedIcon === "" ? styles.selected : ""
@@ -111,7 +111,7 @@ const Infomation = () => {
                         >
                             <Icon name="memberInfo" size={10} color="red" />
                             <span>계정관리</span>
-                        </li>
+                        </li> */}
                         <li
                             onClick={() => funcSelectedIcon("withdrawal")}
                             className={
@@ -127,7 +127,7 @@ const Infomation = () => {
                 </nav>
 
                 <div className={styles.member_info_container}>
-                    {/* {sessionId && <InfoLock id={sessionId} />} */}
+                    { <InfoLock />}
                     {selectedIcon === "memberInfo" && <InfoModify />}
                     {selectedIcon === "reservationDetail" && (
                         <InfoReservation />
