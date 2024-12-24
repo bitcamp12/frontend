@@ -238,7 +238,8 @@
 }
 
 /* Auth section */
-#auth-section {
+#auth-section,
+#mypage-section {
     display: flex;
     align-items: center;
     gap: 10px; /* Add space between 로그인 and 회원가입 */
@@ -258,13 +259,13 @@
     text-decoration: none;
 }
 
+a {
+  text-decoration: none;
+}
 
 input:-webkit-autofill {
   transition: background-color 0s 600000s, color 0s 600000s !important;
 }   
-
-
-
 
 
 input:-webkit-autofill {

@@ -286,11 +286,11 @@ const MainNa = () => {
                     {id === true ? (
                         <div id="mypage-section">
                             <Link to="/member">
-                                <p id="mypage" name="mypage">
+                                <p id="mypage" name="mypage" className="authLink">
                                     마이페이지
                                 </p>
                             </Link>
-                            <p onClick={logout} style={{ cursor: "pointer" }}>
+                            <p onClick={logout} style={{ cursor: "pointer"}}>
                                 로그아웃
                             </p>
                         </div>

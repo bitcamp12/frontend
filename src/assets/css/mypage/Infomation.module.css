@@ -45,6 +45,11 @@ nav.member_info_nav li {
 
 nav.member_info_nav li span {
     margin-left: 15px;
+    cursor: pointer;
+}
+
+nav.member_info_nav li span:hover{
+    text-decoration: underline;
 }
 
 .member_info_container {
