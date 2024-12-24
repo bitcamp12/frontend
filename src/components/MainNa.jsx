@@ -23,7 +23,7 @@ const MainNa = () => {
             try {
                 const accessToken = localStorage.getItem("token");
                 if (!accessToken) {
-                    console.log("토큰이 없습니다. 로그인되지 않은 상태.");
+                   // console.log("토큰이 없습니다. 로그인되지 않은 상태.");
                     setId(false); // 로그인 상태 해제
                     return; // API 요청을 보내지 않고 종료
                 }
