@@ -493,7 +493,7 @@ const PlayDetail = () => {
       } else if (response.status === 500) {
         setAlertVisible(true)
         setModalTitle("관람평 등록")
-        setModalMessage('관람평 등록에 실패했습니다. 다시 시도해주세요.'); // 입력 필드 초기화
+        setModalMessage('로그인 후 이용 가능합니다.'); // 입력 필드 초기화
         setRating(0); // 별점 초기화
       }
     }
@@ -501,7 +501,7 @@ const PlayDetail = () => {
       console.error("리뷰 수정 중 에러 발생:", error);
       setAlertVisible(true)
       setModalTitle("관람평 등록")
-      setModalMessage('관람평 등록에 실패했습니다. 다시 시도해주세요.'); // 입력 필드 초기화
+      setModalMessage('로그인 후 이용 가능합니다.'); // 입력 필드 초기화
       setRating(0); // 별점 초기화
     });
 
@@ -552,14 +552,14 @@ const PlayDetail = () => {
         } else {
           setAlertVisible(true)
           setModalTitle("관람평 수정")
-          setModalMessage('관람평 수정에 실패하였습니다.'); // 입력 필드 초기화
+          setModalMessage('수정 권한이 없습니다.'); // 입력 필드 초기화
         }
       })
       .catch((error) => {
         console.error("리뷰 수정 중 에러 발생:", error);
         setAlertVisible(true)
         setModalTitle("관람평 수정")
-        setModalMessage('관람평 수정에 실패하였습니다.'); // 입력 필드 초기화
+        setModalMessage('수정 권한이 없습니다.'); // 입력 필드 초기화
       });
   }
 
