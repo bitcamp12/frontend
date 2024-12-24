@@ -1104,8 +1104,8 @@ useEffect(()=>{
 
   })
   .then((response) => {
-    console.log(response.data.data)
-    setuserId(response.data.data);
+    console.log(response.data);
+    setuserId(response.data.data.name);
   })
 
 },[])
