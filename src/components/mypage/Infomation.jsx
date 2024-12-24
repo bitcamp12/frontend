@@ -42,21 +42,47 @@ const Infomation = () => {
             <section className={styles.member_info_section}>
                 <nav className={styles.member_info_nav}>
                     <ul>
-                        <li onClick={() => funcSelectedIcon("memberInfo")}>
+                        <li
+                            onClick={() => funcSelectedIcon("memberInfo")}
+                            className={
+                                selectedIcon === "memberInfo"
+                                    ? styles.selected
+                                    : ""
+                            }
+                        >
                             <Icon name="memberInfo" size={10} color="red" />
                             <span>회원정보수정</span>
                         </li>
-                        <li onClick={() => funcSelectedIcon("memberPwd")}>
+                        <li
+                            onClick={() => funcSelectedIcon("memberPwd")}
+                            className={
+                                selectedIcon === "memberPwd"
+                                    ? styles.selected
+                                    : ""
+                            }
+                        >
                             <Icon name="memberPwd" size={10} color="red" />
                             <span>비밀번호변경</span>
                         </li>
-                        <li onClick={() => funcSelectedIcon("deliveryAddr")}>
+                        <li
+                            onClick={() => funcSelectedIcon("deliveryAddr")}
+                            className={
+                                selectedIcon === "deliveryAddr"
+                                    ? styles.selected
+                                    : ""
+                            }
+                        >
                             <Icon name="deliveryAddr" size={10} color="red" />
                             <span>배송지관리</span>
                         </li>
                         <li
                             onClick={() =>
                                 funcSelectedIcon("reservationDetail")
+                            }
+                            className={
+                                selectedIcon === "reservationDetail"
+                                    ? styles.selected
+                                    : ""
                             }
                         >
                             <Icon
@@ -66,15 +92,34 @@ const Infomation = () => {
                             />
                             <span>예매내역</span>
                         </li>
-                        <li onClick={() => funcSelectedIcon("bookmark")}>
+                        <li
+                            onClick={() => funcSelectedIcon("bookmark")}
+                            className={
+                                selectedIcon === "bookmark"
+                                    ? styles.selected
+                                    : ""
+                            }
+                        >
                             <Icon name="bookmark" size={10} color="red" />
                             <span>즐겨찾기</span>
                         </li>
-                        <li onClick={() => funcSelectedIcon("")}>
+                        <li
+                            onClick={() => funcSelectedIcon("")}
+                            className={
+                                selectedIcon === "" ? styles.selected : ""
+                            }
+                        >
                             <Icon name="memberInfo" size={10} color="red" />
                             <span>계정관리</span>
                         </li>
-                        <li onClick={() => funcSelectedIcon("withdrawal")}>
+                        <li
+                            onClick={() => funcSelectedIcon("withdrawal")}
+                            className={
+                                selectedIcon === "withdrawal"
+                                    ? styles.selected
+                                    : ""
+                            }
+                        >
                             <Icon name="withdrawal" size={10} color="red" />
                             <span>회원탈퇴</span>
                         </li>
