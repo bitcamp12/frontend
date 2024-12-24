@@ -47,7 +47,7 @@ const SaleContainer = () => {
     return (
         <div className="sale-container">
             <div className="sale-header">
-                <h2>오늘의 할인 역극!</h2>
+                <h2>오늘의 할인 연극!</h2>
             </div>
             <Swiper
                 slidesPerView={6}
