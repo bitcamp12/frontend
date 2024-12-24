@@ -71,7 +71,7 @@ const Reserve = ({ handleButtonClick,activeButton,DateList, closeModal, DatePick
           />
         </div>
         <div>
-          <p style={{ textAlign: 'center', fontSize: '15px', marginTop: '10px' }}>선택된 날짜 : <strong>{DateList[0]?.startTime || '없음'}</strong></p>
+          <p style={{ textAlign: 'center', fontSize: '15px', marginTop: '10px' }}>선택된 날짜 : <strong>{selectedDate || '없음'}</strong></p>
         </div>
 
         <div>
