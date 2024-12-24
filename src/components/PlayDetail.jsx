@@ -1103,14 +1103,14 @@ const PlayDetail = () => {
         } else {
           setAlertVisible(true);
           setModalTitle("Q&A 삭제");
-          setModalMessage("삭제 권한이 없습니다.");
+          setModalMessage("이미 등록된 답변이 있어 삭제할 수 없습니다.");
         }
       })
       .catch((error) => {
         console.error("리뷰 삭제 중 오류 발생:", error);
         setAlertVisible(true);
         setModalTitle("Q&A 삭제");
-        setModalMessage("삭제 권한이 없습니다.");
+        setModalMessage("이미 등록된 답변이 있어 삭제할 수 없습니다.");
       });
   };
   const [replyDTO, setReplysDTO] = useState({});
