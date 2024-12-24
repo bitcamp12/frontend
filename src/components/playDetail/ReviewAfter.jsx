@@ -76,7 +76,7 @@ const ReviewAfter = ({totalPages,userId,shearchBtn,searchKey,setShearchKey,searc
       <div id="review-details" style={{ marginTop: '20px' }}>
       {reviewData && reviewData.length > 0 ? (
       reviewData.map((review, index) => (
-        <div key={index} className="review-item" style={{ marginTop: '20px' }}>
+        <div key={index} className="review-item" style={{ marginTop: '20px' }} >
           <div id="review-info">
             <h1 id="user-info">
               {review.name} | {formatDate(review.createdDate)} | 별점: {review.rating}
@@ -85,7 +85,7 @@ const ReviewAfter = ({totalPages,userId,shearchBtn,searchKey,setShearchKey,searc
               <h2 id="review-content">{review.content}</h2>
 
               {/* 아이디 같으면 보이도록 */}
-              {review.name === userId && (
+              {review.id === userId && (
                     <div>
                       <button
                         style={{
