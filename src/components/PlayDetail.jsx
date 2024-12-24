@@ -441,14 +441,14 @@ const PlayDetail = () => {
     }
 
     // 데이터 객체 생성
-    const reviewData = {
+    const reviewDTO = {
       content: reviewText,
       rating: rating,
     }
     // const userId = sessionStorage.getItem("id");
     // 서버로 데이터 전송
-    axios.post(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewA?playSeq=${playSeq}`,{
-      reviewData:reviewData, // reviewData를 객체 형태로 설정
+    axios.post(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewA?playSeq=${playSeq}`,
+      reviewDTO,{//reviewData를 객체 형태로 설정
       headers: {
           'Authorization': `Bearer ${accessToken}` // Bearer 토큰 포함
       },
@@ -730,7 +730,7 @@ const PlayDetail = () => {
       return;
     }
 
-
+//리뷰 등록 B
     // 데이터 객체 생성
     const reviewDataB = {
       content: reviewTextB,
