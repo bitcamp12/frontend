@@ -308,7 +308,7 @@ const PlayDetail = () => {
     console.log(Math.ceil(reviewACount / 10));
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/reviewAfters/ReviewAList?playSeq=${playSeq}&selected=${selected}`,
+        `${process.env.REACT_APP_API_URL}/reviewAfters/ReviewAList?playSeq=${playSeq}&selected=${order}`,
         {
           params: {
             page: page,
