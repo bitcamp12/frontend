@@ -1167,13 +1167,18 @@ useEffect(()=>{
 
   })
   .then((response) => {
+
     console.log(response);
     console.log("현재 사용자 : ", response.data);
+    if(response.data.status == 200){
     setuserId(response.data.data.id);
     setUserSeq(response.data.data);
+    }else{
+      setuserId(null);
+    }
   })
-  .then(() => {
-    console.log();
+  .catch((e) => {
+    console.log(e);
     setuserId(null);
   })
 
