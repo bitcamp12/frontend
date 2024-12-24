@@ -3,12 +3,15 @@ import React, { useEffect, useState } from 'react';
 import { CheckoutPage } from '../Toss/Checkout';
 import { useNavigate } from 'react-router';
 
-const Book = ({ selectedDate, playData, DateList, popupRef, navigate, userSeq}) => {
+const Book = ({ selectedDate,selectedTime, playData, DateList, popupRef, navigate, userSeq}) => {
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [seatLayout, setSeatLayout] = useState([]);
     const [bookedSeats, setBookedSeats] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
-
+    console.log("데이터 목록 : DataList");
+    console.log("selectDate :"+selectedDate);
+    console.log("selectTime :"+selectedTime);
+    
     useEffect(() => {
         const fetchBookedSeats = async () => {
             try {
