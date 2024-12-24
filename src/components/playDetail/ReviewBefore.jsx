@@ -76,7 +76,7 @@ const ReviewBefore = ({
                     reviewDataB.map((review, index) => (
                         <div key={index} className="review-item" style={{ marginTop: '20px' }}>
                             <div id="review-info">
-                                <h1 id="user-info"> {review.name} | {formatDate(review.createdDate)}</h1>
+                                <h1 id="user-info">작성자&nbsp;:&nbsp; {review.name}&nbsp;|&nbsp;작성 일자&nbsp;:&nbsp;&nbsp;{formatDate(review.createdDate)}</h1>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <h2 id="review-content">{review.content}</h2>
 

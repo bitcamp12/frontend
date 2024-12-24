@@ -79,7 +79,7 @@ const ReviewAfter = ({totalPages,userId,shearchBtn,searchKey,setShearchKey,searc
         <div key={index} className="review-item" style={{ marginTop: '20px' }} >
           <div id="review-info">
             <h1 id="user-info">
-              {review.name} | {formatDate(review.createdDate)} | 별점: {review.rating}
+              작성자&nbsp;:&nbsp;&nbsp;{review.name}&nbsp;|&nbsp;작성 일자&nbsp;:&nbsp;&nbsp;{formatDate(review.createdDate)} | 별점: {review.rating}
             </h1>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <h2 id="review-content">{review.content}</h2>

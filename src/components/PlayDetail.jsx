@@ -111,7 +111,8 @@ const PlayDetail = () => {
     setPage(1);
     setIsReviewVisible(true);
     setIsExpectationVisible(false);
-    setischerachcheck(false);
+    setischerachcheck(true);
+    setShearchKey('');
   };
 
   // 기대평 클릭 시
@@ -119,7 +120,8 @@ const PlayDetail = () => {
     setPage(1);
     setIsExpectationVisible(true);
     setIsReviewVisible(false);
-    setischerachcheck(false);
+    setischerachcheck(true);
+    setShearchKey('');
   };
 
 
