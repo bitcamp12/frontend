@@ -29,7 +29,7 @@ const InfoWithdrawal = (props) => {
             alert("탈퇴!!! ");
             axios
                 .delete(
-                    `${process.env.REACT_APP_API_URL}/members/infoWithdrawal/me/`,
+                    `${process.env.REACT_APP_API_URL}/members/infoWithdrawal/me`,
                     {
                         headers: {
                             Authorization: `Bearer ${accessToken}`,
