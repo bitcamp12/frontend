@@ -108,6 +108,7 @@ const PlayDetail = () => {
 
   // 후기평 클릭 시
   const handleReviewClick = () => {
+    setPage(1);
     setIsReviewVisible(true);
     setIsExpectationVisible(false);
     setischerachcheck(false);
@@ -115,6 +116,7 @@ const PlayDetail = () => {
 
   // 기대평 클릭 시
   const handleExpectationClick = () => {
+    setPage(1);
     setIsExpectationVisible(true);
     setIsReviewVisible(false);
     setischerachcheck(false);
@@ -123,6 +125,7 @@ const PlayDetail = () => {
 
   // 클릭한 항목만 보이도록 상태 변경
   const handleClick = (index) => {
+    setPage(1);
     const updatedVisibility = [false, false, false, false, false]; // 모든 항목 숨기기
     updatedVisibility[index] = true; // 클릭한 항목만 보이게 설정
     setVisible(updatedVisibility); // 상태 업데이트
@@ -155,6 +158,7 @@ const PlayDetail = () => {
   const handleSelect = (order) => {
     setSelected(order);  // selected 값 설정
     console.log(order);
+    setPage(1);
     fetchReviewData(order);  // fetchReviewData 함수 호출
   };
 
@@ -217,9 +221,12 @@ const PlayDetail = () => {
   //키워드
   //정렬
   //검색조건
-  const [ischerachcheck, setischerachcheck] = useState(false);
-  const shearchBtn = async () => {
+  const [ischerachcheck, setischerachcheck] = useState(true);
+  const shearchBtn = async (goFirstPage) => {
 
+    if(goFirstPage === true){
+      setPage(1);
+    }
     setischerachcheck(true);
     const requestParams = {
       searchType: searchType === "title" ? "title" : "id",
@@ -234,7 +241,7 @@ const PlayDetail = () => {
       });
       const { status, data } = response.data;
       console.log(data)
-      if (status === 200) {
+      if (status === 200){
         setReviewACount(data);
       } else if (status === 404) {
         setReviewACount(0);
@@ -434,13 +441,13 @@ const PlayDetail = () => {
   ////리뷰 등록
   const handleSubmit = async () => {
     if (!reviewText.trim()) {
-      setModalTitle("유효성")
+      setModalTitle("리뷰 등록 실패")
       setModalMessage("리뷰 내용을 입력해주세요.")
       setAlertVisible(true)
       return;
     }
     if (rating === 0) {
-      setModalTitle("유효성")
+      setModalTitle("리뷰 등록 실패")
       setModalMessage("별점을 선택해주세요.")
       setAlertVisible(true)
       return;
@@ -635,7 +642,12 @@ const PlayDetail = () => {
 
   //////////
 
-  const shearchBBtn = async () => {
+  const shearchBBtn = async (goFirstPage) => {
+    
+    if(goFirstPage === true){
+      setPage(1);
+    }
+    
     setischerachcheck(true); // 검색 시작 상태
 
     const requestParams = {
@@ -734,7 +746,7 @@ const PlayDetail = () => {
 
   const handleSubmitB = async () => {
     if (!reviewTextB.trim()) {
-      setModalTitle("유효성")
+      setModalTitle("리뷰 등록 실패")
       setModalMessage("리뷰 내용을 입력해주세요.")
       setAlertVisible(true)
       return;
@@ -925,7 +937,7 @@ const PlayDetail = () => {
 
   const handleQASubmit = async () => {
     if (!QAText.trim()) {
-      setModalTitle("유효성")
+      setModalTitle("리뷰 등록 실패")
       setModalMessage("리뷰 내용을 입력해주세요.")
       setAlertVisible(true)
       return;
@@ -950,8 +962,9 @@ const PlayDetail = () => {
       if (response.status === 200) {
         setAlertVisible(true)
         setModalTitle("성공")
-        setModalMessage('QA가 등록 되었습니다'); // 입력 필드 초기화
-        setReviewTextB(''); // 입력 필드 초기화
+        setModalMessage('Q&A가 등록 되었습니다'); // 입력 필드 초기화
+        setQATitle('');
+        setQAText(''); // 리뷰 내용 설정
         fetchQAData(); // 함수 호출
 
         fetchQACountData();
@@ -1271,7 +1284,7 @@ useEffect(()=>{
 
             <div className="play-info-column" id="age-column">
               <img src={duration} className="play-info-img" alt="기간" id="duration-image" />
-              <label className="play-info-column-header">관람연령</label><p className="play-info-column-content">{playData ? ( playData.ageLimit.indexOf('전체')!==-1 ? '전체 관람가' : ('만' + playData.ageLimit + ' 이상') ): '만0세 이상'}</p>
+              <label className="play-info-column-header">관람연령</label><p className="play-info-column-content">{playData ? ( playData.ageLimit.indexOf('전체')!==-1 ? '전체 관람가' : ('만 ' + playData.ageLimit + ' 이상') ): '만 0세 이상'}</p>
             </div>
 
             <div className="play-info-column" id="price-column">
@@ -1470,7 +1483,7 @@ useEffect(()=>{
                       setReviewText={setReviewText}
                       reviewText={reviewText}
                       setAlertVisible={setAlertVisible}
-                      page={page}
+                      setPage={setPage}
                     />
                     {/* 페이지네이션 */}
                     <div className="pagination">
@@ -1513,8 +1526,8 @@ useEffect(()=>{
                     formatDate={formatDate} isReviewUpdateB={isReviewUpdateB}
                     setIsReviewUpdateB={setIsReviewUpdateB}
                     handleSubmitB={handleSubmitB} reviewDataB={reviewDataB}
-                    reviewTextB={reviewTextB} setReviewTextB={setReviewTextB} />
-
+                    reviewTextB={reviewTextB} setReviewTextB={setReviewTextB}
+                    page={page}/>
                   {/* 페이지네이션 */}
                   <div className="pagination">
                     {/* 이전 버튼 */}

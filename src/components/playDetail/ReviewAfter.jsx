@@ -65,7 +65,7 @@ const ReviewAfter = ({totalPages,userId,shearchBtn,searchKey,setShearchKey,searc
                 </div>
                 <div className='review-search-box'>
                   <input type="text" className="review-search-input" value={searchKey} onChange={(e)=>setShearchKey(e.target.value)} placeholder="검색어를 입력하세요." />
-                  <button type='button' className="review-search-btn" onClick={shearchBtn}>검색</button>
+                  <button type='button' className="review-search-btn" onClick={()=>shearchBtn(true)}>검색</button>
                 </div>
               </form>
             </div>
