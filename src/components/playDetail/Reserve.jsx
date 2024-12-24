@@ -65,7 +65,7 @@ const Reserve = ({ handleButtonClick,activeButton,DateList, closeModal, DatePick
         <div style={{ marginTop: '30px' }} id="DatePicker">
           <DatePicker
             selected={selectedDate}
-            onChange={date => { setSelectedDate(date); setSelectedTime('없음'); console.log('선택한 날짜:', date) }}
+            onChange={date => { setSelectedDate(date); setSelectedTime(0); console.log('선택한 날짜:', date) }}
             inline
             locale={ko}  // 한국어 로케일 적용
           />
