@@ -17,7 +17,7 @@ const QA = ({
   setIsQAUpdate,
   selectQASeq,
   userId, // 추가된 부분: 로그인된 사용자의 아이디
-  setIsReplyVisible
+  
 }) => {
   console.log(selectQASeq);
   console.log(replyDTO)
@@ -110,24 +110,27 @@ const QA = ({
                   fontSize: '16px',
                   margin: '0 0 5px',
                   color: '#333',
-                }}> {qa.id} | {formatDate(qa.createdDate)} </h1>
+                }}> {qa.id} | {formatDate(qa.createdDate)}  </h1>
+                 <span >{qa.title}</span>
                 <div style={{display: 'flex', justifyContent: 'space-between'}}>
                 <h2
                   id="expectation-content"
                   style={{
-                    fontSize: '16px',
+                    fontSize: '20px',
                     margin: '0',
                     color: '#555',
                   }}
                 >
-                  {qa.title}
+                 {qa.content}
                 </h2>
                 <span
             data-qna-seq={qa.qnaSeq}
             onClick={() => handleReplayClick(qa.qnaSeq)}
             style={{ cursor: 'pointer', fontSize: '14px', color: '#8E43E7' }}
           >
-            {isReplyVisible[qa.qnaSeq] ? '△' : '▽'}
+            <span className={`arrow-icon ${isReplyVisible[qa.qnaSeq] ? 'up' : ''}`}>
+            △
+            </span>
           </span>
                 
                 </div>
@@ -173,16 +176,25 @@ const QA = ({
                 </div>
                 {/* 댓글 목록 */}
                 {/* 댓글 표시 */}
-        {isReplyVisible[qa.qnaSeq] && (
+        {/* {isReplyVisible[qa.qnaSeq] && ( */}
+         
           
-          <div style={{ marginTop: '10px', paddingLeft: '20px', borderLeft: '2px solid #ddd' }}>
-            {replyDTO[qa.qnaSeq] ? (
-              <p>{replyDTO[qa.qnaSeq].content}</p>
-            ) : (
-              <p>댓글이 없습니다.</p>
-            )}
-          </div>
-        )}
+         <div
+         className={`reply-container ${isReplyVisible[qa.qnaSeq] ? 'visible' : ''}`}
+         style={{
+           marginTop: '10px',
+           paddingLeft: '20px',
+           borderLeft: '2px solid #ddd',
+         }}
+       >
+         {replyDTO[qa.qnaSeq] ? (
+           <p>{replyDTO[qa.qnaSeq].content}</p>
+         ) : (
+           <p>댓글이 없습니다.</p>
+         )}
+       </div>
+        {/* ) */}
+        {/* } */}
               </div>
                
             </div>

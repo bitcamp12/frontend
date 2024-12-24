@@ -49,7 +49,7 @@ const ReviewBefore = ({
 
             <div className="review-list-head">
                 <div className='left-side'>
-                    <strong className="review-total">총 <span className='num'>{reviewBCount}</span>개의 관람평이 등록되었습니다.</strong>
+                    <strong className="review-total">총 <span className='num'>{reviewBCount}</span>개의 기대평 등록되었습니다.</strong>
                 </div>
                 <div className='right-side'>
                     <div className="review-search">

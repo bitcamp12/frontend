@@ -8,6 +8,9 @@ import "../styles/Login.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Modal from "./Modal/Modal";
 import axios from "axios";
+import NaverLogin from "./OAuth/Naver/LoginNaver";
+import LoginKakao from "./OAuth/kakao/LoginKakao";
+import LoginGoogle from "./OAuth/Google/LoginGoogle";
 
 const Login = () => {
     const location = useLocation();
@@ -39,6 +42,7 @@ const Login = () => {
     };
 
     const handleLogin = async (e) => {
+        
         e.preventDefault();
         try {
             setModalTitle("");
@@ -168,22 +172,14 @@ const Login = () => {
                     </div>
 
                     <div className="socialLogin-link">
-                        <img
-                            src={AppleLogo}
-                            alt="Apple Logo"
-                            className="social-logo"
-                        />
-                        <img
-                            src={NaverLogo}
-                            alt="Naver Logo"
-                            className="social-logo"
-                        />
-                        <img
-                            src={KakaoLogo}
-                            alt="Kakao Logo"
-                            className="social-logo"
-                        />
+                       
+                        <LoginGoogle/>
+                       
+                        <NaverLogin/>
+                           
+                        <LoginKakao/>
                     </div>
+                    
                 </form>
             </div>
 
