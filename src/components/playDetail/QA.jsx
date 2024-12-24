@@ -215,6 +215,22 @@ const QA = ({
 
             {/* 입력 필드 */}
             <div className="input-container" style={{ marginBottom: '10px' }}>
+            <input
+            type="text"
+            id="inquiry-field-title"
+            name="inquiry-title"
+            placeholder="제목을 입력하세요"
+            className="input-field"
+            style={{
+              width: '100%',
+              padding: '10px',
+              border: '1px solid #ccc',
+              borderRadius: '5px',
+            }}
+            value={QATitle}
+            onChange={(e) => setQATitle(e.target.value)}
+          />
+              
               <input
                 type="text"
                 id="qa-field"

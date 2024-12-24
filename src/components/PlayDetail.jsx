@@ -219,6 +219,7 @@ const PlayDetail = () => {
   //검색조건
   const [ischerachcheck, setischerachcheck] = useState(false);
   const shearchBtn = async () => {
+
     setischerachcheck(true);
     const requestParams = {
       searchType: searchType === "title" ? "title" : "id",
@@ -344,6 +345,7 @@ const PlayDetail = () => {
   useEffect(() => {
     console.log(ischerachcheck);
     if (visible[4]) {
+      
       // Q&A 탭 활성화 시
       fetchQAData();
     } else if (ischerachcheck) {
@@ -971,6 +973,7 @@ const PlayDetail = () => {
     const selectQA = QAData.find((qa) => qa.qnaSeq === qnaSeq);
     if (selectQA) {
       setSelectedQASeq(selectQA.qnaSeq)
+      setQATitle(selectQA.title)
       setQAText(selectQA.content); // 리뷰 내용 설정
       setIsQAUpdate(true);              // 수정 모달 열기
     }
@@ -982,6 +985,7 @@ const PlayDetail = () => {
   const handleQAClick = (e) => {
     const updatedQA = {
       qnaSeq: e.target.getAttribute('data-qa-seq'), // 현재 수정 중인 리뷰의 고유 ID
+      title:QATitle,
       content: QAText,             // 수정된 리뷰 내용
     };
     axios.put(`${process.env.REACT_APP_API_URL}/qnas/qna`, updatedQA,{
