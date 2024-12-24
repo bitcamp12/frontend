@@ -4,15 +4,15 @@ import styles from "../../assets/css/mypage/InfoLock.module.css";
 
 import Icon from "./Icon";
 
-const InfoLock = (props) => {
+const InfoLock = ({ password, handlePasswordChange, checkPassword }) => {
+    const [selectedIcon, setSelectedIcon] = useState("");
     // 비밀번호 맞추면 Infomation.jsx로 보내야함
 
-    const [pwd, setPwd] = useState("");
-    const [selectedIcon, setSelectedIcon] = useState("");
+    // const [pwd, setPwd] = useState("");
 
-    const funcSelectedIcon = (iconName) => {
-        setSelectedIcon(iconName);
-    };
+    // const funcSelectedIcon = (iconName) => {
+    //     setSelectedIcon(iconName);
+    // };
 
     return (
         <div className={styles.member_info_lock}>
@@ -52,14 +52,20 @@ const InfoLock = (props) => {
                             type="password"
                             name="pwd"
                             id="pwd"
-                            value={pwd}
-                            onChange={(e) => setPwd(e.target.value)}
+                            value={password}
+                            placeholder="비밀번호"
+                            onChange={handlePasswordChange}
                         />
                     </div>
                 </div>
                 <div className={styles.btnWrap}>
                     <button className={styles.whiteBtn}>취소</button>
-                    <button className={styles.violetBtn}>확인</button>
+                    <button
+                        onClick={checkPassword}
+                        className={styles.violetBtn}
+                    >
+                        확인
+                    </button>
                 </div>
             </form>
         </div>
