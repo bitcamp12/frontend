@@ -308,7 +308,7 @@ const PlayDetail = () => {
     console.log(Math.ceil(reviewACount / 10));
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/reviewAfters/ReviewAList?playSeq=${playSeq}&selected=${order}`,
+        `${process.env.REACT_APP_API_URL}/reviewAfters/ReviewAList?playSeq=${playSeq}&selected=${selected}`,
         {
           params: {
             page: page,
@@ -361,7 +361,7 @@ const PlayDetail = () => {
         fetchQACountData();
       }
     }
-  }, [page, visible, isReviewVisible, isExpectationVisible, ischerachcheck]); // 상태 변경에 따른 재렌더링
+  }, [page, visible, isReviewVisible, isExpectationVisible, ischerachcheck,selected]); // 상태 변경에 따른 재렌더링
 
 
   // 페이지 블록 계산
