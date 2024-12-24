@@ -236,6 +236,7 @@ const PlayDetail = () => {
       if (status === 200) {
         setReviewACount(data);
       } else if (status === 404) {
+        setReviewACount(0);
         console.log('검색 리뷰 없음');
       }
     } catch (error) {
@@ -252,6 +253,7 @@ const PlayDetail = () => {
       if (status === 200) {
         setReviewData(data);
       } else if (status === 404) {
+        setReviewData([]);
         console.log('검색 리뷰 없음');
       }
     } catch (error) {
@@ -322,6 +324,7 @@ const PlayDetail = () => {
       if (status === 200) {
         setReviewData(data); // 상태 업데이트
       } else if (status === 404) {
+        setReviewData([]);
         console.log('리뷰 없음');
       }
     } catch (error) {
@@ -405,6 +408,7 @@ const PlayDetail = () => {
       if (status === 200) {
         setReviewACount(data); // 상태 업데이트
       } else if (status === 404) {
+        setReviewACount(0);
         console.log('카운트 오류');
       }
     } catch (error) {
@@ -650,6 +654,7 @@ const PlayDetail = () => {
       if (countStatus === 200) {
         setReviewBCount(countData);  // 리뷰 개수 설정
       } else if (countStatus === 404) {
+        setReviewBCount(0); 
         console.log('검색 리뷰 없음');
       }
 
@@ -663,6 +668,7 @@ const PlayDetail = () => {
       if (reviewStatus === 200) {
         setReviewDataB(reviewData);  // 리뷰 데이터 설정
       } else if (reviewStatus === 404) {
+        setReviewDataB([]); 
         console.log('검색된 리뷰 없음');
       }
 
@@ -686,6 +692,7 @@ const PlayDetail = () => {
       if (status === 200) {
         setReviewDataB(data); // 상태 업데이트
       } else if (status === 404) {
+        setReviewDataB([]);
         console.log('리뷰 없음');
       }
     } catch (error) {
@@ -703,6 +710,7 @@ const PlayDetail = () => {
       if (status === 200) {
         setReviewBCount(data); // 상태 업데이트
       } else if (status === 404) {
+        setReviewBCount(0); // 상태 업데이트
         console.log('카운트 오류');
       }
     } catch (error) {
@@ -1092,7 +1100,7 @@ useEffect(()=>{
 
   })
   .then((response) => {
-    console.log(response)
+    console.log(response.data.data)
     setuserId(response.data.data);
   })
 

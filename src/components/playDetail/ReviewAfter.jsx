@@ -60,7 +60,7 @@ const ReviewAfter = ({totalPages,userId,shearchBtn,searchKey,setShearchKey,searc
                   value={searchType}
                   onChange={(e) => setSearchType(e.target.value)}>
                     <option value="title">내용</option>
-                    <option value="id">이름름</option>
+                    <option value="id">이름</option>
                   </select>
                 </div>
                 <div className='review-search-box'>
