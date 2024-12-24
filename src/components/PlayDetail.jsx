@@ -579,16 +579,16 @@ const PlayDetail = () => {
       if (mapContainer) {
         // 카카오맵 초기화
         const mapOption = {
-          center: new window.kakao.maps.LatLng(37.5287912, 126.9686735), // 서울의 중심 좌표
+          center: new window.kakao.maps.LatLng(37.47886066129527, 127.01175235381581), // 서울의 중심 좌표
           level: 3, // 확대 레벨
         };
         const map = new window.kakao.maps.Map(mapContainer, mapOption); // 지도 생성
 
         // 마커를 표시할 위치와 title, address 객체
         const position = {
-          title: '임시제목',
-          latlng: new window.kakao.maps.LatLng(37.5287912, 126.9686735), // 임시 좌표
-          address: '임시 주소',
+          title: '예술의 전당',
+          latlng: new window.kakao.maps.LatLng(37.47886066129527, 127.01175235381581), // 임시 좌표
+          address: '서울 서초구 남부순환로 2406',
         };
 
         // 마커와 인포윈도우
@@ -604,7 +604,7 @@ const PlayDetail = () => {
         });
 
         // 마커 클릭 이벤트
-        window.kakao.maps.event.addListener(marker, 'click', function () {
+        //window.kakao.maps.event.addListener(marker, 'click', function () {
           const content = `
                     <div id="info" style="padding:5px;">
                         <p style="font-size: 15px; font-weight: bold;">${position.title}</p>
@@ -613,7 +613,7 @@ const PlayDetail = () => {
                 `;
           infowindow.setContent(content);
           infowindow.open(map, marker);
-        });
+        //});
       }
     }
   }, [mapVisible]); // mapVisible이 변경될 때마다 실행
@@ -1245,7 +1245,7 @@ useEffect(()=>{
       <div id="play-detail-container">
         <div id="play-detail-header">
           <h2 id="play-subject">{playData ? playData.name : '임시 제목'}</h2>
-          <p>연극 주간 50위</p>
+          <p>{playData ? `${formatDate(playData.startTime)} ~ ${formatDate(playData.endTime)}` : '2024.07.01 ~ 2025.01.06'}</p>
         </div>
 
         <div id="play-detail-body">
@@ -1256,7 +1256,7 @@ useEffect(()=>{
           <div id="play-info">
             <div className="play-info-column" id="place-column">
               <img src={place} className="play-info-img" alt="장소" id="place-image" onClick={handleMapClick} />
-              <label className="play-info-column-header">장소</label><p className="play-info-column-content"><span onClick={handleMapClick}>{playData ? playData.address : '비트캠프'}</span></p>
+              <label className="play-info-column-header">장소</label><p className="play-info-column-content"><span onClick={handleMapClick}>{playData ? playData.address : '비트캠프'}&nbsp;&nbsp;&nbsp;🗺️</span></p>
             </div>
 
             <div className="play-info-column" id="duration-column">
@@ -1271,7 +1271,7 @@ useEffect(()=>{
 
             <div className="play-info-column" id="age-column">
               <img src={duration} className="play-info-img" alt="기간" id="duration-image" />
-              <label className="play-info-column-header">관람연령</label><p className="play-info-column-content">{playData ? '만' + playData.ageLimit + ' 이상' : '만0세 이상'}</p>
+              <label className="play-info-column-header">관람연령</label><p className="play-info-column-content">{playData ? ( playData.ageLimit.indexOf('전체')!==-1 ? '전체 관람가' : ('만' + playData.ageLimit + ' 이상') ): '만0세 이상'}</p>
             </div>
 
             <div className="play-info-column" id="price-column">
@@ -1359,9 +1359,9 @@ useEffect(()=>{
 
             <div className="play-info-column" id="rating-column">
               <img src={star} className="play-info-img" alt="별점" id="rating-image" />
-              <label className="play-info-column-header">별점 </label><p className="play-info-column-content">{reviewAVG ? parseFloat(reviewAVG).toFixed(2) : 0.00}</p>
+              <label className="play-info-column-header">별점 </label><p className="play-info-column-content">{reviewAVG != 0 ? parseFloat(reviewAVG).toFixed(2) : '등록된 별점이 없습니다'}</p>
             </div>
-            <div className="play-info-column" style={{ paddingLeft: '10px' }}><span onClick={HartClick} style={{ fontSize: '25px', color: hartColor,cursor: 'pointer' }}>♥</span></div>
+            <div className="play-info-column" style={{ paddingLeft:'10px'}}><div style={{paddingTop: '5px'}}>즐겨찾기&nbsp;&nbsp;&nbsp;&nbsp;</div><span onClick={HartClick} style={{ fontSize: '25px', color: hartColor,cursor: 'pointer' }}>♥</span></div>
           </div>
         </div>
 
