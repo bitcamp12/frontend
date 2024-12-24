@@ -8,10 +8,10 @@ const Book = ({ selectedDate,selectedTime, playData, DateList, popupRef, navigat
     const [seatLayout, setSeatLayout] = useState([]);
     const [bookedSeats, setBookedSeats] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
-    console.log("데이터 목록 : DataList");
+    console.log("데이터 목록 : "+DateList);
     console.log("selectDate :"+selectedDate);
     console.log("selectTime :"+selectedTime);
-    
+
     useEffect(() => {
         const fetchBookedSeats = async () => {
             try {
