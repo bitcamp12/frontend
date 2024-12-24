@@ -92,7 +92,7 @@ const QA = ({
 
       <div className="review-list-head">
         <div className="left-side">
-          <strong className="review-total">총 <span className="num">{QACount}</span>개의 관람평이 등록되었습니다.</strong>
+          <strong className="review-total">총 <span className="num">{QACount}</span>개의 QA가 등록되었습니다.</strong>
         </div>
         <div className="right-side">
           <div className="review-search">
@@ -110,7 +110,7 @@ const QA = ({
                   fontSize: '16px',
                   margin: '0 0 5px',
                   color: '#333',
-                }}> {qa.id} | {formatDate(qa.createdDate)}  </h1>
+                }}> {qa.name} | {formatDate(qa.createdDate)}  </h1>
                  <span >{qa.title}</span>
                 <div style={{display: 'flex', justifyContent: 'space-between'}}>
                 <h2
@@ -137,7 +137,7 @@ const QA = ({
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
                     {/* 수정/삭제 버튼 보이기 조건 추가 */}
-                    {qa.id === userId && (
+                    {qa.name === userId && (
                       <div > 
                         <button
                           style={{
