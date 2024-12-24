@@ -885,6 +885,7 @@ const PlayDetail = () => {
       if (status === 200) {
         setQAData(data); // 상태 업데이트
       } else if (status === 404) {
+        setQAData([]); // 상태 업데이트
         console.log('QA 없음');
       }
     } catch (error) {
@@ -902,6 +903,7 @@ const PlayDetail = () => {
       if (status === 200) {
         setQACount(data); // 상태 업데이트
       } else if (status === 404) {
+        setQACount(0); 
         console.log('카운트 오류');
       }
     } catch (error) {
