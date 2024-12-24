@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { CheckoutPage } from '../Toss/Checkout';
 import { useNavigate } from 'react-router';
 
-const Book = ({ selectedDate, playData, DateList, popupRef, navigate }) => {
+const Book = ({ selectedDate, playData, DateList, popupRef, navigate, userSeq}) => {
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [seatLayout, setSeatLayout] = useState([]);
     const [bookedSeats, setBookedSeats] = useState([]);
@@ -35,6 +35,7 @@ const Book = ({ selectedDate, playData, DateList, popupRef, navigate }) => {
                 console.log("응답 데이터:", response.data);
                 const bookedSeats = response.data.data;
                 console.log("예약된 좌석:", bookedSeats);
+                console.log("현재 사용자 : ", userSeq);
 
                 setBookedSeats(bookedSeats); // 예약된 좌석을 저장
             } catch (error) {
@@ -160,13 +161,14 @@ const Book = ({ selectedDate, playData, DateList, popupRef, navigate }) => {
             const discountedPrice = DateList[0]?.discountedPrice;
             const totalPrice = selectedSeats.length * discountedPrice;
 
-            return { playTimeTableSeq, bookedX, bookedY, memberSeq: 1, totalPrice };
+            return { playTimeTableSeq, bookedX, bookedY, totalPrice };
         });
 
         const queryParams = new URLSearchParams({
             transformSeats: JSON.stringify(transformSeats),
             playData: JSON.stringify(playData),
             DateList: JSON.stringify(DateList[0]),
+            userSeq: JSON.stringify(userSeq),
             popupRef: popupRef.current.name 
         }).toString();
         

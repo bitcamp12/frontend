@@ -17,6 +17,9 @@ export function SuccessPage() {
 
       try {
         const accessToken = localStorage.getItem("token");
+        if (!accessToken) {
+          console.error("Access token is missing");
+      }
         const response = await axios.post(`${process.env.REACT_APP_API_URL}/payment/confirm`,
           requestData, // Do not stringify here, axios will automatically stringify
           {
@@ -39,10 +42,17 @@ export function SuccessPage() {
         setResponseData(response.data);
 
         const transformSeats = JSON.parse(decodeURIComponent(searchParams.get("transformSeats")));
+        const userDetails = JSON.parse(decodeURIComponent(searchParams.get("userDetails")));
         console.log("Payload:", transformSeats);
+        console.log("User:", userDetails);
         
+        const payload = {
+          seats: transformSeats,
+          user: userDetails, 
+        };
+
         const bookResponse = await axios.post(`${process.env.REACT_APP_API_URL}/books/purchaseSeats`,
-          transformSeats,
+          payload,
           {
             headers: {
               "Content-Type": "application/json",
@@ -50,6 +60,8 @@ export function SuccessPage() {
             },
             withCredentials: true
           });
+
+          console.log("axios 요청 시작");
           
           if (response.status === 200) {
             // 응답에서 새로운 토큰이 있으면 로컬스토리지에 저장
