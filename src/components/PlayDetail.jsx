@@ -1690,7 +1690,7 @@ useEffect(()=>{
 
       {/* 예매 모달 팝업 */}
       {reserveVisible && (
-        <Reserve handleButtonClick={handleButtonClick} activeButton={activeButton}
+        <Reserve handleButtonClick={handleButtonClick} activeButton={activeButton} setActiveButton={setActiveButton}
         DateList={DateList} closeModal={closeModal} DatePicker={DatePicker} selectedDate={selectedDate} setSelectedDate={setSelectedDate} ko={ko} playData={playData} userSeq={userSeq}/>
       )}
 

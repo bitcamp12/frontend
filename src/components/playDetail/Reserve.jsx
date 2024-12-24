@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import Book from './Book';
 import { useNavigate, useParams } from 'react-router';
 
-const Reserve = ({ handleButtonClick,activeButton,DateList, closeModal, DatePicker, selectedDate, setSelectedDate, ko, playData, userSeq }) => {
+const Reserve = ({ handleButtonClick,activeButton, setActiveButton, DateList, closeModal, DatePicker, selectedDate, setSelectedDate, ko, playData, userSeq }) => {
 
   const [selectedTime, setSelectedTime] = useState(null);// 선택된 data-time 값 저장
 
@@ -43,7 +43,7 @@ const Reserve = ({ handleButtonClick,activeButton,DateList, closeModal, DatePick
       // Use React 18's createRoot instead of ReactDOM.render to mount the Book component
       const root = ReactDOM.createRoot(popup.document.getElementById('popup-root'));
       root.render(
-        <Book closeModal={() => popup.close()} selectedDate={selectedDate} selectedTime={selectedTime} playData={playData} DateList={DateList}  popupRef={popupRef} navigate={navigate} userSeq={userSeq}/>
+        <Book closeModal={() => popup.close()} activeButton={activeButton} selectedDate={selectedDate} selectedTime={selectedTime} playData={playData} DateList={DateList}  popupRef={popupRef} navigate={navigate} userSeq={userSeq}/>
       );
     }, 100);
 
@@ -65,7 +65,7 @@ const Reserve = ({ handleButtonClick,activeButton,DateList, closeModal, DatePick
         <div style={{ marginTop: '30px' }} id="DatePicker">
           <DatePicker
             selected={selectedDate}
-            onChange={date => { setSelectedDate(date); setSelectedTime('없음'); console.log('선택한 날짜:', date) }}
+            onChange={date => { setSelectedDate(date); setSelectedTime('없음'); setActiveButton(null); console.log('선택한 날짜:', date) }}
             inline
             locale={ko}  // 한국어 로케일 적용
           />
