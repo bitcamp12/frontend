@@ -138,6 +138,7 @@ const QA = ({
           </span>
                 
                 </div>
+                <br/>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
                     {/* 수정/삭제 버튼 보이기 조건 추가 */}

@@ -544,9 +544,10 @@ const PlayDetail = () => {
           setModalTitle("관람평 수정")
           setModalMessage('관람평이 수정 되었습니다');
           setIsReviewUpdate(false); // 모달 닫기
-          fetchReviewData();
-          fetchreviewAAvgData();
-          fetchreviewACountData();
+          //fetchReviewData();
+          //fetchreviewAAvgData();
+          //fetchreviewACountData();
+          shearchBtn();
           setReviewText(''); // 입력 필드 초기화
           setRating(0); // 별점 초기화
         } else {
@@ -854,8 +855,9 @@ const PlayDetail = () => {
           setModalMessage('기대평이 수정 되었습니다');
           setIsReviewUpdateB(false); // 모달 닫기
           setReviewTextB(''); // 입력 필드 초기화
-          fetchReviewBData(); // 함수 호출
-          fetchreviewBCountData();
+          //fetchReviewBData(); // 함수 호출
+          //fetchreviewBCountData();
+          shearchBBtn();
         } else {
           setAlertVisible(true);
           setModalTitle("기대평 수정")
@@ -1061,7 +1063,6 @@ const PlayDetail = () => {
           setIsQAUpdate(false); // 모달 닫기
           setQAText(''); // 입력 필드 초기화
           fetchQAData(); // 함수 호출
-
           fetchQACountData();
         } else {
           setAlertVisible(true)
