@@ -108,8 +108,10 @@ const MainNa = () => {
                 setAlertVisible(true);
                 setTimeout(() => {
                     setAlertVisible(false);
+                    window.location.reload();
                 }, 2000);  // 2초 뒤에 꺼짐
                 localStorage.removeItem("token");  // 토큰 제거
+
             } else if (result.data.status === 400 || result.data.status === 500) {
                 setId(false);
                 setModalMessage(`: ${result.data.message || '알 수 없는 오류'}`);

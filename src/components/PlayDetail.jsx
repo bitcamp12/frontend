@@ -149,6 +149,12 @@ const PlayDetail = () => {
   };
   // 예매 클릭 시 예매 모달 띄우기
   const handleReserveClick = () => {
+    if(userId == null){
+      setModalTitle("예매 하기")
+      setModalMessage("로그인 후 이용해주세요.")
+      setAlertVisible(true)
+    }
+    else
     setReserveVisible(true); // 예매 모달 보이기
   };
 
