@@ -1419,7 +1419,7 @@ useEffect(()=>{
         </div>
 
         <div className="info-content">
-          {visible[0] && <div className="info-section">{ playData ? playData.description : '공연정보' }</div>}
+          {visible[0] && <div className="info-section" dangerouslySetInnerHTML={{ __html: playData ? playData.description : '공연정보' }}></div>}
           {visible[1] && <div className="info-section"><PalySaleinfo /></div>}
           {visible[2] && <div className="info-section">캐스팅 배우 : {playData ? playData.totalActor : '캐스팅 정보'}</div>}
           {visible[3] && (
