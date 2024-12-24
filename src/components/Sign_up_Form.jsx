@@ -284,7 +284,7 @@ const Sign_up_Form = () => {
   
     try {
       setModalMessage("");
-      const result = await axios.post('http://localhost:8080/api/members/signup', formData);
+      const result = await axios.post(`${process.env.REACT_APP_API_URL}/members/signup`, formData);
 
       
       if (result.data.status === 200) {
@@ -325,7 +325,7 @@ const Sign_up_Form = () => {
     setModalMessage("인증번호 발송중입니다...");
     try {
       setCheckNumber('');
-      await axios.post('http://localhost:8080/api/members/sendNumber',
+      await axios.post(`${process.env.REACT_APP_API_URL}/members/sendNumber`,
         {email:formData.email}
       );
 
@@ -361,7 +361,7 @@ const Sign_up_Form = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:8080/api/members/verifyCode',
+        `${process.env.REACT_APP_API_URL}/members/verifyCode`,
         {
           email: formData.email,
           code: verificationNumber,
@@ -420,7 +420,7 @@ const Sign_up_Form = () => {
 
     try {
       setCheckPhoneNumber('');
-      await axios.post("http://localhost:8080/api/members/sendPhoneNumber", { phoneNum: formData.phone });
+      await axios.post(`${process.env.REACT_APP_API_URL}/members/sendPhoneNumber`, { phoneNum: formData.phone });
       setModalMessage("휴대폰으로 인증번호를 발송하였습니다.");
 
       setTimeout(() => {
@@ -447,7 +447,7 @@ const Sign_up_Form = () => {
   
     try {
       const response = await axios.post(
-        'http://localhost:8080/api/members/verifyPhone',
+        `${process.env.REACT_APP_API_URL}/members/verifyPhone`,
         {
           phoneNum: formData.phone,
           code: verificationPhoneNumber,
