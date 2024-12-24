@@ -150,7 +150,7 @@ const Login = () => {
                                     : "bi-check-circle"
                             } keep-login-icon ${keepLogin ? "active" : ""}`}
                         ></i>
-                        <label>로그인 상태 유지</label>
+                        <label for="keep-login">로그인 상태 유지</label>
                     </div>
 
                     <button type="submit" className="submit-button">

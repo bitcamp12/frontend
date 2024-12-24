@@ -114,7 +114,6 @@
 
 .keep-login-container {
     display: flex; /* flex로 설정하여 수평 배치 */
-    align-items: center; /* 세로 중앙 정렬 */
     margin-bottom: 10px;
 }
 
@@ -131,11 +130,10 @@
 
 label[for="keep-login"] {
     font-size: 14px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     white-space: nowrap;
     display: flex;
     align-items: center;
-    margin-top: 10px;
 }
 
 .signup-link {
@@ -167,6 +165,8 @@ label[for="keep-login"] {
     width: 48px;
     margin-bottom: 20px;
     border-radius: 50px;
+    border: 1px solid #ccc;
+    cursor: pointer;
 }
 
 /* Mobile responsiveness */

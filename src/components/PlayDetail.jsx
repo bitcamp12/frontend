@@ -1095,6 +1095,7 @@ const PlayDetail = () => {
   ////////////즐겨찾기
   //하트색깔
   const [userId,setuserId] = useState(null);
+  const [userSeq, setUserSeq] = useState(null);
 
 useEffect(()=>{
   
@@ -1108,7 +1109,9 @@ useEffect(()=>{
   })
   .then((response) => {
     console.log(response);
+    console.log("현재 사용자 : ", response.data);
     setuserId(response.data.data.id);
+    setUserSeq(response.data.data);
   })
   .then(() => {
     console.log();
@@ -1616,7 +1619,7 @@ useEffect(()=>{
       {/* 예매 모달 팝업 */}
       {reserveVisible && (
         <Reserve handleButtonClick={handleButtonClick} activeButton={activeButton}
-        DateList={DateList} closeModal={closeModal} DatePicker={DatePicker} selectedDate={selectedDate} setSelectedDate={setSelectedDate} ko={ko} playData={playData} />
+        DateList={DateList} closeModal={closeModal} DatePicker={DatePicker} selectedDate={selectedDate} setSelectedDate={setSelectedDate} ko={ko} playData={playData} userSeq={userSeq}/>
       )}
 
       {/* 상담 모달 팝업 */}
