@@ -65,7 +65,7 @@ const Reserve = ({ handleButtonClick,activeButton,DateList, closeModal, DatePick
         <div style={{ marginTop: '30px' }} id="DatePicker">
           <DatePicker
             selected={selectedDate}
-            onChange={date => { setSelectedDate(date); setSelectedTime(0); console.log('선택한 날짜:', date) }}
+            onChange={date => { setSelectedDate(date); setSelectedTime('없음'); console.log('선택한 날짜:', date) }}
             inline
             locale={ko}  // 한국어 로케일 적용
           />
@@ -89,7 +89,7 @@ const Reserve = ({ handleButtonClick,activeButton,DateList, closeModal, DatePick
           
           setSelectedTime(e.target.getAttribute('data-time')); // 선택된 시간 업데이트
         }}
-        data-time={DateList[0]?.startTime || 0}
+        data-time={DateList[0]?.startTime || '없음'}
       />
 
       {/* 두 번째 버튼 */}
@@ -105,7 +105,7 @@ const Reserve = ({ handleButtonClick,activeButton,DateList, closeModal, DatePick
           setSelectedTime(e.target.getAttribute('data-time')); 
         }
           }
-         data-time={DateList[1]?.startTime || 0}
+         data-time={DateList[1]?.startTime || '없음'}
       />
         </div>
         <div>
