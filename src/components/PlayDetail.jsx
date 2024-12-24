@@ -1061,6 +1061,7 @@ const PlayDetail = () => {
           setModalTitle("Q&A 수정")
           setModalMessage('Q&A가 수정 되었습니다');
           setIsQAUpdate(false); // 모달 닫기
+          setQATitle(''); // 입력 필드 초기화
           setQAText(''); // 입력 필드 초기화
           fetchQAData(); // 함수 호출
           fetchQACountData();
