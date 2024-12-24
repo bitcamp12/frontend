@@ -1104,8 +1104,8 @@ useEffect(()=>{
 
   })
   .then((response) => {
-    console.log(response.data);
-    setuserId(response.data.data.name);
+    console.log(response);
+    setuserId(response.data.data.id);
   })
 
 },[])
@@ -1350,7 +1350,7 @@ useEffect(()=>{
               <img src={star} className="play-info-img" alt="별점" id="rating-image" />
               <label className="play-info-column-header">별점 </label><p className="play-info-column-content">{reviewAVG ? parseFloat(reviewAVG).toFixed(2) : 0.00}</p>
             </div>
-            <div className="play-info-column" style={{ paddingLeft: '10px' }}><span onClick={HartClick} style={{ fontSize: '25px', color: hartColor }}>♥</span></div>
+            <div className="play-info-column" style={{ paddingLeft: '10px' }}><span onClick={HartClick} style={{ fontSize: '25px', color: hartColor,cursor: 'pointer' }}>♥</span></div>
           </div>
         </div>
 
