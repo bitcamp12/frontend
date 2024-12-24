@@ -199,7 +199,7 @@ const PlayDetail = () => {
         if (status === 200) {
           setPlayData(data); // 상태 업데이트
         } else if (status === 400) {
-          setModalTitle("없음")
+          setModalTitle("공연 정보")
           setModalMessage("해당 공연 정보는 존재하지않습니다")
           setAlertVisible(true)
         }
@@ -453,13 +453,13 @@ const PlayDetail = () => {
   ////리뷰 등록
   const handleSubmit = async () => {
     if (!reviewText.trim()) {
-      setModalTitle("리뷰 등록 실패")
-      setModalMessage("리뷰 내용을 입력해주세요.")
+      setModalTitle("관람평 등록 실패")
+      setModalMessage("관람평 내용을 입력해주세요.")
       setAlertVisible(true)
       return;
     }
     if (rating === 0) {
-      setModalTitle("리뷰 등록 실패")
+      setModalTitle("관람평 등록 실패")
       setModalMessage("별점을 선택해주세요.")
       setAlertVisible(true)
       return;
@@ -483,8 +483,8 @@ const PlayDetail = () => {
 
       if (response.status === 200) {
         setAlertVisible(true)
-        setModalTitle("성공")
-        setModalMessage('리뷰가 등록 되었습니다'); // 입력 필드 초기화
+        setModalTitle("관람평 등록")
+        setModalMessage('관람평이 등록 되었습니다'); // 입력 필드 초기화
         setReviewText(''); // 입력 필드 초기화
         setRating(0); // 별점 초기화
         fetchReviewData();
@@ -492,12 +492,18 @@ const PlayDetail = () => {
         fetchreviewACountData();
       } else if (response.status === 500) {
         setAlertVisible(true)
-        setModalTitle("실패")
-        setModalMessage('리뷰 등록에 실패했습니다. 다시 시도해주세요.'); // 입력 필드 초기화
+        setModalTitle("관람평 등록")
+        setModalMessage('관람평 등록에 실패했습니다. 다시 시도해주세요.'); // 입력 필드 초기화
         setRating(0); // 별점 초기화
       }
     }
-    )
+    ).catch((error) => {
+      console.error("리뷰 수정 중 에러 발생:", error);
+      setAlertVisible(true)
+      setModalTitle("관람평 등록")
+      setModalMessage('관람평 등록에 실패했습니다. 다시 시도해주세요.'); // 입력 필드 초기화
+      setRating(0); // 별점 초기화
+    });
 
 
   }
@@ -535,8 +541,8 @@ const PlayDetail = () => {
       .then((response) => {
         if (response.status === 200) {
           setAlertVisible(true)
-          setModalTitle("성공")
-          setModalMessage('리뷰가 수정 되었습니다');
+          setModalTitle("관람평 수정")
+          setModalMessage('관람평이 수정 되었습니다');
           setIsReviewUpdate(false); // 모달 닫기
           fetchReviewData();
           fetchreviewAAvgData();
@@ -545,12 +551,15 @@ const PlayDetail = () => {
           setRating(0); // 별점 초기화
         } else {
           setAlertVisible(true)
-          setModalTitle("실패")
-          setModalMessage('리뷰가 수정 실패'); // 입력 필드 초기화
+          setModalTitle("관람평 수정")
+          setModalMessage('관람평 수정에 실패하였습니다.'); // 입력 필드 초기화
         }
       })
       .catch((error) => {
         console.error("리뷰 수정 중 에러 발생:", error);
+        setAlertVisible(true)
+        setModalTitle("관람평 수정")
+        setModalMessage('관람평 수정에 실패하였습니다.'); // 입력 필드 초기화
       });
   }
 
@@ -572,22 +581,22 @@ const PlayDetail = () => {
       .then((response) => {
         if (response.status === 200) {
           setAlertVisible(true);
-          setModalTitle("성공");
-          setModalMessage("리뷰가 삭제되었습니다.");
+          setModalTitle("관람평 삭제");
+          setModalMessage("관람평이 삭제되었습니다.");
           fetchReviewData();
           fetchreviewAAvgData();
           fetchreviewACountData();
         } else {
           setAlertVisible(true);
-          setModalTitle("실패");
-          setModalMessage("리뷰 삭제 실패");
+          setModalTitle("관람평 삭제");
+          setModalMessage("로그인 후 이용해주세요.");
         }
       })
       .catch((error) => {
         console.error("리뷰 삭제 중 오류 발생:", error);
         setAlertVisible(true);
-        setModalTitle("오류");
-        setModalMessage("리뷰 삭제 중 오류가 발생했습니다.");
+        setModalTitle("관람평 삭제");
+        setModalMessage("로그인 후 이용해주세요.");
       });
   };
 
@@ -765,8 +774,8 @@ const PlayDetail = () => {
 
   const handleSubmitB = async () => {
     if (!reviewTextB.trim()) {
-      setModalTitle("리뷰 등록 실패")
-      setModalMessage("리뷰 내용을 입력해주세요.")
+      setModalTitle("기대평 등록")
+      setModalMessage("기대평을 입력해주세요.")
       setAlertVisible(true)
       return;
     }
@@ -788,20 +797,26 @@ const PlayDetail = () => {
 
       if (response.status === 200) {
         setAlertVisible(true)
-        setModalTitle("성공")
-        setModalMessage('리뷰가 등록 되었습니다'); // 입력 필드 초기화
+        setModalTitle("기대평 등록")
+        setModalMessage('기대평이 등록 되었습니다'); // 입력 필드 초기화
         setReviewTextB(''); // 입력 필드 초기화
         fetchReviewBData(); // 함수 호출
         fetchreviewBCountData();
 
-      } else if (response.status === 500) {
+      } else{
         setAlertVisible(true)
-        setModalTitle("실패")
-        setModalMessage('리뷰 등록에 실패했습니다. 다시 시도해주세요.'); // 입력 필드 초기화
+        setModalTitle("기대평 등록")
+        setModalMessage('로그인 후 이용해주세요.'); // 입력 필드 초기화
         setRating(0); // 별점 초기화
       }
     }
-    )
+    ).catch((error) => {
+      console.error("리뷰 삭제 중 오류 발생:", error);
+      setAlertVisible(true)
+      setModalTitle("기대평 등록")
+      setModalMessage('로그인 후 이용해주세요.'); // 입력 필드 초기화
+      setRating(0); // 별점 초기화
+    });
 
 
   }
@@ -834,21 +849,24 @@ const PlayDetail = () => {
       })
       .then((response) => {
         if (response.status === 200) {
-          setAlertVisible(true)
-          setModalTitle("성공")
-          setModalMessage('리뷰가 수정 되었습니다');
+          setAlertVisible(true);
+          setModalTitle("기대평 수정");
+          setModalMessage('기대평이 수정 되었습니다');
           setIsReviewUpdateB(false); // 모달 닫기
           setReviewTextB(''); // 입력 필드 초기화
           fetchReviewBData(); // 함수 호출
           fetchreviewBCountData();
         } else {
-          setAlertVisible(true)
-          setModalTitle("실패")
-          setModalMessage('리뷰가 수정 실패'); // 입력 필드 초기화
+          setAlertVisible(true);
+          setModalTitle("기대평 수정")
+          setModalMessage('로그인 후 이용해주세요.');
         }
       })
       .catch((error) => {
         console.error("리뷰 수정 중 에러 발생:", error);
+        setAlertVisible(true);
+        setModalTitle("기대평 수정")
+        setModalMessage('로그인 후 이용해주세요.');
       });
   }
 
@@ -871,21 +889,21 @@ const PlayDetail = () => {
       .then((response) => {
         if (response.status === 200) {
           setAlertVisible(true);
-          setModalTitle("성공");
-          setModalMessage("리뷰가 삭제되었습니다.");
+          setModalTitle("기대평 삭제");
+          setModalMessage("기대평이 삭제되었습니다.");
           fetchReviewBData(); // 함수 호출
           fetchreviewBCountData();
         } else {
           setAlertVisible(true);
-          setModalTitle("실패");
-          setModalMessage("리뷰 삭제 실패");
+          setModalTitle("기대평 삭제");
+          setModalMessage("삭제 권한이 없습니다.");
         }
       })
       .catch((error) => {
         console.error("리뷰 삭제 중 오류 발생:", error);
         setAlertVisible(true);
-        setModalTitle("오류");
-        setModalMessage("리뷰 삭제 중 오류가 발생했습니다.");
+        setModalTitle("기대평 삭제");
+        setModalMessage("삭제 권한이 없습니다.");
       });
   };
 
@@ -956,8 +974,8 @@ const PlayDetail = () => {
 
   const handleQASubmit = async () => {
     if (!QAText.trim()) {
-      setModalTitle("리뷰 등록 실패")
-      setModalMessage("리뷰 내용을 입력해주세요.")
+      setModalTitle("QnA 등록")
+      setModalMessage("Qna 제목과 문의 내용을 입력해주세요.")
       setAlertVisible(true)
       return;
     }
@@ -980,7 +998,7 @@ const PlayDetail = () => {
 
       if (response.status === 200) {
         setAlertVisible(true)
-        setModalTitle("성공")
+        setModalTitle("Q&A 등록")
         setModalMessage('Q&A가 등록 되었습니다'); // 입력 필드 초기화
         setQATitle('');
         setQAText(''); // 리뷰 내용 설정
@@ -990,12 +1008,18 @@ const PlayDetail = () => {
 
       } else if (response.status === 500) {
         setAlertVisible(true)
-        setModalTitle("실패")
-        setModalMessage('QA 등록에 실패했습니다. 다시 시도해주세요.'); // 입력 필드 초기화
+        setModalTitle("Q&A 등록")
+        setModalMessage('로그인 후 이용해주세요.'); // 입력 필드 초기화
         setRating(0); // 별점 초기화
       }
     }
-    )
+    ) .catch((error) => {
+      console.error("리뷰 삭제 중 오류 발생:", error);
+      setAlertVisible(true)
+      setModalTitle("Q&A 등록")
+      setModalMessage('로그인 후 이용해주세요.'); // 입력 필드 초기화
+      setRating(0); // 별점 초기화
+    });
 
 
   }
@@ -1032,8 +1056,8 @@ const PlayDetail = () => {
       .then((response) => {
         if (response.status === 200) {
           setAlertVisible(true)
-          setModalTitle("성공")
-          setModalMessage('리뷰가 수정 되었습니다');
+          setModalTitle("Q&A 수정")
+          setModalMessage('Q&A가 수정 되었습니다');
           setIsQAUpdate(false); // 모달 닫기
           setQAText(''); // 입력 필드 초기화
           fetchQAData(); // 함수 호출
@@ -1041,12 +1065,15 @@ const PlayDetail = () => {
           fetchQACountData();
         } else {
           setAlertVisible(true)
-          setModalTitle("실패")
-          setModalMessage('리뷰가 수정 실패'); // 입력 필드 초기화
+          setModalTitle("Q&A 수정")
+          setModalMessage('로그인 후 이용해주세요.'); // 입력 필드 초기화
         }
       })
       .catch((error) => {
         console.error("리뷰 수정 중 에러 발생:", error);
+        setAlertVisible(true)
+          setModalTitle("Q&A 수정")
+          setModalMessage('로그인 후 이용해주세요.'); // 입력 필드 초기화
       });
   }
 
@@ -1068,21 +1095,21 @@ const PlayDetail = () => {
       .then((response) => {
         if (response.status === 200) {
           setAlertVisible(true);
-          setModalTitle("성공");
-          setModalMessage("QA가 삭제되었습니다.");
+          setModalTitle("Q&A 삭제");
+          setModalMessage("Q&A가 삭제되었습니다.");
           fetchQAData(); // 함수 호출
           fetchQACountData();
         } else {
           setAlertVisible(true);
-          setModalTitle("실패");
-          setModalMessage("QA 삭제 실패");
+          setModalTitle("Q&A 삭제");
+          setModalMessage("삭제 권한이 없습니다.");
         }
       })
       .catch((error) => {
         console.error("리뷰 삭제 중 오류 발생:", error);
         setAlertVisible(true);
-        setModalTitle("오류");
-        setModalMessage("리뷰 삭제 중 오류가 발생했습니다.");
+        setModalTitle("Q&A 삭제");
+        setModalMessage("삭제 권한이 없습니다.");
       });
   };
   const [replyDTO, setReplysDTO] = useState({});
@@ -1198,25 +1225,25 @@ useEffect(()=>{
       .then((response) => {
         if (response.data.status === 403) {
           setAlertVisible(true);
-          setModalTitle("로그인");
+          setModalTitle("즐겨찾기");
           setModalMessage("로그인 해주세요");
 
         }
         else if (response.status === 200) {
           setAlertVisible(true);
-          setModalTitle("성공");
-          setModalMessage("즐겨찾기 성공 ");
+          setModalTitle("즐겨찾기");
+          setModalMessage("즐겨찾기가 등록되었습니다.");
           setHartColor("red"); // 성공 시 빨간 하트
         } else {
           setAlertVisible(true);
-          setModalTitle("실패");
-          setModalMessage("즐겨찾기 등록 실패");
+          setModalTitle("즐겨찾기");
+          setModalMessage("로그인 후 이용해주세요.");
         }
       })
       .catch((error) => {
         setAlertVisible(true);
-        setModalTitle("실패");
-        setModalMessage("즐겨찾기 등록 실패");
+        setModalTitle("즐겨찾기");
+        setModalMessage("로그인 후 이용해주세요.");
       });
   };
   ///즐겨찾기 삭제 빨간하트 검은색하트로 변경
@@ -1233,25 +1260,25 @@ useEffect(()=>{
       .then((response) => {
         if (response.data.status === 403) {
           setAlertVisible(true);
-          setModalTitle("로그인");
+          setModalTitle("즐겨찾기");
           setModalMessage("로그인 해주세요");
 
         }
         else if (response.status === 200) {
           setAlertVisible(true);
-          setModalTitle("성공");
-          setModalMessage("즐겨찾기 삭제 성공");
+          setModalTitle("즐겨찾기");
+          setModalMessage("즐겨찾기가 삭제되었습니다.");
           setHartColor("black"); // 성공 시 검은 하트
         } else {
           setAlertVisible(true);
-          setModalTitle("실패");
-          setModalMessage("즐겨찾기 삭제 실패");
+          setModalTitle("즐겨찾기");
+          setModalMessage("로그인 후 이용해주세요.");
         }
       })
       .catch((error) => {
         setAlertVisible(true);
-        setModalTitle("실패");
-        setModalMessage("즐겨찾기 삭제 실패");
+        setModalTitle("즐겨찾기");
+        setModalMessage("로그인 후 이용해주세요.");
       });
   };
 
