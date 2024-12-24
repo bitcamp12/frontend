@@ -128,10 +128,11 @@ const PlayDetail = () => {
   // 클릭한 항목만 보이도록 상태 변경
   const handleClick = (index) => {
     setPage(1);
+    setShearchKey('');
     const updatedVisibility = [false, false, false, false, false]; // 모든 항목 숨기기
     updatedVisibility[index] = true; // 클릭한 항목만 보이게 설정
     setVisible(updatedVisibility); // 상태 업데이트
-    setischerachcheck(false);
+    setischerachcheck(true);
   };
   // 장소 클릭 시 모달 팝업 띄우기
   const handleMapClick = () => {
@@ -225,18 +226,28 @@ const PlayDetail = () => {
   //검색조건
   const [ischerachcheck, setischerachcheck] = useState(true);
   const shearchBtn = async (goFirstPage) => {
-
+    let requestParams = null;
     if(goFirstPage === true){
       setPage(1);
+      requestParams = {
+        searchType: searchType === "title" ? "title" : "id",
+        keyword: searchKey,
+        selected: selected,
+        page: 1,
+        size: pageSize
+      };
     }
-    setischerachcheck(true);
-    const requestParams = {
-      searchType: searchType === "title" ? "title" : "id",
-      keyword: searchKey,
-      selected: selected,
-      page: page,
-      size: pageSize
-    };
+    else{
+      requestParams = {
+        searchType: searchType === "title" ? "title" : "id",
+        keyword: searchKey,
+        selected: selected,
+        page: page,
+        size: pageSize
+      };
+    }
+   // setischerachcheck(true);
+
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewASearchCount?playSeq=${playSeq}`, {
         params: requestParams, // 쿼리 파라미터로 전달
@@ -354,7 +365,6 @@ const PlayDetail = () => {
   useEffect(() => {
     console.log(ischerachcheck);
     if (visible[4]) {
-      
       // Q&A 탭 활성화 시
       fetchQAData();
     } else if (ischerachcheck) {
@@ -375,7 +385,7 @@ const PlayDetail = () => {
         fetchQACountData();
       }
     }
-  }, [page, visible, isReviewVisible, isExpectationVisible, ischerachcheck,selected]); // 상태 변경에 따른 재렌더링
+  }, [page, visible, isReviewVisible, isExpectationVisible,selected]); // 상태 변경에 따른 재렌더링
 
 
   // 페이지 블록 계산
@@ -645,19 +655,26 @@ const PlayDetail = () => {
   //////////
 
   const shearchBBtn = async (goFirstPage) => {
-    
+    let requestParams = null;
     if(goFirstPage === true){
       setPage(1);
+      requestParams = {
+        searchType: searchType === "title" ? "title" : "id",  // 검색 기준
+        keyword: searchKey,  // 검색 키워드
+        page: 1,          // 페이지 번호
+        size: pageSize       // 페이지 크기
+      };
     }
-    
-    setischerachcheck(true); // 검색 시작 상태
+    else{
+      requestParams = {
+        searchType: searchType === "title" ? "title" : "id",  // 검색 기준
+        keyword: searchKey,  // 검색 키워드
+        page: page,          // 페이지 번호
+        size: pageSize       // 페이지 크기
+      };
+    }
+    //setischerachcheck(true); // 검색 시작 상태
 
-    const requestParams = {
-      searchType: searchType === "title" ? "title" : "id",  // 검색 기준
-      keyword: searchKey,  // 검색 키워드
-      page: page,          // 페이지 번호
-      size: pageSize       // 페이지 크기
-    };
 
     try {
       // 첫 번째 API 호출: ReviewBSearchCount
