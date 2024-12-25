@@ -116,13 +116,6 @@ const Infomation = () => {
                     {selectedIcon === "withdrawal" && <InfoWithdrawal />}
                 </div> */}
                 <div className={styles.member_info_container}>
-                    {!isPasswordCorrect ? (
-                        <InfoLock
-                            password={password}
-                            handlePasswordChange={handlePasswordChange}
-                            checkPassword={checkPassword}
-                        />
-                    ) : (
                         <>
                             {selectedIcon === "memberInfo" && <InfoModify />}
                             {selectedIcon === "reservationDetail" && (
@@ -133,7 +126,7 @@ const Infomation = () => {
                                 <InfoWithdrawal />
                             )}
                         </>
-                    )}
+                    
                 </div>
             </section>
             <div>
