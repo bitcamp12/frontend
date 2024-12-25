@@ -18,6 +18,10 @@ const Reserve = ({ handleButtonClick,activeButton, setActiveButton, DateList, cl
       alert('선택된 공연 시간표가 없습니다.');
       return;
     }
+    if(selectedTime === '없음'){
+      alert('선택된 공연 시간표가 없습니다.');
+      return;
+    }
 
     // Check if the popup is already open and not closed
     if (popupRef.current && !popupRef.current.closed) {
@@ -55,7 +59,9 @@ const Reserve = ({ handleButtonClick,activeButton, setActiveButton, DateList, cl
         );
       }else if(activeButton === 'reserve-button-time-left'){
         console.log(DateList[1]);
-        <Book closeModal={() => popup.close()} activeButton={activeButton} selectedDate={selectedDate} selectedTime={selectedTime} playData={playData} DateList={[DateList[1]]}  popupRef={popupRef} navigate={navigate} userSeq={userSeq}/>
+        root.render(
+          <Book closeModal={() => popup.close()} activeButton={activeButton} selectedDate={selectedDate} selectedTime={selectedTime} playData={playData} DateList={[DateList[1]]}  popupRef={popupRef} navigate={navigate} userSeq={userSeq}/>
+        ); 
       }
     }, 100);
 
