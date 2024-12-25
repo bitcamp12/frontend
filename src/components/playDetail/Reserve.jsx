@@ -14,7 +14,7 @@ const Reserve = ({ handleButtonClick,activeButton, setActiveButton, DateList, cl
 
   const openBookPopup = () => {
 
-    if(activeButton !== 'reserve-button-time-right' &&  activeButton === 'reserve-button-time-left'){
+    if(activeButton !== 'reserve-button-time-right' &&  activeButton !== 'reserve-button-time-left'){
       alert('선택된 공연 시간표가 없습니다.');
       return;
     }
