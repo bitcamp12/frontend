@@ -160,7 +160,7 @@ const Book = ({ activeButton, selectedDate,selectedTime, playData, DateList, pop
 
         const transformSeats = selectedSeats.map((seat) => {
             const bookedX = (seat - 1 ) % 10;
-            const bookedY = Math.floor((seat - 1) / 10);
+            const bookedY = (Math.floor((seat) / 10) - 1) % 10; 
             const playTimeTableSeq = DateList[0]?.playTimeTableSeq;
             const discountedPrice = DateList[0]?.discountedPrice;
             const totalPrice = selectedSeats.length * discountedPrice;
@@ -191,7 +191,7 @@ const Book = ({ activeButton, selectedDate,selectedTime, playData, DateList, pop
                             <div key={rowIndex} className="book-body-seats-row">
                                 {row.map(({ seat }) => {
                                     const seatX = (seat - 1 ) % 10; // 한 행에 10개의 좌석이 있다고 가정
-                                    const seatY = Math.floor((seat - 1) / 10);
+                                    const seatY = (Math.floor((seat) / 10) - 1) % 10; 
 
                                     const isSeatBookedFlag = isSeatBooked(seatX, seatY);
 
