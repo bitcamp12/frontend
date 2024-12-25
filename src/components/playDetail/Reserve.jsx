@@ -13,6 +13,12 @@ const Reserve = ({ handleButtonClick,activeButton, setActiveButton, DateList, cl
   const navigate = useNavigate();
 
   const openBookPopup = () => {
+
+    if(activeButton !== 'reserve-button-time-right' &&  activeButton === 'reserve-button-time-left'){
+      alert('선택된 공연 시간표가 없습니다.');
+      return;
+    }
+
     // Check if the popup is already open and not closed
     if (popupRef.current && !popupRef.current.closed) {
       popupRef.current.focus(); // Focus the existing popup if it's already open
@@ -42,15 +48,14 @@ const Reserve = ({ handleButtonClick,activeButton, setActiveButton, DateList, cl
 
       // Use React 18's createRoot instead of ReactDOM.render to mount the Book component
       const root = ReactDOM.createRoot(popup.document.getElementById('popup-root'));
-      if(activeButton === 'reserve-button-time-left'){
+      if(activeButton === 'reserve-button-time-right'){
+        console.log(DateList[0]);
         root.render(
             <Book closeModal={() => popup.close()} activeButton={activeButton} selectedDate={selectedDate} selectedTime={selectedTime} playData={playData} DateList={[DateList[0]]}  popupRef={popupRef} navigate={navigate} userSeq={userSeq}/>
         );
-      }else if(activeButton === 'reserve-button-time-right'){
+      }else if(activeButton === 'reserve-button-time-left'){
+        console.log(DateList[1]);
         <Book closeModal={() => popup.close()} activeButton={activeButton} selectedDate={selectedDate} selectedTime={selectedTime} playData={playData} DateList={[DateList[1]]}  popupRef={popupRef} navigate={navigate} userSeq={userSeq}/>
-      }
-      else{
-        alert('선택된 공연 시간표가 없습니다.');
       }
     }, 100);
 
@@ -62,7 +67,7 @@ const Reserve = ({ handleButtonClick,activeButton, setActiveButton, DateList, cl
     };
   };
 
-  console.log(DateList[0])
+
 
   return (
     <div id="reserve-modal" className="modal">
@@ -87,11 +92,11 @@ const Reserve = ({ handleButtonClick,activeButton, setActiveButton, DateList, cl
       <input 
         type="button" 
         value={DateList[0]?.startTime || '없음'} 
-        id="reserve-button-time-left" 
-        className={activeButton === 'reserve-button-time-left' ? 'active' : ''}
+        id="reserve-button-time-right" 
+        className={activeButton === 'reserve-button-time-right' ? 'active' : ''}
         onClick={(e) =>  {
 
-          handleButtonClick('reserve-button-time-left'); // 버튼 활성화 처리
+          handleButtonClick('reserve-button-time-right'); // 버튼 활성화 처리
           console.log(e.target.getAttribute('data-time'));
           
           setSelectedTime(e.target.getAttribute('data-time')); // 선택된 시간 업데이트
@@ -103,11 +108,11 @@ const Reserve = ({ handleButtonClick,activeButton, setActiveButton, DateList, cl
       <input 
         type="button" 
         value={DateList[1]?.startTime || '없음'} 
-        id="reserve-button-time-right" 
-        className={activeButton === 'reserve-button-time-right' ? 'active' : ''}
+        id="reserve-button-time-left" 
+        className={activeButton === 'reserve-button-time-left' ? 'active' : ''}
         onClick={(e) => 
         {
-          handleButtonClick('reserve-button-time-right');
+          handleButtonClick('reserve-button-time-left');
           console.log(e.target.getAttribute('data-time'));
           setSelectedTime(e.target.getAttribute('data-time')); 
         }
