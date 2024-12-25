@@ -1356,7 +1356,7 @@ useEffect(()=>{
                     {playData
                       ? playData.discountedPrice
                         ? (
-                          <span> {playData.discountRate}%
+                          <span> {playData.discountRate}% &emsp;&emsp;
                             <span style={{ textDecoration: 'line-through', color: 'gray' }}>
                               {playData.price}원
                             </span>{' '}
