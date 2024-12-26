@@ -276,7 +276,9 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
             });
     };
 
-    const modifyUserInfo = async (data) => {
+    const modifyUserInfo = async (data,e) => {
+
+        e.preventDefault();
         const modifiedData = {
             memberSeq: data.memberSeq, // 필수 값
             id: data.id, // 필수 값
@@ -299,6 +301,7 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
             )
             .then((response) => {
                 console.log(response.data);
+                alert('회원 정보가 수정되었습니다.');
                 navigate("/");
             })
             .catch();
@@ -630,7 +633,7 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
                 <div className={styles.btnWrap}>
                     <button
                         className={styles.violetBtn}
-                        onClick={() => modifyUserInfo(data)}
+                        onClick={(e) => modifyUserInfo(data,e)}
                     >
                         변경 완료
                     </button>
