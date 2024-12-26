@@ -134,7 +134,7 @@ const Infomation = () => {
                         />
                     ) : (
                         <>
-                            {selectedIcon === "memberInfo" && <InfoModify />}
+                            {selectedIcon === "memberInfo" && <InfoModify  setPassword={setPassword} password={password}/>}
                             {selectedIcon === "reservationDetail" && (
                                 <InfoReservation />
                             )}
