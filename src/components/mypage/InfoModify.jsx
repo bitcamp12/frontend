@@ -5,7 +5,7 @@ import styles from "../../assets/css/mypage/InfoModify.module.css";
 import axios from "axios";
 import { useNavigate } from "react-router";
 
-const InfoModify = () => {
+const InfoModify = ({ password, handlePasswordChange }) => {
     const navigate = useNavigate();
 
     const [newPhoneNum, setNewPhoneNum] = useState("");
@@ -124,9 +124,46 @@ const InfoModify = () => {
             "0"
         )}`;
     };
+    // -- 비밀번호 수정 --
+    const [newPassword, setNewPassword] = useState("");
+    const handleNewPasswordChange = (event) => {
+        setNewPassword(event.target.value);
+    };
+
+    const [reNewPassword, setReNewPassword] = useState("");
+    const handleReNewPasswordChange = (event) => {
+        setReNewPassword(event.target.value);
+    };
+
+    const [currentPassword, setCurrentPassword] = useState("");
+    const handleCurrentPasswordChange = (event) => {
+        setCurrentPassword(event.target.value);
+    };
+    const isPasswordCorrect = currentPassword === password;
+
+    const [passwordToggle, isPasswordToggle] = useState(false);
+    const editPasswordBtnToggle = () => {
+        if (passwordToggle) {
+            setCurrentPassword("");
+            setNewPassword("");
+            setReNewPassword("");
+        }
+        isPasswordToggle(!passwordToggle);
+    };
+
+    const [passwordMessage, setPasswordMessage] = useState("");
+    const checkPasswordMatch = (newPassword, reNewPassword) => {
+        newPassword !== reNewPassword
+            ? setPasswordMessage("새로운 비밀번호가 일치하지 않습니다")
+            : setPasswordMessage("새로운 비밀번호가 일치합니다다");
+    };
+    const handleNewPasswordMatchBlur = () => {
+        checkPasswordMatch(newPassword, reNewPassword);
+    };
     // --핸드폰번호수정--
     const [phoneToggle, isPhoneToggle] = useState(false); // false이면 안보이게 하고 싶어요
-    const editPhoneBtnToggle = () => {
+    const editPhoneBtnToggle = (e) => {
+        e.preventDefault();
         isPhoneToggle(!phoneToggle);
     };
     const [phoneAuthToggle, isPhoneAuthToggle] = useState(false);
@@ -137,7 +174,8 @@ const InfoModify = () => {
     };
     // --이메일 수정--
     const [emailToggle, isEmailToggle] = useState(false);
-    const editEmailBtnToggle = () => {
+    const editEmailBtnToggle = (e) => {
+        e.preventDefault();
         isEmailToggle(!emailToggle);
     };
     const [emailAuthToggle, isEmailAuthToggle] = useState(false); // 인증번호 전송
@@ -152,7 +190,7 @@ const InfoModify = () => {
         else
             axios
                 .post(`${process.env.REACT_APP_API_URL}/members/sendNumber`, {
-                    params: { email: newEmail },
+                    email: newEmail,
                 })
                 .then((response) => {
                     setTimer(3 * 60);
@@ -166,11 +204,9 @@ const InfoModify = () => {
     const [emailDivVerifyMessage, setEmailDivVerifyMessage] = useState("");
     const checkVerifyNumber = () => {
         axios
-            .get(`${process.env.REACT_APP_API_URL}/members/verifyCode`, {
-                params: {
-                    email: newEmail,
-                    code: emailVerifyCode,
-                },
+            .post(`${process.env.REACT_APP_API_URL}/members/verifyCode`, {
+                email: newEmail,
+                code: emailVerifyCode,
             })
             .then((response) => {
                 console.log(response.data);
@@ -230,19 +266,90 @@ const InfoModify = () => {
                 <div className={styles.member_info_modify_form}>
                     <h5>기본정보</h5>
                     <dl>
+                        <dt>이름</dt>
+                        <dd>
+                            <span>{data.name}</span>
+                        </dd>
+                    </dl>
+                    <dl>
                         <dt>아이디</dt>
                         <dd>{data.id}</dd>
                     </dl>
                     <dl>
-                        <dt>이름</dt>
+                        <dt>비밀번호</dt>
                         <dd>
-                            <span>{data.name}</span>
-                            {/* <a href="" className={styles.whiteBtn}>
+                            <input
+                                type="password"
+                                name="pwd"
+                                id="pwd"
+                                value={currentPassword}
+                                placeholder="현재 비밀번호 입력"
+                                onChange={handleCurrentPasswordChange}
+                            />
+                            <a
+                                href="#"
+                                className={styles.whiteBtn}
+                                onClick={editPasswordBtnToggle}
+                                // onclick 하면 비밀번호가 맞아? 맞으면 수정가능한 div 토글로 보여주기 : 아니면 토글 작동 X 입력한 비밀번호 지우기
+                                style={{
+                                    pointerEvents: isPasswordCorrect
+                                        ? "auto"
+                                        : "none",
+                                    opacity: isPasswordCorrect ? 1 : 0.5,
+                                }}
+                            >
                                 수정
-                            </a> */}
+                            </a>
+                            {passwordToggle && (
+                                <div
+                                    id="editPasswordDiv"
+                                    className={styles.modifyEnter}
+                                >
+                                    <div className={styles.enterBox}>
+                                        <input
+                                            type="text"
+                                            name="newPassword"
+                                            id="newPassword"
+                                            value={newPassword}
+                                            onChange={handleNewPasswordChange}
+                                            placeholder="새로운 비밀번호 입력"
+                                        />
+
+                                        <input
+                                            type="text"
+                                            name="reNewPassword"
+                                            id="reNewPassword"
+                                            value={reNewPassword}
+                                            onChange={handleReNewPasswordChange}
+                                            onBlur={handleNewPasswordMatchBlur}
+                                            placeholder="새로운 비밀번호 한번 더 입력"
+                                        />
+                                    </div>
+                                    <div
+                                        id="checkNewPasswordDiv"
+                                        className={styles.checkDiv}
+                                    >
+                                        {passwordMessage}
+                                    </div>
+                                    <button
+                                        className={`${styles.violetBtn} ${styles.w100}`}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            setData({
+                                                ...data,
+                                                password: newPassword,
+                                            });
+                                            isPasswordToggle(!passwordToggle);
+                                            setReNewPassword("");
+                                            setNewPassword("");
+                                        }}
+                                    >
+                                        인증
+                                    </button>
+                                </div>
+                            )}
                         </dd>
                     </dl>
-                    비밀번호 변경
                     <dl>
                         <dt className="editPhone">휴대폰번호</dt>
                         <dd>
