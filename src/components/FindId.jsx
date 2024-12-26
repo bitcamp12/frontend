@@ -164,7 +164,7 @@ const FindId = () => {
     setAlertVisible(true);
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/sendEmailVerificationCode`,
+        `${process.env.REACT_APP_API_URL}/members/sendEmailVerificationCode`,
         {
           name: formData.name,
           email: formData.email,
@@ -484,7 +484,7 @@ const FindId = () => {
                                   type="submit"
                                   className={`submitBtnFindId ${isEmailCodeSent ? 'no-margin' : ''}`}
                                 >
-                                  {isPhoneCodeSent ? "인증번호 확인" : "인증번호받기"}
+                                  {isEmailCodeSent ? "인증번호 확인" : "인증번호받기"}
                                 </button>
                               </div>
                             </div>

@@ -17,7 +17,7 @@ const QA = ({
   setIsQAUpdate,
   selectQASeq,
   userId, // 추가된 부분: 로그인된 사용자의 아이디
-  setIsReplyVisible
+  
 }) => {
   console.log(selectQASeq);
   console.log(replyDTO)
@@ -92,7 +92,7 @@ const QA = ({
 
       <div className="review-list-head">
         <div className="left-side">
-          <strong className="review-total">총 <span className="num">{QACount}</span>개의 관람평이 등록되었습니다.</strong>
+          <strong className="review-total">총 <span className="num">{QACount}</span>개의 QA가 등록되었습니다.</strong>
         </div>
         <div className="right-side">
           <div className="review-search">
@@ -110,27 +110,35 @@ const QA = ({
                   fontSize: '16px',
                   margin: '0 0 5px',
                   color: '#333',
-                }}> {qa.id} | {formatDate(qa.createdDate)} </h1>
+                }}> 작성자&nbsp;:&nbsp;&nbsp;{qa.name} | 작성 일자&nbsp;:&nbsp;&nbsp;{formatDate(qa.createdDate)}  </h1>
+                <br/>
+                <span >제목&nbsp;:&nbsp;&nbsp;{qa.title}</span>
+                <br/>
+                <br/>
                 <div style={{display: 'flex', justifyContent: 'space-between'}}>
                 <h2
                   id="expectation-content"
                   style={{
-                    fontSize: '16px',
+                    fontSize: '20px',
                     margin: '0',
                     color: '#555',
                   }}
                 >
-                  {qa.title}
+                 문의 내용&nbsp;:&nbsp;&nbsp;{qa.content}
                 </h2>
                 <span
             data-qna-seq={qa.qnaSeq}
             onClick={() => handleReplayClick(qa.qnaSeq)}
             style={{ cursor: 'pointer', fontSize: '14px', color: '#8E43E7' }}
           >
-            {isReplyVisible[qa.qnaSeq] ? '△' : '▽'}
+            답변 열기
+            <span className={`arrow-icon ${isReplyVisible[qa.qnaSeq] ? 'up' : ''}`}>
+            🔽
+            </span>
           </span>
                 
                 </div>
+                <br/>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
                     {/* 수정/삭제 버튼 보이기 조건 추가 */}
@@ -173,16 +181,25 @@ const QA = ({
                 </div>
                 {/* 댓글 목록 */}
                 {/* 댓글 표시 */}
-        {isReplyVisible[qa.qnaSeq] && (
-          
-          <div style={{ marginTop: '10px', paddingLeft: '20px', borderLeft: '2px solid #ddd' }}>
-            {replyDTO[qa.qnaSeq] ? (
-              <p>{replyDTO[qa.qnaSeq].content}</p>
-            ) : (
-              <p>댓글이 없습니다.</p>
-            )}
-          </div>
-        )}
+        {/* {isReplyVisible[qa.qnaSeq] && ( */}
+         
+         <br/>
+         <div
+         className={`reply-container ${isReplyVisible[qa.qnaSeq] ? 'visible' : ''}`}
+         style={{
+           marginTop: '10px',
+           paddingLeft: '20px',
+           borderLeft: '2px solid #ddd',
+         }}
+       >
+         {replyDTO[qa.qnaSeq] ? (
+           <p>관리자&nbsp;:&nbsp;{replyDTO[qa.qnaSeq].content}</p>
+         ) : (
+           <p>문의 답변이 아직 등록되지 않았습니다.</p>
+         )}
+       </div>
+        {/* ) */}
+        {/* } */}
               </div>
                
             </div>
@@ -203,6 +220,22 @@ const QA = ({
 
             {/* 입력 필드 */}
             <div className="input-container" style={{ marginBottom: '10px' }}>
+            <input
+            type="text"
+            id="inquiry-field-title"
+            name="inquiry-title"
+            placeholder="제목을 입력하세요"
+            className="input-field"
+            style={{
+              width: '100%',
+              padding: '10px',
+              border: '1px solid #ccc',
+              borderRadius: '5px',
+            }}
+            value={QATitle}
+            onChange={(e) => setQATitle(e.target.value)}
+          />
+              
               <input
                 type="text"
                 id="qa-field"

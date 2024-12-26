@@ -21,46 +21,45 @@ const MainNa = () => {
     useEffect(() => {
         const checkLoginStatus = async () => {
             try {
-                // 로컬스토리지에서 액세스 토큰을 가져옵니다.
                 const accessToken = localStorage.getItem("token");
-    
-                // 액세스 토큰이 없다면, 바로 로그인 상태를 false로 설정하고 종료
                 if (!accessToken) {
-                    //console.log("토큰이 없습니다. 로그인되지 않은 상태.");
+                   // console.log("토큰이 없습니다. 로그인되지 않은 상태.");
                     setId(false); // 로그인 상태 해제
                     return; // API 요청을 보내지 않고 종료
                 }
     
-                // 액세스 토큰을 Authorization 헤더에 포함하여 서버로 보냄
                 const result = await axios.get(`${process.env.REACT_APP_API_URL}/members/session-status`, {
                     headers: {
                         'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
                     },
                     withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+
+                    validateStatus: (status) => {
+                        // 200~500 범위 내의 상태 코드를 유효한 응답으로 처리
+                        return status >= 200 && status < 500;
+                    }
+
                 });
     
-                // 응답 상태가 200이면 로그인 상태로 설정
-                if (result.status === 200) {
-                   // console.log("토큰 유효");
+                if (result.status == 200 ) {
                     setId(true); // 로그인 상태
-    
+                    
                     // 응답에서 새로운 토큰이 있으면 로컬스토리지에 저장
                     const authorizationHeader = result.headers["Authorization"] || result.headers["authorization"];
                     if (authorizationHeader) {
                         const newToken = authorizationHeader.replace("Bearer ", ""); // "Bearer " 제거
                         localStorage.setItem("token", newToken); // 새로운 토큰 저장
-                    } else {
-                        //console.error("응답에 Authorization 헤더가 없습니다.");
-                    }
+                        console.log("200: 인증 ");
+                    } 
                 } else if (result.status === 401) {
-                    // 401 상태는 인증 실패를 의미하므로 로그인 상태를 해제
+                    // 인증 실패 상태는 로그인 상태 해제
                     setId(false);
-                    console.log("401: 인증 실패");
+                     console.log("401: 인증 실패");
                 }
     
             } catch (error) {
                 // 요청 중 오류가 발생한 경우
-                console.error("세션 체크 중 오류 발생", error);
+                console.log("세션 체크 중 오류 발생", error);
                 setId(false); // 오류 발생 시 로그인 상태 해제
             }
         };
@@ -99,6 +98,7 @@ const MainNa = () => {
         
     }, []);
     
+
     function getCookie(name) {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
@@ -106,39 +106,66 @@ const MainNa = () => {
     }
 
     const logout = async () => {
-
-            try {
-                const accessToken = localStorage.getItem("token");
-                const result = await axios.post(
-                    `${process.env.REACT_APP_API_URL}/members/logout`, 
-                    {}, // 요청 body가 비어 있으면 빈 객체를 전달
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${accessToken}` // Access Token을 헤더에 추가
-                        },
-                        withCredentials: true // 리프레시 토큰을 쿠키를 통해 서버로 전달
-                    }
-                );
-             
-
-
-            if (result.data.status === 200 || result.status === 200) {
+        try {
+            const accessToken = localStorage.getItem("token");
+            
+            if (!accessToken) {
+                setId(false);
+                setModalMessage("로그인 정보가 없습니다.");
+                setAlertVisible(true);
+                setTimeout(() => {
+                    setAlertVisible(false);
+                }, 2000);
+                return;
+            }
+    
+            const result = await axios.post(
+                `${process.env.REACT_APP_API_URL}/members/logout`, 
+                {}, // 요청 body가 비어 있으면 빈 객체를 전달
+                {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}` // Access Token을 헤더에 추가
+                    },
+                    withCredentials: true // 리프레시 토큰을 쿠키를 통해 서버로 전달
+                }
+            );
+    
+            // 상태 코드에 따른 처리
+            if (result.data.status === 200) {
                 setId(false);
                 setModalMessage("로그아웃 되었습니다.");
                 setAlertVisible(true);
                 setTimeout(() => {
                     setAlertVisible(false);
-                  }, 2000);  // 2초 뒤에 꺼짐
-                  localStorage.removeItem("token");   
-                
+                    window.location.reload();
+                }, 2000);  // 2초 뒤에 꺼짐
+                localStorage.removeItem("token");  // 토큰 제거
+
+            } else if (result.data.status === 400 || result.data.status === 500) {
+                setId(false);
+                setModalMessage(`: ${result.data.message || '알 수 없는 오류'}`);
+                setAlertVisible(true);
+                setTimeout(() => {
+                    setAlertVisible(false);
+                }, 2000);
+            } else {
+                setId(false);
+                setModalMessage("알 수 없는 오류가 발생했습니다.");
+                setAlertVisible(true);
             }
+    
         } catch (error) {
             setId(false);
-            setModalMessage("서버 오류로 강제 로그아웃 되었습니다.");
+            setModalMessage("유효한 사용자 정보가 아닙니다.");
             setAlertVisible(true);
+            setTimeout(() => {
+                setAlertVisible(false);
+            }, 2000);
             console.error("Logout error:", error);
+            localStorage.removeItem("token");   
         }
     };
+    
 
     const fetchSuggestions = debounce(async (query) => {
         if (query) {
@@ -290,11 +317,11 @@ const MainNa = () => {
                     {id === true ? (
                         <div id="mypage-section">
                             <Link to="/member">
-                                <p id="mypage" name="mypage">
+                                <p id="mypage" name="mypage" className="authLink">
                                     마이페이지
                                 </p>
                             </Link>
-                            <p onClick={logout} style={{ cursor: "pointer" }}>
+                            <p onClick={logout} style={{ cursor: "pointer"}}>
                                 로그아웃
                             </p>
                         </div>

@@ -8,6 +8,9 @@ import "../styles/Login.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Modal from "./Modal/Modal";
 import axios from "axios";
+import NaverLogin from "./OAuth/Naver/LoginNaver";
+import LoginKakao from "./OAuth/kakao/LoginKakao";
+import LoginGoogle from "./OAuth/Google/LoginGoogle";
 
 const Login = () => {
     const location = useLocation();
@@ -39,10 +42,13 @@ const Login = () => {
     };
 
     const handleLogin = async (e) => {
+        
         e.preventDefault();
         try {
             setModalTitle("");
+            setModalMessage("");
             setAlertVisible(true);
+    
             const response = await axios.post(
                 `${process.env.REACT_APP_API_URL}/members/login`,
                 {
@@ -56,31 +62,42 @@ const Login = () => {
     
             if (response.status === 200) {
                 setModalTitle("로그인 성공");
+                setModalMessage("환영합니다.");
                 setLoginError("");
-                    
-                //  JWT 토큰을 localStorage에 저장
+    
+                // JWT 토큰을 localStorage에 저장
                 const authorizationHeader = response.headers["Authorization"] || response.headers["authorization"]; // 대소문자 구분 없이 Authorization 헤더 확인
                 if (authorizationHeader) {
                     const token = authorizationHeader.replace("Bearer ", ""); // "Bearer " 부분을 제거하고 순수 토큰만 추출
                     localStorage.setItem("token", token);
                 } else {
-                    console.error("응답에 Authorization 헤더가 없습니다.");
+                   // console.error("응답에 Authorization 헤더가 없습니다.");
                 }
-
     
                 setTimeout(() => {
                     navigate("/"); // 로그인 후 홈 페이지로 이동
                 }, 1000);
-            } else if (response.status === 404) {
-                setModalTitle("로그인 실패");
-                setModalMessage("아이디 혹은 비밀번호가 틀렸습니다.");
             }
         } catch (error) {
-            console.error("로그인 중 에러 발생:", error);
-            setModalTitle("서버 오류");
-            setModalMessage("서버와의 연결에 문제가 발생했습니다.");
+            // 에러 응답 처리
+            if (error.response) {
+                // 서버에서 응답이 왔지만 오류 상태 코드일 경우
+                if (error.response.status === 401) {
+                    setModalTitle("로그인 실패");
+                    setModalMessage("아이디 혹은 비밀번호가 틀렸습니다.");
+                } else {
+                    setModalTitle("서버 오류");
+                    setModalMessage("서버와의 연결에 문제가 발생했습니다.");
+                }
+            } else {
+                // 서버와의 연결 자체가 실패한 경우
+               // console.error("로그인 중 네트워크 에러 발생:", error);
+                setModalTitle("네트워크 오류");
+                setModalMessage("서버와의 연결에 문제가 발생했습니다.");
+            }
         }
     };
+    
     
     return (
         <div className="login-container">
@@ -133,7 +150,7 @@ const Login = () => {
                                     : "bi-check-circle"
                             } keep-login-icon ${keepLogin ? "active" : ""}`}
                         ></i>
-                        <label>로그인 상태 유지</label>
+                        <label for="keep-login">로그인 상태 유지</label>
                     </div>
 
                     <button type="submit" className="submit-button">
@@ -155,22 +172,14 @@ const Login = () => {
                     </div>
 
                     <div className="socialLogin-link">
-                        <img
-                            src={AppleLogo}
-                            alt="Apple Logo"
-                            className="social-logo"
-                        />
-                        <img
-                            src={NaverLogo}
-                            alt="Naver Logo"
-                            className="social-logo"
-                        />
-                        <img
-                            src={KakaoLogo}
-                            alt="Kakao Logo"
-                            className="social-logo"
-                        />
+                       
+                        <LoginGoogle/>
+                       
+                        <NaverLogin/>
+                           
+                        <LoginKakao/>
                     </div>
+                    
                 </form>
             </div>
 

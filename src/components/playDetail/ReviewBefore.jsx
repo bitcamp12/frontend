@@ -19,7 +19,7 @@ const ReviewBefore = ({
   reviewDataB,
   setReviewTextB,
   reviewTextB,
-  userId // 로그인된 사용자 아이디 추가
+  userId // 로그인된 사용자 아이디 추가ㅋ
 }) => {
     return (
         <div id="expectation-form" style={{ width: '100%' }}>
@@ -49,7 +49,7 @@ const ReviewBefore = ({
 
             <div className="review-list-head">
                 <div className='left-side'>
-                    <strong className="review-total">총 <span className='num'>{reviewBCount}</span>개의 관람평이 등록되었습니다.</strong>
+                    <strong className="review-total">총 <span className='num'>{reviewBCount}</span>개의 기대평 등록되었습니다.</strong>
                 </div>
                 <div className='right-side'>
                     <div className="review-search">
@@ -58,13 +58,13 @@ const ReviewBefore = ({
                                 <select className="review-combo-box-select"
                                  value={searchType}
                                  onChange={(e) => setSearchType(e.target.value)}>
-                                    <option value="title">글제목</option>
-                                    <option value="id">아이디</option>
+                                    <option value="title">내용</option>
+                                    <option value="id">이름</option>
                                 </select>
                             </div>
                             <div className='review-search-box'>
                                 <input type="text" className="review-search-input" value={searchKey} onChange={(e)=>setShearchKey(e.target.value)} placeholder="검색어를 입력하세요." />
-                                <button type='button' className="review-search-btn" onClick={shearchBBtn}>검색</button>
+                                <button type='button' className="review-search-btn" onClick={()=>shearchBBtn(true)}>검색</button>
                             </div>
                         </form>
                     </div>
@@ -76,7 +76,7 @@ const ReviewBefore = ({
                     reviewDataB.map((review, index) => (
                         <div key={index} className="review-item" style={{ marginTop: '20px' }}>
                             <div id="review-info">
-                                <h1 id="user-info"> {review.id} | {formatDate(review.createdDate)}</h1>
+                                <h1 id="user-info">작성자&nbsp;:&nbsp; {review.name}&nbsp;|&nbsp;작성 일자&nbsp;:&nbsp;&nbsp;{formatDate(review.createdDate)}</h1>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <h2 id="review-content">{review.content}</h2>
 

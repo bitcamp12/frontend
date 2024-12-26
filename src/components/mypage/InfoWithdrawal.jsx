@@ -6,7 +6,6 @@ import Modal from "../Modal/Modal";
 import { useNavigate } from "react-router";
 
 const InfoWithdrawal = (props) => {
-    const [id, setid] = useState("apple");
     const navigator = useNavigate();
 
     // 모달
@@ -30,7 +29,7 @@ const InfoWithdrawal = (props) => {
             alert("탈퇴!!! ");
             axios
                 .delete(
-                    `http://localhost:8080/api/members/infoWithdrawal/me/`,
+                    `${process.env.REACT_APP_API_URL}/members/infoWithdrawal/me`,
                     {
                         headers: {
                             Authorization: `Bearer ${accessToken}`,
@@ -42,29 +41,28 @@ const InfoWithdrawal = (props) => {
                     console.log(response.data);
                     setModalMessage(response.data.message);
                     setAlertVisible(true);
+                    if (response.data.status === 200) {
+                        // 응답에서 새로운 토큰이 있으면 로컬스토리지에 저장
+                        const authorizationHeader =
+                            response.data.status.headers["Authorization"] ||
+                            response.data.status.headers["authorization"];
+                        if (authorizationHeader) {
+                            const newToken = authorizationHeader.replace(
+                                "Bearer ",
+                                ""
+                            ); // "Bearer " 제거
+                            localStorage.setItem("token", newToken); // 새로운 토큰 저장
+                        }
+                    }
+                    localStorage.removeItem("token");
+                    sessionStorage.removeItem("token");
+
+                    window.location.href = "/";
                 })
                 .catch((error) => console.log(error));
         } else {
             alert("탈퇴못함 ㅋ ");
             // 체크박스가 선택되지 않았다면, 탈퇴불가능 (안내창?띄울까?)
-        }
-    };
-
-    const checkSessionStatus = async () => {
-        try {
-            const response = await axios.get(
-                "http://localhost:8080/api/members/session-status",
-                {
-                    withCredentials: true, // 세션 쿠키 포함
-                }
-            );
-            if (response.data.data === "세션 없음") {
-                console.log("세션이 종료되었습니다.");
-            } else {
-                console.log("세션이 유효합니다. 세션 ID:", response.data.data);
-            }
-        } catch (error) {
-            console.log("세션 상태 확인 중 오류 발생:", error);
         }
     };
 

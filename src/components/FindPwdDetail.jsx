@@ -185,7 +185,7 @@ const FindPwdDetail = () => {
     setModalMessage("인증번호 발송중입니다. 잠시만 기다려주세요");
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/sendEmailVerificationCode`,
+        `${process.env.REACT_APP_API_URL}/members/sendEmailVerificationCode`,
         {
           name: formData.name,
           email: formData.email,

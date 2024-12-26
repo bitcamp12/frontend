@@ -24,7 +24,7 @@ const SaleContainer = () => {
     useEffect(() => {
         const fetchSalePlays = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/api/playTimeTables/calculateDiscount", { withCredentials: true });
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/playTimeTables/calculateDiscount`, { withCredentials: true });
                 if (response.data && response.data.data) {
                     setPlays(response.data.data);
                 }
@@ -47,7 +47,7 @@ const SaleContainer = () => {
     return (
         <div className="sale-container">
             <div className="sale-header">
-                <h2>오늘의 할인 역극!</h2>
+                <h2>오늘의 할인 연극!</h2>
             </div>
             <Swiper
                 slidesPerView={6}
