@@ -571,7 +571,7 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
                                                             e.target.value
                                                         )
                                                     }
-                                                    onBlur={checkVerifyNumber}
+                                                    
                                                 />
                                                 <div
                                                     className={styles.iconWrap}
