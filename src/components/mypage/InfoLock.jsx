@@ -70,16 +70,6 @@ useEffect(()=>{
                         />
                     </div>
                     <div>
-                        <label htmlFor="pwd">아이디</label>
-                        <input
-                            type="text"
-                            name="loginId"
-                            id="loginId"
-                            value={loginId}
-                            readOnly
-                        />
-                    </div>
-                    <div>
                         <label htmlFor="pwd">비밀번호</label>
                         <input
                             type="password"
