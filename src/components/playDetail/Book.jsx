@@ -3,12 +3,16 @@ import React, { useEffect, useState } from 'react';
 import { CheckoutPage } from '../Toss/Checkout';
 import { useNavigate } from 'react-router';
 
-const Book = ({ selectedDate, playData, DateList, popupRef, navigate }) => {
+const Book = ({ activeButton, selectedDate,selectedTime, playData, DateList, popupRef, navigate, userSeq}) => {
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [seatLayout, setSeatLayout] = useState([]);
     const [bookedSeats, setBookedSeats] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
-
+    console.log("데이터 목록 : "+DateList);
+    console.log("selectDate :"+selectedDate);
+    console.log("selectTime :"+selectedTime);
+    console.log("activeButton :"+activeButton);
+    
     useEffect(() => {
         const fetchBookedSeats = async () => {
             try {
@@ -35,6 +39,7 @@ const Book = ({ selectedDate, playData, DateList, popupRef, navigate }) => {
                 console.log("응답 데이터:", response.data);
                 const bookedSeats = response.data.data;
                 console.log("예약된 좌석:", bookedSeats);
+                console.log("현재 사용자 : ", userSeq);
 
                 setBookedSeats(bookedSeats); // 예약된 좌석을 저장
             } catch (error) {
@@ -154,19 +159,20 @@ const Book = ({ selectedDate, playData, DateList, popupRef, navigate }) => {
         }
 
         const transformSeats = selectedSeats.map((seat) => {
-            const bookedX = (seat - 1) % 10;
+            const bookedX = (seat - 1 ) % 10;
             const bookedY = Math.floor((seat - 1) / 10);
             const playTimeTableSeq = DateList[0]?.playTimeTableSeq;
             const discountedPrice = DateList[0]?.discountedPrice;
             const totalPrice = selectedSeats.length * discountedPrice;
 
-            return { playTimeTableSeq, bookedX, bookedY, memberSeq: 1, totalPrice };
+            return { playTimeTableSeq, bookedX, bookedY, totalPrice };
         });
 
         const queryParams = new URLSearchParams({
             transformSeats: JSON.stringify(transformSeats),
             playData: JSON.stringify(playData),
             DateList: JSON.stringify(DateList[0]),
+            userSeq: JSON.stringify(userSeq),
             popupRef: popupRef.current.name 
         }).toString();
         
@@ -184,9 +190,8 @@ const Book = ({ selectedDate, playData, DateList, popupRef, navigate }) => {
                         {column.map((row, rowIndex) => (
                             <div key={rowIndex} className="book-body-seats-row">
                                 {row.map(({ seat }) => {
-                                    const seatX = (seat - 1) % 10; // 한 행에 10개의 좌석이 있다고 가정
-                                    const seatY = Math.floor((seat - 1) / 10);
-
+                                    const seatX = (seat - 1 ) % 10; // 한 행에 10개의 좌석이 있다고 가정
+                                    const seatY =  Math.floor((seat - 1) / 10);
                                     const isSeatBookedFlag = isSeatBooked(seatX, seatY);
 
                                     return (

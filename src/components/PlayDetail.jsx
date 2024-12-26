@@ -63,30 +63,32 @@ const PlayDetail = () => {
   const [DateList, setDateList] = useState([])//날짜 리스트
   // 데이터 가져오기 함수
   const fetchTimeSlots = async () => {
-    // selectedDate가 있을 경우, 없으면 현재 시간 사용
-    const selectDate = selectedDate
-      ? formatDatePickerDate(new Date(selectedDate)) // 선택된 날짜
-      : formatDatePickerDate(new Date()); // 기본값은 현재 시간
-    console.log(selectDate);
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/playTimeTables/playTimeTables?playSeq=${playSeq}&targetDate=${selectDate}`,{
-        headers: {
-          'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
-      },
-      withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
 
-      }
-      );//자바로 데이터 가져오기
+    
+  
+     // selectedDate가 있을 경우, 없으면 현재 시간 사용
+     const selectDate = selectedDate
+     ? formatDatePickerDate(new Date(selectedDate)) // 선택된 날짜
+     : formatDatePickerDate(new Date()); // 기본값은 현재 시간
+   console.log(selectDate);
+   try {
+     const response = await axios.get(`${process.env.REACT_APP_API_URL}/playTimeTables/playTimeTables?playSeq=${playSeq}&targetDate=${selectDate}`,{
+     
+     }
+     );//자바로 데이터 가져오기
 
-      if (response.status === 200) {
-        console.log(response.data.data)
-        setDateList(response.data.data);  // 서버에서 받은 데이터로 상태 업데이트
-      } else {
-        setDateList([]);  // 데이터가 없으면 빈 배열로 설정
-      }
-    } catch (error) {
-      console.error('리뷰 데이터를 가져오는 중 오류 발생:', error);
-    }
+     if (response.status === 200) {
+       console.log(response.data.data)
+       setDateList(response.data.data);  // 서버에서 받은 데이터로 상태 업데이트
+     } else {
+       setDateList([]);  // 데이터가 없으면 빈 배열로 설정
+     }
+   } catch (error) {
+     console.error('시간간 데이터를 가져오는 중 오류 발생:', error);
+   }
+    
+   
+   
   };
 
   // 컴포넌트가 처음 렌더링될 때 데이터 가져오기
@@ -108,25 +110,31 @@ const PlayDetail = () => {
 
   // 후기평 클릭 시
   const handleReviewClick = () => {
+    setPage(1);
     setIsReviewVisible(true);
     setIsExpectationVisible(false);
-    setischerachcheck(false);
+    setischerachcheck(true);
+    setShearchKey('');
   };
 
   // 기대평 클릭 시
   const handleExpectationClick = () => {
+    setPage(1);
     setIsExpectationVisible(true);
     setIsReviewVisible(false);
-    setischerachcheck(false);
+    setischerachcheck(true);
+    setShearchKey('');
   };
 
 
   // 클릭한 항목만 보이도록 상태 변경
   const handleClick = (index) => {
+    setPage(1);
+    setShearchKey('');
     const updatedVisibility = [false, false, false, false, false]; // 모든 항목 숨기기
     updatedVisibility[index] = true; // 클릭한 항목만 보이게 설정
     setVisible(updatedVisibility); // 상태 업데이트
-    setischerachcheck(false);
+    setischerachcheck(true);
   };
   // 장소 클릭 시 모달 팝업 띄우기
   const handleMapClick = () => {
@@ -143,7 +151,13 @@ const PlayDetail = () => {
   };
   // 예매 클릭 시 예매 모달 띄우기
   const handleReserveClick = () => {
-    setReserveVisible(true); // 예매 모달 보이기
+    if(userId == null){
+      setModalTitle("예매 하기")
+      setModalMessage("로그인 후 이용해주세요.")
+      setAlertVisible(true)
+    }
+    else
+     setReserveVisible(true); // 예매 모달 보이기
   };
 
   // 상담 클릭 시 상담 모달 띄우기
@@ -155,6 +169,7 @@ const PlayDetail = () => {
   const handleSelect = (order) => {
     setSelected(order);  // selected 값 설정
     console.log(order);
+    setPage(1);
     fetchReviewData(order);  // fetchReviewData 함수 호출
   };
 
@@ -192,7 +207,7 @@ const PlayDetail = () => {
         if (status === 200) {
           setPlayData(data); // 상태 업데이트
         } else if (status === 400) {
-          setModalTitle("없음")
+          setModalTitle("공연 정보")
           setModalMessage("해당 공연 정보는 존재하지않습니다")
           setAlertVisible(true)
         }
@@ -217,24 +232,37 @@ const PlayDetail = () => {
   //키워드
   //정렬
   //검색조건
-  const [ischerachcheck, setischerachcheck] = useState(false);
-  const shearchBtn = async () => {
+  const [ischerachcheck, setischerachcheck] = useState(true);
+  const shearchBtn = async (goFirstPage) => {
+    let requestParams = null;
+    if(goFirstPage === true){
+      setPage(1);
+      requestParams = {
+        searchType: searchType === "title" ? "title" : "id",
+        keyword: searchKey,
+        selected: selected,
+        page: 1,
+        size: pageSize
+      };
+    }
+    else{
+      requestParams = {
+        searchType: searchType === "title" ? "title" : "id",
+        keyword: searchKey,
+        selected: selected,
+        page: page,
+        size: pageSize
+      };
+    }
+   // setischerachcheck(true);
 
-    setischerachcheck(true);
-    const requestParams = {
-      searchType: searchType === "title" ? "title" : "id",
-      keyword: searchKey,
-      selected: selected,
-      page: page,
-      size: pageSize
-    };
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviewAfters/ReviewASearchCount?playSeq=${playSeq}`, {
         params: requestParams, // 쿼리 파라미터로 전달
       });
       const { status, data } = response.data;
       console.log(data)
-      if (status === 200) {
+      if (status === 200){
         setReviewACount(data);
       } else if (status === 404) {
         setReviewACount(0);
@@ -345,7 +373,6 @@ const PlayDetail = () => {
   useEffect(() => {
     console.log(ischerachcheck);
     if (visible[4]) {
-      
       // Q&A 탭 활성화 시
       fetchQAData();
     } else if (ischerachcheck) {
@@ -366,7 +393,7 @@ const PlayDetail = () => {
         fetchQACountData();
       }
     }
-  }, [page, visible, isReviewVisible, isExpectationVisible, ischerachcheck,selected]); // 상태 변경에 따른 재렌더링
+  }, [page, visible, isReviewVisible, isExpectationVisible,selected]); // 상태 변경에 따른 재렌더링
 
 
   // 페이지 블록 계산
@@ -433,14 +460,23 @@ const PlayDetail = () => {
 
   ////리뷰 등록
   const handleSubmit = async () => {
+
+    if (!accessToken) {
+      setuserId(null); // 로그인 상태 해제
+      setAlertVisible(true);
+      setModalTitle("로그인");
+      setModalMessage("로그인 해주세요");
+   }
+
+  else{
     if (!reviewText.trim()) {
-      setModalTitle("유효성")
-      setModalMessage("리뷰 내용을 입력해주세요.")
+      setModalTitle("관람평 등록 실패")
+      setModalMessage("관람평 내용을 입력해주세요.")
       setAlertVisible(true)
       return;
     }
     if (rating === 0) {
-      setModalTitle("유효성")
+      setModalTitle("관람평 등록 실패")
       setModalMessage("별점을 선택해주세요.")
       setAlertVisible(true)
       return;
@@ -464,8 +500,8 @@ const PlayDetail = () => {
 
       if (response.status === 200) {
         setAlertVisible(true)
-        setModalTitle("성공")
-        setModalMessage('리뷰가 등록 되었습니다'); // 입력 필드 초기화
+        setModalTitle("관람평 등록")
+        setModalMessage('관람평이 등록 되었습니다'); // 입력 필드 초기화
         setReviewText(''); // 입력 필드 초기화
         setRating(0); // 별점 초기화
         fetchReviewData();
@@ -473,12 +509,22 @@ const PlayDetail = () => {
         fetchreviewACountData();
       } else if (response.status === 500) {
         setAlertVisible(true)
-        setModalTitle("실패")
-        setModalMessage('리뷰 등록에 실패했습니다. 다시 시도해주세요.'); // 입력 필드 초기화
+        setModalTitle("관람평 등록")
+        setModalMessage('로그인 후 이용 가능합니다.'); // 입력 필드 초기화
         setRating(0); // 별점 초기화
       }
     }
-    )
+    ).catch((error) => {
+      console.error("리뷰 수정 중 에러 발생:", error);
+      setAlertVisible(true)
+      setModalTitle("관람평 등록")
+      setModalMessage('로그인 후 이용 가능합니다.'); // 입력 필드 초기화
+      setRating(0); // 별점 초기화
+    });
+
+
+  }
+   
 
 
   }
@@ -516,22 +562,26 @@ const PlayDetail = () => {
       .then((response) => {
         if (response.status === 200) {
           setAlertVisible(true)
-          setModalTitle("성공")
-          setModalMessage('리뷰가 수정 되었습니다');
+          setModalTitle("관람평 수정")
+          setModalMessage('관람평이 수정 되었습니다');
           setIsReviewUpdate(false); // 모달 닫기
-          fetchReviewData();
-          fetchreviewAAvgData();
-          fetchreviewACountData();
+          //fetchReviewData();
+          //fetchreviewAAvgData();
+          //fetchreviewACountData();
+          shearchBtn();
           setReviewText(''); // 입력 필드 초기화
           setRating(0); // 별점 초기화
         } else {
           setAlertVisible(true)
-          setModalTitle("실패")
-          setModalMessage('리뷰가 수정 실패'); // 입력 필드 초기화
+          setModalTitle("관람평 수정")
+          setModalMessage('수정 권한이 없습니다.'); // 입력 필드 초기화
         }
       })
       .catch((error) => {
         console.error("리뷰 수정 중 에러 발생:", error);
+        setAlertVisible(true)
+        setModalTitle("관람평 수정")
+        setModalMessage('수정 권한이 없습니다.'); // 입력 필드 초기화
       });
   }
 
@@ -553,22 +603,22 @@ const PlayDetail = () => {
       .then((response) => {
         if (response.status === 200) {
           setAlertVisible(true);
-          setModalTitle("성공");
-          setModalMessage("리뷰가 삭제되었습니다.");
+          setModalTitle("관람평 삭제");
+          setModalMessage("관람평이 삭제되었습니다.");
           fetchReviewData();
           fetchreviewAAvgData();
           fetchreviewACountData();
         } else {
           setAlertVisible(true);
-          setModalTitle("실패");
-          setModalMessage("리뷰 삭제 실패");
+          setModalTitle("관람평 삭제");
+          setModalMessage("로그인 후 이용해주세요.");
         }
       })
       .catch((error) => {
         console.error("리뷰 삭제 중 오류 발생:", error);
         setAlertVisible(true);
-        setModalTitle("오류");
-        setModalMessage("리뷰 삭제 중 오류가 발생했습니다.");
+        setModalTitle("관람평 삭제");
+        setModalMessage("로그인 후 이용해주세요.");
       });
   };
 
@@ -579,16 +629,16 @@ const PlayDetail = () => {
       if (mapContainer) {
         // 카카오맵 초기화
         const mapOption = {
-          center: new window.kakao.maps.LatLng(37.5287912, 126.9686735), // 서울의 중심 좌표
+          center: new window.kakao.maps.LatLng(37.47886066129527, 127.01175235381581), // 서울의 중심 좌표
           level: 3, // 확대 레벨
         };
         const map = new window.kakao.maps.Map(mapContainer, mapOption); // 지도 생성
 
         // 마커를 표시할 위치와 title, address 객체
         const position = {
-          title: '임시제목',
-          latlng: new window.kakao.maps.LatLng(37.5287912, 126.9686735), // 임시 좌표
-          address: '임시 주소',
+          title: '예술의 전당',
+          latlng: new window.kakao.maps.LatLng(37.47886066129527, 127.01175235381581), // 임시 좌표
+          address: '서울 서초구 남부순환로 2406',
         };
 
         // 마커와 인포윈도우
@@ -604,7 +654,7 @@ const PlayDetail = () => {
         });
 
         // 마커 클릭 이벤트
-        window.kakao.maps.event.addListener(marker, 'click', function () {
+        //window.kakao.maps.event.addListener(marker, 'click', function () {
           const content = `
                     <div id="info" style="padding:5px;">
                         <p style="font-size: 15px; font-weight: bold;">${position.title}</p>
@@ -613,7 +663,7 @@ const PlayDetail = () => {
                 `;
           infowindow.setContent(content);
           infowindow.open(map, marker);
-        });
+        //});
       }
     }
   }, [mapVisible]); // mapVisible이 변경될 때마다 실행
@@ -635,15 +685,27 @@ const PlayDetail = () => {
 
   //////////
 
-  const shearchBBtn = async () => {
-    setischerachcheck(true); // 검색 시작 상태
+  const shearchBBtn = async (goFirstPage) => {
+    let requestParams = null;
+    if(goFirstPage === true){
+      setPage(1);
+      requestParams = {
+        searchType: searchType === "title" ? "title" : "id",  // 검색 기준
+        keyword: searchKey,  // 검색 키워드
+        page: 1,          // 페이지 번호
+        size: pageSize       // 페이지 크기
+      };
+    }
+    else{
+      requestParams = {
+        searchType: searchType === "title" ? "title" : "id",  // 검색 기준
+        keyword: searchKey,  // 검색 키워드
+        page: page,          // 페이지 번호
+        size: pageSize       // 페이지 크기
+      };
+    }
+    //setischerachcheck(true); // 검색 시작 상태
 
-    const requestParams = {
-      searchType: searchType === "title" ? "title" : "id",  // 검색 기준
-      keyword: searchKey,  // 검색 키워드
-      page: page,          // 페이지 번호
-      size: pageSize       // 페이지 크기
-    };
 
     try {
       // 첫 번째 API 호출: ReviewBSearchCount
@@ -733,9 +795,17 @@ const PlayDetail = () => {
 
 
   const handleSubmitB = async () => {
+
+    if (!accessToken) {
+      setuserId(null); // 로그인 상태 해제
+      setAlertVisible(true);
+      setModalTitle("로그인");
+      setModalMessage("로그인 해주세요");
+   }
+   else{
     if (!reviewTextB.trim()) {
-      setModalTitle("유효성")
-      setModalMessage("리뷰 내용을 입력해주세요.")
+      setModalTitle("기대평 등록")
+      setModalMessage("기대평을 입력해주세요.")
       setAlertVisible(true)
       return;
     }
@@ -757,21 +827,34 @@ const PlayDetail = () => {
 
       if (response.status === 200) {
         setAlertVisible(true)
-        setModalTitle("성공")
-        setModalMessage('리뷰가 등록 되었습니다'); // 입력 필드 초기화
+        setModalTitle("기대평 등록")
+        setModalMessage('기대평이 등록 되었습니다'); // 입력 필드 초기화
         setReviewTextB(''); // 입력 필드 초기화
         fetchReviewBData(); // 함수 호출
         fetchreviewBCountData();
 
-      } else if (response.status === 500) {
+      } else{
         setAlertVisible(true)
-        setModalTitle("실패")
-        setModalMessage('리뷰 등록에 실패했습니다. 다시 시도해주세요.'); // 입력 필드 초기화
+        setModalTitle("기대평 등록")
+        setModalMessage('로그인 후 이용해주세요.'); // 입력 필드 초기화
         setRating(0); // 별점 초기화
       }
     }
-    )
+    ).catch((error) => {
+      console.error("리뷰 삭제 중 오류 발생:", error);
+      setAlertVisible(true)
+      setModalTitle("기대평 등록")
+      setModalMessage('로그인 후 이용해주세요.'); // 입력 필드 초기화
+      setRating(0); // 별점 초기화
+    });
 
+
+   }
+
+
+
+    
+    
 
   }
   ////////리뷰 등록
@@ -803,21 +886,25 @@ const PlayDetail = () => {
       })
       .then((response) => {
         if (response.status === 200) {
-          setAlertVisible(true)
-          setModalTitle("성공")
-          setModalMessage('리뷰가 수정 되었습니다');
+          setAlertVisible(true);
+          setModalTitle("기대평 수정");
+          setModalMessage('기대평이 수정 되었습니다');
           setIsReviewUpdateB(false); // 모달 닫기
           setReviewTextB(''); // 입력 필드 초기화
-          fetchReviewBData(); // 함수 호출
-          fetchreviewBCountData();
+          //fetchReviewBData(); // 함수 호출
+          //fetchreviewBCountData();
+          shearchBBtn();
         } else {
-          setAlertVisible(true)
-          setModalTitle("실패")
-          setModalMessage('리뷰가 수정 실패'); // 입력 필드 초기화
+          setAlertVisible(true);
+          setModalTitle("기대평 수정")
+          setModalMessage('로그인 후 이용해주세요.');
         }
       })
       .catch((error) => {
         console.error("리뷰 수정 중 에러 발생:", error);
+        setAlertVisible(true);
+        setModalTitle("기대평 수정")
+        setModalMessage('로그인 후 이용해주세요.');
       });
   }
 
@@ -840,21 +927,21 @@ const PlayDetail = () => {
       .then((response) => {
         if (response.status === 200) {
           setAlertVisible(true);
-          setModalTitle("성공");
-          setModalMessage("리뷰가 삭제되었습니다.");
+          setModalTitle("기대평 삭제");
+          setModalMessage("기대평이 삭제되었습니다.");
           fetchReviewBData(); // 함수 호출
           fetchreviewBCountData();
         } else {
           setAlertVisible(true);
-          setModalTitle("실패");
-          setModalMessage("리뷰 삭제 실패");
+          setModalTitle("기대평 삭제");
+          setModalMessage("삭제 권한이 없습니다.");
         }
       })
       .catch((error) => {
         console.error("리뷰 삭제 중 오류 발생:", error);
         setAlertVisible(true);
-        setModalTitle("오류");
-        setModalMessage("리뷰 삭제 중 오류가 발생했습니다.");
+        setModalTitle("기대평 삭제");
+        setModalMessage("삭제 권한이 없습니다.");
       });
   };
 
@@ -924,9 +1011,18 @@ const PlayDetail = () => {
 
 
   const handleQASubmit = async () => {
+
+    if (!accessToken) {
+      setuserId(null); // 로그인 상태 해제
+      setAlertVisible(true);
+      setModalTitle("로그인");
+      setModalMessage("로그인 해주세요");
+   }
+   else{
+
     if (!QAText.trim()) {
-      setModalTitle("유효성")
-      setModalMessage("리뷰 내용을 입력해주세요.")
+      setModalTitle("QnA 등록")
+      setModalMessage("Qna 제목과 문의 내용을 입력해주세요.")
       setAlertVisible(true)
       return;
     }
@@ -949,21 +1045,36 @@ const PlayDetail = () => {
 
       if (response.status === 200) {
         setAlertVisible(true)
-        setModalTitle("성공")
-        setModalMessage('QA가 등록 되었습니다'); // 입력 필드 초기화
-        setReviewTextB(''); // 입력 필드 초기화
+        setModalTitle("Q&A 등록")
+        setModalMessage('Q&A가 등록 되었습니다'); // 입력 필드 초기화
+        setQATitle('');
+        setQAText(''); // 리뷰 내용 설정
         fetchQAData(); // 함수 호출
 
         fetchQACountData();
 
       } else if (response.status === 500) {
         setAlertVisible(true)
-        setModalTitle("실패")
-        setModalMessage('QA 등록에 실패했습니다. 다시 시도해주세요.'); // 입력 필드 초기화
+        setModalTitle("Q&A 등록")
+        setModalMessage('로그인 후 이용해주세요.'); // 입력 필드 초기화
         setRating(0); // 별점 초기화
       }
     }
-    )
+    ) .catch((error) => {
+      console.error("리뷰 삭제 중 오류 발생:", error);
+      setAlertVisible(true)
+      setModalTitle("Q&A 등록")
+      setModalMessage('로그인 후 이용해주세요.'); // 입력 필드 초기화
+      setRating(0); // 별점 초기화
+    });
+
+   }
+
+
+
+
+
+   
 
 
   }
@@ -1000,21 +1111,24 @@ const PlayDetail = () => {
       .then((response) => {
         if (response.status === 200) {
           setAlertVisible(true)
-          setModalTitle("성공")
-          setModalMessage('리뷰가 수정 되었습니다');
+          setModalTitle("Q&A 수정")
+          setModalMessage('Q&A가 수정 되었습니다');
           setIsQAUpdate(false); // 모달 닫기
+          setQATitle(''); // 입력 필드 초기화
           setQAText(''); // 입력 필드 초기화
           fetchQAData(); // 함수 호출
-
           fetchQACountData();
         } else {
           setAlertVisible(true)
-          setModalTitle("실패")
-          setModalMessage('리뷰가 수정 실패'); // 입력 필드 초기화
+          setModalTitle("Q&A 수정")
+          setModalMessage('로그인 후 이용해주세요.'); // 입력 필드 초기화
         }
       })
       .catch((error) => {
         console.error("리뷰 수정 중 에러 발생:", error);
+        setAlertVisible(true)
+          setModalTitle("Q&A 수정")
+          setModalMessage('로그인 후 이용해주세요.'); // 입력 필드 초기화
       });
   }
 
@@ -1036,21 +1150,21 @@ const PlayDetail = () => {
       .then((response) => {
         if (response.status === 200) {
           setAlertVisible(true);
-          setModalTitle("성공");
-          setModalMessage("QA가 삭제되었습니다.");
+          setModalTitle("Q&A 삭제");
+          setModalMessage("Q&A가 삭제되었습니다.");
           fetchQAData(); // 함수 호출
           fetchQACountData();
         } else {
           setAlertVisible(true);
-          setModalTitle("실패");
-          setModalMessage("QA 삭제 실패");
+          setModalTitle("Q&A 삭제");
+          setModalMessage("이미 등록된 답변이 있어 삭제할 수 없습니다.");
         }
       })
       .catch((error) => {
         console.error("리뷰 삭제 중 오류 발생:", error);
         setAlertVisible(true);
-        setModalTitle("오류");
-        setModalMessage("리뷰 삭제 중 오류가 발생했습니다.");
+        setModalTitle("Q&A 삭제");
+        setModalMessage("이미 등록된 답변이 있어 삭제할 수 없습니다.");
       });
   };
   const [replyDTO, setReplysDTO] = useState({});
@@ -1095,8 +1209,13 @@ const PlayDetail = () => {
   ////////////즐겨찾기
   //하트색깔
   const [userId,setuserId] = useState(null);
+  const [userSeq, setUserSeq] = useState(null);
 
 useEffect(()=>{
+  if (!accessToken) {
+    setuserId(null); // 로그인 상태 해제
+    setHartColor("black");
+ }else{
   axios
   .get(`${process.env.REACT_APP_API_URL}/members/id`, {
     headers: {
@@ -1106,10 +1225,24 @@ useEffect(()=>{
 
   })
   .then((response) => {
+
     console.log(response);
+    console.log("현재 사용자 : ", response.data);
+    if(response.data.status == 200){
     setuserId(response.data.data.id);
+    setUserSeq(response.data.data);
+    }else{
+      setuserId(null);
+    }
+  })
+  .catch((e) => {
+    console.log(e);
+    setuserId(null);
   })
 
+  
+ }
+ 
 },[])
 
 
@@ -1118,9 +1251,13 @@ useEffect(()=>{
   // 즐겨찾기 상태 확인
   useEffect(() => {
 
-
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/favorites/favorites?playSeq=${playSeq}`, {
+    if (!accessToken) {
+      setuserId(null); // 로그인 상태 해제
+      setHartColor("black");
+   }
+else{
+  axios
+      .get(`${process.env.REACT_APP_API_URL}/favorites/favorites?playSeq=${playSeq}&userId=${userId}`, {
         headers: {
           'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
       },
@@ -1142,9 +1279,20 @@ useEffect(()=>{
       .catch((error) => {
         console.error("즐겨찾기 상태 확인 실패:", error);
       });
+  
+}
+
+    
   }, [playSeq]);
   ///즐겨찾기 등록 검정하트 빨간하트 만들기
   const handleAddFavorite = () => {
+    if (!accessToken) {
+      setuserId(null); // 로그인 상태 해제
+      setAlertVisible(true);
+      setModalTitle("로그인");
+      setModalMessage("로그인 해주세요");
+   }
+   else{
     console.log(playSeq)
     axios
       .post(`${process.env.REACT_APP_API_URL}/favorites/favorites?playSeq=${playSeq}`, {}, {
@@ -1157,29 +1305,41 @@ useEffect(()=>{
       .then((response) => {
         if (response.data.status === 403) {
           setAlertVisible(true);
-          setModalTitle("로그인");
+          setModalTitle("즐겨찾기");
           setModalMessage("로그인 해주세요");
 
         }
         else if (response.status === 200) {
           setAlertVisible(true);
-          setModalTitle("성공");
-          setModalMessage("즐겨찾기 성공 ");
+          setModalTitle("즐겨찾기");
+          setModalMessage("즐겨찾기가 등록되었습니다.");
           setHartColor("red"); // 성공 시 빨간 하트
         } else {
           setAlertVisible(true);
-          setModalTitle("실패");
-          setModalMessage("즐겨찾기 등록 실패");
+          setModalTitle("즐겨찾기");
+          setModalMessage("로그인 후 이용해주세요.");
         }
       })
       .catch((error) => {
         setAlertVisible(true);
-        setModalTitle("실패");
-        setModalMessage("즐겨찾기 등록 실패");
+        setModalTitle("즐겨찾기");
+        setModalMessage("로그인 후 이용해주세요.");
       });
+
+   }
+
+    
+    
   };
   ///즐겨찾기 삭제 빨간하트 검은색하트로 변경
   const handleRemoveFavorite = () => {
+    if (!accessToken) {
+      setuserId(null); // 로그인 상태 해제
+      setAlertVisible(true);
+      setModalTitle("로그인");
+      setModalMessage("로그인 해주세요");
+   }
+   else{
     axios
       .delete(`${process.env.REACT_APP_API_URL}/favorites/favorites?playSeq=${playSeq}`, {
         headers: {
@@ -1192,26 +1352,31 @@ useEffect(()=>{
       .then((response) => {
         if (response.data.status === 403) {
           setAlertVisible(true);
-          setModalTitle("로그인");
+          setModalTitle("즐겨찾기");
           setModalMessage("로그인 해주세요");
 
         }
         else if (response.status === 200) {
           setAlertVisible(true);
-          setModalTitle("성공");
-          setModalMessage("즐겨찾기 삭제 성공");
+          setModalTitle("즐겨찾기");
+          setModalMessage("즐겨찾기가 삭제되었습니다.");
           setHartColor("black"); // 성공 시 검은 하트
         } else {
           setAlertVisible(true);
-          setModalTitle("실패");
-          setModalMessage("즐겨찾기 삭제 실패");
+          setModalTitle("즐겨찾기");
+          setModalMessage("로그인 후 이용해주세요.");
         }
       })
       .catch((error) => {
         setAlertVisible(true);
-        setModalTitle("실패");
-        setModalMessage("즐겨찾기 삭제 실패");
+        setModalTitle("즐겨찾기");
+        setModalMessage("로그인 후 이용해주세요.");
       });
+
+   }
+
+
+    
   };
 
   // 하트 버튼 클릭 이벤트
@@ -1229,6 +1394,15 @@ useEffect(()=>{
     setActiveButton(prevButton => prevButton === buttonId ? null : buttonId);
   };
 
+
+
+   
+  
+
+
+
+
+
   return (
 
     <>
@@ -1236,7 +1410,7 @@ useEffect(()=>{
       <div id="play-detail-container">
         <div id="play-detail-header">
           <h2 id="play-subject">{playData ? playData.name : '임시 제목'}</h2>
-          <p>연극 주간 50위</p>
+          <p>{playData ? `${formatDate(playData.startTime)} ~ ${formatDate(playData.endTime)}` : '2024.07.01 ~ 2025.01.06'}</p>
         </div>
 
         <div id="play-detail-body">
@@ -1247,7 +1421,7 @@ useEffect(()=>{
           <div id="play-info">
             <div className="play-info-column" id="place-column">
               <img src={place} className="play-info-img" alt="장소" id="place-image" onClick={handleMapClick} />
-              <label className="play-info-column-header">장소</label><p className="play-info-column-content"><span onClick={handleMapClick}>{playData ? playData.address : '비트캠프'}</span></p>
+              <label className="play-info-column-header">장소</label><p className="play-info-column-content"><span onClick={handleMapClick}>{playData ? playData.address : '비트캠프'}&nbsp;&nbsp;&nbsp;🗺️</span></p>
             </div>
 
             <div className="play-info-column" id="duration-column">
@@ -1262,7 +1436,7 @@ useEffect(()=>{
 
             <div className="play-info-column" id="age-column">
               <img src={duration} className="play-info-img" alt="기간" id="duration-image" />
-              <label className="play-info-column-header">관람연령</label><p className="play-info-column-content">{playData ? '만' + playData.ageLimit + ' 이상' : '만0세 이상'}</p>
+              <label className="play-info-column-header">관람연령</label><p className="play-info-column-content">{playData ? ( playData.ageLimit.indexOf('전체')!==-1 ? '전체 관람가' : ('만 ' + playData.ageLimit + ' 이상') ): '만 0세 이상'}</p>
             </div>
 
             <div className="play-info-column" id="price-column">
@@ -1275,7 +1449,7 @@ useEffect(()=>{
                     {playData
                       ? playData.discountedPrice
                         ? (
-                          <span> {playData.discountRate}%
+                          <span> {playData.discountRate}%&emsp;
                             <span style={{ textDecoration: 'line-through', color: 'gray' }}>
                               {playData.price}원
                             </span>{' '}
@@ -1294,7 +1468,7 @@ useEffect(()=>{
                     {playData
                       ? playData.discountedPrice
                         ? (
-                          <span> {playData.discountRate}%
+                          <span> {playData.discountRate}%&emsp;
                             <span style={{ textDecoration: 'line-through', color: 'gray' }}>
                               {playData.price}원
                             </span>{' '}
@@ -1313,7 +1487,7 @@ useEffect(()=>{
                     {playData
                       ? playData.discountedPrice
                         ? (
-                          <span> {playData.discountRate}%
+                          <span> {playData.discountRate}%&emsp;
                             <span style={{ textDecoration: 'line-through', color: 'gray' }}>
                               {playData.price}원
                             </span>{' '}
@@ -1332,7 +1506,7 @@ useEffect(()=>{
                     {playData
                       ? playData.discountedPrice
                         ? (
-                          <span> {playData.discountRate}%
+                          <span> {playData.discountRate}%&emsp;
                             <span style={{ textDecoration: 'line-through', color: 'gray' }}>
                               {playData.price}원
                             </span>{' '}
@@ -1350,9 +1524,9 @@ useEffect(()=>{
 
             <div className="play-info-column" id="rating-column">
               <img src={star} className="play-info-img" alt="별점" id="rating-image" />
-              <label className="play-info-column-header">별점 </label><p className="play-info-column-content">{reviewAVG ? parseFloat(reviewAVG).toFixed(2) : 0.00}</p>
+              <label className="play-info-column-header">별점 </label><p className="play-info-column-content">{reviewAVG != 0 ? parseFloat(reviewAVG).toFixed(2) : '등록된 별점이 없습니다'}</p>
             </div>
-            <div className="play-info-column" style={{ paddingLeft: '10px' }}><span onClick={HartClick} style={{ fontSize: '25px', color: hartColor,cursor: 'pointer' }}>♥</span></div>
+            <div className="play-info-column" style={{ paddingLeft:'10px'}}><div style={{paddingTop: '5px'}}>즐겨찾기&nbsp;&nbsp;&nbsp;&nbsp;</div><span onClick={HartClick} style={{ fontSize: '25px', color: hartColor,cursor: 'pointer' }}>♥</span></div>
           </div>
         </div>
 
@@ -1461,7 +1635,7 @@ useEffect(()=>{
                       setReviewText={setReviewText}
                       reviewText={reviewText}
                       setAlertVisible={setAlertVisible}
-                      page={page}
+                      setPage={setPage}
                     />
                     {/* 페이지네이션 */}
                     <div className="pagination">
@@ -1504,8 +1678,8 @@ useEffect(()=>{
                     formatDate={formatDate} isReviewUpdateB={isReviewUpdateB}
                     setIsReviewUpdateB={setIsReviewUpdateB}
                     handleSubmitB={handleSubmitB} reviewDataB={reviewDataB}
-                    reviewTextB={reviewTextB} setReviewTextB={setReviewTextB} />
-
+                    reviewTextB={reviewTextB} setReviewTextB={setReviewTextB}
+                    page={page}/>
                   {/* 페이지네이션 */}
                   <div className="pagination">
                     {/* 이전 버튼 */}
@@ -1609,8 +1783,8 @@ useEffect(()=>{
 
       {/* 예매 모달 팝업 */}
       {reserveVisible && (
-        <Reserve handleButtonClick={handleButtonClick} activeButton={activeButton}
-        DateList={DateList} closeModal={closeModal} DatePicker={DatePicker} selectedDate={selectedDate} setSelectedDate={setSelectedDate} ko={ko} playData={playData} />
+        <Reserve handleButtonClick={handleButtonClick} activeButton={activeButton} setActiveButton={setActiveButton}
+        DateList={DateList} closeModal={closeModal} DatePicker={DatePicker} selectedDate={selectedDate} setSelectedDate={setSelectedDate} ko={ko} playData={playData} userSeq={userSeq}/>
       )}
 
       {/* 상담 모달 팝업 */}
