@@ -17,7 +17,7 @@ const Infomation = () => {
 
     const funcSelectedIcon = (iconName) => {
         setSelectedIcon(iconName);
-        setIsPasswordCorrect(false);
+        //setIsPasswordCorrect(false);
         setPassword("");
     };
     //
@@ -125,6 +125,7 @@ const Infomation = () => {
                     {!isPasswordCorrect ? (
                         <InfoLock
                             password={password}
+                            setPassword={setPassword}
                             handlePasswordChange={handlePasswordChange}
                             checkPassword={checkPassword}
                         />
