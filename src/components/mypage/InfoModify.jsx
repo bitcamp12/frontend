@@ -265,7 +265,7 @@ const InfoModify = ({ password, handlePasswordChange }) => {
                     isEmailAuthToggle(!emailAuthToggle);
                     setEmailVerifyCode('');
                     setTimer(0);
-                } else if (response.data.message === "not_match") {
+                } else if (response.status == 400) {
                     alert("인증번호 일치하지 않습니다.");
                 } else {
                     alert("알 수 없는 오류입니다.");
