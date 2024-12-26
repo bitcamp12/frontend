@@ -389,7 +389,7 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
                                         onClick={(e) => {
                                             e.preventDefault();
                                             handleNewPasswordMatchBlur();
-                                            if(newPassword == "" || reNewPassword == "" || passwordMessage === '새로운 비밀번호가 일치하지 않습니다'){
+                                            if(newPassword == "" || reNewPassword == "" || newPassword !==  reNewPassword  ){
                                                 alert('비밀 번호가 일치하지 않습니다.');
                                                 return;
                                             }
