@@ -63,30 +63,32 @@ const PlayDetail = () => {
   const [DateList, setDateList] = useState([])//날짜 리스트
   // 데이터 가져오기 함수
   const fetchTimeSlots = async () => {
-    // selectedDate가 있을 경우, 없으면 현재 시간 사용
-    const selectDate = selectedDate
-      ? formatDatePickerDate(new Date(selectedDate)) // 선택된 날짜
-      : formatDatePickerDate(new Date()); // 기본값은 현재 시간
-    console.log(selectDate);
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/playTimeTables/playTimeTables?playSeq=${playSeq}&targetDate=${selectDate}`,{
-        headers: {
-          'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
-      },
-      withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
 
-      }
-      );//자바로 데이터 가져오기
+    
+  
+     // selectedDate가 있을 경우, 없으면 현재 시간 사용
+     const selectDate = selectedDate
+     ? formatDatePickerDate(new Date(selectedDate)) // 선택된 날짜
+     : formatDatePickerDate(new Date()); // 기본값은 현재 시간
+   console.log(selectDate);
+   try {
+     const response = await axios.get(`${process.env.REACT_APP_API_URL}/playTimeTables/playTimeTables?playSeq=${playSeq}&targetDate=${selectDate}`,{
+     
+     }
+     );//자바로 데이터 가져오기
 
-      if (response.status === 200) {
-        console.log(response.data.data)
-        setDateList(response.data.data);  // 서버에서 받은 데이터로 상태 업데이트
-      } else {
-        setDateList([]);  // 데이터가 없으면 빈 배열로 설정
-      }
-    } catch (error) {
-      console.error('리뷰 데이터를 가져오는 중 오류 발생:', error);
-    }
+     if (response.status === 200) {
+       console.log(response.data.data)
+       setDateList(response.data.data);  // 서버에서 받은 데이터로 상태 업데이트
+     } else {
+       setDateList([]);  // 데이터가 없으면 빈 배열로 설정
+     }
+   } catch (error) {
+     console.error('시간간 데이터를 가져오는 중 오류 발생:', error);
+   }
+    
+   
+   
   };
 
   // 컴포넌트가 처음 렌더링될 때 데이터 가져오기
@@ -458,6 +460,15 @@ const PlayDetail = () => {
 
   ////리뷰 등록
   const handleSubmit = async () => {
+
+    if (!accessToken) {
+      setuserId(null); // 로그인 상태 해제
+      setAlertVisible(true);
+      setModalTitle("로그인");
+      setModalMessage("로그인 해주세요");
+   }
+
+  else{
     if (!reviewText.trim()) {
       setModalTitle("관람평 등록 실패")
       setModalMessage("관람평 내용을 입력해주세요.")
@@ -510,6 +521,10 @@ const PlayDetail = () => {
       setModalMessage('로그인 후 이용 가능합니다.'); // 입력 필드 초기화
       setRating(0); // 별점 초기화
     });
+
+
+  }
+   
 
 
   }
@@ -780,6 +795,14 @@ const PlayDetail = () => {
 
 
   const handleSubmitB = async () => {
+
+    if (!accessToken) {
+      setuserId(null); // 로그인 상태 해제
+      setAlertVisible(true);
+      setModalTitle("로그인");
+      setModalMessage("로그인 해주세요");
+   }
+   else{
     if (!reviewTextB.trim()) {
       setModalTitle("기대평 등록")
       setModalMessage("기대평을 입력해주세요.")
@@ -825,6 +848,13 @@ const PlayDetail = () => {
       setRating(0); // 별점 초기화
     });
 
+
+   }
+
+
+
+    
+    
 
   }
   ////////리뷰 등록
@@ -981,6 +1011,15 @@ const PlayDetail = () => {
 
 
   const handleQASubmit = async () => {
+
+    if (!accessToken) {
+      setuserId(null); // 로그인 상태 해제
+      setAlertVisible(true);
+      setModalTitle("로그인");
+      setModalMessage("로그인 해주세요");
+   }
+   else{
+
     if (!QAText.trim()) {
       setModalTitle("QnA 등록")
       setModalMessage("Qna 제목과 문의 내용을 입력해주세요.")
@@ -1028,6 +1067,14 @@ const PlayDetail = () => {
       setModalMessage('로그인 후 이용해주세요.'); // 입력 필드 초기화
       setRating(0); // 별점 초기화
     });
+
+   }
+
+
+
+
+
+   
 
 
   }
@@ -1165,7 +1212,10 @@ const PlayDetail = () => {
   const [userSeq, setUserSeq] = useState(null);
 
 useEffect(()=>{
-  
+  if (!accessToken) {
+    setuserId(null); // 로그인 상태 해제
+    setHartColor("black");
+ }else{
   axios
   .get(`${process.env.REACT_APP_API_URL}/members/id`, {
     headers: {
@@ -1190,6 +1240,9 @@ useEffect(()=>{
     setuserId(null);
   })
 
+  
+ }
+ 
 },[])
 
 
@@ -1198,9 +1251,12 @@ useEffect(()=>{
   // 즐겨찾기 상태 확인
   useEffect(() => {
 
-   
-
-    axios
+    if (!accessToken) {
+      setuserId(null); // 로그인 상태 해제
+      setHartColor("black");
+   }
+else{
+  axios
       .get(`${process.env.REACT_APP_API_URL}/favorites/favorites?playSeq=${playSeq}&userId=${userId}`, {
         headers: {
           'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
@@ -1223,9 +1279,20 @@ useEffect(()=>{
       .catch((error) => {
         console.error("즐겨찾기 상태 확인 실패:", error);
       });
+  
+}
+
+    
   }, [playSeq]);
   ///즐겨찾기 등록 검정하트 빨간하트 만들기
   const handleAddFavorite = () => {
+    if (!accessToken) {
+      setuserId(null); // 로그인 상태 해제
+      setAlertVisible(true);
+      setModalTitle("로그인");
+      setModalMessage("로그인 해주세요");
+   }
+   else{
     console.log(playSeq)
     axios
       .post(`${process.env.REACT_APP_API_URL}/favorites/favorites?playSeq=${playSeq}`, {}, {
@@ -1258,9 +1325,21 @@ useEffect(()=>{
         setModalTitle("즐겨찾기");
         setModalMessage("로그인 후 이용해주세요.");
       });
+
+   }
+
+    
+    
   };
   ///즐겨찾기 삭제 빨간하트 검은색하트로 변경
   const handleRemoveFavorite = () => {
+    if (!accessToken) {
+      setuserId(null); // 로그인 상태 해제
+      setAlertVisible(true);
+      setModalTitle("로그인");
+      setModalMessage("로그인 해주세요");
+   }
+   else{
     axios
       .delete(`${process.env.REACT_APP_API_URL}/favorites/favorites?playSeq=${playSeq}`, {
         headers: {
@@ -1293,6 +1372,11 @@ useEffect(()=>{
         setModalTitle("즐겨찾기");
         setModalMessage("로그인 후 이용해주세요.");
       });
+
+   }
+
+
+    
   };
 
   // 하트 버튼 클릭 이벤트
@@ -1309,6 +1393,15 @@ useEffect(()=>{
   const handleButtonClick = (buttonId) => {
     setActiveButton(prevButton => prevButton === buttonId ? null : buttonId);
   };
+
+
+
+   
+  
+
+
+
+
 
   return (
 
