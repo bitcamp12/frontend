@@ -36,16 +36,6 @@ const InfoLock = ({ password, handlePasswordChange, checkPassword }) => {
                             value={selectedIcon}
                         />
                     </div>
-                    {/* <div>
-                        <label htmlFor="id">아이디</label>
-                        <input
-                            type="text"
-                            name="id"
-                            id="id"
-                            value={props.id}
-                            readOnly
-                        />
-                    </div> */}
                     <div>
                         <label htmlFor="pwd">비밀번호</label>
                         <input
