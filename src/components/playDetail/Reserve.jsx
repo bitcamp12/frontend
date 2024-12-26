@@ -101,11 +101,13 @@ const Reserve = ({ handleButtonClick,activeButton, setActiveButton, DateList, cl
         id="reserve-button-time-right" 
         className={activeButton === 'reserve-button-time-right' ? 'active' : ''}
         onClick={(e) =>  {
-
+     
           handleButtonClick('reserve-button-time-right'); // 버튼 활성화 처리
           console.log(e.target.getAttribute('data-time'));
-          
           setSelectedTime(e.target.getAttribute('data-time')); // 선택된 시간 업데이트
+          if(activeButton == 'reserve-button-time-right'){
+            setSelectedTime('없음');
+          }
         }}
         data-time={DateList[0]?.startTime || '없음'}
       />
@@ -118,9 +120,13 @@ const Reserve = ({ handleButtonClick,activeButton, setActiveButton, DateList, cl
         className={activeButton === 'reserve-button-time-left' ? 'active' : ''}
         onClick={(e) => 
         {
+
           handleButtonClick('reserve-button-time-left');
           console.log(e.target.getAttribute('data-time'));
           setSelectedTime(e.target.getAttribute('data-time')); 
+          if(activeButton == 'reserve-button-time-left'){
+            setSelectedTime('없음');
+          }
         }
           }
          data-time={DateList[1]?.startTime || '없음'}
