@@ -4,9 +4,10 @@ import styles from "../../assets/css/mypage/InfoBookmark.module.css";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
 import { format } from "date-fns";
+import { useNavigate } from "react-router";
 const InfoBookmark = () => {
     const accessToken = localStorage.getItem("token"); // 로컬스토리지
-
+    const navigate = useNavigate();
     const [favoriteList, setFavoriteList] = useState([]); // 좋아요 담을 리스트
     const [currentPage, setCurrentPage] = useState(0); // 현재 페이지
     const [totalPage, setTotalPage] = useState(0); // 전체 페이지
@@ -107,6 +108,15 @@ const InfoBookmark = () => {
                                 </span>
                             </div>
                             <div className={styles.actions}>
+                            <button
+                                    value={item.favoriteSeq}
+                                    className={styles.actionButton}
+                                    onClick={() =>
+                                    {navigate('/playDetail/'+item.play.playSeq)}
+                                    }
+                                >
+                                    바로 가기
+                                </button>
                                 <button
                                     value={item.favoriteSeq}
                                     className={styles.actionButton}
