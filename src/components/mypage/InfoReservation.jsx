@@ -84,7 +84,7 @@ const InfoReservation = () => {
     useEffect(() => {
         // 페이지 로드시
         fetchItems();
-    }, [currentPage, classifyValue, yearValue, monthValue]);
+    }, [currentPage]);
 
     const handlePageClick = (e) => {
         setCurrentPage(e.selected);
