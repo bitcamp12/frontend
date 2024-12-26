@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import styles from "../../assets/css/mypage/InfoWithdrawal.module.css";
 import axios from "axios";
 import Modal from "../Modal/Modal";
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 
 const InfoWithdrawal = (props) => {
     const navigator = useNavigate();
@@ -25,8 +25,9 @@ const InfoWithdrawal = (props) => {
         console.log(checkDrawal);
 
         if (checkDrawal) {
-            // 체크박스가 선택되어 있으면 탈퇴가능
-            alert("탈퇴!!! ");
+            const userConfirmed = window.confirm("정말로 탈퇴하시겠습니까?");
+            if(userConfirmed === false) return;
+
             axios
                 .delete(
                     `${process.env.REACT_APP_API_URL}/members/infoWithdrawal/me`,
@@ -38,31 +39,17 @@ const InfoWithdrawal = (props) => {
                     }
                 ) // 세션으로 넘어온 id가 될 예정
                 .then((response) => {
-                    console.log(response.data);
-                    setModalMessage(response.data.message);
-                    setAlertVisible(true);
-                    if (response.data.status === 200) {
-                        // 응답에서 새로운 토큰이 있으면 로컬스토리지에 저장
-                        const authorizationHeader =
-                            response.data.status.headers["Authorization"] ||
-                            response.data.status.headers["authorization"];
-                        if (authorizationHeader) {
-                            const newToken = authorizationHeader.replace(
-                                "Bearer ",
-                                ""
-                            ); // "Bearer " 제거
-                            localStorage.setItem("token", newToken); // 새로운 토큰 저장
-                        }
-                    }
+                    alert('탈퇴되었습니다.');
                     localStorage.removeItem("token");
                     sessionStorage.removeItem("token");
 
-                    window.location.href = "/";
+                    navigator("/"); // React Router를 통해 홈으로 이동
                 })
                 .catch((error) => console.log(error));
         } else {
-            alert("탈퇴못함 ㅋ ");
-            // 체크박스가 선택되지 않았다면, 탈퇴불가능 (안내창?띄울까?)
+            setModalTitle('')
+            setModalMessage('상기 내용에 동의 체크 후 탈퇴가 가능합니다.');
+            setAlertVisible(true);
         }
     };
 
@@ -184,11 +171,8 @@ const InfoWithdrawal = (props) => {
                 </div>
 
                 <div className={styles.btnWrap}>
-                    <button type="reset" className={styles.whiteBtn}>
-                        취소
-                    </button>
                     <button type="submit" className={styles.violetBtn}>
-                        동의
+                        회원 탈퇴
                     </button>
                 </div>
             </form>
