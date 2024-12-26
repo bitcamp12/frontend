@@ -18,7 +18,7 @@ const Infomation = () => {
     const funcSelectedIcon = (iconName) => {
         setSelectedIcon(iconName);
         //setIsPasswordCorrect(false);
-        setPassword("");
+        //setPassword("");
     };
     //
     const [password, setPassword] = useState("");
@@ -45,6 +45,9 @@ const Infomation = () => {
             .then((response) => {
                 console.log(response.data);
                 setIsPasswordCorrect(response.data);
+                if(response.data == false){
+                    alert('비밀 번호가 일치하지 않습니다.')
+                }
             })
             .catch((error) => console.log(error));
     };
