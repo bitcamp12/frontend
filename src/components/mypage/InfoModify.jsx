@@ -253,10 +253,22 @@ const InfoModify = ({ password, handlePasswordChange }) => {
                     alert("인증번호 일치합니다.");
                     //타이머중지
                     setIsTimerActive(false);
+                    setData({
+                        ...data,
+                        email: newEmail,
+                    });
+                    isEmailToggle(
+                        !emailToggle
+                    );
+                    setEmailDivMessage("");
+                    setNewEmail("");
+                    isEmailAuthToggle(!emailAuthToggle);
+                    setEmailVerifyCode('');
+                    setTimer(0);
                 } else if (response.data.message === "not_match") {
-                    setEmailDivVerifyMessage("인증번호 일치하지 않습니다.");
+                    alert("인증번호 일치하지 않습니다.");
                 } else {
-                    setEmailDivVerifyMessage("오류발생");
+                    alert("알 수 없는 오류입니다.");
                 }
             })
             .catch((error) => {
@@ -565,18 +577,8 @@ const InfoModify = ({ password, handlePasswordChange }) => {
                                                     className={`${styles.violetBtn} ${styles.w100}`}
                                                     onClick={(e) => {
                                                         e.preventDefault();
-                                                        setData({
-                                                            ...data,
-                                                            email: newEmail,
-                                                        });
-                                                        isEmailToggle(
-                                                            !emailToggle
-                                                        );
-                                                        setEmailDivMessage("");
-                                                        setNewEmail("");
-                                                        isEmailAuthToggle(!emailAuthToggle);
-                                                        setEmailVerifyCode('');
-                                                        setTimer(0);
+                                                        checkVerifyNumber();
+                                                        
                                                     }}
                                                 >
                                                     인증
