@@ -65,7 +65,7 @@ const ReviewAfter = ({totalPages,userId,shearchBtn,searchKey,setShearchKey,searc
                 </div>
                 <div className='review-search-box'>
                   <input type="text" className="review-search-input" value={searchKey} onChange={(e)=>setShearchKey(e.target.value)} placeholder="검색어를 입력하세요." />
-                  <button type='button' className="review-search-btn" onClick={shearchBtn}>검색</button>
+                  <button type='button' className="review-search-btn" onClick={()=>shearchBtn(true)}>검색</button>
                 </div>
               </form>
             </div>
@@ -79,7 +79,7 @@ const ReviewAfter = ({totalPages,userId,shearchBtn,searchKey,setShearchKey,searc
         <div key={index} className="review-item" style={{ marginTop: '20px' }} >
           <div id="review-info">
             <h1 id="user-info">
-              {review.name} | {formatDate(review.createdDate)} | 별점: {review.rating}
+              작성자&nbsp;:&nbsp;&nbsp;{review.name}&nbsp;|&nbsp;작성 일자&nbsp;:&nbsp;&nbsp;{formatDate(review.createdDate)} | 별점: {review.rating}
             </h1>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <h2 id="review-content">{review.content}</h2>

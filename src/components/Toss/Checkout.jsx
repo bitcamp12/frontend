@@ -27,6 +27,8 @@ export function CheckoutPage() {
         console.log("DateList : ", DateList);
         const playData = queryParams.get("playData");
         console.log("playData : ", playData);
+        const userSeq = queryParams.get("userSeq");
+        console.log("userSeq : ", userSeq);
 
         if (playData) {
             const parsedPlayData = JSON.parse(decodeURIComponent(playData));
@@ -44,8 +46,27 @@ export function CheckoutPage() {
                 setAmount({ currency: "KRW", value: totalPrice });
             }
         }
+
+        if (userSeq) {
+            const parsedUserSeq = JSON.parse(decodeURIComponent(userSeq));
+            console.log("Parsed User Data: ", parsedUserSeq);
+            setUserDetails({
+                email: parsedUserSeq.email || "",
+                name: parsedUserSeq.name || "",
+                phone: parsedUserSeq.phone || "",
+                memberSeq: parsedUserSeq.memberSeq || "",
+            });
+        }
+
         console.log("transformSeats : ", transformSeats);
     }, [location]);
+
+    const [userDetails, setUserDetails] = useState({
+        email: "",
+        name: "",
+        phone: "",
+        memberSeq: "",
+    });
 
     useEffect(() => {
         async function fetchPaymentWidgets() {
@@ -158,16 +179,17 @@ export function CheckoutPage() {
                     onClick={async () => {
                         try {
                             const transformSeatsEncoded = encodeURIComponent(JSON.stringify(transformSeats));
+                            const userDetailsEncoded = encodeURIComponent(JSON.stringify(userDetails));
                             // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
                             // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
                             await widgets.requestPayment({
                                 orderId: generateRandomString(),
                                 orderName: orderName,
-                                successUrl: `${window.location.origin}/success?transformSeats=${transformSeatsEncoded}`,
+                                successUrl: `${window.location.origin}/success?transformSeats=${transformSeatsEncoded}&userDetails=${userDetailsEncoded}`,
                                 failUrl: window.location.origin + "/fail",
-                                customerEmail: "customer123@gmail.com",
-                                customerName: "김토스",
-                                customerMobilePhone: "01012341234",
+                                customerEmail: userDetails.email,
+                                customerName: userDetails.name,
+                                customerMobilePhone: userDetails.phone,
                             });
                         } catch (error) {
                             // 에러 처리하기

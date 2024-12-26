@@ -110,8 +110,11 @@ const QA = ({
                   fontSize: '16px',
                   margin: '0 0 5px',
                   color: '#333',
-                }}> {qa.name} | {formatDate(qa.createdDate)}  </h1>
-                 <span >{qa.title}</span>
+                }}> 작성자&nbsp;:&nbsp;&nbsp;{qa.name} | 작성 일자&nbsp;:&nbsp;&nbsp;{formatDate(qa.createdDate)}  </h1>
+                <br/>
+                <span >제목&nbsp;:&nbsp;&nbsp;{qa.title}</span>
+                <br/>
+                <br/>
                 <div style={{display: 'flex', justifyContent: 'space-between'}}>
                 <h2
                   id="expectation-content"
@@ -121,19 +124,21 @@ const QA = ({
                     color: '#555',
                   }}
                 >
-                 {qa.content}
+                 문의 내용&nbsp;:&nbsp;&nbsp;{qa.content}
                 </h2>
                 <span
             data-qna-seq={qa.qnaSeq}
             onClick={() => handleReplayClick(qa.qnaSeq)}
             style={{ cursor: 'pointer', fontSize: '14px', color: '#8E43E7' }}
           >
+            답변 열기
             <span className={`arrow-icon ${isReplyVisible[qa.qnaSeq] ? 'up' : ''}`}>
-            △
+            🔽
             </span>
           </span>
                 
                 </div>
+                <br/>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
                     {/* 수정/삭제 버튼 보이기 조건 추가 */}
@@ -178,7 +183,7 @@ const QA = ({
                 {/* 댓글 표시 */}
         {/* {isReplyVisible[qa.qnaSeq] && ( */}
          
-          
+         <br/>
          <div
          className={`reply-container ${isReplyVisible[qa.qnaSeq] ? 'visible' : ''}`}
          style={{
@@ -188,9 +193,9 @@ const QA = ({
          }}
        >
          {replyDTO[qa.qnaSeq] ? (
-           <p>{replyDTO[qa.qnaSeq].content}</p>
+           <p>관리자&nbsp;:&nbsp;{replyDTO[qa.qnaSeq].content}</p>
          ) : (
-           <p>댓글이 없습니다.</p>
+           <p>문의 답변이 아직 등록되지 않았습니다.</p>
          )}
        </div>
         {/* ) */}
