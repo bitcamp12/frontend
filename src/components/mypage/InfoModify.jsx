@@ -5,7 +5,7 @@ import styles from "../../assets/css/mypage/InfoModify.module.css";
 import axios from "axios";
 import { useNavigate } from "react-router";
 
-const InfoModify = ({ password, handlePasswordChange }) => {
+const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
     const navigate = useNavigate();
 
     const [newPhoneNum, setNewPhoneNum] = useState("");
@@ -180,7 +180,7 @@ const InfoModify = ({ password, handlePasswordChange }) => {
     const checkPasswordMatch = (newPassword, reNewPassword) => {
         newPassword !== reNewPassword
             ? setPasswordMessage("새로운 비밀번호가 일치하지 않습니다")
-            : setPasswordMessage("새로운 비밀번호가 일치합니다다");
+            : setPasswordMessage("새로운 비밀번호가 일치합니다");
     };
     const handleNewPasswordMatchBlur = () => {
         checkPasswordMatch(newPassword, reNewPassword);
@@ -265,14 +265,14 @@ const InfoModify = ({ password, handlePasswordChange }) => {
                     isEmailAuthToggle(!emailAuthToggle);
                     setEmailVerifyCode('');
                     setTimer(0);
-                } else if (response.status == 400) {
+                } else if (response.data.status == 400) {
                     alert("인증번호 일치하지 않습니다.");
                 } else {
-                    alert("알 수 없는 오류입니다.");
+                    alert("인증번호 일치하지 않습니다.");
                 }
             })
             .catch((error) => {
-                console.log(error);
+                alert("인증번호 일치하지 않습니다.");
             });
     };
 
@@ -365,7 +365,6 @@ const InfoModify = ({ password, handlePasswordChange }) => {
                                             onChange={handleNewPasswordChange}
                                             placeholder="새로운 비밀번호 입력"
                                         />
-
                                         <input
                                             type="text"
                                             name="reNewPassword"
@@ -386,6 +385,13 @@ const InfoModify = ({ password, handlePasswordChange }) => {
                                         className={`${styles.violetBtn} ${styles.w100}`}
                                         onClick={(e) => {
                                             e.preventDefault();
+                                            handleNewPasswordMatchBlur();
+                                            if(newPassword == "" || reNewPassword == "" || passwordMessage === '새로운 비밀번호가 일치하지 않습니다'){
+                                                alert('비밀 번호가 일치하지 않습니다.');
+                                                return;
+                                            }
+                                          
+                                            alert('비밀 번호를 수정합니다.');
                                             setData({
                                                 ...data,
                                                 password: newPassword,
@@ -393,9 +399,11 @@ const InfoModify = ({ password, handlePasswordChange }) => {
                                             isPasswordToggle(!passwordToggle);
                                             setReNewPassword("");
                                             setNewPassword("");
+                                            setCurrentPassword(newPassword);
+                                            setPasswordMessage("");
                                         }}
                                     >
-                                        인증
+                                        변경
                                     </button>
                                 </div>
                             )}
@@ -476,7 +484,7 @@ const InfoModify = ({ password, handlePasswordChange }) => {
                                                     className={`${styles.violetBtn} ${styles.w100}`}
                                                     onClick={(e) => {
                                                         e.preventDefault();
-                                                        
+                                                        alert('인증 번호가 일치합니다.');
                                                         setData({
                                                             ...data,
                                                             phone: newPhoneNum,
