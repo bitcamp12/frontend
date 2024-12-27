@@ -462,7 +462,7 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
                         <dt className="editPhone">휴대폰번호</dt>
                         <dd>
                             <span>
-                                {data.phone == "0" ? "비공개" : data.phone}
+                                {data.phone == "01012345678" ? "비공개" : data.phone}
                             </span>
                             <a
                                 id="editPhoneBtn"
