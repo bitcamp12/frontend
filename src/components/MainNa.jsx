@@ -21,7 +21,6 @@ const MainNa = () => {
     const checkVisitorCookie = () => {
         const visitorCookie = getCookie('visitor');
         const today = new Date().toISOString().split('T')[0];
-        console.log(today);
 
         if (!visitorCookie || visitorCookie !== today) {
             const expiredCookie = new Date(today);
