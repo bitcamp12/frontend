@@ -218,25 +218,23 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
             alert('유효하지 않은 이메일 형식입니다.')
             return;
         }
-        setTimer(180);
-        setIsTimerActive(true);
-        setEmailDivMessage('인증 번호를 입력해주세요.');
         isEmailAuthToggle(!emailAuthToggle);
         console.log(emailAuthToggle);
     };
 
     useEffect(() => {
-            if(emailAuthToggle === true)
+            if(emailAuthToggle === true){
+            setTimer(180);
+            setIsTimerActive(true);
             axios
                 .post(`${process.env.REACT_APP_API_URL}/members/sendNumber`, {
                     email: newEmail,
                 })
                 .then((response) => {
-                    setTimer(3 * 60);
-                    setIsTimerActive(true);
                     console.log(response);
                 })
                 .catch((error) => console.log(error));
+            }
     }, [emailAuthToggle]);
 
     const [emailVerifyCode, setEmailVerifyCode] = useState("");
@@ -487,6 +485,10 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
                                                     className={`${styles.violetBtn} ${styles.w100}`}
                                                     onClick={(e) => {
                                                         e.preventDefault();
+                                                        if(isTimerpActive == false){
+                                                            alert('인증 시간이 만료되었습니다.');
+                                                            return;
+                                                        }
                                                         alert('인증 번호가 일치합니다.');
                                                         setData({
                                                             ...data,
@@ -588,6 +590,10 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
                                                     className={`${styles.violetBtn} ${styles.w100}`}
                                                     onClick={(e) => {
                                                         e.preventDefault();
+                                                        if(isTimerActive == false){
+                                                            alert('인증 시간이 만료되었습니다.');
+                                                            return;
+                                                        }
                                                         checkVerifyNumber();
                                                         
                                                     }}
