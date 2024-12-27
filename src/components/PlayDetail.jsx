@@ -1411,7 +1411,9 @@ else{
       <div id="play-detail-container">
         <div id="play-detail-header">
           <h2 id="play-subject">{playData ? playData.name : '임시 제목'}</h2>
-          <p>{playData ? `할인 기준 날짜 ${formatDate(playData.targetDate)} ${playData.playStartTime}` : '2024.07.01 ~ 2025.01.06'}</p>
+          <p>{playData && playData.targetDate 
+  ? `할인 기준 날짜 ${formatDate(playData.targetDate)} ${playData.playStartTime}` 
+  : ''}</p>
         </div>
 
         <div id="play-detail-body">
