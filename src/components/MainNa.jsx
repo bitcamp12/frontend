@@ -12,11 +12,25 @@ import Modal from "./Modal/Modal";
 
 const MainNa = () => {
     const [id, setId] = useState(false);
-
     const navigate = useNavigate();
     const [name, setName] = useState("");
     const [suggestions, setSuggestions] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
+
+    //방문자 쿠키 체크 함수
+    const checkVisitorCookie = () => {
+        const visitorCookie = getCookie('visitor');
+        const today = new Date().toISOString().split('T')[0];
+        console.log(today);
+
+        if (!visitorCookie || visitorCookie !== today) {
+            const expiredCookie = new Date(today);
+            expiredCookie.setHours(23, 59, 59, 999);
+            document.cookie = `visitor=${today}; path=/; expires=${expiredCookie.toUTCString()}`;
+            return false;
+        }
+        return true;
+    }
 
     useEffect(() => {
         const checkLoginStatus = async () => {
@@ -38,7 +52,6 @@ const MainNa = () => {
                         // 200~500 범위 내의 상태 코드를 유효한 응답으로 처리
                         return status >= 200 && status < 500;
                     }
-
                 });
     
                 if (result.status == 200 ) {
@@ -56,7 +69,6 @@ const MainNa = () => {
                     setId(false);
                      console.log("401: 인증 실패");
                 }
-    
             } catch (error) {
                 // 요청 중 오류가 발생한 경우
                 console.log("세션 체크 중 오류 발생", error);
@@ -64,38 +76,44 @@ const MainNa = () => {
             }
         };
     
-        // 방문 로그 기록 함수 
+        // 메인화면 로그 기록 함수
         const logVisit = async () => {
             try {
-                const currentDate = new Date();
-                const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+                const isReturningVisitor = checkVisitorCookie();
+                
+                // 새로운 방문자인 경우에만 로그값 남기기
+                if (!isReturningVisitor) {
+                    const currentDate = new Date();
+                    const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
-                const visitDate = {
-                    visitTime: currentDate.toISOString(),
-                    dayOfWeek: days[currentDate.getDay()],
-                    hourOfDay: currentDate.getHours()
-                };
+                    const visitDate = {
+                        visitTime: currentDate.toISOString(), 
+                        dayOfWeek: days[currentDate.getDay()]
+                    };
 
-                //backend API 호출
-                const response = await axios.post(
-                    `${process.env.REACT_APP_API_URL}/visitors/log`, 
-                    visitDate,
-                {
-                    headers: {
-                        'Content-Type': 'application/json'
+                    //backend API 호출
+                    const response = await axios.post(
+                        `${process.env.REACT_APP_API_URL}/visitors/log`, 
+                        visitDate,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
                     }
-                }
-            );
+                );
 
-            console.log('방문 기록 저장 성공 : ', response.data);
-            } catch (error) {
-                console.error('방문 기록 저장 실패:', error);
-            }
-        };
+                console.log('방문 기록 저장 성공 : ', response.data);
+            } else {
+                console.log('재방문자: 로그 기록 생략합니다');
+            } 
+        } catch (error) {
+            console.error('방문 기록 저장 실패:', error);        
+        }
+    };
 
-        checkLoginStatus();
-        logVisit();
-        
+    checkLoginStatus();
+    logVisit();
+    
     }, []);
     
 
@@ -140,7 +158,6 @@ const MainNa = () => {
                     window.location.reload();
                 }, 2000);  // 2초 뒤에 꺼짐
                 localStorage.removeItem("token");  // 토큰 제거
-
             } else if (result.data.status === 400 || result.data.status === 500) {
                 setId(false);
                 setModalMessage(`: ${result.data.message || '알 수 없는 오류'}`);
@@ -153,7 +170,6 @@ const MainNa = () => {
                 setModalMessage("알 수 없는 오류가 발생했습니다.");
                 setAlertVisible(true);
             }
-    
         } catch (error) {
             setId(false);
             setModalMessage("유효한 사용자 정보가 아닙니다.");
@@ -171,7 +187,6 @@ const MainNa = () => {
         if (query) {
             try {
                 const result = await axios.post(`${process.env.REACT_APP_API_URL}/plays/searchList`, { name: query });
-
                 
                 if (result.data.status === 200 && result.data.data.length > 0) {
                     setSuggestions(result.data.data);
