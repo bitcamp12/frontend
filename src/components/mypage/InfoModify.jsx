@@ -114,7 +114,7 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
     }, []);
 
     // ------------
-    // --수정 버튼을 누르면 보였다 안보였다--------------
+    // --수정 버튼을 누르면 보였다 안보였다------------
     const [timer, setTimer] = useState(0); // 타이머 초를 0으로 초기화
     const [isTimerActive, setIsTimerActive] = useState(false); // true이면 타이머 작동
     useEffect(() => {
