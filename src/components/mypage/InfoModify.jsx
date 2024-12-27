@@ -98,8 +98,15 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
                 setData(response.data.data);
                 const registerDate = new Date(response.data.data.registerDate);
 
-                 // 년, 월, 일 형식으로 변환 (예: 2024-12-26)
-                 const formattedDate = `${registerDate.getFullYear()}-${(registerDate.getMonth() + 1).toString().padStart(2, '0')}-${registerDate.getDate().toString().padStart(2, '0')}`;
+                // 년, 월, 일 형식으로 변환 (예: 2024-12-26)
+                const formattedDate = `${registerDate.getFullYear()}-${(
+                    registerDate.getMonth() + 1
+                )
+                    .toString()
+                    .padStart(2, "0")}-${registerDate
+                    .getDate()
+                    .toString()
+                    .padStart(2, "0")}`;
 
                 setResDate(formattedDate);
             })
@@ -135,10 +142,6 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
         }
         return () => clearInterval(interval); // Cleanup on component unmount or timer stop
     }, [isTimerpActive, timerp]);
-
-
-
-
 
     // 시간을 mm:ss 형식으로 변환하는 함수
     const formatTime = (timeInSeconds) => {
@@ -196,15 +199,57 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
     const editPhoneAuthBtnToggle = (e) => {
         e.preventDefault();
         if (!validatePhoneNumber(newPhoneNum)) {
-            alert('유효하지 않은 전화번호 형식입니다.')
+            alert("유효하지 않은 전화번호 형식입니다.");
             return;
         }
         setIsTimerpActive(true);
         setTimerp(180);
-        setPhoneDivMessage('인증 번호를 입력해주세요.');
+        setPhoneDivMessage("인증 번호를 입력해주세요.");
         isPhoneAuthToggle(!phoneAuthToggle);
         console.log(phoneAuthToggle);
+        axios
+            .post(`${process.env.REACT_APP_API_URL}/members/sendPhoneNumber`, {
+                phoneNum: newPhoneNum,
+            })
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch((error) => console.log(error));
     };
+    const [phoneVerifyCode, setPhoneVerifyCode] = useState("");
+    const checkVerifyPhoneNumber = () => {
+        axios
+            .post(`${process.env.REACT_APP_API_URL}/members/verifyPhone`, {
+                phoneNum: newPhoneNum,
+                code: phoneVerifyCode,
+            })
+            .then((response) => {
+                console.log(response.data.message);
+                if (response.data.message === "match") {
+                    alert("인증번호 일치합니다.");
+                    //타이머중지
+                    setIsTimerActive(false);
+                    setData({
+                        ...data,
+                        phone: newPhoneNum,
+                    });
+                    isPhoneToggle(!phoneToggle);
+                    setPhoneDivMessage("");
+                    setNewPhoneNum("");
+                    isPhoneAuthToggle(!phoneAuthToggle);
+                    setPhoneVerifyCode("");
+                    setTimer(0);
+                } else if (response.data.status == 400) {
+                    alert("인증번호 일치하지 않습니다.");
+                } else {
+                    alert("인증번호 일치하지 않습니다.");
+                }
+            })
+            .catch((error) => {
+                alert("인증번호 일치하지 않습니다.");
+            });
+    };
+
     // --이메일 수정--
     const [emailToggle, isEmailToggle] = useState(false);
     const editEmailBtnToggle = (e) => {
@@ -215,7 +260,7 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
     const editEmailAuthBtnToggle = (e) => {
         e.preventDefault();
         if (!validateEmail(newEmail)) {
-            alert('유효하지 않은 이메일 형식입니다.')
+            alert("유효하지 않은 이메일 형식입니다.");
             return;
         }
         isEmailAuthToggle(!emailAuthToggle);
@@ -223,7 +268,7 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
     };
 
     useEffect(() => {
-            if(emailAuthToggle === true){
+        if (emailAuthToggle === true) {
             setTimer(180);
             setIsTimerActive(true);
             axios
@@ -234,7 +279,7 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
                     console.log(response);
                 })
                 .catch((error) => console.log(error));
-            }
+        }
     }, [emailAuthToggle]);
 
     const [emailVerifyCode, setEmailVerifyCode] = useState("");
@@ -255,13 +300,11 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
                         ...data,
                         email: newEmail,
                     });
-                    isEmailToggle(
-                        !emailToggle
-                    );
+                    isEmailToggle(!emailToggle);
                     setEmailDivMessage("");
                     setNewEmail("");
                     isEmailAuthToggle(!emailAuthToggle);
-                    setEmailVerifyCode('');
+                    setEmailVerifyCode("");
                     setTimer(0);
                 } else if (response.data.status == 400) {
                     alert("인증번호 일치하지 않습니다.");
@@ -274,8 +317,7 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
             });
     };
 
-    const modifyUserInfo = async (data,e) => {
-
+    const modifyUserInfo = async (data, e) => {
         e.preventDefault();
         const modifiedData = {
             memberSeq: data.memberSeq, // 필수 값
@@ -299,7 +341,7 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
             )
             .then((response) => {
                 console.log(response.data);
-                alert('회원 정보가 수정되었습니다.');
+                alert("회원 정보가 수정되었습니다.");
                 navigate("/");
             })
             .catch();
@@ -387,12 +429,18 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
                                         onClick={(e) => {
                                             e.preventDefault();
                                             handleNewPasswordMatchBlur();
-                                            if(newPassword == "" || reNewPassword == "" || newPassword !==  reNewPassword  ){
-                                                alert('비밀 번호가 일치하지 않습니다.');
+                                            if (
+                                                newPassword == "" ||
+                                                reNewPassword == "" ||
+                                                newPassword !== reNewPassword
+                                            ) {
+                                                alert(
+                                                    "비밀 번호가 일치하지 않습니다."
+                                                );
                                                 return;
                                             }
-                                          
-                                            alert('비밀 번호를 수정합니다.');
+
+                                            alert("비밀 번호를 수정합니다.");
                                             setData({
                                                 ...data,
                                                 password: newPassword,
@@ -413,7 +461,9 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
                     <dl>
                         <dt className="editPhone">휴대폰번호</dt>
                         <dd>
-                            <span>{data.phone == '0' ? '비공개' : data.phone}</span>
+                            <span>
+                                {data.phone == "0" ? "비공개" : data.phone}
+                            </span>
                             <a
                                 id="editPhoneBtn"
                                 className={styles.whiteBtn}
@@ -441,7 +491,12 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
                                                 placeholder="변경 휴대폰번호 (01012341234)"
                                                 onChange={handleChange}
                                             />
-                                            <div className={styles.iconWrap} onClick={() => setNewPhoneNum('')}>
+                                            <div
+                                                className={styles.iconWrap}
+                                                onClick={() =>
+                                                    setNewPhoneNum("")
+                                                }
+                                            >
                                                 <Icon
                                                     name="closeCircle"
                                                     size={20}
@@ -473,10 +528,16 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
                                                 {/* 인증번호 요청 버튼을 누르면 이건 보이게 */}
                                                 <input
                                                     type="text"
-                                                    name=""
-                                                    id=""
+                                                    name="phoneVerifyCode"
+                                                    id="phoneVerifyCode"
+                                                    value={phoneVerifyCode}
+                                                    onChange={(e) => {
+                                                        setPhoneVerifyCode(
+                                                            e.target.value
+                                                        );
+                                                    }}
                                                 />
-                                                  <div
+                                                <div
                                                     className={styles.iconWrap}
                                                 >
                                                     {formatTime(timerp)}
@@ -485,21 +546,16 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
                                                     className={`${styles.violetBtn} ${styles.w100}`}
                                                     onClick={(e) => {
                                                         e.preventDefault();
-                                                        if(isTimerpActive == false){
-                                                            alert('인증 시간이 만료되었습니다.');
+                                                        if (
+                                                            isTimerpActive ==
+                                                            false
+                                                        ) {
+                                                            alert(
+                                                                "인증 시간이 만료되었습니다."
+                                                            );
                                                             return;
                                                         }
-                                                        alert('인증 번호가 일치합니다.');
-                                                        setData({
-                                                            ...data,
-                                                            phone: newPhoneNum,
-                                                        });
-                                                        isPhoneToggle(
-                                                            !phoneToggle
-                                                        );
-                                                        setPhoneDivMessage("");
-                                                        setNewPhoneNum("");
-                                                        isPhoneAuthToggle(!phoneAuthToggle);
+                                                        checkVerifyPhoneNumber();
                                                     }}
                                                 >
                                                     인증
@@ -536,7 +592,10 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
                                                 placeholder="변경 이메일(abc@naver.com)"
                                                 onChange={handleChange}
                                             />
-                                            <div className={styles.iconWrap} onClick={() => setNewEmail('')}>
+                                            <div
+                                                className={styles.iconWrap}
+                                                onClick={() => setNewEmail("")}
+                                            >
                                                 <Icon
                                                     name="closeCircle"
                                                     size={20}
@@ -573,7 +632,6 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
                                                             e.target.value
                                                         )
                                                     }
-                                                    
                                                 />
                                                 <div
                                                     className={styles.iconWrap}
@@ -590,12 +648,16 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
                                                     className={`${styles.violetBtn} ${styles.w100}`}
                                                     onClick={(e) => {
                                                         e.preventDefault();
-                                                        if(isTimerActive == false){
-                                                            alert('인증 시간이 만료되었습니다.');
+                                                        if (
+                                                            isTimerActive ==
+                                                            false
+                                                        ) {
+                                                            alert(
+                                                                "인증 시간이 만료되었습니다."
+                                                            );
                                                             return;
                                                         }
                                                         checkVerifyNumber();
-                                                        
                                                     }}
                                                 >
                                                     인증
@@ -635,11 +697,10 @@ const InfoModify = ({ password, setPassword, handlePasswordChange }) => {
                     </dl>
                 </div>
 
-            
                 <div className={styles.btnWrap}>
                     <button
                         className={styles.violetBtn}
-                        onClick={(e) => modifyUserInfo(data,e)}
+                        onClick={(e) => modifyUserInfo(data, e)}
                     >
                         변경 완료
                     </button>
