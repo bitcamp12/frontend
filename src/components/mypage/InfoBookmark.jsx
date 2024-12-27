@@ -13,7 +13,7 @@ const InfoBookmark = () => {
     const [totalPage, setTotalPage] = useState(0); // 전체 페이지
     const pageBlock = 5; // 한 블록에 보여줄 페이지 수 (5개씩)
     const startPage = Math.floor((currentPage - 1) / pageBlock) * pageBlock + 1;
-    const endPage = Math.min(startPage + pageBlock - 1, totalPage - 1);
+    const endPage = Math.min(startPage + pageBlock - 1, totalPage);
 
     const fetchItem = async () => {
         const res = await axios
