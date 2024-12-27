@@ -17,6 +17,8 @@ const Infomation = () => {
 
     const funcSelectedIcon = (iconName) => {
         setSelectedIcon(iconName);
+        //setIsPasswordCorrect(false);
+        //setPassword("");
     };
     //
     const [password, setPassword] = useState("");
@@ -27,7 +29,8 @@ const Infomation = () => {
     // 확인버튼을 누르면 비밀번호를 비교한다.
     const accessToken = localStorage.getItem("token"); // 로컬스토리지
     const [correctPassword, setCorrectPassword] = useState(""); // 실제 비밀번호로 교체 필요
-    const checkPassword = async () => {
+    const checkPassword = async (event) => {
+        event.preventDefault();
         //백엔드에서 비밀번호 확인을 해야 합니다.
         await axios
             .get(`${process.env.REACT_APP_API_URL}/members/checkPassword`, {
@@ -40,10 +43,16 @@ const Infomation = () => {
                 withCredentials: true,
             })
             .then((response) => {
+                console.log(response.data);
                 setIsPasswordCorrect(response.data);
+                if(response.data == false){
+                    alert('비밀 번호가 일치하지 않습니다.')
+                }
             })
             .catch((error) => console.log(error));
     };
+
+    console.log(isPasswordCorrect);
 
     return (
         <div className={styles.member_info_body}>
@@ -116,8 +125,16 @@ const Infomation = () => {
                     {selectedIcon === "withdrawal" && <InfoWithdrawal />}
                 </div> */}
                 <div className={styles.member_info_container}>
+                    {!isPasswordCorrect ? (
+                        <InfoLock
+                            password={password}
+                            setPassword={setPassword}
+                            handlePasswordChange={handlePasswordChange}
+                            checkPassword={checkPassword}
+                        />
+                    ) : (
                         <>
-                            {selectedIcon === "memberInfo" && <InfoModify />}
+                            {selectedIcon === "memberInfo" && <InfoModify  setPassword={setPassword} password={password}/>}
                             {selectedIcon === "reservationDetail" && (
                                 <InfoReservation />
                             )}
@@ -126,7 +143,7 @@ const Infomation = () => {
                                 <InfoWithdrawal />
                             )}
                         </>
-                    
+                    )}
                 </div>
             </section>
             <div>

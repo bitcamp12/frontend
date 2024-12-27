@@ -64,10 +64,39 @@ const MainNa = () => {
             }
         };
     
-        checkLoginStatus(); // 컴포넌트가 처음 렌더링될 때 한 번만 실행
+        // 방문 로그 기록 함수 
+        const logVisit = async () => {
+            try {
+                const currentDate = new Date();
+                const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+
+                const visitDate = {
+                    visitTime: currentDate.toISOString(),
+                    dayOfWeek: days[currentDate.getDay()],
+                    hourOfDay: currentDate.getHours()
+                };
+
+                //backend API 호출
+                const response = await axios.post(
+                    `${process.env.REACT_APP_API_URL}/visitors/log`, 
+                    visitDate,
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+
+            console.log('방문 기록 저장 성공 : ', response.data);
+            } catch (error) {
+                console.error('방문 기록 저장 실패:', error);
+            }
+        };
+
+        checkLoginStatus();
+        logVisit();
+        
     }, []);
-    
-    
     
 
     function getCookie(name) {
