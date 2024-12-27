@@ -92,19 +92,19 @@ const InfoBookmark = () => {
 
             <div className={styles.listContainer}>
                 <div className={styles.listHeader}>
-                    <span>공연명</span>
-                    <span>공연종료일일</span>
+                    <span style={{ width: '150px', display: 'inline-block', textAlign: 'left'}}>공연명</span>
+                    <span >공연 기간</span>
                 </div>
                 {favoriteList && favoriteList.length > 0 ? (
                     // If there are bookmarked items
                     favoriteList.map((item, index) => (
                         <div key={index} className={styles.bookmarkedItem}>
                             <div className={styles.itemDetails}>
-                                <span className={styles.itemName}>
+                                <span className={styles.itemName} style={{ width: '150px', display: 'inline-block' }} >
                                     {item.play.name}
                                 </span>
                                 <span className={styles.itemName}>
-                                    {format(item.play.endTime, "yyyy-MM-dd")}
+                                    {format(item.play.endTime, "yyyy-MM-dd")} ~  {format(item.play.startTime, "yyyy-MM-dd")}
                                 </span>
                             </div>
                             <div className={styles.actions}>

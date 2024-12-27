@@ -84,7 +84,7 @@ const InfoReservation = () => {
     useEffect(() => {
         // 페이지 로드시
         fetchItems();
-    }, [currentPage]);
+    }, [currentPage, classifyValue, yearValue, monthValue]);
 
     const handlePageClick = (e) => {
         setCurrentPage(e.selected);
@@ -133,16 +133,15 @@ const InfoReservation = () => {
                             </option>
                         ))}
                     </select>
-                    <button onClick={searchByMonthly}>검색</button>
                 </div>
             </div>
             <div className={styles.listContainer}>
                 <div className={styles.listHeader}>
-                    <span>예매날짜</span>
-                    <span>예약번호</span>
+                    <span>예매번호</span>
                     <span>상품명</span>
                     <span>공연일/매수</span>
-                    <span>결제수단</span>
+                    <span>결제 금액</span>
+                    <span>결제 상태</span>
                     <span>취소여부</span>
                 </div>
                 {/* // 예약목록(myBooks)이 없다면, */}
@@ -156,7 +155,6 @@ const InfoReservation = () => {
                     // {/* // 예약 목록(myBook)이 있다면 */}
                     myBooks.map((item) => (
                         <div key={item.bookSeq} className={styles.listItem}>
-                            <span>{format(item.payDate, "yyyy-MM-dd")}</span>
                             <span>{item.bookSeq}</span>
                             <span>{item.playTimeTable.play.name}</span>
                             <span>
@@ -165,7 +163,8 @@ const InfoReservation = () => {
                                     "yyyy-MM-dd"
                                 )}
                             </span>
-                            <span>{item.payment}</span>
+                            <span>{item.totalPrice}원</span>
+                            <span>{item.paymentStatus}</span>
                             <span>
                                 {/* 이거 안되는중 ......  */}
                                 {item.playTimeTable.targetDate < formattedDate
