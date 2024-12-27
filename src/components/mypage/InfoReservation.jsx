@@ -13,6 +13,7 @@ const InfoReservation = () => {
 
     const formattedDate = format(date, "yyyy-MM-dd");
 
+    
     const years = [];
     for (let index = year - 5; index < year + 5; index++) {
         years.push(index);
@@ -41,16 +42,19 @@ const InfoReservation = () => {
         if (classifyValue === "" || yearValue === "" || monthValue === "") {
             return;
         }
-        setCurrentPage(0); // 검색시 첫 페이지
+        setCurrentPage(1); // 검색시 첫 페이지
         fetchItems();
     };
 
     // 예약정보 불러오기 - 페이징징징징
     const [myBooks, setMyBooks] = useState([]); // 글 목록을 담을 리스트
 
-    const [currentPage, setCurrentPage] = useState(0); // 현재 페이지
+    const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
     const [totalPage, setTotalPage] = useState(0); // 전페 페이지
-
+    const pageBlock = 5; // 한 블록에 보여줄 페이지 수 (5개씩)
+    const startPage = Math.floor((currentPage - 1) / pageBlock) * pageBlock + 1;
+    const endPage = Math.min(startPage + pageBlock - 1, totalPage - 1);
+    
     const accessToken = localStorage.getItem("token"); // 로컬스토리지
     const fetchItems = async () => {
         const res = await axios.get(
@@ -87,7 +91,7 @@ const InfoReservation = () => {
     }, [currentPage, classifyValue, yearValue, monthValue]);
 
     const handlePageClick = (e) => {
-        setCurrentPage(e.selected);
+        setCurrentPage(e);
     };
 
     return (
@@ -175,7 +179,7 @@ const InfoReservation = () => {
                     ))
                 )}
             </div>
-            <div className={styles.pagination}>
+            {/* <div className={styles.pagination}>
                 <ReactPaginate
                     previousLabel={"<"}
                     nextLabel={">"}
@@ -190,7 +194,32 @@ const InfoReservation = () => {
                     activeClassName={styles.active}
                     disabledClassName="disabled"
                 ></ReactPaginate>
-            </div>
+            </div> */}
+             <div className="pagination">
+             {/* 이전 버튼 */}
+             {startPage > 1 && (
+                      <span className="paging" onClick={() => handlePageClick(startPage - 1)}>이전</span>
+                    )}
+
+                    {/* 페이지 번호 */}
+                    {Array.from({ length: endPage - startPage + 1}, (_, index) => {
+                      const pageNum = startPage + index;
+                      return (
+                        <span
+                          key={pageNum}
+                          className={`paging ${currentPage === pageNum ? 'current' : ''}`}
+                          onClick={() => handlePageClick(pageNum)}
+                        >
+                          {pageNum}
+                        </span>
+                      );
+                    })}
+
+                    {/* 다음 버튼 */}
+                    {endPage < totalPage - 1 && (
+                      <span className="paging" onClick={() => handlePageClick(endPage + 1)}>다음</span>
+                    )}
+             </div>
 
             <p className={styles.note}>
                 <span>

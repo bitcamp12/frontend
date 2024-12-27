@@ -9,8 +9,12 @@ const InfoBookmark = () => {
     const accessToken = localStorage.getItem("token"); // 로컬스토리지
     const navigate = useNavigate();
     const [favoriteList, setFavoriteList] = useState([]); // 좋아요 담을 리스트
-    const [currentPage, setCurrentPage] = useState(0); // 현재 페이지
+    const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
     const [totalPage, setTotalPage] = useState(0); // 전체 페이지
+    const pageBlock = 5; // 한 블록에 보여줄 페이지 수 (5개씩)
+    const startPage = Math.floor((currentPage - 1) / pageBlock) * pageBlock + 1;
+    const endPage = Math.min(startPage + pageBlock - 1, totalPage - 1);
+
     const fetchItem = async () => {
         const res = await axios
             .get(
@@ -74,17 +78,15 @@ const InfoBookmark = () => {
 
     // 페이지 이동
     const handlePageClick = (e) => {
-        setCurrentPage(e.selected);
+
+        console.log('선택 : '+e.selected);
+        setCurrentPage(e);
     };
 
-    useEffect(
-        () => {
-            fetchItem();
-        },
-        [
-            // 페이지 이동, 삭제버튼 눌렀을때
-        ]
-    );
+    useEffect(() => {
+        fetchItem();
+    }, [currentPage]);
+    
 
     return (
         <div className={styles.infoBookmark}>
@@ -138,7 +140,7 @@ const InfoBookmark = () => {
                 )}
             </div>
 
-            <div className={styles.pagination}>
+            {/* <div className={styles.pagination}>
                 <ReactPaginate
                     previousLabel={""}
                     nextLabel={""}
@@ -153,7 +155,33 @@ const InfoBookmark = () => {
                     activeClassName={styles.active}
                     disabledClassName="disabled"
                 ></ReactPaginate>
-            </div>
+            </div> */}
+
+            <div className="pagination">
+             {/* 이전 버튼 */}
+             {startPage > 1 && (
+                      <span className="paging" onClick={() => handlePageClick(startPage - 1)}>이전</span>
+                    )}
+
+                    {/* 페이지 번호 */}
+                    {Array.from({ length: endPage - startPage + 1}, (_, index) => {
+                      const pageNum = startPage + index;
+                      return (
+                        <span
+                          key={pageNum}
+                          className={`paging ${currentPage === pageNum ? 'current' : ''}`}
+                          onClick={() => handlePageClick(pageNum)}
+                        >
+                          {pageNum}
+                        </span>
+                      );
+                    })}
+
+                    {/* 다음 버튼 */}
+                    {endPage < totalPage - 1 && (
+                      <span className="paging" onClick={() => handlePageClick(endPage + 1)}>다음</span>
+                    )}
+             </div>
         </div>
     );
 };
