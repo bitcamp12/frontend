@@ -47,6 +47,14 @@ const AdvertiseContainer = () => {
         navigation={true}
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
+        breakpoints={{
+          0: {
+              slidesPerView: 2,
+          },
+          768: {
+              slidesPerView: 4,
+          },
+      }}
       >
         {plays.map((item, index) => (
           <SwiperSlide key={index}>

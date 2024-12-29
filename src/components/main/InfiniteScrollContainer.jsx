@@ -58,6 +58,7 @@ const InfiniteScrollContainer = ({selectedTab}) => {
         fetchData(1, selectedTab);
       }, [selectedTab]);
 
+      
     useEffect(() => {
         //뷰포트를 기준으로 target이 보이면 loadMoreItems 함수를 실행
         const options = {
@@ -90,6 +91,7 @@ const InfiniteScrollContainer = ({selectedTab}) => {
     //10개의 item을 추가하는 함수 -> 전체가 50개가 넘어가면 더 이상 로딩하지 않음
     const loadMoreItems = () => {
         if(hasMore) {
+            const nextPage = page + 1;
             fetchData(page, selectedTab);
             setPage((prevPage) => prevPage + 1);
         }
@@ -124,7 +126,7 @@ const InfiniteScrollContainer = ({selectedTab}) => {
             </div>
             {/* {hasMore && <div ref={target}></div>} */}
             {items.length < 100 && (
-                <div ref={target}/>
+                <div ref={target} style={{height: '1px'}}/>
             )}
         </div>
     );
