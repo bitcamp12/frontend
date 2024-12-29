@@ -60,6 +60,17 @@ const SaleContainer = () => {
                 navigation={true}
                 modules={[Pagination, Navigation]}
                 className="mySwiper2"
+                breakpoints={{
+                    0: {
+                        slidesPerView: 2,
+                        slidesPerGroup: 2,
+                    },
+                    768: {
+                        slidesPerView: 6,
+                        slidesPerGroup: 6,
+                    },
+                }}
+                
             >
                 <div className="sale-wrapper">
                     {plays.map((item, index) => (
