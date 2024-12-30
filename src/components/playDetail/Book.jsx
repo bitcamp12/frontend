@@ -154,14 +154,16 @@ const Book = ({ selectedDate, playData, DateList, popupRef, navigate, userSeq}) 
             return;
         }
 
+        const playTimeTableSeq = DateList[0]?.playTimeTableSeq;
+        const discountedPrice = DateList[0]?.discountedPrice;
+        const totalPrice = selectedSeats.length * discountedPrice;
+        
         const transformSeats = selectedSeats.map((seat) => {
+            const seatNum = seat;
             const bookedX = (seat - 1) % 10;
             const bookedY = Math.floor((seat - 1) / 10);
-            const playTimeTableSeq = DateList[0]?.playTimeTableSeq;
-            const discountedPrice = DateList[0]?.discountedPrice;
-            const totalPrice = selectedSeats.length * discountedPrice;
 
-            return { playTimeTableSeq, bookedX, bookedY, totalPrice };
+            return { playTimeTableSeq, bookedX, bookedY, seatNum };
         });
 
         const queryParams = new URLSearchParams({
@@ -169,7 +171,8 @@ const Book = ({ selectedDate, playData, DateList, popupRef, navigate, userSeq}) 
             playData: JSON.stringify(playData),
             DateList: JSON.stringify(DateList[0]),
             userSeq: JSON.stringify(userSeq),
-            popupRef: popupRef.current.name 
+            popupRef: popupRef.current.name,
+            totalPrice: JSON.stringify(totalPrice),
         }).toString();
         
         if(popupRef.current) {
@@ -188,7 +191,7 @@ const Book = ({ selectedDate, playData, DateList, popupRef, navigate, userSeq}) 
                                 {row.map(({ seat }) => {
                                     const seatX = (seat - 1) % 10; // 한 행에 10개의 좌석이 있다고 가정
                                     const seatY = Math.floor((seat - 1) / 10);
-
+                                    console.log(`좌석 번호: ${seat}, X: ${seatX}, Y: ${seatY}`);
                                     const isSeatBookedFlag = isSeatBooked(seatX, seatY);
 
                                     return (
