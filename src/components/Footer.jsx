@@ -10,7 +10,7 @@ const Footer = () => {
                 <div>이용약관</div>
                 <div>개인정보처리방침</div>
                 <div>티켓판매안내</div>
-                <div>티켓판매안내</div>
+                <div>티켓판매규칙</div>
                 <div><Link to="/notice" className='noticeLink'>공지사항</Link></div>
                 <div>고객센터</div>
             </div>

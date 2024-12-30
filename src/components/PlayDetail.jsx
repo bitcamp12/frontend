@@ -55,6 +55,7 @@ const PlayDetail = () => {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   };
 
+  
 
 
 
@@ -1410,7 +1411,9 @@ else{
       <div id="play-detail-container">
         <div id="play-detail-header">
           <h2 id="play-subject">{playData ? playData.name : '임시 제목'}</h2>
-          <p>{playData ? `${formatDate(playData.startTime)} ~ ${formatDate(playData.endTime)}` : '2024.07.01 ~ 2025.01.06'}</p>
+          <p>{playData && playData.targetDate 
+  ? `할인 기준 날짜 ${formatDate(playData.targetDate)} ${playData.playStartTime}` 
+  : ''}</p>
         </div>
 
         <div id="play-detail-body">
@@ -1526,7 +1529,7 @@ else{
               <img src={star} className="play-info-img" alt="별점" id="rating-image" />
               <label className="play-info-column-header">별점 </label><p className="play-info-column-content">{reviewAVG != 0 ? parseFloat(reviewAVG).toFixed(2) : '등록된 별점이 없습니다'}</p>
             </div>
-            <div className="play-info-column" style={{ paddingLeft:'10px'}}><div style={{paddingTop: '5px'}}>즐겨찾기&nbsp;&nbsp;&nbsp;&nbsp;</div><span onClick={HartClick} style={{ fontSize: '25px', color: hartColor,cursor: 'pointer' }}>♥</span></div>
+            <div className="play-info-column" style={{ paddingLeft:'10px'}}><span onClick={HartClick} style={{ fontSize: '25px', color: hartColor,cursor: 'pointer' }}>♥</span><div style={{paddingTop: '5px'}}>&nbsp;&nbsp;&nbsp;&nbsp;즐겨찾기</div></div>
           </div>
         </div>
 

@@ -60,6 +60,17 @@ const SaleContainer = () => {
                 navigation={true}
                 modules={[Pagination, Navigation]}
                 className="mySwiper2"
+                breakpoints={{
+                    0: {
+                        slidesPerView: 2,
+                        slidesPerGroup: 2,
+                    },
+                    768: {
+                        slidesPerView: 6,
+                        slidesPerGroup: 6,
+                    },
+                }}
+                
             >
                 <div className="sale-wrapper">
                     {plays.map((item, index) => (
@@ -77,7 +88,7 @@ const SaleContainer = () => {
                                 <p className="sale-content-content">{item.ageLimit}이상 관람가능</p>
                                 <p className="sale-content-content">{formatDate(item.startDate)} ~ {formatDate(item.endDate)}</p>
                                 <h4>
-                                    <span>{Math.ceil(item.discountRate)}% </span>{formatPrice(Math.ceil(item.discountedPrice))}원
+                                    <span>{Math.floor(item.discountRate)}% </span>{formatPrice(Math.floor(item.discountedPrice))}원
                                 </h4>
                             </div>
                         </SwiperSlide>
