@@ -236,7 +236,6 @@ const InfoReservation = () => {
                         </span>
                     );
                 })}
-
                 {/* 다음 버튼 */}
                 {endPage < totalPage - 1 && (
                     <span
