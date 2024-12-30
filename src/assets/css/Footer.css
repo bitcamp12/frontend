@@ -61,20 +61,34 @@
 /* 반응형 스타일 */
 @media (max-width: 768px) {
     .footer-row div {
-        font-size: 12px;
-    }
-
-    .footer-info span {
-        font-size: 14px;
-    }
-}
-
-@media (max-width: 400px) {
-    .footer-info p {
+        flex: 1;
+        padding: 10px;
         font-size: 10px;
+        text-align: left;
+        margin-left: 5px;
     }
 
-    .footer-info {
-        padding: 8px;
+    .footer-row div:nth-child(4),
+    .footer-row div:nth-child(5) {
+        display: none;
+    }
+
+    .company-info {
+        margin-top: 0.5rem;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .company-info h2 {
+        font-size: 12px !important;
+    }
+
+    .company-info p {
+        font-size: 10px !important;
+    }
+
+    .customer-info,
+    .payment-info {
+        display: none;
     }
 }
