@@ -13,7 +13,6 @@ const InfoReservation = () => {
 
     const formattedDate = format(date, "yyyy-MM-dd");
 
-    
     const years = [];
     for (let index = year - 5; index < year + 5; index++) {
         years.push(index);
@@ -94,6 +93,22 @@ const InfoReservation = () => {
         setCurrentPage(e);
     };
 
+    // React는 Switch를 바로 쓸수 없기 떄문에 함수로 만들어서 사용해야 한다.
+    const getPaymentStatus = (status) => {
+        switch (status) {
+            case "PAID":
+                return "결제완료";
+            case "PENDING":
+                return "결제전";
+            case "REFUND_REQUESTED":
+                return "환불요청";
+            case "REFUNDED":
+                return "환불완료";
+            default:
+                return "Unknown Status";
+        }
+    };
+
     return (
         <div className={styles.infoReservation}>
             <h3>예매내역 확인 · 취소</h3>
@@ -168,7 +183,7 @@ const InfoReservation = () => {
                                 )}
                             </span>
                             <span>{item.totalPrice}원</span>
-                            <span>{item.paymentStatus}</span>
+                            <span>{getPaymentStatus(item.paymentStatus)}</span>
                             <span>
                                 {/* 이거 안되는중 ......  */}
                                 {item.playTimeTable.targetDate < formattedDate
@@ -195,31 +210,42 @@ const InfoReservation = () => {
                     disabledClassName="disabled"
                 ></ReactPaginate>
             </div> */}
-             <div className="pagination">
-             {/* 이전 버튼 */}
-             {startPage > 1 && (
-                      <span className="paging" onClick={() => handlePageClick(startPage - 1)}>이전</span>
-                    )}
+            <div className="pagination">
+                {/* 이전 버튼 */}
+                {startPage > 1 && (
+                    <span
+                        className="paging"
+                        onClick={() => handlePageClick(startPage - 1)}
+                    >
+                        이전
+                    </span>
+                )}
 
-                    {/* 페이지 번호 */}
-                    {Array.from({ length: endPage - startPage + 1}, (_, index) => {
-                      const pageNum = startPage + index;
-                      return (
+                {/* 페이지 번호 */}
+                {Array.from({ length: endPage - startPage + 1 }, (_, index) => {
+                    const pageNum = startPage + index;
+                    return (
                         <span
-                          key={pageNum}
-                          className={`paging ${currentPage === pageNum ? 'current' : ''}`}
-                          onClick={() => handlePageClick(pageNum)}
+                            key={pageNum}
+                            className={`paging ${
+                                currentPage === pageNum ? "current" : ""
+                            }`}
+                            onClick={() => handlePageClick(pageNum)}
                         >
-                          {pageNum}
+                            {pageNum}
                         </span>
-                      );
-                    })}
-
-                    {/* 다음 버튼 */}
-                    {endPage < totalPage - 1 && (
-                      <span className="paging" onClick={() => handlePageClick(endPage + 1)}>다음</span>
-                    )}
-             </div>
+                    );
+                })}
+                {/* 다음 버튼 */}
+                {endPage < totalPage - 1 && (
+                    <span
+                        className="paging"
+                        onClick={() => handlePageClick(endPage + 1)}
+                    >
+                        다음
+                    </span>
+                )}
+            </div>
 
             <p className={styles.note}>
                 <span>
