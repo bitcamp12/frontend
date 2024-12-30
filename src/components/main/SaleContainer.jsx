@@ -77,7 +77,7 @@ const SaleContainer = () => {
                                 <p className="sale-content-content">{item.ageLimit}이상 관람가능</p>
                                 <p className="sale-content-content">{formatDate(item.startDate)} ~ {formatDate(item.endDate)}</p>
                                 <h4>
-                                    <span>{Math.ceil(item.discountRate)}% </span>{formatPrice(Math.ceil(item.discountedPrice))}원
+                                    <span>{Math.floor(item.discountRate)}% </span>{formatPrice(Math.floor(item.discountedPrice))}원
                                 </h4>
                             </div>
                         </SwiperSlide>
