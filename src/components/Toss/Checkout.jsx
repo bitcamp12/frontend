@@ -29,6 +29,8 @@ export function CheckoutPage() {
         console.log("playData : ", playData);
         const userSeq = queryParams.get("userSeq");
         console.log("userSeq : ", userSeq);
+        const totalPrice = queryParams.get("totalPrice");
+        console.log("totalPrice : ", totalPrice);
 
         if (playData) {
             const parsedPlayData = JSON.parse(decodeURIComponent(playData));
@@ -37,13 +39,13 @@ export function CheckoutPage() {
             }
         }
 
-        if(transformSeats) {
-            const parsedSeats = (JSON.parse(decodeURIComponent(transformSeats)));
+        if (transformSeats) {
+            const parsedSeats = JSON.parse(decodeURIComponent(transformSeats));
             setTransformSeats(parsedSeats);
-
-            if (parsedSeats && parsedSeats.length > 0) {
-                const totalPrice = parsedSeats.reduce((sum, seat) => sum + seat.totalPrice, 0);
-                setAmount({ currency: "KRW", value: totalPrice });
+    
+            if (totalPrice) {
+                const parsedTotalPrice = JSON.parse(decodeURIComponent(totalPrice));
+                setAmount({ currency: "KRW", value: parsedTotalPrice });
             }
         }
 
