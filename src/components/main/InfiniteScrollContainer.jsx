@@ -16,7 +16,7 @@ const InfiniteScrollContainer = ({selectedTab}) => {
 
     const fetchData = async (pageNumber, tabIndex) => {
         try {
-            const size = 100;
+            const size = 25;
             let url = (`${process.env.REACT_APP_API_URL}/plays/getPlayAll?page=${pageNumber}&size=${size}`);
 
             if (tabIndex === 1) {
@@ -90,10 +90,14 @@ const InfiniteScrollContainer = ({selectedTab}) => {
 
     //10개의 item을 추가하는 함수 -> 전체가 50개가 넘어가면 더 이상 로딩하지 않음
     const loadMoreItems = () => {
-        if(hasMore) {
-            const nextPage = page + 1;
-            fetchData(page, selectedTab);
-            setPage((prevPage) => prevPage + 1);
+        if (hasMore) {
+            setPage(prevPage => {
+                const nextPage = prevPage + 1;  // Increment page by 1
+                console.log(`Loading more items, current page: ${nextPage}`);
+                fetchData(nextPage, selectedTab); // Call fetchData with the updated page
+                return nextPage;  // Update the page state to nextPage
+
+            });
         }
     };
 
@@ -124,10 +128,7 @@ const InfiniteScrollContainer = ({selectedTab}) => {
                     </div>
                 ))}
             </div>
-            {/* {hasMore && <div ref={target}></div>} */}
-            {items.length < 100 && (
-                <div ref={target} style={{height: '1px'}}/>
-            )}
+            {hasMore && <div ref={target} style={{ height: '1px' }} />}
         </div>
     );
 };
