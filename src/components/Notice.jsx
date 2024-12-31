@@ -62,7 +62,7 @@ const Notice = () => {
                                             {item.imageFileName &&
                                                  <img src={`https://kr.object.ncloudstorage.com/bitcamp-9th-bucket-135/storage/${item.imageFileName}`} alt={item.imageOriginalFileName} />
                                             }
-                                            <p className='noticeContent'>{item.content}</p>
+                                            <p className='noticeContent' style={{whiteSpace: 'pre-wrap'}} >{item.content}</p>
                                         </div>
                                     </div>
                                 </div>
