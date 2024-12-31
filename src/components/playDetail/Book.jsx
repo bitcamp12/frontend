@@ -4,6 +4,8 @@ import { CheckoutPage } from '../Toss/Checkout';
 import { useNavigate } from 'react-router';
 
 const Book = ({ selectedDate, playData, DateList, popupRef, navigate, userSeq}) => {
+
+    playData.description = "1";
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [seatLayout, setSeatLayout] = useState([]);
     const [bookedSeats, setBookedSeats] = useState([]);
