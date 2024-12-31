@@ -22,6 +22,7 @@ import axios, { Axios } from 'axios';
 import { useLocation } from 'react-router';
 import Modal from './Modal/Modal';
 import PalySaleinfo from './playDetail/PalySaleinfo';
+import ScrollToTopOnPageLoad from './ScrollToTopOnPageLoad';
 
 const PlayDetail = () => {
   const [visible, setVisible] = useState([true, false, false, false, false]);
@@ -97,7 +98,7 @@ const PlayDetail = () => {
     fetchTimeSlots();
   }, [selectedDate]);  // 빈 배열을 전달하여 한 번만 실행
   ///////////
-
+  
 
 
 
@@ -1408,6 +1409,7 @@ else{
 
     <>
       <MainNa />
+      <ScrollToTopOnPageLoad />
       <div id="play-detail-container">
         <div id="play-detail-header">
           <h2 id="play-subject">{playData ? playData.name : '임시 제목'}</h2>

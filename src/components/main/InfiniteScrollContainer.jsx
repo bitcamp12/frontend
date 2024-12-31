@@ -92,10 +92,10 @@ const InfiniteScrollContainer = ({selectedTab}) => {
     const loadMoreItems = () => {
         if (hasMore) {
             setPage(prevPage => {
-                const nextPage = prevPage + 1;  // Increment page by 1
+                const nextPage = prevPage + 1;
                 console.log(`Loading more items, current page: ${nextPage}`);
-                fetchData(nextPage, selectedTab); // Call fetchData with the updated page
-                return nextPage;  // Update the page state to nextPage
+                fetchData(nextPage, selectedTab);
+                return nextPage;
 
             });
         }
@@ -107,7 +107,7 @@ const InfiniteScrollContainer = ({selectedTab}) => {
     const formatDate = (dateStr) => {
         const date = new Date(dateStr);
         const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
         return `${year}.${month}.${day}`;
     };
@@ -128,7 +128,7 @@ const InfiniteScrollContainer = ({selectedTab}) => {
                     </div>
                 ))}
             </div>
-            {hasMore && <div ref={target} style={{ height: '1px' }} />}
+            {hasMore && <div ref={target} style={{ height: '1px', visibility: 'hidden' }} />}
         </div>
     );
 };

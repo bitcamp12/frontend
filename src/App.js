@@ -25,13 +25,21 @@ import Book from "./components/playDetail/Book";
 import { CheckoutPage } from "./components/Toss/Checkout";
 import { SuccessPage } from "./components/Toss/Success";
 import { FailPage } from "./components/Toss/Fail";
+import ScrollToTopOnPageLoad from "./components/ScrollToTopOnPageLoad";
+import { useEffect } from "react";
 
 
 
 const App = () => {
+
+    useEffect(() => {
+        window.history.scrollRestoration = "manual";
+    }, []);
+
     return (
         <>
             <BrowserRouter>
+                <ScrollToTopOnPageLoad />
                 <Routes>
                     <Route path="/" element={<Main />} />
                     <Route path="/login" element={<Login />} />
