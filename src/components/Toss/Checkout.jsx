@@ -41,12 +41,12 @@ export function CheckoutPage() {
 
         if (transformSeats) {
             const parsedSeats = JSON.parse(decodeURIComponent(transformSeats));
-            setTransformSeats(parsedSeats);
-    
-            if (totalPrice) {
-                const parsedTotalPrice = JSON.parse(decodeURIComponent(totalPrice));
-                setAmount({ currency: "KRW", value: parsedTotalPrice });
-            }
+            setTransformSeats(parsedSeats);    
+        }
+
+        if (totalPrice) {
+            const parsedTotalPrice = JSON.parse(decodeURIComponent(totalPrice));
+            setAmount({ currency: "KRW", value: parsedTotalPrice });
         }
 
         if (userSeq) {
@@ -182,12 +182,13 @@ export function CheckoutPage() {
                         try {
                             const transformSeatsEncoded = encodeURIComponent(JSON.stringify(transformSeats));
                             const userDetailsEncoded = encodeURIComponent(JSON.stringify(userDetails));
+                            const totalPriceEncoded = encodeURIComponent(JSON.stringify(amount.value));
                             // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
                             // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
                             await widgets.requestPayment({
                                 orderId: generateRandomString(),
                                 orderName: orderName,
-                                successUrl: `${window.location.origin}/success?transformSeats=${transformSeatsEncoded}&userDetails=${userDetailsEncoded}`,
+                                successUrl: `${window.location.origin}/success?transformSeats=${transformSeatsEncoded}&userDetails=${userDetailsEncoded}&totalPrice=${totalPriceEncoded}`,
                                 failUrl: window.location.origin + "/fail",
                                 customerEmail: userDetails.email,
                                 customerName: userDetails.name,
