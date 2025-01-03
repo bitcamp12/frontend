@@ -43,13 +43,17 @@ export function SuccessPage() {
 
         const transformSeats = JSON.parse(decodeURIComponent(searchParams.get("transformSeats")));
         const userDetails = JSON.parse(decodeURIComponent(searchParams.get("userDetails")));
+        const totalPrice = JSON.parse(decodeURIComponent(searchParams.get("totalPrice")));
         console.log("Payload:", transformSeats);
         console.log("User:", userDetails);
+        console.log("Total Price:", totalPrice);
         
         const payload = {
           seats: transformSeats,
           user: userDetails, 
+          totalPrice: totalPrice
         };
+        console.log("Payload to be sent:", payload);
 
         const bookResponse = await axios.post(`${process.env.REACT_APP_API_URL}/books/purchaseSeats`,
           payload,
