@@ -1,26 +1,52 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import auth from '../assets/images/authimage.png';
 import MainNa from "./MainNa";
 
 import "../assets/css/FindIdDetail.css";
+import Modal from "./Modal/Modal";
+
+import { useNavigate } from "react-router-dom";
 
 
 const FindIdDetail = () => {
+
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
+  const closeModal = () => {
+      setAlertVisible(false);
+  };
+
   const [userId, setUserId] = useState(null);
+  const location = useLocation();
 
-  // useEffect(() => {
-  //   const id = sessionStorage.getItem("userId");
-  //   if (id) {
-  //     setUserId(id);
-  //   } else {
-  //     alert("ID 찾기를 진행해주세요.");
-  //   }
+   useEffect(() => {
+     const id = sessionStorage.getItem("userId");
+     if (id) {
+       setUserId(id);
+     } else {
+      setAlertVisible(true);
+      setModalMessage("아이디 찾기를 진행해주세요");
+     }
 
-  //   return () => {
-  //     sessionStorage.removeItem("userId");
-  //   };
-  // }, []);
+     return () => {
+       sessionStorage.removeItem("userId");
+     };
+ }, []);
+
+
+ const navigate = useNavigate();
+
+const handleLoginClick = () => {
+  if (userId) {
+    navigate("/login", { state: { userId } });
+  } else {
+    setAlertVisible(true);
+    setModalMessage("아이디 찾기를 먼저 진행해주세요");
+  }
+};
+
 
   return (
     <>
@@ -32,13 +58,13 @@ const FindIdDetail = () => {
           </div>
 
           <div className="searchTabIdWrapper">
-            <div className="searchTabId">
-              <Link to="/findId">아이디 찾기</Link>
+              <div className={`searchTab ${location.pathname === "/findIdDetail" ? "active" : ""}`}>
+                <Link to="/findId">아이디 찾기</Link>
+              </div>
+              <div className={`searchTab ${location.pathname === "/findPwdDetail" ? "active" : ""}`}>
+                <Link to="/findPwd">비밀번호 찾기</Link>
+              </div>
             </div>
-            <div className="searchTabId">
-              <Link to="/findPwd">비밀번호 찾기</Link>
-            </div>
-          </div>
           
           <div className="searchContentIdWrapper">
             <ul>
@@ -64,12 +90,17 @@ const FindIdDetail = () => {
             <Link to="/findPwd">
               <button className="whiteBtn">비밀번호 찾기</button>
             </Link>
-            <Link to="/login">
-              <button className="violetBtn">로그인</button>
-            </Link>
+              <button className="violetBtn" onClick={handleLoginClick}>로그인</button>
           </div>
         </div>
       </div>
+
+      <Modal
+                closeModal={closeModal} 
+                modalMessage={modalMessage} 
+                modalTitle={modalTitle} 
+                alertVisible={alertVisible} 
+            />   
     </>
   );
 };

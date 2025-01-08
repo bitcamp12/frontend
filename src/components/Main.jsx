@@ -3,7 +3,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "../assets/css/Main.css";
 import "../assets/css/Buttons.css";
 import "../assets/css/MainNa.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -27,12 +27,12 @@ const Main = () => {
             <ScrollToTop />
             <AdvertiseContainer />
             <ButtonNavContainer setSelectedTab={setSelectedTab} />
-            <SaleContainer />
+            <SaleContainer /> 
             <BarNavContainer
                 selectedTab={selectedTab}
                 setSelectedTab={setSelectedTab}
             />
-            <InfiniteScrollContainer />
+            <InfiniteScrollContainer selectedTab={selectedTab}/>
             <Footer />
         </>
     );

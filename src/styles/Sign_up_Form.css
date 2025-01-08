@@ -15,7 +15,7 @@
     margin-right: 10px;
     font-weight: bold;
     white-space: nowrap;
-    display: flex;
+    display: inline-flex ;
     align-items: center;
     height: 100%;
     margin-top: 13px;
@@ -113,6 +113,10 @@
   .sign-up-form-wrapper .submit-btn:hover {
     background-color: #6A2DB4;
   }
+
+  .radio-group input[type="radio"] {
+    margin-right: 5px;
+  }
   
   @media (max-width: 768px) {
     .signup-container {
@@ -138,5 +142,7 @@
       font-size: 20px;
       padding: 8px;
     }
+
+
   }
   

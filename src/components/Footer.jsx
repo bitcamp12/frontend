@@ -1,5 +1,6 @@
 import React from 'react';
 import "../assets/css/Footer.css";
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
     return (
@@ -9,8 +10,8 @@ const Footer = () => {
                 <div>이용약관</div>
                 <div>개인정보처리방침</div>
                 <div>티켓판매안내</div>
-                <div>티켓판매안내</div>
-                <div>공지사항</div>
+                <div>티켓판매규칙</div>
+                <div><Link to="/notice" className='noticeLink'>공지사항</Link></div>
                 <div>고객센터</div>
             </div>
             <div className="footer-row">

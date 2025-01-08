@@ -1,0 +1,106 @@
+.noticeContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    padding-top: 20px;
+    position: relative;
+    width: 100%;
+    max-width: 1280px;
+    overflow: visible;
+}
+
+.noticeWrapper {
+    display: flex;
+    flex-direction: column;
+    max-width: 50rem;
+    margin: 0 auto;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+.noticeHeader {
+    text-align: center;
+    width: 100%;
+    margin: 25px 0 20px 0;
+}
+
+.noticeHeader h2{
+    font-size: 28px;
+}
+
+.notice-text {
+    display: flex;
+    flex-direction: column; /* Stack title and date vertically */
+    text-align: left;
+}
+
+.noticeTitle {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.noticeDate {
+    font-size: 14px;
+    color: #abaaaa;
+    margin-top: 2px;
+}
+
+.noticeContentWrapper {
+    min-width: 50rem;
+    border: none;
+    margin-bottom: 30px;
+}
+
+.accordion {
+    border: none !important;
+}
+
+.accordion-header {
+    position: relative !important;
+    display: flex !important;
+}
+
+.accordion-item {
+    border: none !important;
+    border-bottom: 1px solid #e9e9e9 !important;
+}
+
+.accordion-button {
+    border: none !important;
+    border-bottom: 1px solid #e9e9e9 !important;
+    box-shadow: none !important;
+    background-color: transparent;
+    align-items: flex-start;
+    height: 5rem !important;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: transparent;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.accordion-button:focus,
+.accordion-button:active {
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.accordion-body {
+    border: none !important;
+    padding: 10px 16px 20px 16px;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+}
+
+.accordion-body img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}

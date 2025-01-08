@@ -5,80 +5,80 @@
     border: none;
     border-radius: 8px;
     height: 100%;
-  }
-  
-  .infoReservation h3 {
+}
+
+.infoReservation h3 {
     font-size: 25px;
     padding-bottom: 20px;
     margin-bottom: 20px;
     border-bottom: 2px solid rgb(119, 119, 119);
-  }
-  
-  .memo {
+}
+
+.memo {
     font-size: 14px;
     margin-bottom: 10px;
-  }
-  
-  .memo span {
+}
+
+.memo span {
     color: red;
-  }
-  
-  .searchSection {
+}
+
+.searchSection {
     margin-bottom: 20px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 5px;
-  }
+}
 
-  .searchSectionTime {
+.searchSectionTime {
     margin-bottom: 10px;
     margin-top: 10px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 5px;
-  }
+}
 
-  .searchSectionDate {
+.searchSectionDate {
     margin-bottom: 10px;
     margin-top: 10px;
-    margin-left: 25px;
+    /* margin-left: 25px; */
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 5px;
-  }
-  
-  .searchSection select,
-  .searchSection input,
-  .searchSection button {
+}
+
+.searchSection select,
+.searchSection input,
+.searchSection button {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     height: 40px;
-  }
-  
-  .searchSection button {
+}
+
+.searchSection button {
     background-color: white;
     cursor: pointer;
     width: 70px;
     font-size: 12px;
-  }
-  
-  .searchSection button:hover {
+}
+
+.searchSection button:hover {
     background-color: #6e2ec3;
     color: white;
-  }
-  
-  .listContainer {
+}
+
+.listContainer {
     margin-top: 20px;
     display: flex;
     flex-direction: column;
     gap: 10px;
-  }
-  
-  .listHeader {
+}
+
+.listHeader {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     align-items: center;
@@ -88,42 +88,106 @@
     padding: 10px;
     border-radius: 4px;
     font-weight: bold;
-  }
-  
-  .listItem {
+}
+
+.listItem {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
-  }
-  
-  .listItem .fullRow {
+    text-align: center;
+}
+
+.listItem .fullRow {
     grid-column: span 6;
     text-align: center;
-  }
-  
-  .pagination {
+}
+
+.pagination {
     margin-top: 20px;
     text-align: center;
     font-size: 15px;
-  }
-  
-  .note {
+    justify-content: center;
+}
+
+/*  */
+.pagePagination {
+    display: flex;
+    width: 50px;
+    min-width: 555px;
+    padding: 70px 16px 16px 16px;
+    justify-content: center;
+    align-items: center;
+}
+
+.pageItem {
+    /* 페이지 항목의 스타일 */
+    cursor: pointer;
+    height: 27px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    margin-right: 4px;
+    padding: 0px 8px 0px 8px;
+}
+
+.pageItem:hover {
+    background-color: #e6e3e8;
+}
+
+.active {
+    /* 활성 상태의 스타일 */
+    background-color: #8e43e7;
+    color: white;
+}
+
+.active:hover {
+    background-color: #8e43e7;
+}
+
+.break {
+    /* '...' 이후의 컴포넌트 스타일 */
+    height: 27px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    border-radius: 3px;
+    margin-right: 4px;
+    padding: 0px 8px 0px 8px;
+}
+
+.previous {
+    height: 27px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    border-radius: 3px;
+    margin-right: 4px;
+    padding: 0px 8px 0px 8px;
+}
+
+/*  */
+.note {
     margin-top: 15px;
-    font-size: 14px
-  }
-  
-  .note span:nth-of-type(1) {
+    font-size: 14px;
+}
+
+.note span:nth-of-type(1) {
     color: red;
-  }
-  
-  .note span:nth-of-type(2) {
+}
+
+.note span:nth-of-type(2) {
     font-size: 13px;
     line-height: 1.5;
     margin-bottom: 10px;
-  }
-  
+}
+
 /* 버튼 */
 .btnWrap {
     display: flex;
@@ -132,9 +196,9 @@
     width: 100%;
     gap: 10px;
 }
-  
+
 .violetBtn {
-    background-color: #8E43E7;
+    background-color: #8e43e7;
     color: white;
     padding: 5px 10px;
     color: white;
@@ -145,8 +209,7 @@
     height: 45px;
     cursor: pointer;
 }
-  
+
 .violetBtn:hover {
     background-color: #6e2ec3;
 }
-  

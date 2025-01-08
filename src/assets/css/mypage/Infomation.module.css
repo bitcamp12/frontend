@@ -45,11 +45,23 @@ nav.member_info_nav li {
 
 nav.member_info_nav li span {
     margin-left: 15px;
+    cursor: pointer;
+}
+
+nav.member_info_nav li span:hover{
+    text-decoration: underline;
 }
 
 .member_info_container {
     width: 75%;
     height: 100%;
+}
+
+.selected {
+    border-radius: 3px;
+    background-color: #8e43e7; /* 선택된 항목 배경색 */
+    font-weight: bold; /* 선택된 항목 글자 두껍게 */
+    color: white; /* 글자색 */
 }
 
 /* container */

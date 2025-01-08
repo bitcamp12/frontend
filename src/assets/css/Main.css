@@ -253,7 +253,6 @@ body {
     margin: 0;
     padding: 0;
     font-size: 10pt;
-    color: black;
 }
 
 .sale-content-title {
@@ -261,6 +260,11 @@ body {
     font-size: 14pt !important;
     margin-top: 3px !important;
     margin-bottom: 5px !important;
+    color: black;
+}
+
+.sale-content-content {
+    color: #939393;
 }
 
 .sale-content h4 {
@@ -348,8 +352,9 @@ body {
 }
 
 .infinite-scroll-card-body h6 {
-    font-size: 14px;
+    font-size: 13.3px;
     margin-bottom: 2px !important;
+    color: #939393;
 }
 
 
@@ -365,57 +370,115 @@ body {
     .infinite-scroll-container {
         max-width: 100%;
         padding: 0 10px;
+        height: auto;
     }
 
     .mySwiper,
     .mySwiper2 {
         height: auto;
     }
-.mySwiper .swiper-slide,
-.mySwiper2 .swiper-slide {
-    width: 100%;
-    height: auto;
-}
 
-.mySwiper .swiper-slide img,
-.mySwiper2 .swiper-slide img {
-    width: 100%;
-    height: auto;
-}
+    .mySwiper .swiper-slide,
+    .mySwiper2 .swiper-slide {
+        width: 100%;
+        height: auto;
+    }
 
-.card-body {
-    position: static;
-    padding: 10px;
-}
+    .mySwiper .swiper-slide img,
+    .mySwiper2 .swiper-slide img {
+        width: 100%;
+        height: auto;
+    }
 
-.sale-header h2 {
-    font-size: 18pt;
-}
+    .mySwiper .swiper-button-next,
+    .mySwiper .swiper-button-prev {
+        height: 30px !important;
+        width: 30px !important;
+        top: 8rem !important;
+    }
 
-.sale-content-title {
-    font-size: 12pt !important;
-}
+    .mySwiper2 .swiper-button-next,
+    .mySwiper2 .swiper-button-prev {
+        height: 30px !important;
+        width: 30px !important;
+        top: 11rem !important;
+    }
 
-.sale-content h4 {
-    font-size: 16px;
-}
+    .mySwiper .swiper-button-next::after,
+    .mySwiper .swiper-button-prev::after,
+    .mySwiper2 .swiper-button-next::after,
+    .mySwiper2 .swiper-button-prev::after {
+        font-size: 15px !important;
+    }
 
-.nav-link {
-    font-size: 10pt;
-    margin: 10px;
-}
+    .button-nav-container {
+        margin-bottom: 0;
+    }
 
-.custom-btn {
-    font-size: 12px;
-    padding: 5px 10px;
-}
+    .button-nav-container button {
+        font-size: 0.8rem;
+        padding: 5px 10px;
+    }
 
-.infinite-scroll-card {
-    height: auto;
-}
+    .card-body {
+        position: static;
+        padding: 10px;
+    }
 
-.infinite-scroll-card img {
-    height: auto;
-}
+    .mySwiper2 .swiper-wrapper {
+        height: auto !important;
+    }
+
+    .sale-header {
+        height: 50%;
+        margin-bottom: 30px;
+    }
+
+    .sale-content {
+        height: 130px !important;
+    }
+
+    .sale-header h2 {
+        font-size: 18pt;
+    }
+
+    .sale-content-title {
+        font-size: 12pt !important;
+    }
+
+    .sale-content h4 {
+        font-size: 16px;
+    }
+
+    .nav-link {
+        font-size: 10pt;
+        margin: 10px;
+    }
+
+    .custom-btn {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
+
+    .infinite-scroll-container {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .infinite-scroll-card {
+        height: auto;
+        width: 100%;
+    }
+
+    .infinite-scroll-card img {
+        height: auto;
+    }
+
+    .mySwiper2 .swiper-pagination-bullet {
+        display: none;
+    }
+
 }
 /* #endregion */

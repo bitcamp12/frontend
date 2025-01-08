@@ -1,18 +1,54 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import styles from "../../assets/css/mypage/InfoLock.module.css";
 
 import Icon from "./Icon";
+import axios from "axios";
+import { useNavigate } from "react-router";
 
-const InfoLock = (props) => {
+const InfoLock = ({ selectedIcon, password,setPassword ,handlePasswordChange, checkPassword }) => {
+   // const [selectedIcon, setSelectedIcon] = useState("");
     // 비밀번호 맞추면 Infomation.jsx로 보내야함
+    const navigator = useNavigate();
+    // const [pwd, setPwd] = useState("");
 
-    const [pwd, setPwd] = useState("");
-    const [selectedIcon, setSelectedIcon] = useState("");
+    // const funcSelectedIcon = (iconName) => {
+    //     setSelectedIcon(iconName);
+    // };
+    const [loginId, setloginId] = useState("");
+    const accessToken = localStorage.getItem("token");
+    
+useEffect(()=>{
+    axios
+    .get(`${process.env.REACT_APP_API_URL}/members/id`, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}` // 토큰을 Authorization 헤더에 포함
+    },
+    withCredentials: true, // 리프레시 토큰을 쿠키로 보내기 위한 설정
+    })
+    .then((response) => {
+      console.log(response);
+      console.log("현재 사용자 : ", response.data);
+      if(response.data.status == 200){
+        setloginId(response.data.data.id);
+        if(response.data.data.id == response.data.data.password){
+            setPassword(response.data.data.password);
+        }
+      }else{
+        setloginId('');
+        navigator("/");
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+      setloginId('');
+      navigator("/");
+    })
+  },[selectedIcon])
 
-    const funcSelectedIcon = (iconName) => {
-        setSelectedIcon(iconName);
-    };
+
+
+
 
     return (
         <div className={styles.member_info_lock}>
@@ -37,29 +73,24 @@ const InfoLock = (props) => {
                         />
                     </div>
                     <div>
-                        <label htmlFor="id">아이디</label>
-                        <input
-                            type="text"
-                            name="id"
-                            id="id"
-                            value={props.id}
-                            readOnly
-                        />
-                    </div>
-                    <div>
                         <label htmlFor="pwd">비밀번호</label>
                         <input
                             type="password"
                             name="pwd"
                             id="pwd"
-                            value={pwd}
-                            onChange={(e) => setPwd(e.target.value)}
+                            value={password}
+                            placeholder="비밀번호"
+                            onChange={handlePasswordChange}
                         />
                     </div>
                 </div>
                 <div className={styles.btnWrap}>
-                    <button className={styles.whiteBtn}>취소</button>
-                    <button className={styles.violetBtn}>확인</button>
+                    <button
+                        onClick={checkPassword}
+                        className={styles.violetBtn}
+                    >
+                        확인
+                    </button>
                 </div>
             </form>
         </div>

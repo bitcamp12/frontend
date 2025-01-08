@@ -9,15 +9,22 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const SaleContainer = () => {
 
     const [plays, setPlays] = useState([]);
 
+    const formatPrice = (price) => {
+        return price ? new Intl.NumberFormat('en-US').format(price) : '0';
+    };
+
+     const targetDate = "2024-11-29"
+
     useEffect(() => {
-        const fetchRandomPlays = async () => {
+        const fetchSalePlays = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/api/plays/getPlaySale", { withCredentials: true });
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/playTimeTables/calculateDiscount`, { withCredentials: true });
                 if (response.data && response.data.data) {
                     setPlays(response.data.data);
                 }
@@ -26,13 +33,21 @@ const SaleContainer = () => {
             }
         };
 
-        fetchRandomPlays();
+        fetchSalePlays();
     }, []);
+
+    const formatDate = (dateStr) => {
+        const date = new Date(dateStr);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}.${month}.${day}`;
+    };
 
     return (
         <div className="sale-container">
             <div className="sale-header">
-                <h2>할인 마감 임박!</h2>
+                <h2>오늘의 할인 연극!</h2>
             </div>
             <Swiper
                 slidesPerView={6}
@@ -45,22 +60,35 @@ const SaleContainer = () => {
                 navigation={true}
                 modules={[Pagination, Navigation]}
                 className="mySwiper2"
+                breakpoints={{
+                    0: {
+                        slidesPerView: 2,
+                        slidesPerGroup: 2,
+                    },
+                    768: {
+                        slidesPerView: 6,
+                        slidesPerGroup: 6,
+                    },
+                }}
+                
             >
                 <div className="sale-wrapper">
                     {plays.map((item, index) => (
                         <SwiperSlide key={index}>
                             <div className="card">
+                                <Link to={`/playDetail/${item.playSeq}`}>
                                 <img
                                     src={`https://kr.object.ncloudstorage.com/bitcamp-9th-bucket-135/storage/${item.imageFileName}`}
                                     alt={item.name}
                                 />
+                                </Link>
                             </div>
                             <div className="sale-content">
-                                <p className="sale-content-title">{item.name}</p>
-                                <p>{item.address || "정보 없음"}</p>
-                                <p>{item.startTime} ~ {item.endTime}</p>
+                                <h3 className="sale-content-title">{item.name}</h3>
+                                <p className="sale-content-content">{item.ageLimit}이상 관람가능</p>
+                                <p className="sale-content-content">{formatDate(item.startDate)} ~ {formatDate(item.endDate)}</p>
                                 <h4>
-                                    <span>50%</span> 50,000원
+                                    <span>{Math.floor(item.discountRate)}% </span>{formatPrice(Math.floor(item.discountedPrice))}원
                                 </h4>
                             </div>
                         </SwiperSlide>

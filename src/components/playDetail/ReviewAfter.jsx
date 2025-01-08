@@ -1,10 +1,8 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+const ReviewAfter = ({totalPages,userId,shearchBtn,searchKey,setShearchKey,searchType,setSearchType,reviewACount,handleDeleteClick,handleUpdateClick,selectedReviewSeq,handleEditClick,isReviewUpdate,setIsReviewUpdate,formatDate, reviewData,ratinghandleClick, rating ,handleSubmit,reviewText,setReviewText}) => {
+ 
 
-const ReviewAfter = ({reviewACount,handleDeleteClick,handleUpdateClick,selectedReviewSeq,handleEditClick,isReviewUpdate,setIsReviewUpdate,formatDate, reviewData,ratinghandleClick, rating ,handleSubmit,reviewText,setReviewText,setRating,setAlertVisible}) => {
-
-  
-  
 
 
   return (
@@ -58,14 +56,16 @@ const ReviewAfter = ({reviewACount,handleDeleteClick,handleUpdateClick,selectedR
             <div className="review-search">
               <form className="review-search-form">
                 <div className="review-combo-box">
-                  <select className="review-combo-box-select">
-                    <option value="title">제목</option>
-                    <option value="id">아이디</option>
+                  <select className="review-combo-box-select"
+                  value={searchType}
+                  onChange={(e) => setSearchType(e.target.value)}>
+                    <option value="title">내용</option>
+                    <option value="id">이름</option>
                   </select>
                 </div>
                 <div className='review-search-box'>
-                  <input type="text" className="review-search-input" placeholder="검색어를 입력하세요." />
-                  <button className="review-search-btn">검색</button>
+                  <input type="text" className="review-search-input" value={searchKey} onChange={(e)=>setShearchKey(e.target.value)} placeholder="검색어를 입력하세요." />
+                  <button type='button' className="review-search-btn" onClick={()=>shearchBtn(true)}>검색</button>
                 </div>
               </form>
             </div>
@@ -76,44 +76,46 @@ const ReviewAfter = ({reviewACount,handleDeleteClick,handleUpdateClick,selectedR
       <div id="review-details" style={{ marginTop: '20px' }}>
       {reviewData && reviewData.length > 0 ? (
       reviewData.map((review, index) => (
-        <div key={index} className="review-item" style={{ marginTop: '20px' }}>
+        <div key={index} className="review-item" style={{ marginTop: '20px' }} >
           <div id="review-info">
             <h1 id="user-info">
-              {review.memberSeq} | {formatDate(review.createdDate)} | 별점: {review.rating}
+              작성자&nbsp;:&nbsp;&nbsp;{review.name}&nbsp;|&nbsp;작성 일자&nbsp;:&nbsp;&nbsp;{formatDate(review.createdDate)} | 별점: {review.rating}
             </h1>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <h2 id="review-content">{review.content}</h2>
 
               {/* 아이디 같으면 보이도록 */}
-              <div>
-                <button
-                  style={{
-                    marginLeft: '10px',
-                    width: '100px',
-                    height: '30px',
-                    backgroundColor: '#8E43E7',
-                    borderRadius: '5px',
-                    color: 'white',
-                  }}
-                  data-review-seq={review.reviewAfterSeq}
-                  onClick={() => handleEditClick(review.reviewAfterSeq)}
-                >
-                  수정
-                </button>
-                <button
-                  style={{
-                    marginLeft: '10px',
-                    width: '100px',
-                    height: '30px',
-                    backgroundColor: '#8E43E7',
-                    borderRadius: '5px',
-                    color: 'white',
-                  }}
-                  onClick={() => handleDeleteClick(review.reviewAfterSeq)}
-                >
-                  삭제
-                </button>
-              </div>
+              {review.id === userId && (
+                    <div>
+                      <button
+                        style={{
+                          marginLeft: '10px',
+                          width: '100px',
+                          height: '30px',
+                          backgroundColor: '#8E43E7',
+                          borderRadius: '5px',
+                          color: 'white',
+                        }}
+                        data-review-seq={review.reviewAfterSeq}
+                        onClick={() => handleEditClick(review.reviewAfterSeq)}
+                      >
+                        수정
+                      </button>
+                      <button
+                        style={{
+                          marginLeft: '10px',
+                          width: '100px',
+                          height: '30px',
+                          backgroundColor: '#8E43E7',
+                          borderRadius: '5px',
+                          color: 'white',
+                        }}
+                        onClick={() => handleDeleteClick(review.reviewAfterSeq)}
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  )}
             </div>
           </div>
         </div>
@@ -121,6 +123,9 @@ const ReviewAfter = ({reviewACount,handleDeleteClick,handleUpdateClick,selectedR
     ) : (
       <p>리뷰가 없습니다.</p>
     )}
+ 
+    
+   
 {isReviewUpdate&&(
  <div id="review-modal" className="modal">
  <div id="review-modal-content" className="modal-content">
@@ -135,12 +140,13 @@ const ReviewAfter = ({reviewACount,handleDeleteClick,handleUpdateClick,selectedR
                 color: value <= rating ? 'gold' : 'gray', // Selected stars are gold, others are gray
                 fontSize: '40px',
               }}
-              onClick={() => ratinghandleClick(value)} // Call handleClick when a star is clicked
+              onClick={() => (ratinghandleClick(value),console.log(totalPages))} // Call handleClick when a star is clicked
             >
               ★
             </span>
           ))}
         </div>
+
 
         <div className="input-container" style={{ marginBottom: '10px' }}>
           <input

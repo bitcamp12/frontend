@@ -4,7 +4,7 @@ import "../../assets/css/Main.css";
 import React, { useEffect, useRef, useState } from 'react';
 import axios from "axios";
 
-const InfiniteScrollContainer = () => {
+const InfiniteScrollContainer = ({selectedTab}) => {
 
     //10개의 item을 가진 배열을 만듬
     const [items, setItems] = useState([]);
@@ -12,27 +12,53 @@ const InfiniteScrollContainer = () => {
     const [hasMore, setHasMore] = useState(true);
     //useRef로 target을 만들어서 새로운 item을 로딩할 때 사용
     const target = useRef(null);
-    const navigate = useNavigate();
+    const loadedItems = useRef(new Set());
 
-    const fetchData = async (pageNumber) => {
+    const fetchData = async (pageNumber, tabIndex) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/plays/getPlayAll?page=${pageNumber}&size=50`, {withCredentials: true});
+            const size = 25;
+            let url = (`${process.env.REACT_APP_API_URL}/plays/getPlayAll?page=${pageNumber}&size=${size}`);
+
+            if (tabIndex === 1) {
+                url = (`${process.env.REACT_APP_API_URL}/plays/getPlayEndingSoon?page=${pageNumber}&size=${size}`);
+            } else if (tabIndex === 2) {
+                url = (`${process.env.REACT_APP_API_URL}/plays/getPlayComingSoon?page=${pageNumber}&size=${size}`);
+            } else if (tabIndex === 3) {
+                url = (`${process.env.REACT_APP_API_URL}/plays/getPlayLimited?page=${pageNumber}&size=${size}`);
+            }
+
+            const response = await axios.get(url, { withCredentials: true });
             const data = response.data;
-            if (data && data.data && data.data.length >0) {
-                setItems((prevItems) => [...prevItems, ...data.data]);
+
+            if (data && data.data && data.data.length > 0) {
+                const newItems = data.data.filter(item => !loadedItems.current.has(item.playSeq));
+
+                if (newItems.length > 0) {
+                    setItems((prevItems) => [...prevItems, ...newItems]);
+                    newItems.forEach(item => loadedItems.current.add(item.playSeq));
+                }
+
+                if (newItems.length < size) {
+                    setHasMore(false);
+                }
             } else {
                 setHasMore(false);
-            };
+            }
         } catch (error) {
             console.error("Error fetching data: ", error);
         }
     };
 
     useEffect(() => {
-        fetchData(page);
-        console.log(items); // Check what data is coming through
-    }, []);
+        console.log("Selected tab:", selectedTab);
+        setItems([]);
+        setPage(1);
+        setHasMore(true);
+        loadedItems.current.clear();
+        fetchData(1, selectedTab);
+      }, [selectedTab]);
 
+      
     useEffect(() => {
         //뷰포트를 기준으로 target이 보이면 loadMoreItems 함수를 실행
         const options = {
@@ -64,16 +90,27 @@ const InfiniteScrollContainer = () => {
 
     //10개의 item을 추가하는 함수 -> 전체가 50개가 넘어가면 더 이상 로딩하지 않음
     const loadMoreItems = () => {
-        fetchData(page);
-        setPage((prevPage) => prevPage + 1);
-    };
+        if (hasMore) {
+            setPage(prevPage => {
+                const nextPage = prevPage + 1;
+                console.log(`Loading more items, current page: ${nextPage}`);
+                fetchData(nextPage, selectedTab);
+                return nextPage;
 
-    useEffect(() => {
-        fetchData(page);
-    }, []);
+            });
+        }
+    };
 
     //유져가 스크롤을 내리다가 처음에 로딩된 10개의 item을 다 보면 target이 보이게 됨
     //target이 보이면 loadMoreItems 함수를 실행해서 10개의 item을 추가함
+
+    const formatDate = (dateStr) => {
+        const date = new Date(dateStr);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}.${month}.${day}`;
+    };
 
     return (
         <div>
@@ -85,16 +122,13 @@ const InfiniteScrollContainer = () => {
                         </Link>                        
                         <div className="infinite-scroll-card-body">
                             <h3>{item.name}</h3>
-                            <h6 className="infinite-scroll-card-info">{item.address || "정보 없음"}</h6>
-                            <h6 className="infinite-scroll-card-info">{item.startTime} ~ {item.endTime}</h6>
+                            <h6 className="infinite-scroll-card-info">{item.ageLimit}이상 관람가능</h6>
+                            <h6 className="infinite-scroll-card-info">{formatDate(item.startTime)} ~ {formatDate(item.endTime)}</h6>
                         </div>
                     </div>
                 ))}
             </div>
-            {/* {hasMore && <div ref={target}></div>} */}
-            {items.length < 50 && (
-                <div ref={target}/>
-            )}
+            {hasMore && <div ref={target} style={{ height: '1px', visibility: 'hidden' }} />}
         </div>
     );
 };

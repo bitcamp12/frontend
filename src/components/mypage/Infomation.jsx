@@ -10,28 +10,49 @@ import InfoWithdrawal from "./InfoWithdrawal";
 import InfoReservation from "./InfoReservation";
 import InfoBookmark from "./InfoBookmark";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const Infomation = () => {
-    const [selectedIcon, setSelectedIcon] = useState("");
+    const [selectedIcon, setSelectedIcon] = useState("memberInfo");
 
     const funcSelectedIcon = (iconName) => {
         setSelectedIcon(iconName);
+        //setIsPasswordCorrect(false);
+        //setPassword("");
     };
-
-    const [sessionId, setSessionId] = useState("");
-
-    // 로그인한 세션을 가져오기
-    useEffect(() => {
-        axios
-            .get("http://localhost:8080/api/members/getSession", {
-                withCredentials: true, // 세션을 포함한 요청
+    //
+    const [password, setPassword] = useState("");
+    const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);
+    const handlePasswordChange = (event) => {
+        setPassword(event.target.value); // 비밀번호 입력 처리
+    };
+    // 확인버튼을 누르면 비밀번호를 비교한다.
+    const accessToken = localStorage.getItem("token"); // 로컬스토리지
+    const [correctPassword, setCorrectPassword] = useState(""); // 실제 비밀번호로 교체 필요
+    const checkPassword = async (event) => {
+        event.preventDefault();
+        //백엔드에서 비밀번호 확인을 해야 합니다.
+        await axios
+            .get(`${process.env.REACT_APP_API_URL}/members/checkPassword`, {
+                params: {
+                    pwd: password,
+                },
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+                withCredentials: true,
             })
             .then((response) => {
-                console.log(response.data.data);
-                setSessionId(response.data.data);
+                console.log(response.data);
+                setIsPasswordCorrect(response.data);
+                if(response.data == false){
+                    alert('비밀 번호가 일치하지 않습니다.')
+                }
             })
             .catch((error) => console.log(error));
-    }, []);
+    };
+
+    console.log(isPasswordCorrect);
 
     return (
         <div className={styles.member_info_body}>
@@ -41,21 +62,25 @@ const Infomation = () => {
             <section className={styles.member_info_section}>
                 <nav className={styles.member_info_nav}>
                     <ul>
-                        <li onClick={() => funcSelectedIcon("memberInfo")}>
+                        <li
+                            onClick={() => funcSelectedIcon("memberInfo")}
+                            className={
+                                selectedIcon === "memberInfo"
+                                    ? styles.selected
+                                    : ""
+                            }
+                        >
                             <Icon name="memberInfo" size={10} color="red" />
                             <span>회원정보수정</span>
-                        </li>
-                        <li onClick={() => funcSelectedIcon("memberPwd")}>
-                            <Icon name="memberPwd" size={10} color="red" />
-                            <span>비밀번호변경</span>
-                        </li>
-                        <li onClick={() => funcSelectedIcon("deliveryAddr")}>
-                            <Icon name="deliveryAddr" size={10} color="red" />
-                            <span>배송지관리</span>
                         </li>
                         <li
                             onClick={() =>
                                 funcSelectedIcon("reservationDetail")
+                            }
+                            className={
+                                selectedIcon === "reservationDetail"
+                                    ? styles.selected
+                                    : ""
                             }
                         >
                             <Icon
@@ -65,27 +90,60 @@ const Infomation = () => {
                             />
                             <span>예매내역</span>
                         </li>
-                        <li onClick={() => funcSelectedIcon("bookmark")}>
+                        <li
+                            onClick={() => funcSelectedIcon("bookmark")}
+                            className={
+                                selectedIcon === "bookmark"
+                                    ? styles.selected
+                                    : ""
+                            }
+                        >
                             <Icon name="bookmark" size={10} color="red" />
                             <span>즐겨찾기</span>
                         </li>
-                        <li onClick={() => funcSelectedIcon("")}>
-                            <Icon name="memberInfo" size={10} color="red" />
-                            <span>계정관리</span>
-                        </li>
-                        <li onClick={() => funcSelectedIcon("withdrawal")}>
+                        <li
+                            onClick={() => funcSelectedIcon("withdrawal")}
+                            className={
+                                selectedIcon === "withdrawal"
+                                    ? styles.selected
+                                    : ""
+                            }
+                        >
                             <Icon name="withdrawal" size={10} color="red" />
                             <span>회원탈퇴</span>
                         </li>
                     </ul>
                 </nav>
 
+                {/* <div className={styles.member_info_container}>
+                    {<InfoLock />}
+                    {selectedIcon === "memberInfo" && <InfoModify />}
+                    {selectedIcon === "reservationDetail" && (
+                        <InfoReservation />
+                    )}
+                    {selectedIcon === "bookmark" && <InfoBookmark />}
+                    {selectedIcon === "withdrawal" && <InfoWithdrawal />}
+                </div> */}
                 <div className={styles.member_info_container}>
-                    {/* {sessionId && <InfoLock id={sessionId} />} */}
-                    {/* <InfoModify /> */}
-                    {/* <InfoWithdrawal /> */}
-                    {/* <InfoReservation/> */}
-                    {/* <InfoBookmark/> */}
+                    {!isPasswordCorrect ? (
+                        <InfoLock
+                            password={password}
+                            setPassword={setPassword}
+                            handlePasswordChange={handlePasswordChange}
+                            checkPassword={checkPassword}
+                        />
+                    ) : (
+                        <>
+                            {selectedIcon === "memberInfo" && <InfoModify  setPassword={setPassword} password={password}/>}
+                            {selectedIcon === "reservationDetail" && (
+                                <InfoReservation />
+                            )}
+                            {selectedIcon === "bookmark" && <InfoBookmark />}
+                            {selectedIcon === "withdrawal" && (
+                                <InfoWithdrawal />
+                            )}
+                        </>
+                    )}
                 </div>
             </section>
             <div>
